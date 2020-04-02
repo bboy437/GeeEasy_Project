@@ -1,0 +1,30 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@project/cores": ["libs/cores/src/index.ts"],
+      "@project/nebular": ["libs/nebular/src/index.ts"],
+      "@project/services": ["libs/services/src/index.ts"],
+      "@project/theme": ["libs/theme/src/index.ts"],
+      "@project/interfaces": ["libs/interfaces/src/index.ts"],
+      "@project/theme-supplier": ["libs/theme-supplier/src/index.ts"],
+      "@project/shared": ["libs/shared/src/index.ts"],
+      "@project/theme-dealer": ["libs/theme-dealer/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"],
+}

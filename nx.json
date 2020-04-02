@@ -1,0 +1,54 @@
+{
+  "npmScope": "project",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": "*",
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "distributor-e2e": {
+      "tags": []
+    },
+    "distributor": {
+      "tags": []
+    },
+    "cores": {
+      "tags": []
+    },
+    "nebular": {
+      "tags": []
+    },
+    "services": {
+      "tags": []
+    },
+    "theme": {
+      "tags": []
+    },
+    "interfaces": {
+      "tags": []
+    },
+    "supplier-e2e": {
+      "tags": []
+    },
+    "supplier": {
+      "tags": []
+    },
+    "theme-supplier": {
+      "tags": []
+    },
+    "shared": {
+      "tags": []
+    },
+    "dealer-e2e": {
+      "tags": []
+    },
+    "dealer": {
+      "tags": []
+    },
+    "theme-dealer": {
+      "tags": []
+    }
+  }
+}
