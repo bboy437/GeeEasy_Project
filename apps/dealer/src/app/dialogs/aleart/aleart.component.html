@@ -1,0 +1,58 @@
+<div class="pages">
+    <nb-card>
+        <nb-card-header>
+            <div class="header">
+                <nb-icon icon="alert-circle-outline"></nb-icon>
+                <label>ERROR</label>
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <div *ngIf="status == 'po'">
+                <div class="row" style="padding-top: 1rem;">
+                    <div class="col-auto">
+                        <!-- <img src="assets/images/cancel.png" width="50"> -->
+
+                        <!-- <nb-icon icon="alert-circled"  pack="ion"></nb-icon> -->
+                    </div>
+                    <div class="col-auto mr-auto" style="padding-top: 1rem;">
+                        <label style="font-size: 16px;">Are you sure you want to Cancel ?</label>
+                    </div>
+                </div><br>
+                <div class="row" style="text-align: center;">
+                    <div class="col-md-12">
+                        <button nbButton style="width: 100px" status="danger"
+                            (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                        <button nbButton style="width: 100px" status="success" (click)="btnOkClick()">Ok</button>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="status == 'checkin'">
+                <div class="row" style="padding-top: 1rem; text-align: center;">
+                    <div class="col-md-12">
+                        <label style="font-size: 16px;">Quantity is greater than 0 and less than Incoming.</label>
+                    </div>
+                </div><br>
+                <div class="row" style="text-align: center;">
+                    <div class="col-md-12">
+                        <button nbButton style="width: 100px" status="success" (click)="btnOkClick()">Ok</button>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="status == 'Quantity'">
+                <div class="row" style="text-align: center;">
+                    <div class="col-md-12">
+                        <label style="font-size: 16px;">Quantity is greater than 0.</label>
+                    </div>
+                </div><br>
+                <div class="row" style="text-align: center;">
+                    <div class="col-md-12">
+                        <button nbButton style="width: 100px" status="success" (click)="btnOkClick()">Ok</button>
+                    </div>
+                </div>
+            </div>
+
+        </nb-card-body>
+    </nb-card>
+</div>

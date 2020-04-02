@@ -1,0 +1,524 @@
+<!-- <div class="pages" [formGroup]="productForm"> -->
+<div class="row">
+    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+        <nb-card>
+            <nb-card-header>
+                <div class="header">
+                    <div class="row">
+                        <div class="col-auto mr-auto">
+                            <nb-icon icon="cube-outline"></nb-icon>
+                            <label>Create Product</label>
+                        </div>
+                        <div class="col-auto">
+                            <button style="float: right;margin: 3px 0px 3px 1rem;" [nbSpinner]="product.update"
+                                nbSpinnerStatus="success" nbButton size="medium" status="success"
+                                (click)="checkQtyMinimum()">
+                                Save
+                            </button>
+                            <button style="float: right;margin: 3px 0px 3px 1rem;" nbButton size="medium"
+                                status="danger" (click)="btnCancelClick()">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </nb-card-header>
+        </nb-card>
+    </div>
+    <div class="col-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="productForm">
+        <nb-card>
+            <nb-card-body>
+                <div class="body">
+                    <div class="row">
+                        <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="row">
+                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                    <project-file-image theme="white" [image_url_array]="product.main_image.get">
+                                    </project-file-image>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="row">
+                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="cover-input">
+                                        <nb-checkbox status="primary" [checked]="active === 1"
+                                            (checkedChange)="toggle($event)">
+                                            Active</nb-checkbox>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="cover-input">
+                                        <label>Product Name :</label>
+                                        <input libOnlyProductName status="primary" type="text" nbInput fullWidth
+                                            status="primary" formControlName="productName" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && f.productName.errors }" />
+                                        <div *ngIf="submitted && !!f.productName.errors">
+                                            <div class="required" *ngIf="!!f.productName.errors.required">
+                                                Product Name is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div
+                                        style="border: 2px solid #c7c7c7;padding: 1rem;background-color: #ffffff; border-radius: 0.25rem;">
+                                        <div class="cover-input">
+                                            <label>Product Category :</label>
+                                            <project-comp-category [status]="'Distributor'" [active]="'Distributor'"
+                                                (categoryID)="categoryEvent($event)">
+                                            </project-comp-category>
+                                            <div *ngIf="submitted && !!f.productCategory.errors">
+                                                <div class="required" *ngIf="!!f.productCategory.errors.required">
+                                                    Product Category is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="cover-input" *ngIf="product_category__name == 'Other'">
+                                            <label>Custom Category :</label>
+                                            <input libOnlyCharacterDefault status="primary" type="text" nbInput
+                                                fullWidth status="primary" formControlName="category_custom_keyword"
+                                                class="form-control"
+                                                [ngClass]="{ 'is-invalid': submitted && f.category_custom_keyword.errors }" />
+                                            <div *ngIf="submitted && !!f.category_custom_keyword.errors">
+                                                <div class="required"
+                                                    *ngIf="!!f.category_custom_keyword.errors.required">
+                                                    Custom Category is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="row" style="padding-top: 1rem;">
+                                        <div class="col-12  col-md-6 col-lg-6 col-xl-6">
+                                            <!-- <div class="cover-input">
+                                                <label>Buy Price (Cost) :</label>
+                                                <input libOnlyCharacterDefault status="primary" type="text"
+                                                    libOnlyCharacternumber mask="separator.2" thousandSeparator=","
+                                                    nbInput fullWidth formControlName="productPrice"
+                                                    class="form-control"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.productPrice.errors }" />
+                                                <div *ngIf="submitted && !!f.productPrice.errors">
+                                                    <div class="required" *ngIf="!!f.productPrice.errors.required">
+                                                        Buy Price is required
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                            <label>Buy Price (Cost) :</label>
+                                            <div class="cover-input price">
+                                                <a>{{productForm.value.product_currency_code}}</a>
+                                                <input style="text-align: right;" libOnlyCharacterDefault
+                                                    status="primary" type="text" libOnlyCharacternumber
+                                                    mask="separator.2" thousandSeparator="," nbInput fullWidth
+                                                    formControlName="productPrice" class="form-control"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.productPrice.errors }" />
+                                                <div *ngIf="submitted && !!f.productPrice.errors">
+                                                    <div class="required" *ngIf="!!f.productPrice.errors.required">
+                                                        Buy Price is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12  col-md-3 col-lg-3 col-xl-3">
+                                            <div class="cover-input">
+                                                <label>Currency :</label>
+                                                <ngx-select [allowClear]="true"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.product_currency_code.errors }"
+                                                    [items]="arrCurrency" optionValueField="currency_name"
+                                                    optionTextField="currency_name"
+                                                    formControlName="product_currency_code">
+                                                </ngx-select>
+                                                <div *ngIf="submitted && !!f.product_currency_code.errors">
+                                                    <div class="required"
+                                                        *ngIf="!!f.product_currency_code.errors.required">
+                                                        Currency is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12  col-md-3 col-lg-3 col-xl-3">
+                                            <div class="cover-input">
+                                                <label>Initial Stock :</label>
+                                                <input style="text-align: right;" libOnlyCharacterDefault
+                                                    status="primary" type="text" libOnlyCharacternumber
+                                                    mask="separator.0" thousandSeparator="," nbInput fullWidth
+                                                    formControlName="initial_stock" class="form-control"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.initial_stock.errors }"
+                                                    (keyup)="onKeyInitialStock($event.target.value)" />
+                                                <div *ngIf="submitted && !!f.initial_stock.errors">
+                                                    <div class="required" *ngIf="!!f.initial_stock.errors.required">
+                                                        Initial Stock is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="row">
+                                        <div class="col-12 col-12 col-md-4 col-lg-4 col-xl-4">
+                                            <div class="cover-input">
+                                                <label>Product SKU :</label>
+                                                <input libOnlySKU status="primary" type="text" nbInput fullWidth
+                                                    status="primary" class="form-control" formControlName="productSKU"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.productSKU.errors }" />
+                                                <div *ngIf="submitted && !!f.productSKU.errors">
+                                                    <div class="required" *ngIf="!!f.productSKU.errors.required">
+                                                        Product SKU is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-2 col-lg-2 col-xl-2">
+                                            <div class="cover-input">
+                                                <label>Unit :</label>
+                                                <input libOnlyUnit status="primary" type="text" nbInput fullWidth
+                                                    status="primary" class="form-control" formControlName="productUnit"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.productUnit.errors }" />
+                                                <div *ngIf="submitted && !!f.productUnit.errors">
+                                                    <div class="required" *ngIf="!!f.productUnit.errors.required">
+                                                        Unit is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
+                                            <div class="cover-input">
+                                                <label>Product Barcode :</label>
+                                                <input libOnlyBarcode status="primary" type="text" nbInput fullWidth
+                                                    class="form-control" formControlName="product_barcode"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.product_barcode.errors }" />
+                                                <div *ngIf="submitted && !!f.product_barcode.errors">
+                                                    <div class="required" *ngIf="!!f.product_barcode.errors.required">
+                                                        Product Barcode is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="row">
+                                        <div class="col-12 col-12 col-md-4 col-lg-4 col-xl-4">
+                                            <div class="cover-input">
+                                                <label>Product Width :</label>
+                                                <input style="text-align: right;" libOnlyCharacternumber
+                                                    mask="separator.0" thousandSeparator="," status="primary"
+                                                    type="text" nbInput fullWidth status="primary" class="form-control"
+                                                    formControlName="width"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.width.errors }" />
+                                                <div *ngIf="submitted && !!f.width.errors">
+                                                    <div class="required" *ngIf="!!f.width.errors.required">
+                                                        Product Width is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-2 col-lg-2 col-xl-2">
+                                            <div class="cover-input">
+                                                <label>Unit :</label>
+                                                <ngx-select [allowClear]="true"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.width_unit.errors }"
+                                                    [items]="arrUnitWH" optionValueField="unit_name"
+                                                    optionTextField="unit_name" formControlName="width_unit">
+                                                </ngx-select>
+                                                <div *ngIf="submitted && !!f.width_unit.errors">
+                                                    <div class="required" *ngIf="!!f.width_unit.errors.required">
+                                                        Unit is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-12 col-md-4 col-lg-4 col-xl-4">
+                                            <div class="cover-input">
+                                                <label>Product Height :</label>
+                                                <input style="text-align: right;" libOnlyCharacternumber
+                                                    mask="separator.0" thousandSeparator="," status="primary"
+                                                    type="text" nbInput fullWidth status="primary" class="form-control"
+                                                    formControlName="height"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.height.errors }" />
+                                                <div *ngIf="submitted && !!f.height.errors">
+                                                    <div class="required" *ngIf="!!f.height.errors.required">
+                                                        Product Height is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-2 col-lg-2 col-xl-2">
+                                            <div class="cover-input">
+                                                <label>Unit :</label>
+                                                <ngx-select [allowClear]="true"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.height_unit.errors }"
+                                                    [items]="arrUnitWH" optionValueField="unit_name"
+                                                    optionTextField="unit_name" formControlName="height_unit">
+                                                </ngx-select>
+                                                <div *ngIf="submitted && !!f.height_unit.errors">
+                                                    <div class="required" *ngIf="!!f.height_unit.errors.required">
+                                                        Unit is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="row">
+                                        <div class="col-12 col-12 col-md-4 col-lg-4 col-xl-4">
+                                            <div class="cover-input">
+                                                <label>Product Weight :</label>
+                                                <input style="text-align: right;" libOnlyCharacternumber
+                                                    mask="separator.0" thousandSeparator="," status="primary"
+                                                    type="text" nbInput fullWidth status="primary" class="form-control"
+                                                    formControlName="weight"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.weight.errors }" />
+                                                <div *ngIf="submitted && !!f.weight.errors">
+                                                    <div class="required" *ngIf="!!f.weight.errors.required">
+                                                        Product Weight is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-2 col-lg-2 col-xl-2">
+                                            <div class="cover-input">
+                                                <label>Unit :</label>
+                                                <ngx-select [allowClear]="true"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.weight_unit.errors }"
+                                                    [items]="arrUnitWeight" optionValueField="unit_name"
+                                                    optionTextField="unit_name" formControlName="weight_unit">
+                                                </ngx-select>
+                                                <div *ngIf="submitted && !!f.weight_unit.errors">
+                                                    <div class="required" *ngIf="!!f.weight_unit.errors.required">
+                                                        Unit is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="row">
+                                        <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
+                                            <div class="cover-input">
+                                                <label>Country :</label>
+                                                <ngx-select [allowClear]="true"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.product_country.errors }"
+                                                    [items]="arrCountry" optionValueField="location_name"
+                                                    optionTextField="location_name" formControlName="product_country"
+                                                    placeholder="--------- Choose ---------">
+                                                </ngx-select>
+                                                <div *ngIf="submitted && !!f.product_country.errors">
+                                                    <div class="required" *ngIf="!!f.product_country.errors.required">
+                                                        Country is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
+                                            <div class="cover-channel">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="cover-input">
+                                                            <label>Channel :
+                                                                <!-- {{channel.one.input}} -->
+                                                            </label>
+                                                            <input libOnlyCharacterDefault nbInput fullWidth type="text"
+                                                                status="primary"
+                                                                (keyup)="channelArray().inArrayObjectInput($event,channel.one)"
+                                                                (keyup.enter)="channelArray().inArrayObject($event,channel.one)"
+                                                                (change)="channelArray().inArrayObject($event,channel.one)"
+                                                                [ngClass]="{'is-invalid': submitted && channel.one.channel === ''}" />
+                                                            <div class="invalid-feedback"
+                                                                [ngClass]="{'display-block': submitted && channel.one.channel === ''}">
+                                                                <div class="required">
+                                                                    Channel is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <span class="channel"
+                                                            *ngFor="let item of channel.one.channel_array ; let i = index">
+                                                            {{item}}
+                                                            <nb-icon
+                                                                (click)="channelArray().removeObjectIndex(i,channel.one)"
+                                                                icon="close-outline"></nb-icon>
+                                                        </span>
+                                                    </div>
+                                                    <!-- <div class="col-12">
+                                                        <code>
+                                                            {{ channel.one | json}}
+                                                        </code>
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                            <!-- <div class="cover-input">
+                                                <label>Channel :</label>
+                                                <input status="primary" type="text" libOnlyCharacterDefault
+                                                    libOnlyCharacter nbInput fullWidth
+                                                    formControlName="product_channel" class="form-control"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.product_channel.errors }" />
+                                                <div *ngIf="submitted && !!f.product_channel.errors">
+                                                    <div class="required"
+                                                        *ngIf="!!f.product_channel.errors.required">
+                                                        Channel is required
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="row">
+                                        <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
+                                            <div class="cover-input">
+                                                <label>Warehouse Name :</label>
+                                                <ngx-select [allowClear]="true"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.warehouse_id.errors }"
+                                                    [items]="arrWarehouse" optionValueField="warehouse_id"
+                                                    optionTextField="warehouse_name" formControlName="warehouse_id"
+                                                    placeholder="--------- Choose ---------"
+                                                    (selectionChanges)="btnIDClick($event)">
+                                                </ngx-select>
+                                                <div *ngIf="submitted && !!f.warehouse_id.errors">
+                                                    <div class="required" *ngIf="!!f.warehouse_id.errors.required">
+                                                        Warehouse Name is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col">
+                                                <div style="padding-top: 2rem;">
+                                                    <button style="float: left" nbButton size="small" status="success"
+                                                        (click)="addWarehouse()">ADD</button>
+                                                </div>
+                                            </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="cover-input">
+                                <label>Product Wholesale :</label>
+                            </div>
+                            <table class="table no-hover">
+                                <thead>
+                                    <th style="width: 15%; text-align: center;">
+                                        <label>Qty Minimum</label>
+                                        <div *ngIf="sort == false"
+                                            style="float: right;left: 0; cursor: pointer; padding-left: 0.5rem;"
+                                            (click)="sortWholesale()">
+                                            <nb-icon icon="arrow-upward-outline"></nb-icon>
+                                        </div>
+                                        <div *ngIf="sort == true"
+                                            style="float: right;left: 0; cursor: pointer; padding-left: 0.5rem;"
+                                            (click)="sortWholesale()">
+                                            <nb-icon icon="arrow-downward-outline"></nb-icon>
+                                        </div>
+
+                                    </th>
+                                    <th style="width: 20%;  text-align: right;">
+                                        <label> Wholesale Price</label>
+                                    </th>
+                                    <th style="width: 20%;  text-align: right;">
+                                        <label> Retail Price</label>
+                                    </th>
+                                    <th style="padding-top: 0.8rem; padding-bottom: 0; text-align: right">
+                                        <div>
+                                            <button nbButton size="small" status="success"
+                                                (click)="addWholesale()">Add</button>
+                                        </div>
+
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of arrWholesale; let i=index;">
+                                        <td>
+                                            <div class="cover-input">
+                                                <input class="cover qty" libOnlyCharacterDefault status="primary"
+                                                    type="text" libOnlyCharacternumber mask="separator.0"
+                                                    thousandSeparator="," nbInput fullWidth status="primary"
+                                                    [(ngModel)]="item.qty_minimum" [ngModelOptions]="{standalone: true}"
+                                                    (change)="onCheckWholesale($event)"
+                                                    (keyup)="onKeyMinimum($event, item)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="cover-input price">
+                                                <a>{{productForm.value.product_currency_code}}</a>
+                                                <input class="cover price" libOnlyCharacterDefault status="primary"
+                                                    type="text" libOnlyCharacternumber mask="separator.2"
+                                                    thousandSeparator="," nbInput fullWidth status="primary"
+                                                    [(ngModel)]="item.product_price"
+                                                    [ngModelOptions]="{standalone: true}">
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="cover-input price">
+                                                <a>{{productForm.value.product_currency_code}}</a>
+                                                <input class="cover price" libOnlyCharacterDefault status="primary"
+                                                    type="text" libOnlyCharacternumber mask="separator.2"
+                                                    thousandSeparator="," nbInput fullWidth status="primary"
+                                                    [(ngModel)]="item.retail_product_price"
+                                                    [ngModelOptions]="{standalone: true}">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <nb-icon (click)="deleteWholesale(i)" icon="close-outline"
+                                                style="float: right;margin-top: 10px;">
+                                            </nb-icon>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div *ngIf="arrWholesale.length == 0" class="list">
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="text-align: center;">
+                                        <img src="assets/images/loading.png" width="300">
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="text-align: center;">
+                                        <label *ngIf="!strWholesal">No data. </label>
+                                        <label *ngIf="strWholesal" style="color: red;">No data. </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nb-card-body>
+        </nb-card>
+    </div>
+    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+        <nb-card style="padding: 0;margin-bottom: 0.1rem;">
+            <nb-card-header>
+                <div class="header">
+                    <div class="row">
+                        <div class="col-auto mr-auto">
+                            <label>
+                                Image Lists
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </nb-card-header>
+        </nb-card>
+    </div>
+    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+        <nb-card>
+            <nb-card-body>
+                <div class="header">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <project-file-upload theme="white" [image_url_array]="product.product_image_array.get">
+                            </project-file-upload>
+                        </div>
+                    </div>
+                </div>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>
+<!-- </div> -->

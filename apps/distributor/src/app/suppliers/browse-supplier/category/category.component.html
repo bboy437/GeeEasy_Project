@@ -1,0 +1,256 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="body">
+                <div class="row">
+                    <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="row">
+
+                            <!-- <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-auto mr-auto">
+                                        <div class="display_table height_48px">
+                                            <div class="display_table_cell">
+                                                <label style="cursor: pointer;">
+                                                    <a (click)="btnReload()">List Name </a>
+                                                    <span
+                                                        *ngIf="strsupCate && strsupCate != '' && strsupCate != undefined"
+                                                        class="p-0-12">/</span>
+                                                    {{(strsupCate && strsupCate != '' && strsupCate != undefined)?strsupCate:''}}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                                <div class="row">
+                                    <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="row"
+                                            style="border-bottom: 2px solid #edf1f7; border-top: 1px solid #edf1f7; color: #000000; padding-top: 0.7rem; padding-bottom: 0.8rem; font-size: 14px; font-weight: bold; margin: -0.10px;">
+                                            <div class="col-sm-12">
+                                                Product Category Name
+                                                <nb-icon (click)="btnReload()" style="float: right; cursor: pointer;"
+                                                    icon="refresh-outline">
+                                                </nb-icon>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <div class="cover-form icon" style="padding-top: 1rem;">
+                                                <nb-icon icon="search-outline"></nb-icon>
+                                                <nb-icon *ngIf="strCategoryName" (click)="refreshCate()"
+                                                    style="float: right;left: 0; cursor: pointer;" icon="close-outline">
+                                                </nb-icon>
+                                                <input libOnlyCharacterDefault status="primary" type="text" nbInput
+                                                    fullWidth status="primary" placeholder="Search for category "
+                                                    [(ngModel)]="strCategoryName" [ngModelOptions]="{standalone: true}"
+                                                    (keyup)="filterCategoryName($event.target.value)" />
+                                            </div>
+                                        </div>
+                                        <table class="table hover">
+                                            <tbody>
+                                                <tr *ngFor="let c  of arrCategory1"
+                                                    [ngClass]="{'active': c.product_category_id==id}"
+                                                    (click)="subCate(c.product_category_child_array, c.product_category_id, c.product_category_name)">
+                                                    <td style="width: 100px;">
+                                                        <div class="cover-background-image"
+                                                            style="width: 100px; height: 100px;">
+                                                            <div class="background-image padding-width-100px-height-100px"
+                                                                [ngClass]="{'active' : c.product_category_image_url === '-' || c.product_category_image_url === ''}"
+                                                                [ngStyle]="{'background-image': 'url('+c.product_category_image_url+')'}">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="left">
+                                                        {{c.product_category_name}}
+                                                        <nb-icon *ngIf="c.product_category_id==id"
+                                                            style="float: right; cursor: pointer;"
+                                                            icon="arrow-ios-forward-outline">
+                                                        </nb-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="arrCategory1.length == 0 && !loading"
+                                                    style="height:300px; background-color: #ffffff;">
+                                                    <td colspan="2" style="padding-top: 50px;">
+                                                        <img src="assets/images/loading.png" width="300"><br><br>
+                                                        <label>No data.</label>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div style="height: 100px;background-color: #ffffff;" [nbSpinner]="loading"
+                                            nbSpinnerStatus="primary">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                                <project-comp-category-browse [status]="'Distributor'"
+                                    (categoryID)="categoryEvent($event)">
+                                </project-comp-category-browse>
+                            </div>
+                            <div class="col-12 col-md-9 col-lg-9 col-xl-9">
+                                <div class="row">
+                                    <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="!loading1">
+                                        <!-- <table class="table hover" >
+                                            <thead>
+                                                <tr>
+                                                    <th class="left" style="    width: 125px;">
+                                                        Images</th>
+                                                    <th class="left">
+                                                        Supplier Name
+                                                    </th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="cursor: pointer;">
+                                                <tr *ngFor="let Category  of arrListCategorys"
+                                                    (click)="btnRowCate(Category.supplier_id)">
+                                                    <td style="    width: 125px;">
+                                                        <div class="cover-background-image">
+                                                            <div class="background-image padding-width-100px-height-100px"
+                                                                [ngClass]="{'active' : Category.supplier_image_url === '-' || Category.supplier_image_url === ''}"
+                                                                [ngStyle]="{'background-image': 'url('+Category.supplier_image_url+')'}">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td style="text-align: left">
+                                                        {{Category.supplier_name}}<br>
+                                                        {{Category.supplier_addr_amphoe + ',' + Category.supplier_addr_province}}
+                                                    </td>
+                                                    <td title="Save lists" style="width: 45px;">
+                                                        <div
+                                                            (click)="btnDialogSavelists(Category); $event.stopPropagation()">
+                                                            <nb-icon icon="list-outline">
+                                                            </nb-icon>
+                                                        </div>
+
+                                                    </td>
+                                                    <td title="Wish lists" style="width: 45px;">
+                                                        <div *ngIf="Category.supplier_is_wish === 0"
+                                                            (click)="btnDialogWishlist(Category); $event.stopPropagation()">
+
+                                                            <nb-icon icon="heart-outline">
+                                                            </nb-icon>
+                                                        </div>
+                                                        <div *ngIf="Category.supplier_is_wish === 1"
+                                                            (click)="btnDialogWishlist(Category); $event.stopPropagation()">
+
+                                                            <nb-icon style="color: red" icon="heart-outline"></nb-icon>
+                                                        </div>
+                                                    </td>
+
+                                                    <td title="Request" style="width: 105px;">
+                                                        <button
+                                                            (click)="btnDialogRequest(Category); $event.stopPropagation()"
+                                                            nbButton size="small">Request</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>  -->
+
+                                        <ngx-datatable [columnMode]="ColumnMode.force" [rows]="arrListCategorys"
+                                            rowHeight="auto" [headerHeight]="46" (activate)="btnRowCate($event)"
+                                            [scrollbarH]="true" [messages]="messages">
+
+                                            <ngx-datatable-column name="Images" [maxWidth]="150">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <div class="cover-background-image">
+                                                        <div class="background-image padding-width-100px-height-100px"
+                                                            [ngClass]="{'active' : row.supplier_image_url === '-' || row.supplier_image_url=== ''}"
+                                                            [ngStyle]="{'background-image': 'url('+row.supplier_image_url+')'}">
+                                                        </div>
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Supplier Name" [sortable]="true"
+                                                prop="supplier_name">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{ row.supplier_name }}<br>
+                                                    {{row.supplier_addr_amphoe + ',' + row.supplier_addr_province}}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column [maxWidth]="50">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <button type="button" class="buttonlist"
+                                                        (click)="btnDialogSavelists(row); $event.stopPropagation()">
+                                                        <nb-icon icon="list-outline"></nb-icon>
+                                                    </button>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column [maxWidth]="50">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <div *ngIf="row.supplier_is_wish === 0"
+                                                        (click)="btnDialogWishlist(row); $event.stopPropagation()">
+                                                        <nb-icon icon="heart-outline">
+                                                        </nb-icon>
+                                                    </div>
+                                                    <div *ngIf="row.supplier_is_wish === 1"
+                                                        (click)="btnDialogWishlist(row); $event.stopPropagation()">
+                                                        <nb-icon style="color: red" icon="heart-outline"></nb-icon>
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column [maxWidth]="100">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <button *ngIf="row.show_request_button === 0" nbButton
+                                                        status="warning" size="small"
+                                                        (click)="btnDialogRequested(row); $event.stopPropagation()">Requested</button>
+                                                    <button *ngIf="row.show_request_button === 1"
+                                                        (click)="btnDialogRequest(row); $event.stopPropagation()"
+                                                        nbButton size="small">Request</button>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                        </ngx-datatable> 
+
+                                        <!-- <div *ngIf="loading" style="height: 100px;background-color: #ffffff;"
+                                            [nbSpinner]="loading" nbSpinnerStatus="danger">
+                                        </div>
+                                        <div *ngIf="arrListCategorys.length == 0 && !loading" class="list">
+                                            <div class="row">
+                                                <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                                    style="text-align: center;    margin-bottom: 1rem;">
+                                                    <img src="assets/images/loading.png" width="300">
+                                                </div>
+                                                <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                                    style="text-align: center;">
+                                                    <label>No data. Please select information in
+                                                        the list</label>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                    <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <table class="table hover" *ngIf="loading1">
+                                            <thead>
+                                                <tr>
+                                                    <th class="left" style="width: 125px;"> Images</th>
+                                                    <th class="left"> Supplier Name</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <div style="height: 200px;" [nbSpinner]="loading1"
+                                                            nbSpinnerStatus="primary">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>

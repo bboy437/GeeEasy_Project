@@ -1,0 +1,156 @@
+<div class="pages products-list">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <nb-icon icon="settings-outline"></nb-icon>
+                        <label>File Manager</label>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body style="padding: 1rem; min-height: calc(100vh - 190px);">
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                                        <div class="cover-select">
+                                            <label>Folder Name</label><br>
+                                            <select class="custom-select" style="width: 100%" id="fTypeId"
+                                                [(ngModel)]="strStatus" (selectedChange)="typeID($event)">
+                                                <option value="">--Select--</option>
+                                                <option value="200">Image</option>
+                                                <option value="201">Request File</option>
+                                                <option value="210">Category</option>
+                                                <option value="220">Product</option>
+                                                <option value="290">Uncategory</option>
+                                                <option value="300">PO Any File</option>
+                                                <option value="301">PO Document File</option>
+                                                <option value="302">PO Picture File</option>
+                                                <option value="400">Messages File</option>
+                                                <option value="401">Chat File</option>
+                                                <option value="500">Notification File</option>
+                                                <!-- <option value="800">Uppy Any File</option>
+                                                <option value="801">Uppy Document File</option>
+                                                <option value="802">Uppy Image File</option>
+                                                <option value="810">Uppy Unknown File</option> -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="DashboardContainer"></div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <nb-card size="large" [nbSpinner]="loading" nbSpinnerStatus="primary">
+                                        <nb-card-header>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="display_table height_48px">
+                                                        <div class="display_table_cell">
+                                                            <label style="cursor: pointer;">
+                                                                <a (click)="getS3file()">
+                                                                    Folder Name
+                                                                </a>
+                                                                <span class="p-0-12" *ngIf="name1">/</span>
+                                                                <a (click)="folder1(name1)" *ngIf="name1">
+                                                                    {{name1}}
+                                                                </a>
+                                                                <span class="p-0-12" *ngIf="name2">/</span>
+                                                                <a (click)="folder1(name2)" *ngIf="name2">
+                                                                    {{name2}}
+                                                                </a>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto mr-auto"> </div>
+                                            </div>
+                                        </nb-card-header>
+                                        <nb-list *ngIf="arrFileList.length > 0">
+                                            <nb-list-item *ngFor="let f of arrFileList"
+                                                [ngClass]="{'checkData':f.folder_name === 'customsupplier' || f.folder_name === 'supplier'|| f.folder_name === 'dealer'|| f.folder_name === 'uppy-php-example' || f.folder_name === 'uppy'}"
+                                                style="cursor: pointer;">
+                                                <div (click)="folder1(f.folder_name)" style="cursor: pointer;">
+                                                    <!-- <img src="assets/images/folders.png" class="imgstatus"> -->
+                                                    <nb-icon icon="folder-outline"></nb-icon>
+                                                    <a
+                                                        style="font-size: 13px; padding-left: 0.5rem;">{{f.folder_name}}</a>
+                                                </div>
+                                            </nb-list-item>
+                                        </nb-list>
+
+                                        <nb-list *ngIf="arrFileListFile.length > 0">
+                                            <nb-list-item *ngFor="let f1 of arrFileListFile">
+                                                <div (click)="folder2(f1.folder_name, f1.folder_file_array)"
+                                                    style="cursor: pointer;">
+                                                    <!-- <img src="assets/images/folders.png" class="imgstatus"> -->
+                                                    <nb-icon icon="folder-outline"></nb-icon>
+                                                    <a
+                                                        style="font-size: 13px; padding-left: 0.5rem;">{{f1.folder_name}}</a>
+                                                </div>
+                                            </nb-list-item>
+                                        </nb-list>
+
+                                        <nb-list *ngIf="arrFileListFile1.length > 0">
+                                            <nb-list-item *ngFor="let f of arrFileListFile1"
+                                                (click)="openUrl(f.file_url)">
+                                                <div style="cursor: pointer;">
+                                                    <!-- <img src="assets/images/imagefile.png" class="imgstatus"> -->
+                                                    <nb-icon icon="image-outline"></nb-icon>
+                                                    <label style="font-size: 13px; padding-left: 0.5rem;"
+                                                        title="{{f.file_name}}">{{f.file_name}}</label>
+                                                </div>
+                                            </nb-list-item>
+                                        </nb-list>
+                                    </nb-card>
+
+                                    <ng-template #tabs>
+                                        <!-- <div class="p-4"> -->
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <nb-list>
+                                                    <nb-list-item class="custom-file-upload" (click)="btnFolder()">
+                                                        <!-- <img src="assets/images/folder-add.png" class="imgstatus"> -->
+                                                        <nb-icon icon="ffolder-add-outline"></nb-icon>
+                                                        <a>Folder</a>
+                                                    </nb-list-item>
+                                                    <nb-list-item for="file-upload" class="custom-file-upload">
+                                                        <label for="file-upload" class="custom-file-upload">
+                                                            <!-- <img src="assets/images/filder-upload.png" class="imgstatus">&nbsp; -->
+                                                            <nb-icon icon="folder-add-outline"></nb-icon>
+                                                            <a>File Upload</a>
+                                                        </label>
+                                                        <input nbInput status="primary" id="file-upload" type="file"
+                                                            (change)="preview($event)" />
+                                                    </nb-list-item>
+                                                </nb-list>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

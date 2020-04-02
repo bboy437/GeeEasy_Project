@@ -1,0 +1,23 @@
+@import "../../../../../../../libs/theme-dealer/src/lib/styles/themes.scss";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+
+.pages {
+    nb-card {
+      nb-card-header {
+        .header {
+          .col-auto {
+            button {
+              float: right;
+              margin-top: 3px;
+              margin-left: 1rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
+@include nb-install-component() {
+}

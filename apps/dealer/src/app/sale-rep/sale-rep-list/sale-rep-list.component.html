@@ -1,0 +1,169 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <nb-icon icon="person-outline"></nb-icon>
+                                <label>My Sale Rep</label>
+                            </div>
+                            <div class="col-auto">
+                                <button style="margin: 0.25rem 0 0 0.5rem;" nbButton size="medium" status="primary"
+                                    (click)="btnNewClick()">
+                                    New Sale
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12">
+            <nb-card>
+                <nb-card-body>
+                    <div class="header"></div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="cover-form icon">
+                                            <nb-icon class="icon-one" icon="search-outline"></nb-icon>
+                                            <nb-icon class="icon-two" *ngIf="strFilter" (click)="refresh()" icon="close-outline"></nb-icon>
+                                            <input type="text" nbInput nbInput fullWidth status="primary" placeholder="Search for name" (keyup)="filter($event.target.value)" [(ngModel)]="strFilter" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12" *ngIf="!isReload">
+                                <div class="row">
+                                    <div class="col-12" *ngIf="wishlist$ | async as wishlist; else loading">
+                                        <ngx-datatable [columnMode]="ColumnMode.force" [rows]="wishlist" rowHeight="auto" [headerHeight]="46" (activate)="btnRow($event)" [scrollbarH]="true" [messages]="messages">
+                                            <ngx-datatable-column name="Images" [width]="100">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <div class="cover-background-image">
+                                                        <div class="background-image padding-width-100px-height-100px"
+                                                            [ngClass]="{'active' : row.sale_rep_image_url === '-' || row.sale_rep_image_url=== ''}"
+                                                            [ngStyle]="{'background-image': 'url('+row.sale_rep_image_url+')'}">
+                                                        </div>
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Sale Name" [sortable]="true"
+                                                prop="sale_rep_name">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{ row.sale_rep_name }}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Order Date" [sortable]="true"
+                                                prop="create_time">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{ row.create_time | date: "dd/MM/yyyy" }}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Contact Email " [sortable]="true"
+                                                prop="sale_rep_email">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{ row.sale_rep_email }}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Telephone Number" [sortable]="true"
+                                                prop="sale_rep_tel">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{ row.sale_rep_tel }}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Mobile Number" [sortable]="true"
+                                            prop="sale_rep_mobile">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{ row.sale_rep_mobile }}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Location" [sortable]="true"
+                                                prop="sale_rep_addr_province">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{ row.sale_rep_addr_amphoe + "," + row.sale_rep_addr_province }}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column>
+                                                <ng-template let-column="column" ngx-datatable-header-template>
+                                                    <nb-icon (click)="btnReload()" icon="refresh-outline" style="float: right;margin-right: 1rem; cursor: pointer;">
+                                                    </nb-icon>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                        </ngx-datatable> 
+                                    </div>
+                                </div>
+                            </div>
+                            <ng-template #loading>
+                                <table class="table hover" style="width: 100%;margin: 0 0.5rem;">
+                                    <thead>
+                                        <tr>
+                                            <th class="left" *ngFor="let item of ['Images','Sale Name','Order Date','Contact Email','Telephone Number','Mobile Number','Location']">
+                                                {{item}}
+                                            </th>
+                                            <th (click)="btnReload()">
+                                                <nb-icon style="float: right; cursor: pointer;"
+                                                    icon="refresh-outline">
+                                                </nb-icon>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="height:300px;">
+                                            <td colspan="8" style="padding-top: 50px;">
+                                                <div style="height: 100px;"
+                                                    [nbSpinner]="loadings" nbSpinnerStatus="warning">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </ng-template>
+                            <div class="col-12" *ngIf="isReload" >
+                                <div class="cover-table" style="width: 100%;">
+                                    <table class="table hover" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th class="left" *ngFor="let item of ['Images','Sale Name','Order Date','Contact Email','Telephone Number','Mobile Number','Location']">
+                                                    {{item}}
+                                                </th>
+                                                <th (click)="btnReload()">
+                                                    <nb-icon style="float: right; cursor: pointer;"
+                                                        icon="refresh-outline">
+                                                    </nb-icon>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr style="height:300px; ">
+                                                <td colspan="8" style="padding-top: 50px;">
+                                                    <div style="height: 100px;"
+                                                        [nbSpinner]="isReload" nbSpinnerStatus="warning">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>             
+                            </div> 
+                            <div class="col-12  d-flex justify-content-between p-2" *ngIf="!isReload && !loadings">
+                                <ngb-pagination [collectionSize]="tatallist$ | async" [(page)]="wishlistTableService.page"
+                                [pageSize]="wishlistTableService.pageSize"></ngb-pagination>
+                                <select class="custom-select" style="width: auto" name="pageSize"
+                                    [(ngModel)]="wishlistTableService.pageSize">
+                                    <option [ngValue]="10">10 items per page</option>
+                                    <option [ngValue]="20">20 items per page</option>
+                                    <option [ngValue]="50">50 items per page</option>
+                                    <option [ngValue]="100">100 items per page</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+    </div>
+</div>

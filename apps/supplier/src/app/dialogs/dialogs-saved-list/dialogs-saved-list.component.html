@@ -1,0 +1,109 @@
+<div class="pages">
+    <nb-card>
+        <nb-card-header>
+            <nb-icon icon="people-outline"></nb-icon>
+            <label style="font-size: 20px">Saved Lists</label>
+        </nb-card-header>
+        <nb-card-body>
+            <div *ngIf="isData == 'new'">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>List Name</label>
+                        <nb-select placeholder="--------- Choose ---------" [disabled]="arrobjRow.name != ''" fullWidth
+                            outline status="primary"
+                            [ngClass]="{ 'is-invalid': submitted && (arrobjRow.distributor_lists_id === '' || arrobjRow.distributor_lists_id === undefined) }"
+                            [(ngModel)]="arrobjRow.distributor_lists_id" [ngModelOptions]="{standalone: true}">
+                            <nb-option *ngFor="let item of arrSaveList" [value]="item.distributor_lists_id">
+                                {{item.distributor_lists_name}}
+                            </nb-option>
+                        </nb-select>
+                    </div>
+                </div><br>
+                <div class="row" style="text-align: center">
+                    <div class="col-md-12">
+                        <button nbButton style="width: 100px" status="danger"
+                            (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                        <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success" nbButton
+                            [disabled]="arrobjRow.distributor_lists_id== ''" style="width: 100px" status="success"
+                            (click)="btnNewClick()">OK</button>
+                    </div>
+                </div><br>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="cover-button">
+                            <button class="full" nbButton fullwidth status="primary" (click)="btnCreate()">Create new
+                                saved list</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="isData == 'create'">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Name</label>
+                        <input libOnlyCharacterDefault type="text" nbInput fullWidth [(ngModel)]="arrobjRow.name"
+                            (keyup)="key($event.target.value)" />
+                    </div>
+                </div><br>
+                <div class="row" style="text-align: center">
+                    <div class="col-md-12">
+                        <button nbButton style="width: 100px" status="danger"
+                            (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                        <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success" nbButton
+                            style="width: 100px" [disabled]="arrobjRow.name == ''" status="success"
+                            (click)="btnCreateClick()">Create</button>
+                    </div>
+                </div><br>
+            </div>
+            <div *ngIf="isData == 'Rename'">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Name</label>
+                        <input libOnlyCharacterDefault type="text" nbInput fullWidth
+                            [(ngModel)]="data.distributor_lists_name" (keyup)="key($event.target.value)" />
+                    </div>
+                </div><br>
+                <div class="row" style="text-align: center">
+                    <div class="col-md-12">
+                        <button nbButton style="width: 100px" status="danger"
+                            (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                        <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success" nbButton
+                            style="width: 100px" [disabled]="data.distributor_lists_name == ''" status="success"
+                            (click)="btnRenameClick()">Update</button>
+                    </div>
+                </div><br>
+            </div>
+            <div *ngIf="isData == 'deleteList'">
+                <div class="row" style="padding-top: 1rem; text-align: center;">
+                    <div class="col-md-12" style="padding-top: 1rem;">
+                        <label style="font-size: 16px;">Are you sure you want to Delete ?</label>
+                    </div>
+                </div><br>
+                <div class="row" style="text-align: center;">
+                    <div class="col-md-12">
+                        <button nbButton style="width: 100px" status="gray"
+                            (click)="btnCancelClick()">Back</button>&nbsp;&nbsp;
+                        <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success" nbButton
+                            style="width: 100px" status="danger" (click)="btnDeleteAllClick()">Delete</button>
+                    </div>
+                </div><br>
+            </div>
+            <div *ngIf="isData == 'delete'">
+                <div class="row" style="padding-top: 1rem; text-align: center;">
+                    <div class="col-md-12" style="padding-top: 1rem;">
+                        <label style="font-size: 16px;">Are you sure you want to Delete ?</label>
+                    </div>
+                </div><br>
+                <div class="row" style="text-align: center;">
+                    <div class="col-md-12">
+                        <button nbButton style="width: 100px" status="gray"
+                            (click)="btnCancelClick()">Back</button>&nbsp;&nbsp;
+                        <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success" nbButton
+                            style="width: 100px" status="danger" (click)="btnDeleteClick()">Delete</button>
+                    </div>
+                </div><br>
+            </div>
+        </nb-card-body>
+    </nb-card>
+</div>

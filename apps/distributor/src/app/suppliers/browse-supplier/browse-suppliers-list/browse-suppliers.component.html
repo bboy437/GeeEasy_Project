@@ -1,0 +1,103 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card class="padding-0">
+                <nb-card-header>
+                    <div class="header">
+                        <nb-icon icon="people-outline"></nb-icon>
+                        <label>Browse Suppliers</label>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body >
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="cover center">
+                                            <img class="height-150PX" src="assets/images/lead-gen.png" />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="cover center">
+                                            <h3 class="text-info">
+                                                Discover New Suppliers
+                                            </h3>
+                                        </div>
+                                    </div>
+                                  
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="row">
+                                            <div
+                                                class="col-12 col-12 offset-md-2 col-md-8 offset-lg-2 col-lg-8 offset-xl-2 col-xl-8">
+                                                <div class="row">
+                                                    <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                                                        <button class="green"
+                                                            [ngClass]="{'active':isButton === 'product'}" nbButton
+                                                            fullWidth (click)="clickButton('product')" outline
+                                                            status="success">
+                                                            Search by product
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                                                        <button class="yellow"
+                                                            [ngClass]="{'active':isButton === 'name'}" nbButton
+                                                            fullWidth (click)="clickButton('name')" outline
+                                                            status="warning">
+                                                            Search by name
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                                                        <button class="blue"
+                                                            [ngClass]="{'active':isButton === 'location'}" nbButton
+                                                            fullWidth (click)="clickButton('location')" outline
+                                                            status="info">
+                                                            Near by supplier
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                                                        <button class="red"
+                                                            [ngClass]="{'active':isButton === 'category'}" nbButton
+                                                            fullWidth (click)="clickButton('category')" outline
+                                                            status="danger">
+                                                            Browse by category
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12" [ngSwitch]="isButton">
+                                        <div class="row">
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngSwitchCase="'product'">
+                                                <project-product [name]="strproduct"></project-product>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngSwitchCase="'name'">
+                                                <project-name [name]="strname"></project-name>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                                *ngSwitchCase="'location'">
+                                                <project-maps></project-maps>
+                                            </div>
+                                            <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12"
+                                                *ngSwitchCase="'category'">
+                                                <project-category [name]="strCategory"></project-category>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

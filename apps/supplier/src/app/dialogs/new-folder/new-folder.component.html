@@ -1,0 +1,31 @@
+<nb-card>
+        <nb-card-header>
+            <label style="font-size: 20px">New folder</label>
+        </nb-card-header>
+        <nb-card-body>
+    
+            <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-md-12">
+            
+                        <input libOnlyCharacterDefault status="primary" type="text" nbInput fullWidth formControlName="massage" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && f.massage.errors }" [(ngModel)]="arrobjRow.message" />
+                        <div *ngIf="submitted && !!f.massage.errors" class="invalid-feedback">
+                            <div style="text-align: left" *ngIf="!!f.massage.errors.required">
+                                folder is required
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+            </form>
+            <div class="row" style="text-align: right">
+                <div class="col-md-12">
+                    <button nbButton style="width: 100px" status="danger"
+                        (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                    <button nbButton style="width: 100px" status="success" (click)="btnSaveClick()">Create</button>
+                </div>
+            </div><br>
+    
+
+        </nb-card-body>
+    </nb-card>

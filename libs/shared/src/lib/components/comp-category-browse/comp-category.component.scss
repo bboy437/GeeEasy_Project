@@ -1,0 +1,56 @@
+.row {
+  margin: 0 -0.5rem;
+
+  .col,
+  div[class^="col-"] {
+    padding: 0 0.5rem;
+  }
+}
+
+.table {
+  &.Dealer {
+    tbody {
+      tr {
+        &.active {
+          color: white !important;
+          background-color: #f84d2f !important;
+        }
+        &:hover {
+          cursor: pointer;
+          background-color: rgba(236, 43, 43, 0.034);
+          color: black;
+        }
+      }
+    }
+  }
+  &.Distributor {
+    tbody {
+      tr {
+        &.active {
+          color: white !important;
+          background-color: #1a34b8 !important;
+        }
+        &:hover {
+          cursor: pointer;
+          background-color: rgba(43, 62, 236, 0.041);
+          color: black;
+        }
+      }
+    }
+  }
+  &.Supplier {
+    tbody {
+      tr {
+        &.active {
+          color: white !important;
+          background-color: #1c294e !important;
+        }
+        &:hover {
+          cursor: pointer;
+          background-color: #7c7e845e;
+          color: white;
+        }
+      }
+    }
+  }
+}

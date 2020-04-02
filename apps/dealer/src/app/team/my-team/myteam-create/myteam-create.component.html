@@ -1,0 +1,185 @@
+<div class="pages">
+    <form [formGroup]="Form">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                <nb-card>
+                    <nb-card-header>
+                        <div class="header">
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <nb-icon class="icon-header" icon="people-outline"></nb-icon>
+                                    <label *ngIf="RowID == 'new'">My Team<span class="p-0-12">/</span>New
+                                        Team</label>
+                                    <label *ngIf="RowID != 'new'">My Team<span class="p-0-12">/</span>Update<span
+                                            class="p-0-12">/</span> {{arrobjRow.warehouse_name}}</label>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <button *ngIf="RowID == 'new' && !loading"
+                                        style="float: right;margin: 3px 0 3px 1rem;" nbButton size="medium"
+                                        status="success" (click)="btnSaveClick()">
+                                        Save
+                                    </button>
+                                    <button *ngIf="RowID != 'new' && !loading"
+                                        style="float: right;margin: 3px 0 3px 1rem;" nbButton size="medium"
+                                        status="success" (click)="btnSaveClick()">
+                                        Update
+                                    </button>
+                                    <button *ngIf="RowID == 'new'" style="float: right;margin: 3px 0 3px 1rem;" nbButton
+                                        size="medium" status="danger" (click)="btnCancelClick()">
+                                        Cancel
+                                    </button>
+                                    <button *ngIf="RowID != 'new'" style="float: right;margin: 3px 0 3px 1rem;" nbButton
+                                        size="medium" status="danger" (click)="btnBackClick()">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </nb-card-header>
+                </nb-card>
+            </div>
+            <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="primary">
+                <nb-card>
+                    <nb-card-body>
+                        <div class="body">
+                            <div class="row">
+                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-md-6 col-lg-6" style="text-align: center;">
+                                            <div class="cover-input center">
+                                                <div class="uppy-Dashboard-inner"
+                                                    *ngIf="imgURL == undefined || imgURL == '-'"
+                                                    (click)="fileInput.click()" appDragDrop
+                                                    (change)="uploadFile($event.target.files)"
+                                                    (onFileDropped)="uploadFile($event)">
+                                                    <div class="uppy-Dashboard-innerWrap">
+                                                        <div class="uppy-Dashboard-dropFilesHereHint">Drop your files
+                                                            here</div>
+                                                        <div class="uppy-DashboardAddFiles">
+                                                            <input nbInput status="primary" hidden type="file"
+                                                                #fileInput (change)="uploadFile($event.target.files)"
+                                                                accept='image/*'>
+                                                            <div class="uppy-DashboardTabs">
+                                                                <div class="uppy-Dashboard-dropFilesTitle">Drop files
+                                                                    here , paste
+                                                                    or <span>browse</span> </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="uppy-Dashboard-inner"
+                                                    *ngIf="imgURL != undefined && imgURL != '-'"
+                                                    (click)="fileInput.click()" appDragDrop
+                                                    (change)="uploadFile($event.target.files)"
+                                                    (onFileDropped)="uploadFile($event)">
+                                                    <div class="uppy-Dashboard-innerWrap">
+                                                        <img class="imgsize" [src]="imgURL" />
+                                                    </div>
+                                                </div>
+
+                                                <input nbInput status="primary" hidden type="file" #fileInput
+                                                    (change)="uploadFile($event.target.files)" accept='image/*'>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                            <div class="cover-input">
+                                                <label>Name</label>
+                                                <input nbInput status="primary" type="text" nbInput fullWidth
+                                                    status="primary" formControlName="TeamName" class="form-control"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.TeamName.errors }" />
+                                                <div *ngIf="submitted && !!f.TeamName.errors" class="invalid-feedback">
+                                                    <div style="text-align: left" *ngIf="!!f.TeamName.errors.required">
+                                                        Name is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="cover-input">
+                                                <label>Team Level</label>
+                                                <input nbInput status="primary" type="text" nbInput fullWidth
+                                                    status="primary" formControlName="TeamLavel" class="form-control"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.TeamLavel.errors }" />
+                                                <div *ngIf="submitted && !!f.TeamLavel.errors" class="invalid-feedback">
+                                                    <div style="text-align: left" *ngIf="!!f.TeamLavel.errors.required">
+                                                        Team Level is required
+                                                    </div>
+                                                </div>
+                                            </div> -->
+
+                                            <div class="cover-form">
+                                                <label>Group</label>
+                                                <!-- <nb-select placeholder="------ Choose ------" fullWidth outline
+                                                    status="basic" formControlName="√">
+                                                    <nb-option value="0">No Group</nb-option>
+                                                </nb-select> -->
+                                                <ngx-select [allowClear]="true"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.TeamLavel.errors }"
+                                                    [items]="arrTeam" optionValueField="group_id"
+                                                    optionTextField="group_name" formControlName="TeamLavel"
+                                                    placeholder="------ Choose ------">
+                                                </ngx-select>
+                                                <div *ngIf="submitted && !!f.TeamLavel.errors" class="invalid-feedback">
+                                                    <div style="text-align: left" *ngIf="!!f.TeamLavel.errors.required">
+                                                        Group is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="cover-input">
+                                                <label>Commission (%)</label>
+                                                <input nbInput status="primary" type="text" nbInput fullWidth
+                                                    status="primary" formControlName="percent_commission"
+                                                    class="form-control"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.percent_commission.errors }" />
+                                                <div *ngIf="submitted && !!f.percent_commission.errors"
+                                                    class="invalid-feedback">
+                                                    <div style="text-align: left"
+                                                        *ngIf="!!f.percent_commission.errors.required">
+                                                        Commission is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="cover-input">
+                                                <label>Total Sales</label>
+                                                <input nbInput status="primary" type="text" fullWidth
+                                                    style="color: black;" formControlName="total_sales"
+                                                    class="form-control"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.total_sales.errors }" />
+                                                <div *ngIf="submitted && !!f.total_sales.errors"
+                                                    class="invalid-feedback">
+                                                    <div style="text-align: left"
+                                                        *ngIf="!!f.total_sales.errors.required">
+                                                        Total Sales is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="cover-input">
+                                                <label>Total User</label>
+                                                <input nbInput status="primary" type="text" fullWidth
+                                                    style="color: black;" formControlName="total_user"
+                                                    class="form-control"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.total_user.errors }" />
+                                                <div *ngIf="submitted && !!f.total_user.errors"
+                                                    class="invalid-feedback">
+                                                    <div style="text-align: left"
+                                                        *ngIf="!!f.total_user.errors.required">
+                                                        Total User is required
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                <project-footercomponent> </project-footercomponent>
+            </div>
+        </div>
+    </form>
+</div>

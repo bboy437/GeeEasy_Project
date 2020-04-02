@@ -1,0 +1,41 @@
+@import "../../../../../libs/theme-dealer/src/lib/styles/themes";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+.pages {
+    nb-card {
+        nb-card-body {
+            .body {
+                .cover {
+                    nb-icon {
+                        font-size: 4rem;
+                        margin-bottom: 0.5rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.nb-theme-default [nbButton].appearance-filled.status-primary {
+    background-color: #ff3d71;
+    border-color: #ff3d71;
+    color: #ffffff;
+}
+
+// nb-calendar{
+//     position: fixed;
+//     right: 15px;
+//     width: 13vw;
+// }
+
+.cover-number {
+    .number {
+        line-height: 1;
+        font-size: 40px;
+        font-weight: bold;
+        color: #3366ff;
+    }
+}
+
+@include nb-install-component() {}

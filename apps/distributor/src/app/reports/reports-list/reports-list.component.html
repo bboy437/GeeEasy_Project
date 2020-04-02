@@ -1,0 +1,57 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <nb-icon icon="message-square-outline"></nb-icon>
+                                <label>Report</label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-reveal-card>
+                <nb-card-front>
+                    <nb-card accent="success">
+                        <nb-card-header>Front Card Header</nb-card-header>
+                        <nb-card-body>
+                            A nebula is an interstellar cloud of dust, hydrogen,
+                            helium and other ionized gases.
+                            Originally, nebula was a name for
+                            any diffuse astronomical object,
+                            including galaxies beyond the Milky Way.
+                        </nb-card-body>
+                    </nb-card>
+                </nb-card-front>
+                <nb-card-back>
+                    <nb-card accent="primary">
+                        <nb-card-header>Back Card Header</nb-card-header>
+                        <nb-card-body>
+                            A nebula is an interstellar cloud of dust, hydrogen,
+                            helium and other ionized gases.
+                            Originally, nebula was a name for
+                            any diffuse astronomical object,
+                            including galaxies beyond the Milky Way.
+                        </nb-card-body>
+                    </nb-card>
+                </nb-card-back>
+            </nb-reveal-card>
+            <nb-card size="small">
+                <nb-list>
+                    <nb-list-item *ngFor="let user of users">
+                        <nb-user [name]="user.name" [title]="user.title">
+                        </nb-user>
+                    </nb-list-item>
+                </nb-list>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+          </div>
+    </div>
+</div>

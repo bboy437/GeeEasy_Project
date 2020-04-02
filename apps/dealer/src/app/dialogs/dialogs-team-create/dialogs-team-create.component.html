@@ -1,0 +1,157 @@
+<div class="pages">
+
+    <nb-card *ngIf="status == 'Group'" style="width: 380px">
+        <nb-card-header>
+            <div class="header">
+                <div class="row">
+                    <div class="col-auto mr-auto">
+                        <nb-icon class="icon-header" icon="people-outline"></nb-icon>
+                        <label *ngIf="RowID == 'new'">My Group<span class="p-0-12">/</span>New
+                            Group</label>
+                        <label *ngIf="RowID != 'new'">My Group<span class="p-0-12">/</span>Update</label>
+                    </div>
+                </div>
+
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-12" [nbSpinner]="loading" nbSpinnerStatus="primary">
+                        <div class="row">
+                            <div class="col-12" style="margin-bottom: 1rem;">
+                                <div class="cover-input">
+                                    <label>Name</label>
+                                    <input nbInput status="primary" type="text" nbInput fullWidth status="primary"
+                                        formControlName="TeamName" class="form-control"
+                                        [ngClass]="{ 'is-invalid': submitted && f.TeamName.errors }" />
+                                    <div *ngIf="submitted && !!f.TeamName.errors" class="invalid-feedback">
+                                        <div style="text-align: left" *ngIf="!!f.TeamName.errors.required">
+                                            Name is required
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12" style="text-align: center;margin-bottom: 1rem;">
+                                <div class="cover-input">
+                                    <label>Image</label>
+                                    <project-file-image theme="white" [image_url_array]="image.main_image.get"></project-file-image>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="row" style="text-align: center;">
+                <div class="col-md-12">
+                    <button style="width: 100px" *ngIf="RowID == 'new'" nbButton size="medium" status="danger"
+                        (click)="btnCancelClick()">
+                        Cancel
+                    </button>
+                    <button style="width: 100px" *ngIf="RowID != 'new'" nbButton size="medium" status="danger"
+                        (click)="btnBackClick()">
+                        Cancel
+                    </button>&nbsp;&nbsp;
+                    <button [nbSpinner]="image.update" nbSpinnerStatus="success" [disabled]="!Form.valid"
+                        style="width: 100px" *ngIf="RowID == 'new' && !loading" nbButton size="medium" status="success"
+                        (click)="btnSaveClick()">
+                        Save
+                    </button>
+                    <button [nbSpinner]="image.update" nbSpinnerStatus="success" [disabled]="!Form.valid"
+                        style="width: 100px" *ngIf="RowID != 'new' && !loading" nbButton size="medium" status="success"
+                        (click)="btnSaveClick()">
+                        Update
+                    </button>
+
+                </div>
+            </div>
+        </nb-card-body>
+    </nb-card>
+    <nb-card *ngIf="status == 'Team'" style="width: 380px">
+        <nb-card-header>
+            <div class="header">
+                <div class="row">
+                    <div class="col-auto mr-auto">
+                        <nb-icon class="icon-header" icon="people-outline"></nb-icon>
+                        <label *ngIf="RowID == 'new'">{{group_name}}<span class="p-0-12">/</span>New
+                            Team</label>
+                        <label *ngIf="RowID != 'new'">My Team<span class="p-0-12">/</span>Update</label>
+                    </div>
+                </div>
+
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-12" [nbSpinner]="loading" nbSpinnerStatus="primary">
+                        <div class="row">
+                            <div class="col-12" style="margin-bottom: 0.5rem;">
+                                <div class="row">
+                                    <div class="col-12" style="margin-bottom: 0.5rem;">
+                                        <div class="cover-input">
+                                            <label>Name</label>
+                                            <input nbInput status="primary" type="text" nbInput fullWidth
+                                                status="primary" formControlName="TeamName" class="form-control"
+                                                [ngClass]="{ 'is-invalid': submitted && f.TeamName.errors }" />
+                                            <div *ngIf="submitted && !!f.TeamName.errors" class="invalid-feedback">
+                                                <div style="text-align: left" *ngIf="!!f.TeamName.errors.required">
+                                                    Name is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12" style="margin-bottom: 0.5rem;">
+                                        <div class="cover-input">
+                                            <label>Commission (%)</label>
+                                            <input nbInput status="primary" type="text" nbInput fullWidth
+                                                status="primary" formControlName="percent_commission"
+                                                class="form-control"
+                                                [ngClass]="{ 'is-invalid': submitted && f.percent_commission.errors }" />
+                                            <div *ngIf="submitted && !!f.percent_commission.errors"
+                                                class="invalid-feedback">
+                                                <div style="text-align: left"
+                                                    *ngIf="!!f.percent_commission.errors.required">
+                                                    Commission is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12" style="text-align: center;margin-bottom: 1rem;">
+                                <div class="cover-input">
+                                    <label>Image</label>
+                                    <project-file-image theme="white" [image_url_array]="image.main_image.get"></project-file-image>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="row" style="text-align: center;">
+                <div class="col-md-12">
+                    <button style="width: 100px" *ngIf="RowID == 'new'" nbButton size="medium" status="danger"
+                        (click)="btnCancelClick()">
+                        Cancel
+                    </button>
+                    <button style="width: 100px" *ngIf="RowID != 'new'" nbButton size="medium" status="danger"
+                        (click)="btnBackClick()">
+                        Cancel
+                    </button>&nbsp;&nbsp;
+                    <button [nbSpinner]="image.update" nbSpinnerStatus="success" [disabled]="!Form.valid"
+                        style="width: 100px" *ngIf="RowID == 'new' && !loading" nbButton size="medium" status="success"
+                        (click)="btnSaveClick()">
+                        Save
+                    </button>
+                    <button [nbSpinner]="image.update" nbSpinnerStatus="success" [disabled]="!Form.valid"
+                        style="width: 100px" *ngIf="RowID != 'new' && !loading" nbButton size="medium" status="success"
+                        (click)="btnSaveClick()">
+                        Update
+                    </button>
+
+                </div>
+            </div>
+        </nb-card-body>
+    </nb-card>
+</div>

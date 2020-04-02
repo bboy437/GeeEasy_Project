@@ -1,0 +1,28 @@
+
+@import "../../../../../../../libs/theme-supplier/src/lib/styles/themes";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+@include nb-install-component() {}
+
+.table th,
+.table td {
+  padding: 0.5rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+.summaryHeader {
+  padding-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.summaryRow {
+  font-size: 18px;
+  padding-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: bolder;
+  text-align: right;
+}
+
+  

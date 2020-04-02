@@ -1,0 +1,87 @@
+<div class="cover-drop" [ngClass]="{'white' : theme == 'white','dark': theme == 'dark'}">
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-3">
+                    <div class="padding-0-1-1-1-rem">
+                        <div class="cover-drop-files-image">
+                            <div class="drop-files-image">
+                                <label>
+                                    Drop files here , paste or <span>browse</span>
+                                </label>
+                                <input type="file" id="files" multiple (change)="upload().uploadFile($event)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-9">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row" cdkDropList (cdkDropListDropped)="drop($event)">
+                                <div class="col-12" *ngFor="let item of image_url_array; let i = index" cdkDrag>
+                                    <div class="cover-card" [ngClass]="{'white' : theme == 'white','dark': theme == 'dark'}">
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <div class="cover-background-image">
+                                                    <div class="background-image" [ngStyle]="{'background-image': 'url('+item.image_url+')'}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="cover-name">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <div class="name">
+                                                                        {{item.image_index}} - {{item.image_name}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="cover-input title">
+                                                            <label>Title : </label>
+                                                            <input libOnlyCharacterDefault nbInput fullWidth status="primary"
+                                                            [ngClass]="{ 'is-invalid': item.title == ''}"
+                                                            type="text" [(ngModel)]="item.title"/>
+                                                            <div class="required" *ngIf="item.title == ''">
+                                                                Title is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-5"></div>
+                                            <div class="col-1">
+                                                <div class="cover-close" (click)="upload().removeIndex(i)">
+                                                    <nb-icon icon="close-outline"></nb-icon>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <img *cdkDragPreview width="300" [src]="item.image_url" [alt]="item.image_name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12" *ngIf="image_url_array.length === 0">
+                            <div class="cover-empty">
+                                <div class="cover-img">
+                                    <img src="assets/images/loading.png" alt="empty"/>
+                                </div>
+                                <div class="cover-label">
+                                    <label>
+                                        No data.
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-12">
+                            {{getMappedUrls() | json}}
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

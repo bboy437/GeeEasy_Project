@@ -1,0 +1,23 @@
+<div class="cover-drop">
+    <div class="row">
+        <div class="col-12">
+            <div class="padding-1-rem">
+                <div class="cover-drop-files-image" [ngClass]="{'active' : image_url_array.length > 0,'white' : theme == 'white','dark': theme == 'dark'}">
+                    <div class="drop-files-image">
+                        <div class="cover-close" *ngIf="image_url_array.length > 0" (click)="upload().removeIndex(0)">
+                            <nb-icon icon="close-outline"></nb-icon>
+                        </div>
+                        <div class="cover-background-image" *ngIf="image_url_array.length > 0">
+                            <div class="background-image height-{{height}}"
+                                [ngStyle]="{'background-image': 'url('+ image_url_array[0].image_url+')'}"></div>
+                        </div>
+                        <label class="height-{{height}}" *ngIf="image_url_array.length === 0">
+                            Drop files here , paste or <span>browse</span>
+                        </label>
+                        <input type="file" id="files" multiple (change)="upload().uploadFile($event)" accept="image/*">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+<nb-card style="padding: 0.5rem;">
+    <nb-card-header class="dialogs">
+        <div class="header">
+            <nb-icon icon="alert-circle-outline"></nb-icon>
+            <label>Confirm Cancellation</label>
+        </div>
+    </nb-card-header>
+    <nb-card-body style="padding: 1rem;">
+        <div class="row">
+            <!-- <div class="col-auto">
+                <img src="https://img.icons8.com/color/96/000000/cancel--v1.png" width="50">
+            </div> -->
+            <div class="col-12" style="padding-top: 1rem;">
+                <label style="font-size: 16px;">Are you sure you want to Cancel ?</label>
+            </div>
+        </div><br>
+        <div class="row" style="text-align: center;">
+            <div class="col-md-12">
+                <button nbButton style="width: 100px" status="gray" (click)="btnCancelClick()">Back</button> &nbsp;&nbsp;
+                <button nbButton style="width: 100px" status="danger" (click)="btnOkClick()">Cancel</button>
+            </div>
+        </div><br>
+    </nb-card-body>
+</nb-card>

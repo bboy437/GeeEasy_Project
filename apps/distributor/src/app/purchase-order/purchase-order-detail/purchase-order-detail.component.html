@@ -1,0 +1,298 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <nb-icon icon="browser-outline"></nb-icon>
+                                <label>My Purchase<span class="p-0-12">/</span>Detail </label>
+                            </div>
+                            <div class="col-auto">
+
+                                <!-- [disabled]="button_delivered == 0 || status == 'po'" -->
+                                <button [disabled]="!isStatus" style="float: right;margin: 3px 0px 3px 1rem;" nbButton
+                                    size="medium" (click)="checkIn()">
+                                    Check In
+                                </button>
+                                <button [disabled]="!isReorder" style="float: right;margin: 3px 0px 3px 1rem;" nbButton
+                                    size="medium" (click)="btnReorder()">
+                                    Reorder
+                                </button>
+                                <button style="float: right;margin: 3px 0px 3px 1rem;" nbButton size="medium"
+                                    status="danger" (click)="btnCancel()">
+                                    Back
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="margin-bottom: 0.1rem;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label>PO No. {{arrPurchase.purchase_order_number}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="primary">
+            <div class="row">
+                <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <nb-card>
+                                <nb-card-body>
+                                    <div class="body">
+                                        <div class="row">
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                        <label> Supplier Name : </label>
+                                                    </div>
+                                                    <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                        <div class="cover-input">
+                                                            <input nbInput status="primary" type="text" status="basic"
+                                                                nbInput disabled fullWidth
+                                                                [(ngModel)]="strSupplierName" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                        <label> PO No. : </label>
+                                                    </div>
+                                                    <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                        <div class="cover-input">
+                                                            <input nbInput status="primary" type="text" status="basic"
+                                                                nbInput disabled fullWidth
+                                                                [(ngModel)]="arrPurchase.purchase_order_number" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input-icon">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Delivery Date : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <label class="status primary"
+                                                                *ngIf="delivery_date > 0">{{arrPurchase.delivery_date * 1000 | date :'EEE dd/MM/yyyy'}}</label>
+                                                            <label class="status orange"
+                                                                *ngIf="delivery_date == 0">{{arrPurchase.delivery_date * 1000  | date :'EEE dd/MM/yyyy'}}</label>
+                                                            <label class="status red"
+                                                                *ngIf="delivery_date < 0">{{arrPurchase.delivery_date * 1000  | date :'EEE dd/MM/yyyy'}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Delivery Location : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <textarea style="min-height: 90px;" type="text"
+                                                                status="basic" nbInput fullWidth disabled
+                                                                [(ngModel)]="arrPurchase.delivery_location"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Billing Name : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <input nbInput status="primary" type="text" status="basic"
+                                                                nbInput fullWidth disabled
+                                                                [(ngModel)]="arrPurchase.billing_name" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Billing Address : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <textarea style="min-height: 90px;" type="text"
+                                                                status="basic" nbInput fullWidth disabled
+                                                                [(ngModel)]="arrPurchase.billing_address"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Billing Payment Term : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <input nbInput status="primary" type="text" status="basic"
+                                                                nbInput fullWidth disabled
+                                                                [(ngModel)]="arrPurchase.billing_payment_term" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Billing Payment Due Date : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <label class="status primary"
+                                                                *ngIf="dueDateStatus > 0">{{dueDate  | date :'EEE dd/MM/yyyy'}}</label>
+                                                            <label class="status orange"
+                                                                *ngIf="dueDateStatus == 0">{{dueDate  | date :'EEE dd/MM/yyyy'}}</label>
+                                                            <label class="status red"
+                                                                *ngIf="dueDateStatus < 0">{{dueDate  | date :'EEE dd/MM/yyyy'}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Purchase Order Note : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <input nbInput status="primary" type="text" status="basic"
+                                                                nbInput fullWidth disabled
+                                                                [(ngModel)]="arrPurchase.purchase_order_note" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Status : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <label
+                                                                [ngClass]="[arrPurchase.purchase_order_reply_id === 0 ? 'status primary' : 
+                                                            (arrPurchase.purchase_order_reply_id === 1 ? 'status success' : 
+                                                            (arrPurchase.purchase_order_reply_id === 2 ? 'status waiting' : 
+                                                            (arrPurchase.purchase_order_reply_id === 3 ? 'status red' : '' )))]">{{arrPurchase.status}}
+                                                            </label>
+                                                            <!-- <nb-badge text=" {{arrPurchase.status}}" status="warning">
+                                                                {{arrPurchase.status}}
+                                                            </nb-badge> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Message : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <label>{{arrPurchase.purchase_order_reply_msg}} </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <nb-card>
+                                <nb-card-body>
+                                    <project-comp-summary *ngIf="arrPurchaseOrderSummary"
+                                        [data]="arrPurchaseOrderSummary" [status]="'PO'">
+                                    </project-comp-summary>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <nb-card>
+                                <nb-card-body>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="left">
+                                                    Document
+                                                </th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="cursor: pointer;">
+                                            <tr *ngFor="let doc of arrDoc">
+                                                <td class="left">
+                                                    <label>{{doc.form_type_text}}</label>
+                                                </td>
+                                                <td>
+                                                    <nb-icon (click)="btnDocClick(doc.form_type_type_id)"
+                                                        icon="printer-outline"></nb-icon>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="!loading">
+                            <nb-card>
+                                <nb-card-body>
+                                    <project-comp-payment [data]="arrpurchase_order_paid_row"
+                                        [payment_total]="payment_total" [over]="over"></project-comp-payment>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="!loading">
+                    <nb-card>
+                        <nb-card-body>
+                            <project-comp-products *ngIf="arrPurchaseProduct" [arrProduct]="arrPurchaseProduct"
+                                [arrSummary]="arrPurchaseOrderSummary" [status]="'PO'">
+                            </project-comp-products>
+                        </nb-card-body>
+                    </nb-card>
+                </div>
+                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                    <div class="row">
+                        <div class="col-12 col-md-4 col-lg-4 col-xl-4" *ngIf="arrPurchase.purchase_order_id">
+                            <project-order-messages [purchaseID]="arrPurchase.purchase_order_id">
+                            </project-order-messages>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

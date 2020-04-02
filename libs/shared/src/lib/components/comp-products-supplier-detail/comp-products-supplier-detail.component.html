@@ -1,0 +1,83 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <table class="table no-hover">
+                <thead>
+                    <tr>
+                        <th style="text-align: left; width: 100px;">Image</th>
+                        <th style="text-align: left; min-width: 400px;">Product Name</th>
+                        <th style="text-align: left; min-width: 100px;"> Product SKU</th>
+                        <th style="text-align: right; min-width: 200px;">Product Price</th>
+                        <th style="text-align: right; min-width: 100px;"></th>
+                        <th style="text-align: center; min-width: 300px;">Product Wholesale</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let Product of data">
+                        <td style="text-align: left">
+                            <div class="cover-background-image">
+                                <div class="background-image padding-width-100px-height-100px"
+                                    [ngClass]="{'active' : Product.product_image_url === '-' || Product.product_image_url === ''}"
+                                    [ngStyle]="{'background-image': 'url('+Product.product_image_url+')'}">
+                                </div>
+                            </div>
+                        </td>
+                        <td style="text-align: left">
+                            <label>{{Product.product_name }}</label>
+                        </td>
+                        <td style="text-align: left">
+                            <label class="sku">{{Product.product_sku }}</label>
+                        </td>
+                        <td style="text-align: right">
+                            <label class="cover price">
+                                {{Product.product_price | number : '1.2-2' }}
+                            </label>
+                            <label class="cover thb">THB</label>
+                        </td>
+                        <td></td>
+                        <td>
+                            <div class="row">
+                                <div class="col-12" style="padding: 0rem; ">
+                                    <table class="table no-hover" style="border: 1px solid #dee2e6">
+                                        <thead>
+                                            <tr>
+                                                <th
+                                                    style="text-align: center; width: 40%; border-right: 1px solid #dee2e6;">
+                                                    Qty Minimum
+                                                </th>
+                                                <th style="text-align: right">
+                                                    Wholesale Price
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let wholesale_array of Product.product_wholesale_array">
+                                                <td style="border-right: 1px solid #dee2e6;">
+                                                    <a class="cover qty">
+                                                        {{wholesale_array.qty_minimum | number}}
+                                                    </a>
+                                                </td>
+                                                <td style="text-align: right">
+                                                    <a class="cover price">
+                                                        {{wholesale_array.product_price  | number : '1.2-2'}}
+                                                    </a>
+                                                    <a class="cover thb">THB</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="data.length == 0" style="height:300px; background-color: white;">
+                        <td colspan="5" style="padding-top: 50px;">
+                            <img src="assets/images/loading.png" width="250"><br><br>
+                            <label>No data.</label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

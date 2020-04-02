@@ -1,0 +1,24 @@
+<div class="pages">
+    <nb-card>
+        <nb-card-header>
+            <div class="header">
+                <nb-icon icon="alert-circle-outline"></nb-icon>
+                <label>Confirm Cancellation</label>
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <div class="row">
+                <div class="col-12" style="text-align: center;">
+                    <label style="font-size: 16px;">Are you sure you want to Cancel ?</label>
+                </div>
+            </div><br>
+            <div class="row" style="text-align: center;">
+                <div class="col-md-12">
+                    <button nbButton style="width: 100px" status="gray"
+                        (click)="btnCancelClick()">Back</button>&nbsp;&nbsp;
+                    <button nbButton style="width: 100px" status="danger" (click)="btnOkClick()">Cancel</button>
+                </div>
+            </div><br>
+        </nb-card-body>
+    </nb-card>
+</div>

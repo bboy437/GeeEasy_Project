@@ -1,0 +1,93 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="row">
+                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                    <div class="row"
+                        style="border-bottom: 2px solid #dee2e6; border-top: 1px solid #dee2e6; padding-top: 0.8rem; padding-bottom: 0.2rem; font-size: 14px; font-weight: bold; margin: -0.10px;">
+
+                        <div class="col-auto mr-auto">
+                            <nb-icon (click)="onPressBack()" style="float: left; cursor: pointer;"
+                                icon="arrow-ios-back-outline">
+                            </nb-icon>
+                        </div>
+                        <div class="col" style="text-align: center;">
+                            <label> {{lastName[this.lastCount]}}</label>
+                        </div>
+                        <div class="col-auto">
+                            <nb-icon (click)="btnReload()" style="float: right; cursor: pointer;"
+                                icon="refresh-outline">
+                            </nb-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                    <div class="cover-form icon" style="padding-top: 1rem;">
+                        <nb-icon icon="search-outline"></nb-icon>
+                        <nb-icon *ngIf="strFillter" (click)="refreshCate()"
+                            style="float: right;left: 0; cursor: pointer;" icon="close-outline">
+                        </nb-icon>
+                        <input libOnlyCharacterDefault status="primary" type="text" nbInput fullWidth status="primary"
+                            placeholder="Search for category " [(ngModel)]="strFillter"
+                            [ngModelOptions]="{standalone: true}" (keyup)="filterCategoryName($event.target.value)" />
+                    </div>
+                </div>
+                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading"
+                    nbSpinnerStatus="{{strLoading}}">
+                    <nb-card >
+                        <nb-card-body>
+                            <table class="table {{status}}">
+                                <tbody>
+                                    <tr *ngIf="map=== 'View All'" [ngClass]="{'active': numID == 0}"
+                                        (click)="btnReload()">
+                                        <td style="width: 100px;">
+                                            <div class="cover-background-image">
+                                                <div class="background-image padding-width-100px-height-100px"
+                                                    style="background-image: url(assets/images/img_cate.png);">
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="left">
+                                            View All
+                                            <nb-icon style="float: right; cursor: pointer;"
+                                                icon="arrow-ios-forward-outline">
+                                            </nb-icon>
+                                        </td>
+                                    </tr>
+
+                                    <tr *ngFor="let c  of thisArray"
+                                        [ngClass]="{'active': c.product_category_id == numID}"
+                                        (click)="get_category_view(c, c.product_category_name)">
+                                        <td style="width: 100px;">
+                                            <div class="cover-background-image" style="width: 100px; height: 100px;">
+                                                <div class="background-image padding-width-100px-height-100px"
+                                                    [ngClass]="{'active' : c.product_category_image_url === '-' || c.product_category_image_url === ''}"
+                                                    [ngStyle]="{'background-image': 'url('+c.product_category_image_url+')'}">
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="left">
+                                            {{c.product_category_name}}
+                                            <nb-icon *ngIf="c.product_category_total_child > 0"
+                                                style="float: right; cursor: pointer;" icon="arrow-ios-forward-outline">
+                                            </nb-icon>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="thisArray.length == 0" style="height:300px; background-color: #ffffff;">
+                                        <td colspan="2" style="padding-top: 50px;">
+                                            <img src="assets/images/loading.png" width="250"><br><br>
+                                            <label>No data.</label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </nb-card-body>
+                    </nb-card>
+                </div>
+            </div>
+            <!-- <div style="height: 100px;background-color: #ffffff;" [nbSpinner]="loading" nbSpinnerStatus="primary">
+            </div> -->
+        </div>
+
+    </div>
+</div>

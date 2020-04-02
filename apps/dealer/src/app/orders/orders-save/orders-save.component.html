@@ -1,0 +1,348 @@
+<div class="pages">
+    <form [formGroup]="orderForm">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                <nb-card style="padding: 0;">
+                    <nb-card-header>
+                        <div class="header">
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <nb-icon class="icon-header" icon="shuffle-2-outline"></nb-icon>
+                                    <label>My Order<span class="p-0-12">/</span>New Order</label>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <button style="float: right;margin: 3px 0px 3px 1rem;" nbButton type="button"
+                                        size="medium" status="success" (click)="btnSaveClick()">
+                                        Save
+                                    </button>
+                                    <button style="float: right;margin: 3px 0px 3px 1rem;" nbButton type="button"
+                                        size="medium" status="gray" (click)="btnClear()">
+                                        Clear
+                                    </button>
+                                    <button style="float: right;margin: 3px 0px 3px 1rem;" nbButton type="button"
+                                        size="medium" status="danger" (click)="btnCancel()">
+                                        Cancel
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </nb-card-header>
+                </nb-card>
+            </div>
+            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                <nb-card>
+                    <nb-card-body>
+                        <div class="body">
+                            <div class="row">
+                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                            <div class="row">
+                                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>Distributor Name</label>
+                                                        <ngx-select [allowClear]="true" libOnlyCharacterDefault
+                                                            [ngClass]="{ 'is-invalid': submitted && f.DistributorName.errors }"
+                                                            [items]="arrDistributor" optionValueField="distributor_id"
+                                                            optionTextField="distributor_name"
+                                                            formControlName="DistributorName"
+                                                            placeholder="Search for name"
+                                                            (selectionChanges)="btnIDClick($event)">
+                                                        </ngx-select>
+                                                        <div *ngIf="submitted && !!f.DistributorName.errors">
+                                                            <div class="required"
+                                                                *ngIf="!!f.DistributorName.errors.required">
+                                                                Distributor Name is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <div class="row">
+                                                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                                    <div class="cover-input">
+                                                        <label>Billing Name</label>
+                                                        <input status="primary" type="text" nbInput fullWidth
+                                                            status="basic" formControlName="BillingName"
+                                                            class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.BillingName.errors }" />
+                                                        <div *ngIf="submitted && !!f.BillingName.errors">
+                                                            <div class="required"
+                                                                *ngIf="!!f.BillingName.errors.required">
+                                                                Billing Name is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                                    <div class="cover-input">
+                                                        <label>Billing Address</label>
+                                                        <textarea rows="3" status="primary" nbInput fullWidth
+                                                            status="basic" type="text" class="form-control"
+                                                            formControlName="BillingAddress"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.BillingAddress.errors }">
+                                                    </textarea>
+                                                        <div *ngIf="submitted && !!f.BillingAddress.errors">
+                                                            <div class="required"
+                                                                *ngIf="!!f.BillingAddress.errors.required">
+                                                                Billing Address is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                <nb-card>
+                    <nb-card-body style="padding-bottom: 5rem;">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+
+                                <nb-tabset (changeTab)="onChangeTab($event.tabTitle)">
+                                    <nb-tab tabTitle="Product Name">
+                                    </nb-tab>
+                                </nb-tabset>
+
+                                <table class="table hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="left">Image</th>
+                                            <th style="width: 40%;" class="left">Product Name</th>
+                                            <th style="text-align: right;">Quantity</th>
+                                            <th style="text-align: right;">Unit Price</th>
+                                            <th style="text-align: right; width: 10%;">Total Price</th>
+                                            <th style="text-align: right;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let products of arrobjRowProduct; let i=index">
+                                            <td class="left">
+                                                <div class="cover-background-image">
+                                                    <div class="background-image padding-width-100px-height-100px"
+                                                        [ngClass]="{'active' : products.product_image_url === '-' || products.product_image_url === ''}"
+                                                        [ngStyle]="{'background-image': 'url('+products.product_image_url+')'}">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="left">
+                                                <label>{{products.product_name}}</label><br>
+                                                <label class="sku">{{products.product_sku}}</label>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <input style="text-align: right;" type="text" libOnlyCharacterDefault
+                                                    libOnlyCharacternumber mask="separator.0" thousandSeparator=","
+                                                    onKeyPress="if(this.value.length==7) return false;" nbInput
+                                                    fullWidth status="basic" [(ngModel)]="products.product_qty"
+                                                    [ngModelOptions]="{standalone: true}"
+                                                    (keyup)="onKeyQTY($event.target.value, products)">
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <input style="text-align: right;" type="text" libOnlyCharacterDefault
+                                                    libOnlyCharacternumber mask="separator.2" thousandSeparator=","
+                                                    nbInput status="basic" fullWidth class="form-control"
+                                                    [ngModelOptions]="{standalone: true}"
+                                                    (ngModelChange)="products.product_price=$event"
+                                                    [ngModel]="products.product_price  | number:'1.2-2' "
+                                                    (keyup)="onKeyPrice($event.target.value, products)" />
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <label style="font-size: 15px;padding-top: 0.5rem;font-weight: 600;">
+                                                    {{products.product_totalplice |  number : '1.2-2'}}
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div style="cursor: pointer; padding-top: 0.5rem;">
+                                                    <nb-icon icon="close-outline" (click)="btnDeleteProduct(i)">
+                                                    </nb-icon>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div *ngIf="arrobjRowProduct.length == 0" class="list" style="margin: 2rem 0;">
+                                    <div class="row">
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="text-align: center;">
+                                            <img src="assets/images/loading.png" width="300">
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                            style="text-align: center; padding-top: 1rem;">
+                                            <label style="color: #dc3545;">Please select Product </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="strTab == 'Product Name'" class="row" style="padding: 0.5rem;">
+                                    <div class="col-sm-4" style="padding : 0;">
+                                        <ng-template #rt let-r="result" let-t="term">
+                                            <div class="row">
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="padding-right: 0.5rem;">
+                                                                <div class="cover-background-image">
+                                                                    <div class="background-image padding-width-100px-height-100px"
+                                                                        [ngClass]="{'active' : r.product_image_url === '-' || r.product_image_url === ''}"
+                                                                        [ngStyle]="{'background-image': 'url('+r.product_image_url+')'}">
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="left">
+                                                                <ngb-highlight [result]="r.product_title" [term]="t">
+                                                                </ngb-highlight><br>
+                                                                <ngb-highlight [result]="r.product_sku" [term]="t">
+                                                                </ngb-highlight>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </ng-template>
+                                        <div class="cover-form icon">
+                                            <nb-icon icon="search-outline"></nb-icon>
+                                            <nb-icon *ngIf="selectedValue" (click)="btnRefresh()"
+                                                style="float: right;left: 0; cursor: pointer;" icon="close-outline">
+                                            </nb-icon>
+                                            <input libOnlyCharacterDefault nbInput fullWidth status="basic"
+                                                (focus)="onFocus($event)" id="typeahead-template" type="text"
+                                                class="form-control" [(ngModel)]="selectedValue"
+                                                [ngModelOptions]="{standalone: true}" placeholder="Search for product"
+                                                [ngbTypeahead]="search" [resultTemplate]="rt"
+                                                [inputFormatter]="formatter" />
+                                        </div>
+                                    </div>
+                                    <div class="col-12" style="padding: 0;">
+                                        <div style="border-bottom: 2px solid #dee2e6;width: 100%;padding-top: 0.5rem;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row show-grid">
+                                    <div class="col-lg-12" style="padding: 0.5rem;">
+                                        <div class="row" style="padding-top: 4rem;">
+                                            <div class="col-8"></div>
+                                            <div class="col-4">
+                                                <table class="table table-striped  text-right">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <strong style="font-size: 18px;">
+                                                                    Total
+                                                                </strong>
+                                                            </td>
+                                                            <td>
+                                                                <strong style="font-size: 18px;">
+                                                                    {{sum |  number : '1.2-2'}} {{'' + 'THB'}}
+                                                                </strong>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                <nb-card>
+                    <nb-card-body>
+                        <div class="body">
+                            <div class="row">
+                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="row">
+
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <div class="row">
+                                                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                                    <div class="cover-input">
+                                                        <label>Delivery Date</label>
+                                                        <div class="cover-input-icon">
+                                                            <div class="col"
+                                                                style="padding-right: 0rem; padding-left: 0rem;">
+                                                                <nb-icon style="left: 1;" (click)="dp.show()"
+                                                                    icon="calendar-outline"></nb-icon>
+                                                                <input status="primary" nbInput fullWidth status="basic"
+                                                                    type="text" placeholder="dd-MM-yyyy"
+                                                                    formControlName="deliveryDate" class="form-control"
+                                                                    [ngClass]="{ 'is-invalid': submitted && f.deliveryDate.errors }"
+                                                                    bsDatepicker #dp="bsDatepicker"
+                                                                    [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-red', showWeekNumbers:false  }"
+                                                                    [minDate]="minDate" [maxDate]="maxDate"
+                                                                    (ngModelChange)="updateMyDate($event)">
+                                                                <div *ngIf="submitted && !!f.deliveryDate.errors">
+                                                                    <div class="required"
+                                                                        *ngIf="!!f.deliveryDate.errors.required">
+                                                                        Delivery Date is required
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                                    <div class="cover-input">
+                                                        <label>Billing Payment Term (Day)</label>
+                                                        <ngx-select [allowClear]="true" libOnlyCharacterDefault
+                                                            [ngClass]="{ 'is-invalid': submitted && f.BillingTerm.errors }"
+                                                            [items]="payment" formControlName="BillingTerm"
+                                                            placeholder="Day">
+                                                        </ngx-select>
+                                                        <div *ngIf="submitted && !!f.BillingTerm.errors">
+                                                            <div class="required"
+                                                                *ngIf="!!f.BillingTerm.errors.required">
+                                                                Billing Name is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                            <div class="row">
+                                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>Note</label>
+                                                        <textarea type="text" nbInput fullWidth status="basic"
+                                                            class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.Note.errors }"
+                                                            formControlName="Note"> </textarea>
+                                                        <div *ngIf="submitted && !!f.Note.errors">
+                                                            <div class="required" *ngIf="!!f.Note.errors.required">
+                                                                Note is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+
+            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                <project-footercomponent> </project-footercomponent>
+            </div>
+        </div>
+    </form>
+</div>

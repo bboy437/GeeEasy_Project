@@ -1,0 +1,165 @@
+<div class="pages">
+    <nb-card>
+        <nb-card-body style="padding: 1rem; min-height: calc(100vh - 430px);">
+            <div class="header">
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="row">
+                            <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                                <div class="cover-form icon">
+                                    <nb-icon style="right: 0px;" icon="search-outline"></nb-icon>
+                                    <nb-icon *ngIf="service.searchTerm" (click)="btnRefresh()"
+                                        style="float: right;left: 0; cursor: pointer;" icon="close-outline">
+                                    </nb-icon>
+                                    <input libOnlyCharacterDefault nbInput status="primary" type="text" nbInput
+                                        fullWidth status="basic" placeholder="Search for name enter"
+                                        [(ngModel)]="service.searchTerm" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="body">
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                        <div *ngIf="!isReload">
+                            <table class="table hover" style="width: 100%;"
+                                *ngIf="arrFarvorite$ | async as arrFarvorite ; else loading">
+                                <thead>
+                                    <tr>
+
+                                        <th class="left">Images</th>
+                                        <th class="left" scope="col" sortable="Status" (sort)="onSort($event)">Product
+                                            Name
+                                        </th>
+                                        <th class="left" scope="col" sortable="Order" (sort)="onSort($event)">
+                                            Product SKU</th>
+                                        <th class="right" scope="col" sortable="Supplier" (sort)="onSort($event)">
+                                            Product Price</th>
+                                        <th style="cursor: pointer;" (click)="btnReload()">
+                                            <nb-icon icon="refresh-outline"></nb-icon>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody style="cursor: pointer;">
+                                    <tr *ngFor="let products of arrFarvorite">
+                                        <td style="text-align: center">
+                                            <div class="cover-background-image">
+                                                <div class="background-image padding-width-100px-height-100px"
+                                                    [ngClass]="{'active' : products.product_image_url === '-' || products.product_image_url === ''}"
+                                                    [ngStyle]="{'background-image': 'url('+products.product_image_url+')'}">
+                                                </div>
+                                            </div>
+                                        <td class="left">
+                                            <ngb-highlight [result]="products.product_title"
+                                                [term]="service.searchTerm">
+                                            </ngb-highlight>
+
+                                        </td>
+                                        <td class="left">
+                                            <ngb-highlight class="sku" [result]="products.product_sku "
+                                                [term]="service.searchTerm">
+                                            </ngb-highlight>
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <ngb-highlight class="cover price"
+                                                [result]="products.product_price | number : '1.2-2'"
+                                                [term]="service.searchTerm">
+                                            </ngb-highlight>
+                                            <a class="cover thb">THB</a>
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <div (click)="unFarvorite(products.product_id); $event.stopPropagation()">
+                                                <nb-icon style="color: red;" icon="heart-outline"></nb-icon>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="arrFarvorite.length == 0" style="height:300px; background-color: white;">
+                                        <td colspan="5" style="padding-top: 50px;">
+                                            <img src="assets/images/loading.png" width="300"><br><br>
+                                            <label>No data.</label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <ng-template #loading>
+                                <table class="table hover" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th class="left">Images</th>
+                                            <th class="left" scope="col" sortable="Status" (sort)="onSort($event)">
+                                                Product
+                                                Name
+                                            </th>
+                                            <th class="left" scope="col" sortable="Order" (sort)="onSort($event)">
+                                                Product SKU</th>
+                                            <th class="right" scope="col" sortable="Supplier" (sort)="onSort($event)">
+                                                Product Price</th>
+                                            <th style="cursor: pointer;" (click)="btnRefresh()">
+                                                <nb-icon icon="refresh-outline"></nb-icon>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="height:300px; background-color: white;">
+                                            <td colspan="5" style="padding-top: 50px;">
+                                                <div style="height: 100px;background-color: white;"
+                                                    [nbSpinner]="loading" nbSpinnerStatus="primary">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </ng-template>
+                        </div>
+                        <div class="cover-table" *ngIf="isReload">
+                            <table class="table hover" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th class="left">Images</th>
+                                        <th class="left" scope="col" sortable="Status" (sort)="onSort($event)">Product
+                                            Name
+                                        </th>
+                                        <th class="left" scope="col" sortable="Order" (sort)="onSort($event)">
+                                            Product SKU</th>
+                                        <th class="right" scope="col" sortable="Supplier" (sort)="onSort($event)">
+                                            Product Price</th>
+                                        <th style="cursor: pointer;" (click)="btnRefresh()">
+                                            <nb-icon icon="refresh-outline"></nb-icon>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="height:300px; background-color: white;">
+                                        <td colspan="5" style="padding-top: 50px;">
+                                            <div style="height: 100px;background-color: white;" [nbSpinner]="isReload"
+                                                nbSpinnerStatus="primary">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nb-card-body>
+        <nb-card-footer>
+            <div *ngIf="!isReload && !loading" class="col-12 col-md-12 col-lg-12 col-xl-12">
+                <div class="d-flex justify-content-between p-2">
+                    <ngb-pagination [collectionSize]="total$ | async" [(page)]="service.page"
+                        [pageSize]="service.pageSize">
+                    </ngb-pagination>
+
+                    <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
+                        <option [ngValue]="10">10 items per page</option>
+                        <option [ngValue]="20">20 items per page</option>
+                        <option [ngValue]="50">50 items per page</option>
+                    </select>
+                </div>
+            </div>
+        </nb-card-footer>
+    </nb-card>
+</div>

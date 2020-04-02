@@ -1,0 +1,31 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="primary">
+  <nb-card-body>
+    <div class="container">
+      <div class="form-group">
+        <label>Address</label>
+        <input libOnlyCharacterDefault nbInput status="primary" type="text" class="form-control" (keyup)="onKey($event)"
+          placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text"
+          #search>
+      </div>
+      <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+        <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+          (dragEnd)="markerDragEnd($event)"></agm-marker>
+      </agm-map>
+      <img width="30" class="icon-map" src="assets/icon/icon-map.png" (dragEnd)="markerDragEnd($event)"
+        (click)="getCurrent(latitude, longitude)">
+      <label style="font-size: 16px">Address: {{address}}</label>
+    </div>
+
+
+    <div class="row show-grid" style="text-align: center">
+      <div class="col-md-12">
+        <button nbButton style="width: 100px" status="danger" (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+        <button nbButton style="width: 100px" status="success" (click)="btnSaveClick()">Add Address</button>
+
+      </div>
+    </div>
+
+
+
+  </nb-card-body>
+</nb-card>

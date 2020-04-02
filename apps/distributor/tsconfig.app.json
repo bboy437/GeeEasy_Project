@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "types": [
+      "jasmine",
+      "node",
+      "googlemaps"
+    ]
+  },
+  "include": [
+    "**/*.ts", 
+    "../node_modules/@nebular/**/*.ts"
+  ],
+  "exclude": [
+    "src/test-setup.ts", 
+    "**/*.spec.ts",    
+    "../node_modules/@nebular/**/*.spec.ts"]
+}

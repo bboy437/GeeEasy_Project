@@ -1,0 +1,292 @@
+<div class="cover-pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card class="box-shadow-unset margin-0">
+                <nb-card-header class="border-bottom-0 padding-auto-0">
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <div class="display_table height_48px">
+                                    <div class="display_table_cell">
+                                        <label>
+                                            Verified Distributor
+                                            <span class="p-0-12">/</span>list
+                                            <span *ngIf="id != '' && id != undefined" class="p-0-12">/</span>
+                                            {{
+                                                (id != '' && id != undefined)
+                                                ?id:''
+                                            }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body style="padding: 0; min-height: calc(100vh - 350px);">
+                    <div class="cover-body body">
+                        <div class="row">
+                            <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                                <div class="row">
+                                    <div class="cover-table" *ngIf="!isReload">
+                                        <table class="table hover" style="width: 100%;"
+                                            *ngIf="myverifed$ | async as myverifed ; else loading">
+                                            <thead>
+                                                <tr>
+                                                    <th class="left" scope="col" sortable="distributor_catalog_keyword"
+                                                        (sort)="onSort($event)">
+                                                        Product Category
+                                                    </th>
+                                                    <th (click)="btnReload()">
+                                                        <nb-icon style="float: right; cursor: pointer;"
+                                                            icon="refresh-outline">
+                                                        </nb-icon>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div class="cover-form icon"
+                                                            style="width: 100%; padding-top: 0.5rem;">
+                                                            <nb-icon icon="search-outline"></nb-icon>
+                                                            <nb-icon *ngIf="service.searchTerm" (click)="btnRefresh()"
+                                                                style="float: right;left: 0; cursor: pointer;"
+                                                                icon="close-outline">
+                                                            </nb-icon>
+                                                            <input libOnlyCharacterDefault type="text" nbInput fullWidth
+                                                                status="primary" placeholder="Search for name "
+                                                                [(ngModel)]="service.searchTerm" />
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                                <tr *ngFor="let distlist of myverifed" (click)="btnClickItem(distlist)">
+                                                    <td colspan="2" class="left" [ngClass]="{'active': distlist==id}">
+                                                        <label>{{distlist}}</label>
+                                                        <nb-icon *ngIf="distlist == id"
+                                                            style="float: right; cursor: pointer;"
+                                                            icon="arrow-ios-forward-outline">
+                                                        </nb-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="myverifed.length == 0"
+                                                    style="height:300px; background-color: #222b45;">
+                                                    <td colspan="2" style="padding-top: 50px;">
+                                                        <img src="assets/images/loading.png" width="250"><br><br>
+                                                        <label>No data.</label>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <ng-template #loading>
+                                            <table class="table hover" style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="left" scope="col"
+                                                            sortable="distributor_catalog_keyword"
+                                                            (sort)="onSort($event)">
+                                                            Product Category
+                                                        </th>
+                                                        <th (click)="btnReload()">
+                                                            <nb-icon style="float: right; cursor: pointer;"
+                                                                icon="refresh-outline">
+                                                            </nb-icon>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="unset" style="height:300px; background-color: #222b45;">
+                                                        <td colspan="2" style="padding-top: 50px;">
+                                                            <div style="height: 100px;background-color: #222b45;"
+                                                                [nbSpinner]="loading" nbSpinnerStatus="warning">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </ng-template>
+                                    </div>
+                                    <div class="cover-table" *ngIf="isReload">
+                                        <table class="table hover" style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th class="left" scope="col" sortable="distributor_catalog_keyword"
+                                                        (sort)="onSort($event)">
+                                                        Product Category
+                                                    </th>
+                                                    <th (click)="btnReload()">
+                                                        <nb-icon style="float: right; cursor: pointer;"
+                                                            icon="refresh-outline">
+                                                        </nb-icon>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="unset" style="height:300px; background-color: #222b45;">
+                                                    <td colspan="2" style="padding-top: 50px;">
+                                                        <div style="height: 100px;background-color: #222b45;"
+                                                            [nbSpinner]="isReload" nbSpinnerStatus="warning">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-12 col-md-9 col-lg-9 col-xl-9">
+                                        <div class="row">
+                                            <div class="cover-table">
+                                                <table class="table hover" >
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="left" scope="col">
+                                                                Image
+                                                            </th>
+                                                            <th class="left" scope="col">
+                                                                Distributor Name
+                                                            </th>
+                                                            <th class="left" scope="col">
+                                                                Order Date
+                                                            </th>
+                                                            <th class="left" scope="col">
+                                                                Contact Number
+                                                            </th>
+                                                            <th class="left" scope="col">
+                                                                Location
+                                                            </th>
+                                                            <th>
+                                                                <nb-icon icon="refresh-outline"></nb-icon>
+                                                            </th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody *ngIf="arrDistributor.create_time">
+                                                        <tr (click)="btnRowClick()">
+                                                            <td>
+                                                                <div class="cover-background-image">
+                                                                    <div class="background-image padding-width-100px-height-100px"
+                                                                        [ngClass]="{'active' : arrDistributor.distributor_image_url === '-' || arrDistributor.distributor_image_url === ''}"
+                                                                        [ngStyle]="{'background-image': 'url('+arrDistributor.distributor_image_url+')'}">
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="left">
+                                                                {{arrDistributor.distributor_name}}
+                                                            </td>
+                                                            <td class="left">
+                                                                {{arrDistributor.create_time * 1000 | date: "dd/MM/yyyy"}}
+                                                            </td>
+                                                            <td class="left">
+                                                                {{arrDistributor.distributor_tel}}
+                                                            </td>
+                                                            <td class="left">
+                                                                {{arrDistributor.distributor_addr_amphoe + ',' + arrDistributor.distributor_addr_province}}
+                                                            </td>
+                                                            <td>
+                                                                <nb-icon
+                                                                    (click)="btnDialogSavelists(arrDistributor); $event.stopPropagation()"
+                                                                    icon="list-outline"></nb-icon>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div *ngIf="arrDistributor.length == 0" class="list">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                                            style="text-align: center;">
+                                                            <img src="assets/images/loading.png" width="300">
+                                                        </div>
+                                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                                            style="text-align: center;">
+                                                            <label>Please select information in the list</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                            <div class="col-12 col-md-9 col-lg-9 col-xl-9" *ngIf="!loading">
+                                <ngx-datatable [columnMode]="ColumnMode.force" [rows]="arrDistributor" rowHeight="auto"
+                                    [headerHeight]="46" (activate)="btnRow($event)" [scrollbarH]="true"
+                                    [messages]="messages">
+                                    <ngx-datatable-column name="Images" [width]="100">
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <div class="cover-background-image">
+                                                <div class="background-image padding-width-100px-height-100px"
+                                                    [ngClass]="{'active' : row.distributor_image_url === '-' || row.distributor_image_url=== ''}"
+                                                    [ngStyle]="{'background-image': 'url('+row.distributor_image_url+')'}">
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Distributor Name" [sortable]="true"
+                                        prop="distributor_name">
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{ row.distributor_name }}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Order Date" [sortable]="true" prop="create_time">
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{row.create_time * 1000 | date: "dd/MM/yyyy"}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Contact Number " [sortable]="true"
+                                        prop="distributor_tel">
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{ row.distributor_tel }}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Location" [sortable]="true"
+                                        prop="distributor_addr_province">
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{ row.distributor_addr_amphoe + "," + row.distributor_addr_province }}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column [width]="30">
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <button style="float: right;" type="button" class="buttonlist"
+                                                (click)="btnDialogSavelists(row); $event.stopPropagation()">
+                                                <nb-icon icon="list-outline"></nb-icon>
+                                            </button>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                </ngx-datatable> 
+                            </div>
+                            <div class="col-12 col-md-9 col-lg-9 col-xl-9" *ngIf="loading">
+                                <div class="cover-table">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="left">Image </th>
+                                                <th class="left"> Distributor Name</th>
+                                                <th class="left"> Order Date</th>
+                                                <th class="left"> Contact Number </th>
+                                                <th class="left"> Location </th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="unset">
+                                                <td colspan="5">
+                                                    <div style="height: 200px;" [nbSpinner]="loading"
+                                                        nbSpinnerStatus="warning">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+    </div>
+</div>

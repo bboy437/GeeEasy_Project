@@ -1,0 +1,1 @@
+export { RetailerListComponent } from "./retailer-list.component";

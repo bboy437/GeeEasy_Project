@@ -1,0 +1,385 @@
+<!-- <form [formGroup]="dealersFrom"> -->
+<div class="pages" [formGroup]="DistributorForm">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;">
+                <nb-card-header>
+                    <div class="cover-header header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <!-- <nb-icon icon="grid-outline"></nb-icon>
+                                <label>Dealers <span class="p-0-12">/</span>New Dealer</label> -->
+                            </div>
+                            <div class="col-auto">
+                                <button nbButton style="float: right;margin: 3px 0px 3px 1rem;" [nbSpinner]="image.update" nbSpinnerStatus="success" nbButton  size="medium" status="success" (click)="btnSaveClick()">Save</button>
+                                <!-- <button nbButton style="float: right;margin: 3px 0px 3px 1rem;" status="danger"
+                                    (click)="btnCancelClick()">Cancel</button> -->
+                                <!-- <button style="float: right;margin: 3px 0px 3px 1rem;" nbButton type="button"
+                                    size="medium" status="gray" (click)="btnClear()">
+                                    Clear
+                                </button> -->
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+
+        <div *ngIf="loading" class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading"
+            nbSpinnerStatus="success">
+            <nb-card style="padding: 10rem;">
+                <nb-card-body>
+                </nb-card-body>
+            </nb-card>
+        </div>
+
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading"
+            nbSpinnerStatus="success">
+            <nb-card class="box-shadow-unset">
+                <nb-card-body>
+                    <div class="body">
+                        <form [formGroup]="DistributorForm" (ngSubmit)="onSubmit()">
+                            <div class="row">
+                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="row">
+                                        <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
+                                            <project-file-image [image_url_array]="image.main_image.get"></project-file-image>
+                                            <div style="padding-bottom: 1rem;"></div>
+                                        </div>
+                                        <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
+                                            <div class="row">
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>Distributor Name</label>
+                                                        <input libOnlyCharacterDefault status="primary" type="text"
+                                                            status="primary" nbInput fullWidth
+                                                            formControlName="distributor_name" class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.distributor_name.errors }" />
+                                                        <div *ngIf="submitted && !!f.distributor_name.errors">
+                                                            <div class="required"
+                                                                *ngIf="!!f.distributor_name.errors.required">
+                                                                Distributor Name is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>Product Category</label>
+                                                        <nb-select
+                                                            [ngClass]="{ 'is-invalid': submitted && f.product_category_id.errors }"
+                                                            fullWidth status="primary"
+                                                            placeholder="-------------- Choose ---------------"
+                                                            formControlName="product_category_id">
+                                                            <nb-option *ngFor="let c of arrCategory"
+                                                                [value]="c.product_category_id">
+                                                                {{c.product_category_name}}
+                                                            </nb-option>
+                                                        </nb-select>
+                                                        <div *ngIf="submitted && !!f.product_category_id.errors">
+                                                            <div class="required"
+                                                                *ngIf="!!f.product_category_id.errors.required">
+                                                                Product Category is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div> -->
+
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>Distributor Keyword :</label>
+                                                        <input libOnlyCharacterDefault status="primary" type="text"
+                                                            status="primary" nbInput fullWidth
+                                                            formControlName="distributor_catalog_keyword"
+                                                            class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.distributor_catalog_keyword.errors }" />
+                                                        <div
+                                                            *ngIf="submitted && !!f.distributor_catalog_keyword.errors">
+                                                            <div class="required"
+                                                                *ngIf="!!f.distributor_catalog_keyword.errors.required">
+                                                                Distributor Keyword is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12"
+                                                    style="padding-bottom: 1rem;">
+                                                    <label>Product Category</label>
+                                                    <project-comp-category [status]="'Supplier'" [active]="'Distributor'"
+                                                        (categoryID)="categoryEvent($event)"></project-comp-category>
+                                                    <div class="cover-input">
+                                                        <div *ngIf="submitted && !!f.product_category_id.errors">
+                                                            <div class="required"
+                                                                *ngIf="!!f.product_category_id.errors.required">
+                                                                Product Category is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="cover-create-topic">
+                                                        <label>
+                                                            Address Information
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>First Name</label>
+                                                        <input libOnlyCharacterDefault libOnlyCharacter status="primary"
+                                                            type="text" status="primary" nbInput fullWidth
+                                                            formControlName="distributor_firstname" class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.distributor_firstname.errors }" />
+                                                        <div *ngIf="submitted && !!f.distributor_firstname.errors">
+                                                            <div class="required"
+                                                                *ngIf="!!f.distributor_firstname.errors.required">
+                                                                First Name is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>Last Name</label>
+                                                        <input libOnlyCharacterDefault libOnlyCharacter status="primary"
+                                                            type="text" status="primary" nbInput fullWidth
+                                                            formControlName="distributor_lastname" class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.distributor_lastname.errors }" />
+                                                        <div *ngIf="submitted && !!f.distributor_lastname.errors">
+                                                            <div class="required"
+                                                                *ngIf="!!f.distributor_lastname.errors.required">
+                                                                Last Name is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>Email</label>
+                                                        <input status="primary" type="text" status="primary" nbInput
+                                                            fullWidth formControlName="distributor_email"
+                                                            class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.distributor_email.errors }" />
+                                                        <div *ngIf="submitted && !!f.distributor_email.errors">
+                                                            <div class="required"
+                                                                *ngIf="!!f.distributor_email.errors.required">
+                                                                Email is required
+                                                            </div>
+                                                            <div class="required"
+                                                                *ngIf="!!f.distributor_email.errors.email">
+                                                                Email must be a valid email
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-12">
+                                                    <div class="cover-phone-number">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="cover-input">
+                                                                    <label>Telephone Number</label>
+                                                                    <input libOnlyCharacterDefault nbInput fullWidth
+                                                                        type="text" status="primary"
+                                                                        libOnlyCharacterphonnumber
+                                                                        formControlName="telephoneNumber"
+                                                                        (keyup)="onInput(19,19,$event,phone.tel)"
+                                                                        (keyup.enter)="onInArrayPhone(9,19,$event,phone.tel)"
+                                                                        [(ngModel)]="phone.tel.input"
+                                                                        [ngClass]="{'is-invalid': submitted && phone.tel.number === ''}" />
+                                                                    <div class="invalid-feedback"
+                                                                        [ngClass]="{'display-block': submitted && phone.tel.number === ''}">
+                                                                        <div class="required">
+                                                                            Telephone Number is required
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <span class="phone"
+                                                                    *ngFor="let item of phone.tel.number_array ; let i = index">
+                                                                    {{item}}<nb-icon
+                                                                        (click)="removePhoneNumberIndex(i,phone.tel)"
+                                                                        icon="close-outline"></nb-icon>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <div class="cover-phone-number">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="cover-input">
+                                                                    <label>Mobile Phone Number</label>
+                                                                    <input libOnlyCharacterDefault nbInput fullWidth
+                                                                        type="text" status="primary" mask='000-000-0000'
+                                                                        placeholder="XXX-XXX-XXXX"
+                                                                        (keyup)="inArrayPhone(12,12,$event,phone.mobile)"
+                                                                        (keyup.enter)="inArrayPhone(12,12,$event,phone.mobile)"
+                                                                        [ngClass]="{'is-invalid': submitted && phone.mobile.number === ''}" />
+                                                                    <div class="invalid-feedback"
+                                                                        [ngClass]="{'display-block': submitted && phone.mobile.number === ''}">
+                                                                        <div class="required">
+                                                                            Mobile Phone Number is required
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <span class="phone"
+                                                                    *ngFor="let item of phone.mobile.number_array ; let i = index">
+                                                                    {{item}}<nb-icon
+                                                                        (click)="removePhoneNumberIndex(i,phone.mobile)"
+                                                                        icon="close-outline"></nb-icon>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="cover-input right">
+                                                        <button type="button" nbButton status="primary"
+                                                            (click)="btnDialogMab()">
+                                                            <nb-icon icon="map-outline"></nb-icon>
+                                                            Search by location
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-textarea">
+                                                        <label>Address</label>
+                                                        <textarea rows="3" type="text" status="primary" nbInput
+                                                            fullWidth formControlName="distributor_addr_full"
+                                                            class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.distributor_addr_full.errors }"></textarea>
+                                                        <div *ngIf="submitted && !!f.distributor_addr_full.errors"
+                                                            class="invalid-feedback">
+                                                            <div class="required"
+                                                                *ngIf="!!f.distributor_addr_full.errors.required">
+                                                                Address isrequired
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label> Address Number</label>
+                                                        <input libOnlyCharacterDefault status="primary" type="text"
+                                                            status="primary" nbInput fullWidth
+                                                            formControlName="distributor_addr_number"
+                                                            class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.distributor_addr_number.errors }" />
+                                                        <div *ngIf="submitted && !!f.distributor_addr_number.errors">
+                                                            <div class="required"
+                                                                *ngIf="!!f.distributor_addr_number.errors.required">
+                                                                Address Number is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>Province</label>
+                                                        <ngx-select [allowClear]="true"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.province.errors }"
+                                                            [items]="arrProvince" optionValueField="location_name"
+                                                            optionTextField="location_name" formControlName="province"
+                                                            placeholder="-------------- Choose ---------------"
+                                                            (select)="changeProvince($event)">
+                                                        </ngx-select>
+                                                        <div *ngIf="submitted && !!f.province.errors">
+                                                            <div class="required" *ngIf="!!f.province.errors.required">
+                                                                Province is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>Amphoe</label>
+                                                        <ngx-select [allowClear]="true"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.amphoe.errors }"
+                                                            [items]="arrAmphoe" optionValueField="location_name"
+                                                            optionTextField="location_name" formControlName="amphoe"
+                                                            placeholder="-------------- Choose ---------------"
+                                                            (select)="changeAmphoe($event)">
+                                                        </ngx-select>
+                                                        <div *ngIf="submitted && !!f.amphoe.errors">
+                                                            <div class="required" *ngIf="!!f.amphoe.errors.required">
+                                                                Amphoe is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>Tambon</label>
+                                                        <ngx-select [allowClear]="true"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.tambon.errors }"
+                                                            [items]="arrTambon" optionValueField="location_name"
+                                                            optionTextField="location_name" formControlName="tambon"
+                                                            placeholder="-------------- Choose ---------------"
+                                                            (select)="changeTambon($event)">
+                                                        </ngx-select>
+                                                        <div *ngIf="submitted && !!f.tambon.errors">
+                                                            <div class="required" *ngIf="!!f.tambon.errors.required">
+                                                                Tambon is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                                    <div class="cover-input">
+                                                        <label>Zipcode</label>
+                                                        <input type="text" mask='00000' placeholder="XXXXX" nbInput
+                                                            fullWidth status="primary" formControlName="zipcode"
+                                                            class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.zipcode.errors }" />
+                                                        <div *ngIf="submitted && !!f.zipcode.errors">
+                                                            <div class="required" *ngIf="!!f.zipcode.errors.required">
+                                                                Zipcode is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                                    <div class="cover-input">
+                                                        <label> Latitude Longitude</label>
+                                                        <input nbInput status="primary" type="text" class="btnDisabled"
+                                                            fullWidth formControlName="latitudeAndLongitude" />
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+    </div>
+</div>
+<!-- </form> -->

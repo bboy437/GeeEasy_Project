@@ -1,0 +1,93 @@
+@import "../../../../../../libs/theme-supplier/src/lib/styles/themes";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+.cover-product-unit {
+  margin: 0.5rem 0;
+  text-align: left;
+}
+
+nb-icon {
+  &.icon-success {
+    color: #28a745;
+    font-size: 1.5rem;
+  }
+  &.icon-close {
+    color: #dee2e6;
+    font-size: 1.5rem;
+  }
+  &.icon-wating {
+    color: #ffaa00;
+    font-size: 1.5rem;
+  }
+}
+
+@include nb-install-component() {
+  .show-grid {
+    .row {
+      margin: -0.5rem;
+    }
+
+    div[class^="col-"] {
+      padding: 0.5rem;
+      box-sizing: border-box;
+
+      div {
+        padding: 0.5rem 0.25rem;
+        border-radius: 0.25rem;
+      }
+    }
+  }
+
+  // nb-card-body {
+  //   overflow: hidden;
+  // }
+
+  .btnDisabled {
+    font-size: 14px;
+    color: #000000;
+    border-color: #3366ff;
+  }
+  .products {
+    padding: 0.5rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+  }
+}
+
+thead {
+  font-size: 15px;
+}
+tbody {
+  font-size: 15px;
+}
+
+.Waiting {
+  border-radius: 0.5rem;
+  font-family: Open Sans, sans-serif;
+  font-size: 14px;
+  padding: 0.4rem 0.5rem;
+  background-color: #255cff7d;
+}
+.Confirmed {
+  border-radius: 0.5rem;
+  font-family: Open Sans, sans-serif;
+  font-size: 14px;
+  padding: 0.4rem 0.5rem;
+  background-color: #3dd6807d;
+}
+.Negotiation {
+  border-radius: 0.5rem;
+  font-family: Open Sans, sans-serif;
+  font-size: 14px;
+  padding: 0.4rem 0.5rem;
+  background-color: #ffef31;
+  color: black;
+}
+.Canceled {
+  border-radius: 0.5rem;
+  font-family: Open Sans, sans-serif;
+  font-size: 14px;
+  padding: 0.4rem 0.5rem;
+  background-color: #ef1425cf;
+}

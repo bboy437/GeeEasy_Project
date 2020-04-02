@@ -1,0 +1,218 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <nb-icon icon="message-circle-outline"></nb-icon>
+                        <label>My Messages</label>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body style="padding: 1rem; min-height: calc(100vh - 190px);">
+                    <div class="row">
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-5">
+                            <nb-card size="large">
+                                <nb-card-header class="messages">
+                                    <label>Messaging</label>
+                                </nb-card-header>
+                                <nb-card-body class="messages">
+                                    <div class="row">
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <div class="cover-form icon">
+                                                <nb-icon style="right: 0px;" icon="search-outline"></nb-icon>
+                                                <nb-icon *ngIf="strname" (click)="btnRefresh()"
+                                                    style="float: right;left: 0; cursor: pointer;" icon="close-outline">
+                                                </nb-icon>
+                                                <input libOnlyCharacterDefault nbInput status="primary" type="text"
+                                                    fullWidth placeholder="Search messages" [(ngModel)]="strname"
+                                                    (keyup)="filterName($event.target.value)" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <nb-list *ngIf="strStatus == false">
+                                        <nb-list-item *ngFor="let m of arrMessagseList"
+                                            (click)="btnMessagesClick(m.geeesy_contact_id, m)">
+                                            <!-- <div *ngFor="let s of m.supplier_data_array">
+                                                <img src="{{s.supplier_image_url}}">
+                                                <label>{{s.supplier_name}}</label>
+                                                <label
+                                                    class="time">{{m.create_time * 1000 | date: 'dd/MM/yyyy HH:mm'}}</label>
+                                            </div> -->
+                                            <div *ngFor="let s of m.supplier_data_array">
+                                                <img *ngIf="s.supplier_image_url != '-'" src="{{s.supplier_image_url}}">
+                                                <img *ngIf="s.supplier_image_url == '-'"
+                                                    src="assets/images/GVUMY7xKt.png">
+                                                <label>{{s.supplier_name}}</label>
+                                                <label
+                                                    class="time">{{m.create_time * 1000 | date: 'dd/MM/yyyy HH:mm'}}</label>
+
+                                            </div>
+                                            <div *ngFor="let d of m.dealer_data_array">
+                                                <img src="{{d.dealer_image_url}}">
+                                                <label>{{d.dealer_name}}</label>
+                                                <label
+                                                    class="time">{{m.create_time * 1000 | date: 'dd/MM/yyyy HH:mm'}}</label>
+                                            </div>
+                                        </nb-list-item>
+                                    </nb-list>
+                                    <nb-list *ngIf="strStatus == true">
+                                        <nb-list-item *ngFor="let n of arrName" (click)="btnMessagesSubmitClick(n)">
+                                            <div>
+                                                <img *ngIf="n.supplier_image_url != '-'" src="{{n.supplier_image_url}}">
+                                                <img *ngIf="n.supplier_image_url == '-'"
+                                                    src="assets/images/GVUMY7xKt.png">
+                                                <label>{{n.supplier_name}}</label>
+                                            </div>
+                                        </nb-list-item>
+                                    </nb-list>
+                                    <div *ngIf="loading" style="height: 100px;background-color: white;"
+                                        [nbSpinner]="loading" nbSpinnerStatus="primary">
+                                    </div>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                        <div class="col-lg-5" *ngIf="isStatus == true">
+                            <nb-card size="large">
+                                <nb-card-header class="messages">
+                                    <div class="row">
+                                        <div class="col-auto mr-auto">
+                                            <label>{{strTitle}}</label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button nbButton size="small" status="success" (click)="btnPoClick()">
+                                                View PO
+                                            </button>
+                                        </div>
+                                    </div>
+                                </nb-card-header>
+
+
+                                <div class="chat-lit">
+                                    <div *ngIf="messages" class="chat" #scrollMe [scrollTop]="scrollMe.scrollHeight"
+                                        appDragDrop (onFileDropped)="uploadFile($event)">
+                                        <div *ngFor="let m of messages" [hidden]="m.text_type_id !== 1">
+                                            <!-- Distributor -->
+                                            <div class="row" *ngFor="let item of m.distributor_data_array">
+                                                <div class="col-auto mr-auto">
+                                                    <img src="{{item.distributor_image_url}}" class="imgborder">
+                                                </div>
+                                                <div class="col">
+                                                    <label
+                                                        style="font-size: 13px;">{{item.distributor_name}}</label>&nbsp;&nbsp;
+                                                    <label
+                                                        style="font-size: 13px;">{{m.create_time * 1000 | date: 'HH:mm'}}</label><br>
+                                                    <div *ngIf="m.icon != ''" style="padding-left: 1rem;">
+                                                        <nb-icon icon="{{m.icon}}"
+                                                            (click)="openUrl(m.text_extra_attachment[0].file_url)">
+                                                        </nb-icon>
+                                                    </div>
+                                                    <div *ngIf="m.isUpload == 'no file'">
+                                                        <label style="font-size: 13px;">{{m.text_detail}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngFor="let m of messages" [hidden]="m.text_type_id !== 2">
+                                            <!-- supplier -->
+                                            <div class="row" *ngFor="let item of m.supplier_data_array">
+                                                <div class="col-auto mr-auto">
+                                                    <img src="{{item.supplier_image_url}}" class="imgborder">
+                                                </div>
+                                                <div class="col">
+                                                    <label
+                                                        style="font-size: 13px;">{{item.supplier_name}}</label>&nbsp;&nbsp;
+                                                    <label
+                                                        style="font-size: 13px;">{{m.create_time * 1000 | date: 'HH:mm'}}</label><br>
+                                                    <div *ngIf="m.icon != ''" style="padding-left: 1rem;">
+                                                        <nb-icon icon="{{m.icon}}"
+                                                            (click)="openUrl(m.text_extra_attachment[0].file_url)">
+                                                        </nb-icon>
+                                                    </div>
+                                                    <div *ngIf="m.isUpload == 'no file'">
+                                                        <label style="font-size: 13px;">{{m.text_detail}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngFor="let m of messages" [hidden]="m.text_type_id !== 3">
+                                            <!-- dealer -->
+                                            <div class="row" *ngFor="let item of m.dealer_data_array">
+                                                <div class="col-auto mr-auto">
+                                                    <img src="{{item.dealer_image_url}}" class="imgborder">
+                                                </div>
+                                                <div class="col">
+                                                    <label
+                                                        style="font-size: 13px;">{{item.dealer_name}}</label>&nbsp;&nbsp;
+                                                    <label
+                                                        style="font-size: 13px;">{{m.create_time * 1000 | date: 'HH:mm'}}</label><br>
+                                                    <div *ngIf="m.icon != ''" style="padding-left: 1rem;">
+                                                        <nb-icon icon="{{m.icon}}"
+                                                            (click)="openUrl(m.text_extra_attachment[0].file_url)">
+                                                        </nb-icon>
+                                                    </div>
+                                                    <div *ngIf="m.isUpload == 'no file'">
+                                                        <label style="font-size: 13px;">{{m.text_detail}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="loading1" style="height: 100px;background-color: white;"
+                                            [nbSpinner]="loading1" nbSpinnerStatus="primary">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- </div> -->
+                                <nb-card-footer class="messages" appDragDrop (onFileDropped)="uploadFile($event)">
+                                    <div class="row">
+                                        <div class="col-auto mr-auto" style="padding-right: 0rem;">
+                                            <label for="file-upload" class="custom-file-upload">
+                                                <nb-icon icon="attach-outline">
+                                                </nb-icon>
+                                            </label>
+                                            <input nbInput status="primary" id="file-upload" type="file"
+                                                (change)="uploadFile($event.target.files)" />
+                                        </div>
+                                        <div class="col" *ngIf="strStatus == false"
+                                            style="padding-right: 0rem; padding-left: 0rem;">
+                                            <input nbInput status="primary" type="text" nbInput fullWidth
+                                                status="primary" placeholder="Type a messages"
+                                                (keyup.enter)="sendMessage($event.target.value)"
+                                                [(ngModel)]="strMessages" />
+                                        </div>
+                                        <div class="col" *ngIf="strStatus == true"
+                                            style="padding-right: 0rem; padding-left: 0rem;">
+                                            <input nbInput status="primary" type="text" nbInput fullWidth
+                                                status="primary" placeholder="Type a messages"
+                                                (keyup.enter)="sentSubmitMessages($event.target.value)"
+                                                [(ngModel)]="strMessages" />
+                                        </div>
+                                        <div class="col-auto mr-auto" style="padding-left: 0rem;">
+                                            <button [disabled]="!strMessages" nbButton status="primary" size="small"
+                                                style="padding: 0.54rem 0.9rem;">
+                                                <nb-icon icon="navigation-2-outline"></nb-icon>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </nb-card-footer>
+                            </nb-card>
+                        </div>
+                        <div class="col-lg-1"></div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card-footer class="footerComponent">
+                <img src="assets/images/footer.png">
+            </nb-card-footer>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+@import "../../../../../../../libs/theme-supplier/src/lib/styles/themes";
+@import "~@nebular/bootstrap/styles/buttons";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+.display_table {
+  &.height_48px {
+    height: 48px;
+  }
+  width: 100%;
+  display: table;
+  vertical-align: middle;
+  .display_table_cell {
+    display: table-cell;
+    vertical-align: middle;
+    & * {
+      padding: 0;
+      margin: 0;
+    }
+  }
+}
+
+.padding-0 {
+  padding: 0 !important;
+}
+
+.padding-auto-0 {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+.margin-0 {
+  margin: 0 !important;
+}
+
+.imgstatus {
+  width: 2rem;
+  height: 2rem;
+}
+
+thead {
+  font-size: 14px;
+}
+tbody {
+  font-size: 14px;
+}

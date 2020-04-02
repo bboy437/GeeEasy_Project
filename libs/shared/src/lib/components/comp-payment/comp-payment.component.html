@@ -1,0 +1,53 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <table class="table no-hover" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th colspan="3" style="text-align: left;">
+                            Payment
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let payment of data; let i = index">
+                        <td style="text-align: left;">
+                            <label style="padding-right: 0.2rem;">Payment</label>
+                            <label>{{i + 1}}</label>
+                        </td>
+                        <td style="text-align: right; font-size: 18px; font-weight: bold;">
+                            <label style="padding-right: 0.2rem;">{{payment.confirm_balance | number : '1.2-2'}}</label>
+                            <label>{{payment.product_currency_code}}</label>
+                        </td>
+                        <td style="text-align: right;">
+                            <nb-icon class="icon-success" icon="checkmark-circle-2-outline">
+                            </nb-icon>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left; font-size: 18px; font-weight: bold;">
+                            <label> Remaining</label>
+                        </td>
+                        <td style="text-align: right; font-size: 18px; font-weight: bold;">
+                            <label style="padding-right: 0.2rem;">{{payment_total | number : '1.2-2'}}</label>
+                            <label>{{product_currency_code}}</label>
+                        </td>
+                        <td style="text-align: right;">
+                        </td>
+                    </tr>
+                    <tr *ngIf="over < 0">
+                        <td style="text-align: left; font-size: 18px; font-weight: bold; color: #4ec05d;">
+                            <label> Over</label>
+                        </td>
+                        <td style="text-align: right; font-size: 18px; font-weight: bold; color: #4ec05d;">
+                            <label style="padding-right: 0.2rem;">{{overTHB | number : '1.2-2'}}</label>
+                            <label>{{product_currency_code}}</label>
+                        </td>
+                        <td style="text-align: right;">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

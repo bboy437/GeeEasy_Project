@@ -1,0 +1,371 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <nb-icon icon="shuffle-2-outline"></nb-icon>
+                                <label>My Order <span class="p-0-12">/</span> Detail </label>
+                            </div>
+                            <div class="col-auto">
+                                <button [disabled]="arrOrder.dealer_order_is_confirm == 0 || arrOrder.dealer_order_delivery_id == 0 || arrOrder.dealer_order_is_complete == 1" *ngIf="!loading && !name"
+                                    style="float: right;margin: 3px 0px 3px 1rem;" nbButton size="medium"
+                                    status="success" (click)="confirmPaid()">
+                                    Pay
+                                </button>
+                                <button *ngIf="!loading && !name"
+                                    [disabled]="arrOrder.dealer_order_is_confirm == 0 || arrOrder.dealer_order_delivery_id == 1"
+                                    style="float: right;margin: 3px 0px 3px 1rem;" nbButton size="medium"
+                                    status="success" (click)="confirmDelivery()">
+                                    Delivery
+                                </button>
+                                <button *ngIf="!loading && !name" [disabled]="arrOrder.dealer_order_is_confirm == 1"
+                                    style="float: right;margin: 3px 0px 3px 1rem;" nbButton size="medium"
+                                    status="success" (click)="confirmOrder()">
+                                    Comfirm
+                                </button>
+
+                                <button style="float: right;margin: 3px 0px 3px 1rem;" nbButton size="medium"
+                                    status="danger" (click)="btnCancel()">
+                                    Back
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="margin-bottom: 0.1rem;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label>Order No. {{arrOrder.dealer_order_number}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="primary">
+            <div class="row">
+                <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <nb-card>
+                                <nb-card-body>
+                                    <div class="body">
+                                        <div class="row">
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                        <label> Order No. : </label>
+                                                    </div>
+                                                    <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                        <div class="cover-input">
+                                                            <input nbInput status="primary" type="text" status="basic"
+                                                                nbInput disabled fullWidth
+                                                                [(ngModel)]="arrOrder.dealer_order_number" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input-icon">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Delivery Date : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <nb-icon icon="calendar-outline"></nb-icon>
+                                                            <input nbInput status="primary" type="text" nbInput
+                                                                fullWidth status="basic" disabled bsDatepicker
+                                                                #dp="bsDatepicker"
+                                                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-red' }"
+                                                                [(ngModel)]="delivery_date" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Delivery Location : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <textarea style="min-height: 90px;" type="text"
+                                                                status="basic" nbInput fullWidth disabled
+                                                                [(ngModel)]="arrOrder.delivery_location"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Billing Name : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <input nbInput status="primary" type="text" status="basic"
+                                                                nbInput fullWidth disabled
+                                                                [(ngModel)]="arrOrder.billing_name" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Billing Address : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <textarea style="min-height: 90px;" type="text"
+                                                                status="basic" nbInput fullWidth disabled
+                                                                [(ngModel)]="arrOrder.billing_address"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Billing Payment Term : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <input nbInput status="primary" type="text" status="basic"
+                                                                nbInput fullWidth disabled
+                                                                [(ngModel)]="arrOrder.billing_payment_term" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label>Order Note : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <input nbInput status="primary" type="text" status="basic"
+                                                                nbInput fullWidth disabled
+                                                                [(ngModel)]="arrOrder.purchase_order_note" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Payment Status </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <label
+                                                                [ngClass]="arrOrder.dealer_order_paid_confirm_id == 0 ? 'status red' : 
+                                                            (arrOrder.dealer_order_paid_confirm_id  == 1 ? 'status success' : 
+                                                            (arrOrder.dealer_order_paid_confirm_id  == 2 ? 'status primary' : arrOrder.dealer_order_paid_confirm_id))">
+                                                                {{arrOrder.dealer_order_paid_confirm_id == 0 ? 'No Paid' : 
+                                                                (arrOrder.dealer_order_paid_confirm_id  == 1 ? 'Fully Paid' : 
+                                                                (arrOrder.dealer_order_paid_confirm_id  == 2 ? 'Partially Paid' : arrOrder.dealer_order_paid_confirm_id))}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Shipment Status </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <label
+                                                                [ngClass]="arrOrder.dealer_order_delivery_id == 0 ? 'status red' : 
+                                                            (arrOrder.dealer_order_delivery_id  == 1 ? 'status success' : 
+                                                            (arrOrder.dealer_order_delivery_id  == 2 ? 'status primary' : arrOrder.dealer_order_paid_confirm_id))">{{arrOrder.dealer_order_delivery_id == 0 ? 'No Fulfillment' : 
+                                                                (arrOrder.dealer_order_delivery_id  == 1 ? 'Fully Fulfil' : 
+                                                                (arrOrder.dealer_order_delivery_id  == 2 ? 'Partially Fulfill' : arrOrder.dealer_order_delivery_id))}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Confirm : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <label
+                                                                [ngClass]="arrOrder.dealer_order_delivery_id == 0 ? 'status red' : 'status success'">
+                                                                {{arrOrder.dealer_order_is_confirm == 0 ? 'Waiting' : 'Confirm'}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Message : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <label>{{arrOrder.purchase_order_reply_msg}} </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <nb-card>
+                                <nb-card-body>
+                                    <div class="body">
+                                        <div class="row">
+                                            <div *ngIf="arrOrder.dealer_order_is_confirm != 1"
+                                                class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                                style="padding-bottom: 1rem;">
+                                                <button *ngIf="!loading && !name"
+                                                    style="float: right;margin: 3px 0px 3px 1rem;" nbButton
+                                                    size="medium" status="success" (click)="updatePrice()">
+                                                    Update Price
+                                                </button>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <table class="table hover" [nbSpinner]="loading1" nbSpinnerStatus="primary">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="left">Image</th>
+                                                            <th style="width: 20%;" class="left">Product Name</th>
+                                                            <th class="right">Quantity</th>
+                                                            <th class="right">Unit Price</th>
+                                                            <th class="right">Total Price</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody style="cursor: pointer;">
+                                                        <tr *ngFor="let product of arrOrderProduct; let i = index">
+                                                            <td class="left">
+                                                                <div class="cover-background-image">
+                                                                    <div class="background-image padding-width-100px-height-100px"
+                                                                        [ngClass]="{'active' : product.product_image_url === '-' || product.product_image_url === ''}"
+                                                                        [ngStyle]="{'background-image': 'url('+product.product_image_url+')'}">
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="left">
+                                                                <label>{{product.product_name}}</label><br>
+                                                                <label class="sku">{{product.product_sku}}</label><br>
+                                                                <div class="cover-input">
+                                                                    <label> {{product.product_note}}</label>
+
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <!-- <input nbInput status="primary" type="text"
+                                                                    status="basic" nbInput fullWidth
+                                                                    [disabled]="arrOrder.dealer_order_is_confirm == 1"
+                                                                    style="color: black; text-align: right;"
+                                                                    [ngModel]="product.product_qty" /> -->
+                                                                <input type="text"
+                                                                    style="color: black; text-align: right;"
+                                                                    [disabled]="arrOrder.dealer_order_is_confirm == 1"
+                                                                    libOnlyCharacternumber mask="separator.0"
+                                                                    thousandSeparator=","
+                                                                    onKeyPress="if(this.value.length==7) return false;"
+                                                                    nbInput fullWidth status="basic"
+                                                                    [(ngModel)]="product.product_qty"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    (keyup)="onKeyQTY($event.target.value, product)">
+                                                            </td>
+                                                            <td>
+                                                                <input *ngIf="arrOrder.dealer_order_is_confirm == 1"
+                                                                    nbInput status="primary" type="text" status="basic"
+                                                                    nbInput fullWidth
+                                                                    [disabled]="arrOrder.dealer_order_is_confirm == 1"
+                                                                    style="color: black; text-align: right;"
+                                                                    [ngModel]="product.product_price | number : '1.2-2'" />
+
+                                                                <input *ngIf="arrOrder.dealer_order_is_confirm != 1"
+                                                                    style="color: black; text-align: right;"
+                                                                    [disabled]="arrOrder.dealer_order_is_confirm == 1"
+                                                                    type="text" libOnlyCharacternumber
+                                                                    mask="separator.2" thousandSeparator="," nbInput
+                                                                    status="basic" fullWidth class="form-control"
+                                                                    [(ngModel)]="product.product_price"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    (keyup)="onKeyPrice($event.target.value, product)" />
+                                                            </td>
+                                                            <td>
+                                                                <input nbInput status="primary" type="text"
+                                                                    status="basic" nbInput fullWidth disabled
+                                                                    style="color: black; text-align: right;"
+                                                                    [ngModel]="product.product_qty * product.product_price | number : '1.2-2'" />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <div *ngIf="!loading1" class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="row">
+                                                    <div
+                                                        class="col-12 offset-md-6 col-md-6 offset-lg-6  col-lg-6 offset-xl-6 col-xl-6">
+                                                        <table class="table table-striped">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="right">
+                                                                        <strong style="font-size: 18px;">
+                                                                            Total
+                                                                        </strong>
+                                                                    </td>
+                                                                    <td class="right">
+                                                                        <strong style="font-size: 18px;">
+                                                                           {{sum |  number : '1.2-2'}} {{'' + 'THB'}}
+                                                                        </strong>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <nb-card>
+                                <nb-card-body>
+                                    <project-comp-summary *ngIf="arrOrderSummary" [data]="arrOrderSummary"
+                                        [status]="'PO'">
+                                    </project-comp-summary>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,285 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <nb-icon icon="people-outline"></nb-icon>
+                                <label>Saved List</label>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <button style="float: right;margin: 3px 0;" nbButton size="medium" status="primary"
+                                    (click)="btnDialogSavelists('', 'create')">
+                                    New Saved list
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body style="padding: 1rem; min-height: calc(100vh - 200px);">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="row">
+                                <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                                </div>
+                                <div class="col-12 col-md-9 col-lg-9 col-xl-9">
+                                    <div class="row">
+                                        <div class="col-auto mr-auto" style=" font-weight: 600;">
+                                            <div class="display_table height_48px">
+                                                <div class="display_table_cell">
+                                                    <label>
+                                                        {{strTitle}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button style="    margin: 0.5rem 0 0 1rem;" [disabled]="strTitle" nbButton
+                                                size="small" status="danger"
+                                                (click)="btnDelete('deleteList')">Delete</button>
+                                            <button style="    margin: 0.5rem 0 0 1rem;" [disabled]="strTitle" nbButton
+                                                size="small" status="success"
+                                                (click)="btnRename('Rename')">Rename</button>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                            <div *ngIf="!isReload">
+                                <table class="table hover" style="width: 100%;"
+                                    *ngIf="savelist$ | async as savelists ; else loading">
+                                    <thead>
+                                        <tr>
+                                            <th class="left">List Name</th>
+                                            <th (click)="btnReload()">
+                                                <nb-icon style="float: right; cursor: pointer;" icon="refresh-outline">
+                                                </nb-icon>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="cursor: pointer;">
+                                        <tr>
+                                            <td colspan="2">
+                                                <div class="cover-form icon">
+                                                    <nb-icon style="right: 0px;" icon="search-outline"></nb-icon>
+                                                    <nb-icon *ngIf="service.searchTerm" (click)="refresh()"
+                                                        style="float: right;left: 0;" icon="close-outline"></nb-icon>
+                                                    <input libOnlyCharacterDefault nbInput status="primary" type="text"
+                                                        nbInput fullWidth status="primary" placeholder="Search for name"
+                                                        (keyup)="filterlist($event.target.value)"
+                                                        [(ngModel)]="service.searchTerm" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr *ngFor="let savelist of savelists"
+                                            (click)="btnClickItem(savelist.supplier_array, savelist.supplier_lists_id, savelist.supplier_lists_name,savelist.supplier_lists_id)">
+                                            <td colspan="2" style="text-align: left;"
+                                                [ngClass]="{'active': savelist.supplier_lists_id==id}">
+                                                <a>{{savelist.supplier_lists_name}} </a>
+                                                <nb-icon *ngIf="savelist.supplier_lists_id==id"
+                                                    style="float: right; cursor: pointer;"
+                                                    icon="arrow-ios-forward-outline">
+                                                </nb-icon>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="savelists.length == 0"
+                                            style="height:300px; background-color: white;">
+                                            <td colspan="2" style="padding-top: 50px;">
+                                                <img src="assets/images/loading.png" width="250"><br><br>
+                                                <label>No data.</label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <ng-template #loading>
+                                    <table class="table hover" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th class="left">List Name</th>
+                                                <th (click)="btnReload()">
+                                                    <nb-icon style="float: right; cursor: pointer;"
+                                                        icon="refresh-outline">
+                                                    </nb-icon>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr style="height:300px; background-color: white;">
+                                                <td colspan="2" style="padding-top: 50px;">
+                                                    <div style="height: 100px;background-color: white;"
+                                                        [nbSpinner]="loading" nbSpinnerStatus="primary">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </ng-template>
+                            </div>
+                            <div *ngIf="isReload">
+                                <table class="table hover" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th class="left">List Name</th>
+                                            <th (click)="btnReload()">
+                                                <nb-icon style="float: right; cursor: pointer;" icon="refresh-outline">
+                                                </nb-icon>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="height:300px; background-color: white;">
+                                            <td colspan="2" style="padding-top: 50px;">
+                                                <div style="height: 100px;background-color: white;"
+                                                    [nbSpinner]="isReload" nbSpinnerStatus="primary">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- <div class="col-lg-9">
+                            <table class="table hover" >
+                                <thead>
+                                    <tr>
+                                        <th class="left">Images</th>
+                                        <th class="left">Supplier Name</th>
+                                        <th class="left">Product Category</th>
+                                        <th class="left">Email</th>
+                                        <th class="left"> Contact Number</th>
+                                        <th class="left">Location</th>
+                                        <th>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody style="cursor: pointer;">
+                                    <tr *ngFor="let d of savedetail" (click)="btnRow(d.supplier_id)">
+                                        <td>
+                                            <div class="cover-background-image">
+                                                <div class="background-image padding-width-100px-height-100px"
+                                                    [ngClass]="{'active' : d.supplier_image_url === '-' || d.supplier_image_url === ''}"
+                                                    [ngStyle]="{'background-image': 'url('+d.supplier_image_url+')'}">
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="left">
+                                            <label>{{d.supplier_name}}</label>
+                                        </td>
+                                        <td class="left">
+                                            <label>{{d.product_category_keyword}}</label>
+                                        </td>
+                                        <td class="left">
+                                            <label>{{d.supplier_company_contact}}</label>
+                                        </td>
+                                        <td class="left">
+                                            <label>{{d.supplier_addr_phone}}</label>
+                                        </td>
+                                        <td class="left">
+                                            <label>{{d.supplier_addr_amphoe + ',' + d.supplier_addr_province}}</label>
+                                        </td>
+                                        <td title="Delete"
+                                            (click)="btnDialogSavelists(d, 'delete'); $event.stopPropagation()"
+                                            style="cursor: pointer;">
+                                            <nb-icon icon="close-outline"></nb-icon>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div *ngIf="savedetail.length == 0" class="list">
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="text-align: center;">
+                                        <img src="assets/images/loading.png" width="300">
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="text-align: center;">
+                                        <label>No data. Please select information in the list</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+
+                        <div class="col-12 col-md-9 col-lg-9 col-xl-9" *ngIf="!loading">
+                            <ngx-datatable [columnMode]="ColumnMode.force" [rows]="savedetail" rowHeight="auto"
+                                [headerHeight]="46" (activate)="btnRow($event)" [scrollbarH]="true"
+                                [messages]="messages">
+                                <ngx-datatable-column name="Images" [width]="100">
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <div class="cover-background-image">
+                                            <div class="background-image padding-width-100px-height-100px"
+                                                [ngClass]="{'active' : row.supplier_image_url === '-' || row.supplier_image_url=== ''}"
+                                                [ngStyle]="{'background-image': 'url('+row.supplier_image_url+')'}">
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Supplier Name" [sortable]="true" prop="supplier_name">
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{ row.supplier_name }}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Company Name" [sortable]="true"
+                                    prop="supplier_company_name">
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{ row.supplier_company_name }}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Contact Number " [sortable]="true"
+                                    prop="supplier_addr_phone">
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{ row.supplier_addr_phone }}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Location" [sortable]="true" prop="supplier_addr_province">
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{ row.supplier_addr_amphoe + "," + row.supplier_addr_province }}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column [width]="30">
+                                    <ng-template let-row="row" ngx-datatable-cell-template let-sort="sortFn">
+                                        <button type="button" class="buttonlist"
+                                            (click)="btnDialogSavelists(row, 'delete'); $event.stopPropagation()">
+                                            <nb-icon icon="close-outline"></nb-icon>
+                                        </button>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                            </ngx-datatable> 
+                        </div>
+                        <div class="col-12 col-md-9 col-lg-9 col-xl-9" *ngIf="loading">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="left">Image </th>
+                                        <th class="left"> Supplier Name</th>
+                                        <th class="left"> Company Name </th>
+                                        <th class="left"> Contact Number </th>
+                                        <th class="left"> Location </th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="5">
+                                            <div style="height: 200px;" [nbSpinner]="loading" nbSpinnerStatus="primary">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1 @@
+export {SaleRepDetailComponent} from "./sale-rep-detail.component";

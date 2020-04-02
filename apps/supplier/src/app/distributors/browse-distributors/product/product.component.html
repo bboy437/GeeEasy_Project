@@ -1,0 +1,309 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="body">
+                <div class="row">
+                    <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-3">
+                                <div class="cover-form icon">
+                                    <nb-icon icon="search-outline"></nb-icon>
+                                    <nb-icon *ngIf="strproduct" (click)="btnRefreshProduct()"
+                                        style="float: right;left: 0; cursor: pointer;" icon="close-outline">
+                                    </nb-icon>
+                                    <input libOnlyCharacterDefault libOnlyCharacterDefault status="primary" type="text" nbInput fullWidth status="primary"
+                                        placeholder="Search for product" [(ngModel)]="strproduct"
+                                        [ngModelOptions]="{standalone: true}"
+                                        (keyup.enter)="filterProduct($event.target.value)" />
+                                        
+                                </div>
+                                <div class="cover-form icon">
+                                    <label class="size-15PX">Ex.เสื้อผ้าผู้ชาย</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                        <!-- <div class="row" *ngIf="loading">
+                            <table class="table hover" >
+                                <thead>
+                                    <tr>
+                                        <th class="left" scope="col">
+                                            Image
+                                        </th>
+                                        <th class="left" scope="col">
+                                            Distributor Name
+                                        </th>
+                                        <th class="left" scope="col">
+                                            Product Category
+                                        </th>
+                                        <th class="left" scope="col">
+                                            Email
+                                        </th>
+                                        <th class="left" scope="col">
+                                            Contact Number
+                                        </th>
+                                        <th class="left" scope="col">
+                                            Location
+                                        </th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    <tr class="unset" style="height:300px; background-color: #222b45;">
+                                        <td colspan="8" style="padding-top: 50px;">
+                                            <div style="height: 100px;background-color: #222b45;" [nbSpinner]="loading"
+                                                nbSpinnerStatus="warning">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row" *ngIf="!loading">
+                            <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12" *ngSwitchCase="'data'">
+                                <table class="table hover" >
+                                    <thead>
+                                        <tr>
+                                            <th class="left" scope="col">
+                                                Image
+                                            </th>
+                                            <th class="left" scope="col">
+                                                Distributor Name
+                                            </th>
+                                            <th class="left" scope="col">
+                                                Product Category
+                                            </th>
+                                            <th class="left" scope="col">
+                                                Email
+                                            </th>
+                                            <th class="left" scope="col">
+                                                Contact Number
+                                            </th>
+                                            <th class="left" scope="col">
+                                                Location
+                                            </th>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let product  of arrProducts"
+                                            (click)="btnRowProduct(product.distributor_id)">
+                                            <td>
+                                                <div class="cover-background-image"
+                                                    style="width: 100px; height: 100px;">
+                                                    <div class="background-image padding-width-100px-height-100px"
+                                                        [ngClass]="{'active' : product.distributor_image_url === '-' || product.distributor_image_url === ''}"
+                                                        [ngStyle]="{'background-image': 'url('+product.distributor_image_url+')'}">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="left">
+                                                {{product.distributor_name}}
+                                            </td>
+                                            <td class="left">
+                                                {{product.distributor_catalog_keyword}}
+                                            </td>
+                                            <td class="left">
+                                                {{product.distributor_email}}
+                                            </td>
+                                            <td class="left">
+                                                {{product.distributor_tel}}
+                                            </td>
+                                            <td class="left">
+                                                {{product.distributor_addr_amphoe + "," + product.distributor_addr_province}}
+                                            </td>
+                                            <td title="Save lists">
+                                                <nb-icon (click)="btnDialogSavelists(product); $event.stopPropagation()"
+                                                    icon="list-outline"></nb-icon>
+                                            </td>
+                                            <td title="Wish lists">
+                                                <nb-icon *ngIf="product.distributor_is_wish === 0"
+                                                    (click)="btnDialogWishlist(product); $event.stopPropagation()"
+                                                    icon="heart-outline"></nb-icon>
+                                                <nb-icon *ngIf="product.distributor_is_wish === 1"
+                                                    (click)="btnDialogWishlist(product); $event.stopPropagation()"
+                                                    icon="heart-outline" status="danger">
+                                                </nb-icon>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12" *ngSwitchCase="'Nodata'">
+                                <table class="table hover" >
+                                    <thead>
+                                        <tr>
+                                            <th class="left" scope="col">
+                                                Image
+                                            </th>
+                                            <th class="left" scope="col">
+                                                Distributor Name
+                                            </th>
+                                            <th class="left" scope="col">
+                                                Product Category
+                                            </th>
+                                            <th class="left" scope="col">
+                                                Email
+                                            </th>
+                                            <th class="left" scope="col">
+                                                Contact Number
+                                            </th>
+                                            <th class="left" scope="col">
+                                                Location
+                                            </th>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="text-align: center;">
+                                        <img src="assets/images/loading.png" width="300">
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                        style="text-align: center;margin-top: 1rem;">
+                                        <label>No data. Please select information in the
+                                            list</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+
+                        <div *ngIf="loading">
+                            <table class="table hover" >
+                                <thead>
+                                    <tr>
+                                        <th class="left"> Image</th>
+                                        <th class="left"> Distributor Name </th>
+                                        <th class="left">Product Category</th>
+                                        <th class="left">Email</th>
+                                        <th class="left"> Contact Number </th>
+                                        <th class="left"> Location</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="unset" style="height:300px; background-color: #222b45;">
+                                        <td colspan="8" style="padding-top: 50px;">
+                                            <div style="height: 100px;background-color: #222b45;" [nbSpinner]="loading"
+                                                nbSpinnerStatus="warning">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div *ngIf="isSearchbyproduct == 'data' && !loading">
+                            <nb-card class="own-scroll padding-0">
+                                <nb-card-body style="padding: 0;">
+                                    <ngx-datatable [columnMode]="ColumnMode.force" [rows]="arrProducts" rowHeight="auto"
+                                        [headerHeight]="46" (activate)="btnRowProduct($event)" [scrollbarH]="true">
+                                        <ngx-datatable-column name="Images" [width]="100">
+                                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                                <div class="cover-background-image">
+                                                    <div class="background-image padding-width-100px-height-100px"
+                                                        [ngClass]="{'active' : row.distributor_image_url === '-' || row.distributor_image_url=== ''}"
+                                                        [ngStyle]="{'background-image': 'url('+row.distributor_image_url+')'}">
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="Distributor Name" [sortable]="true"
+                                            prop="distributor_name">
+                                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                                {{ row.distributor_name }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="Product Category" [sortable]="true"
+                                            prop="distributor_catalog_keyword">
+                                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                                {{ row.distributor_catalog_keyword }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="Email" [sortable]="true" prop="distributor_email">
+                                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                                {{ row.distributor_email }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="Contact Number " [sortable]="true"
+                                            prop="distributor_tel">
+                                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                                {{ row.distributor_tel }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="Location" [sortable]="true" prop="distributor_addr_province">
+                                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                                {{ row.distributor_addr_amphoe + "," + row.distributor_addr_province }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column [width]="30">
+                                            <ng-template let-row="row" ngx-datatable-cell-template title="Save lists">
+                                                
+                                                <div class="cover-is-wish">
+                                                    <div *ngIf="row.distributor_is_wish === 0"
+                                                    (click)="btnDialogWishlist(row); $event.stopPropagation()">
+                                                    <nb-icon icon="heart-outline">
+                                                    </nb-icon>
+                                                </div>
+                                                <div *ngIf="row.distributor_is_wish === 1"
+                                                    (click)="btnDialogWishlist(row); $event.stopPropagation()">
+                                                    <nb-icon style="color: red" icon="heart-outline"></nb-icon>
+                                                </div>
+                                                    <button type="button" class="buttonlist"
+                                                    (click)="btnDialogSavelists(row); $event.stopPropagation()">
+                                                        <nb-icon icon="list-outline"></nb-icon>
+                                                    </button>
+                                                </div>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+
+                                    </ngx-datatable> 
+
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                        <div *ngIf="isSearchbyproduct == 'Nodata'  && !loading">
+                            <nb-card class="own-scroll padding-0">
+                                <nb-card-body style="padding: 0;">
+                                    <table class="table hover" >
+                                        <thead>
+                                            <tr>
+                                                <th class="left">Images</th>
+                                                <th class="left">Distributor Name
+                                                </th>
+                                                <th class="left">Product Category</th>
+                                                <th class="left">Email</th>
+                                                <th class="left">Contact Number</th>
+                                                <th class="left">Location</th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    <div class="row" style="padding: 2rem 0; ">
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                            style="text-align: center;     margin-bottom: 1rem;">
+                                            <img src="assets/images/loading.png" width="300">
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="text-align: center;">
+                                            <label>No data. Please select information in the
+                                                list</label>
+                                        </div>
+                                    </div>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

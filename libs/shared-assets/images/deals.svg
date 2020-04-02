@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="301px" height="301px" viewBox="0 0 301 301" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="orders">
+            <g id="Group">
+                <circle id="Oval" fill-opacity="0.401466259" fill="#4BD073" fill-rule="nonzero" cx="150.28" cy="150.77" r="150"></circle>
+                <circle id="Oval" fill="#4BD073" fill-rule="nonzero" cx="150.28" cy="150.77" r="130"></circle>
+                <circle id="Oval" cx="119.5" cy="133.19" r="5.48"></circle>
+                <circle id="Oval" cx="119.5" cy="193.73" r="5.48"></circle>
+                <rect id="Rectangle-path" x="139" y="190" width="48" height="6"></rect>
+                <circle id="Oval" cx="119.5" cy="163.46" r="5.48"></circle>
+                <rect id="Rectangle-path" x="139" y="159" width="48" height="6"></rect>
+                <path d="M231.2505,157.119 L158.8005,84.669 C155.9025,81.771 151.8775,80 147.45,80 L91.1,80 C82.245,80 75,87.245 75,96.1 L75,152.45 C75,156.8775 76.771,160.9025 79.7495,163.881 L152.1995,236.331 C155.0975,239.229 159.1225,241 163.55,241 C167.9775,241 172.0025,239.229 174.9005,236.2505 L231.2505,179.9005 C234.229,177.0025 236,172.9775 236,168.55 C236,164.1225 234.1485,160.017 231.2505,157.119 L231.2505,157.119 Z M103.175,120.25 C96.4935,120.25 91.1,114.8565 91.1,108.175 C91.1,101.4935 96.4935,96.1 103.175,96.1 C109.8565,96.1 115.25,101.4935 115.25,108.175 C115.25,114.8565 109.8565,120.25 103.175,120.25 L103.175,120.25 Z" id="Icon" fill="#FFFFFF"></path>
+            </g>
+        </g>
+    </g>
+</svg>

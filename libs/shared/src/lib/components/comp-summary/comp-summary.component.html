@@ -1,0 +1,32 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th> {{status}} Summary</th>
+            <th> </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td> <label class="summaryHeader"> Total Price : </label> </td>
+            <td><p class="summaryRow"> {{data.total_price |  number : '1.2-2' }} {{'' + data.product_currency_code}}</p>
+            </td>
+        </tr>
+        <tr>
+            <td> <label class="summaryHeader"> Total Discount : </label> </td>
+            <td> <p class="summaryRow"> {{data.total_discount | number : '1.2-2'}} {{'' + data.product_currency_code}}</p> </td>
+
+        </tr>
+        <tr>
+            <td> <label class="summaryHeader" style="font-weight: bolder;"> Subtotal : </label> </td>
+            <td><p class="summaryRow"> {{data.total_vat_none | number : '1.2-2'}} {{'' + data.product_currency_code}}</p> </td>
+        </tr>
+        <tr>
+            <td> <label class="summaryHeader"> Total Vat : </label> </td>
+            <td> <p class="summaryRow"> {{data.total_vat | number : '1.2-2'}} {{'' + data.product_currency_code}}</p> </td>
+        </tr>
+        <tr>
+            <td> <label class="summaryRow"> Grand Total : </label> </td>
+            <td> <p class="summaryRow"> {{data.total_grand |number : '1.2-2'}} {{'' + data.product_currency_code}}</p> </td>
+        </tr>
+    </tbody>
+</table>

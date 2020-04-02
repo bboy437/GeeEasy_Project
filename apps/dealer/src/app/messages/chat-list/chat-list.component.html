@@ -1,0 +1,141 @@
+<!-- <button class="open-button" id="myButton" (click)="openForm()">Messages</button> -->
+
+<div class="d-none d-lg-block">
+
+    <div class="open-button" id="myButton" (click)="openForm()">Messages</div>
+    <div class="chat-popup" id="myForm">
+        <nb-card size="medium" style="border-color: #c5cee0;">
+            <nb-card-header (click)="closeForm()">
+                Messages
+            </nb-card-header>
+            <div class="search">
+                <div class="cover-form icon">
+                    <nb-icon icon="search-outline"></nb-icon>
+                    <input libOnlyCharacterDefault nbInput status="primary" type="text" nbInput fullWidth
+                        status="primary" placeholder="Search message" (keyup)="filterName($event.target.value)" />
+                </div>
+            </div>
+            <nb-list *ngIf="strStatus == false">
+                <nb-list-item *ngFor="let m of arrMessagseList" (click)="btnMessagesClick(m.geeesy_contact_id, m)">
+                    <div *ngFor="let s of m.distributor_data_array">
+                        <img *ngIf="s.distributor_image_url != '-'" src="{{s.distributor_image_url}}">
+                        <img *ngIf="s.distributor_image_url == '-'" src="assets/images/GVUMY7xKt.png">
+                        <label>{{s.distributor_name}}</label>
+                    </div>
+                </nb-list-item>
+            </nb-list>
+            <nb-list *ngIf="strStatus == true">
+                <nb-list-item *ngFor="let n of arrName" (click)="btnMessagesSubmitClick(n)">
+                    <div>
+                        <img *ngIf="n.distributor_image_url != '-'" src="{{n.distributor_image_url}}">
+                        <img *ngIf="n.distributor_image_url == '-'" src="assets/images/GVUMY7xKt.png">
+                        <label>{{n.distributor_name}}</label>
+                    </div>
+                </nb-list-item>
+            </nb-list>
+        </nb-card>
+    </div>
+
+    <div id="item-card">
+        <div *ngFor="let p of arrputData ; let i = index" [className]="p.isOpen ? 'chat-colum is-show' : 'chat-colum'">
+            <div class="header" (click)="openChat(p)">
+                <span class="text">{{p.name}}</span>
+                <span class="icon">
+                    <!-- <img src="assets/images/cancel.png" class="imgs" (click)="closeChat(i)"> -->
+                    <nb-icon icon="close-outline" (click)="closeChat(i)"></nb-icon>
+                </span>
+            </div>
+            <div class="chat-lit">
+                <ul #scrollMe [scrollTop]="scrollMe.scrollHeight" appDragDrop (onFileDropped)="uploadFile($event, p)">
+                    <li class="left" *ngFor="let c of p.data">
+                        <!-- distributor -->
+                        <div *ngFor="let detributor of c.distributor_data_array">
+                            <img src="{{detributor.distributor_image_url}}" class="imgborder">
+                            <span class="text">
+                                <span class="name-time">
+                                    <span class="name">{{detributor.distributor_name}}</span>
+                                    <span class="time">{{c.text_time * 1000 | date: 'HH:mm'}}</span>
+                                </span>
+                                <div *ngIf="c.icon != ''">
+                                    <nb-icon icon="{{c.icon}}" (click)="openUrl(c.text_extra_attachment[0].file_url)">
+                                    </nb-icon>
+                                </div>
+                                <div *ngIf="c.isUpload == 'no file'">
+                                    <label style="font-size: 13px;">{{c.text_detail}}</label>
+                                </div>
+                            </span>
+                        </div>
+                        <!-- supplier -->
+                        <div *ngFor="let supplier of c.supplier_data_array">
+                            <img src="{{supplier.supplier_image_url}}" class="imgborder">
+                            <span class="text">
+                                <span class="name-time">
+                                    <span class="name">{{supplier.supplier_name}}</span>
+                                    <span class="time">{{c.text_time * 1000 | date: 'HH:mm'}}</span>
+                                </span>
+                                <div *ngIf="c.icon != ''">
+                                    <nb-icon icon="{{c.icon}}" (click)="openUrl(c.text_extra_attachment[0].file_url)">
+                                    </nb-icon>
+                                </div>
+                                <div *ngIf="c.isUpload == 'no file'">
+                                    <label style="font-size: 13px;">{{c.text_detail}}</label>
+                                </div>
+                            </span>
+                        </div>
+                        <!-- dealer -->
+                        <div *ngFor="let dealer of c.dealer_data_array">
+                            <img src="{{dealer.dealer_image_url}}" class="imgborder">
+                            <span class="text">
+                                <span class="name-time">
+                                    <span class="name">{{dealer.dealer_name}}</span>
+                                    <span class="time">{{c.text_time * 1000 | date: 'HH:mm'}}</span>
+                                </span>
+                                <div *ngIf="c.icon != ''">
+                                    <nb-icon icon="{{c.icon}}" (click)="openUrl(c.text_extra_attachment[0].file_url)">
+                                    </nb-icon>
+                                </div>
+                                <div *ngIf="c.isUpload == 'no file'">
+                                    <label style="font-size: 13px;">{{c.text_detail}}</label>
+                                </div>
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div *ngIf="p.status == false" class="chat-input" appDragDrop (onFileDropped)="uploadFile($event)">
+                <label for="file-upload" class="custom-file-upload">
+                    <nb-icon icon="attach-outline">
+                    </nb-icon>
+                </label>
+                <input class="files" nbInput status="primary" id="file-upload" type="file"
+                    (change)="uploadFile($event.target.files, p)" />
+
+                <input class="inputs" nbInput type="text" fullWidth placeholder="Message...."
+                    (keyup.enter)="sendMessage($event.target.value, p)" [(ngModel)]="p.strMessages" />
+
+                <button class="buttons" [disabled]="!p.strMessages" nbButton status="primary" size="small">
+                    <nb-icon icon="navigation-2-outline"></nb-icon>
+                </button>
+            </div>
+
+            <div *ngIf="p.status == true" class="chat-input" appDragDrop (onFileDropped)="uploadFile($event)">
+                <label for="file-upload" class="custom-file-upload">
+                    <nb-icon icon="attach-outline">
+                    </nb-icon>
+                </label>
+                <input class="files" nbInput status="primary" id="file-upload" type="file"
+                    (change)="uploadFile($event.target.files, p)" />
+                <input class="inputs" nbInput type="text" fullWidth placeholder="Message...."
+                    (keyup.enter)="sentSubmitMessages($event.target.value, p)" [(ngModel)]="p.strMessages" />
+
+                <button class="buttons" [disabled]="!p.strMessages" nbButton status="primary" size="small">
+                    <nb-icon icon="navigation-2-outline"></nb-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>

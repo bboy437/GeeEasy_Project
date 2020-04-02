@@ -1,0 +1,387 @@
+ [
+    {
+        "location_id": "10263",
+        "location_name": "กระบี่",
+        "location_postcode": "81"
+    },
+    {
+        "location_id": "10200",
+        "location_name": "กรุงเทพมหานคร",
+        "location_postcode": "10"
+    },
+    {
+        "location_id": "10255",
+        "location_name": "กาญจนบุรี",
+        "location_postcode": "71"
+    },
+    {
+        "location_id": "10233",
+        "location_name": "กาฬสินธุ์",
+        "location_postcode": "46"
+    },
+    {
+        "location_id": "10248",
+        "location_name": "กำแพงเพชร",
+        "location_postcode": "62"
+    },
+    {
+        "location_id": "10227",
+        "location_name": "ขอนแก่น",
+        "location_postcode": "40"
+    },
+    {
+        "location_id": "10212",
+        "location_name": "จันทบุรี",
+        "location_postcode": "22"
+    },
+    {
+        "location_id": "10214",
+        "location_name": "ฉะเชิงเทรา",
+        "location_postcode": "24"
+    },
+    {
+        "location_id": "10210",
+        "location_name": "ชลบุรี",
+        "location_postcode": "20"
+    },
+    {
+        "location_id": "10208",
+        "location_name": "ชัยนาท",
+        "location_postcode": "18"
+    },
+    {
+        "location_id": "10224",
+        "location_name": "ชัยภูมิ",
+        "location_postcode": "36"
+    },
+    {
+        "location_id": "10268",
+        "location_name": "ชุมพร",
+        "location_postcode": "86"
+    },
+    {
+        "location_id": "10271",
+        "location_name": "ตรัง",
+        "location_postcode": "92"
+    },
+    {
+        "location_id": "10213",
+        "location_name": "ตราด",
+        "location_postcode": "23"
+    },
+    {
+        "location_id": "10249",
+        "location_name": "ตาก",
+        "location_postcode": "63"
+    },
+    {
+        "location_id": "10216",
+        "location_name": "นครนายก",
+        "location_postcode": "26"
+    },
+    {
+        "location_id": "10257",
+        "location_name": "นครปฐม",
+        "location_postcode": "73"
+    },
+    {
+        "location_id": "10235",
+        "location_name": "นครพนม",
+        "location_postcode": "48"
+    },
+    {
+        "location_id": "10218",
+        "location_name": "นครราชสีมา",
+        "location_postcode": "30"
+    },
+    {
+        "location_id": "10262",
+        "location_name": "นครศรีธรรมราช",
+        "location_postcode": "80"
+    },
+    {
+        "location_id": "10246",
+        "location_name": "นครสวรรค์",
+        "location_postcode": "60"
+    },
+    {
+        "location_id": "10202",
+        "location_name": "นนทบุรี",
+        "location_postcode": "12"
+    },
+    {
+        "location_id": "10275",
+        "location_name": "นราธิวาส",
+        "location_postcode": "96"
+    },
+    {
+        "location_id": "10242",
+        "location_name": "น่าน",
+        "location_postcode": "55"
+    },
+    {
+        "location_id": "10276",
+        "location_name": "บึงกาฬ",
+        "location_postcode": "97"
+    },
+    {
+        "location_id": "10219",
+        "location_name": "บุรีรัมย์",
+        "location_postcode": "31"
+    },
+    {
+        "location_id": "10203",
+        "location_name": "ปทุมธานี",
+        "location_postcode": "13"
+    },
+    {
+        "location_id": "10261",
+        "location_name": "ประจวบคีรีขันธ์",
+        "location_postcode": "77"
+    },
+    {
+        "location_id": "10215",
+        "location_name": "ปราจีนบุรี",
+        "location_postcode": "25"
+    },
+    {
+        "location_id": "10273",
+        "location_name": "ปัตตานี",
+        "location_postcode": "94"
+    },
+    {
+        "location_id": "10204",
+        "location_name": "พระนครศรีอยุธยา",
+        "location_postcode": "14"
+    },
+    {
+        "location_id": "10243",
+        "location_name": "พะเยา",
+        "location_postcode": "56"
+    },
+    {
+        "location_id": "10264",
+        "location_name": "พังงา",
+        "location_postcode": "82"
+    },
+    {
+        "location_id": "10272",
+        "location_name": "พัทลุง",
+        "location_postcode": "93"
+    },
+    {
+        "location_id": "10252",
+        "location_name": "พิจิตร",
+        "location_postcode": "66"
+    },
+    {
+        "location_id": "10251",
+        "location_name": "พิษณุโลก",
+        "location_postcode": "65"
+    },
+    {
+        "location_id": "10265",
+        "location_name": "ภูเก็ต",
+        "location_postcode": "83"
+    },
+    {
+        "location_id": "10231",
+        "location_name": "มหาสารคาม",
+        "location_postcode": "44"
+    },
+    {
+        "location_id": "10236",
+        "location_name": "มุกดาหาร",
+        "location_postcode": "49"
+    },
+    {
+        "location_id": "10274",
+        "location_name": "ยะลา",
+        "location_postcode": "95"
+    },
+    {
+        "location_id": "10223",
+        "location_name": "ยโสธร",
+        "location_postcode": "35"
+    },
+    {
+        "location_id": "10267",
+        "location_name": "ระนอง",
+        "location_postcode": "85"
+    },
+    {
+        "location_id": "10211",
+        "location_name": "ระยอง",
+        "location_postcode": "21"
+    },
+    {
+        "location_id": "10254",
+        "location_name": "ราชบุรี",
+        "location_postcode": "70"
+    },
+    {
+        "location_id": "10232",
+        "location_name": "ร้อยเอ็ด",
+        "location_postcode": "45"
+    },
+    {
+        "location_id": "10206",
+        "location_name": "ลพบุรี",
+        "location_postcode": "16"
+    },
+    {
+        "location_id": "10239",
+        "location_name": "ลำปาง",
+        "location_postcode": "52"
+    },
+    {
+        "location_id": "10238",
+        "location_name": "ลำพูน",
+        "location_postcode": "51"
+    },
+    {
+        "location_id": "10221",
+        "location_name": "ศรีสะเกษ",
+        "location_postcode": "33"
+    },
+    {
+        "location_id": "10234",
+        "location_name": "สกลนคร",
+        "location_postcode": "47"
+    },
+    {
+        "location_id": "10269",
+        "location_name": "สงขลา",
+        "location_postcode": "90"
+    },
+    {
+        "location_id": "10270",
+        "location_name": "สตูล",
+        "location_postcode": "91"
+    },
+    {
+        "location_id": "10201",
+        "location_name": "สมุทรปราการ",
+        "location_postcode": "11"
+    },
+    {
+        "location_id": "10259",
+        "location_name": "สมุทรสงคราม",
+        "location_postcode": "75"
+    },
+    {
+        "location_id": "10258",
+        "location_name": "สมุทรสาคร",
+        "location_postcode": "74"
+    },
+    {
+        "location_id": "10209",
+        "location_name": "สระบุรี",
+        "location_postcode": "19"
+    },
+    {
+        "location_id": "10217",
+        "location_name": "สระแก้ว",
+        "location_postcode": "27"
+    },
+    {
+        "location_id": "10207",
+        "location_name": "สิงห์บุรี",
+        "location_postcode": "17"
+    },
+    {
+        "location_id": "10256",
+        "location_name": "สุพรรณบุรี",
+        "location_postcode": "72"
+    },
+    {
+        "location_id": "10266",
+        "location_name": "สุราษฎร์ธานี",
+        "location_postcode": "84"
+    },
+    {
+        "location_id": "10220",
+        "location_name": "สุรินทร์",
+        "location_postcode": "32"
+    },
+    {
+        "location_id": "10250",
+        "location_name": "สุโขทัย",
+        "location_postcode": "64"
+    },
+    {
+        "location_id": "10230",
+        "location_name": "หนองคาย",
+        "location_postcode": "43"
+    },
+    {
+        "location_id": "10226",
+        "location_name": "หนองบัวลำภู",
+        "location_postcode": "39"
+    },
+    {
+        "location_id": "10225",
+        "location_name": "อำนาจเจริญ",
+        "location_postcode": "37"
+    },
+    {
+        "location_id": "10228",
+        "location_name": "อุดรธานี",
+        "location_postcode": "41"
+    },
+    {
+        "location_id": "10240",
+        "location_name": "อุตรดิตถ์",
+        "location_postcode": "53"
+    },
+    {
+        "location_id": "10247",
+        "location_name": "อุทัยธานี",
+        "location_postcode": "61"
+    },
+    {
+        "location_id": "10222",
+        "location_name": "อุบลราชธานี",
+        "location_postcode": "34"
+    },
+    {
+        "location_id": "10205",
+        "location_name": "อ่างทอง",
+        "location_postcode": "15"
+    },
+    {
+        "location_id": "10244",
+        "location_name": "เชียงราย",
+        "location_postcode": "57"
+    },
+    {
+        "location_id": "10237",
+        "location_name": "เชียงใหม่",
+        "location_postcode": "50"
+    },
+    {
+        "location_id": "10260",
+        "location_name": "เพชรบุรี",
+        "location_postcode": "76"
+    },
+    {
+        "location_id": "10253",
+        "location_name": "เพชรบูรณ์",
+        "location_postcode": "67"
+    },
+    {
+        "location_id": "10229",
+        "location_name": "เลย",
+        "location_postcode": "42"
+    },
+    {
+        "location_id": "10241",
+        "location_name": "แพร่",
+        "location_postcode": "54"
+    },
+    {
+        "location_id": "10245",
+        "location_name": "แม่ฮ่องสอน",
+        "location_postcode": "58"
+    }
+]

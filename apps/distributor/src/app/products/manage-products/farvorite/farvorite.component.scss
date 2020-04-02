@@ -1,0 +1,44 @@
+@import "../../../../../../../libs/theme/src/lib/styles/themes";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+.show-grid {
+  .row {
+    margin: -0.5rem;
+  }
+
+  div[class^="col-"] {
+    padding: 0.5rem;
+    box-sizing: border-box;
+
+    div {
+      padding: 0.5rem 0.25rem;
+      border-radius: 0.25rem;
+    }
+  }
+}
+
+thead {
+  font-size: 14px;
+}
+
+tbody {
+  font-size: 14px;
+}
+
+
+.Incoming {
+  background-color: rgb(255, 228, 228);
+}
+.Available {
+  background-color: rgb(234, 234, 255);
+}
+.OnHand {
+  background-color: rgb(253, 255, 230);
+}
+.Outgoing {
+  background-color: rgb(228, 253, 238);
+}
+
+// table tr:nth-child(even) {
+//   background: #f1f4ff;
+// }

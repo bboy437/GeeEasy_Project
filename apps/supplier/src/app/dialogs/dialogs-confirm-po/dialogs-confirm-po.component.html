@@ -1,0 +1,43 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card *ngIf="status == 'confrim'">
+                <nb-card-header>
+                    <div class="header">
+                        <nb-icon icon="browser-outline"></nb-icon>
+                        <label style="font-size: 18px; font-weight: bold">Confirm Delivery</label>
+                    </div>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="row" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem">
+                        <div class="col-md-12">
+                            <button nbButton style="width: 100px" status="danger"
+                                (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                            <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success" nbButton
+                                style="width: 100px" status="success" (click)="btnSaveClick()">OK</button>
+                        </div>
+                    </div><br>
+                </nb-card-body>
+            </nb-card>
+            <nb-card *ngIf="status == 'summary'">
+                <nb-card-header class="dialogs">
+                    <div class="header">
+                        <nb-icon icon="alert-circle-outline"></nb-icon>
+                        <label>Confirm Update Summary</label>
+                    </div>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="row" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem">
+                        <div class="col-md-12">
+                            <button nbButton style="width: 100px" status="danger"
+                                (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                            <button nbButton style="width: 100px" status="success" (click)="update()">OK</button>
+
+                        </div>
+                    </div><br>
+                </nb-card-body>
+            </nb-card>
+
+        </div>
+    </div>
+</div>

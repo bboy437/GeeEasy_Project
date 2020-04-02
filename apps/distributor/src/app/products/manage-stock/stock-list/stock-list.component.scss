@@ -1,0 +1,74 @@
+@import "../../../../../../../libs/theme/src/lib/styles/themes";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+.active {
+  border-radius: 1rem;
+  font-family: Open Sans, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  background-color: #00af75;
+  color: white;
+}
+
+.inactive {
+  border-radius: 1rem;
+  font-family: Open Sans, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  background-color: #9c9c9c;
+  color: white;
+}
+
+@include nb-install-component() {
+  .show-grid {
+    .row {
+      margin: -0.5rem;
+    }
+
+    div[class^="col-"] {
+      padding: 0.5rem;
+      box-sizing: border-box;
+
+      div {
+        padding: 0.5rem 0.25rem;
+        border-radius: 0.25rem;
+      }
+    }
+  }
+  
+  thead {
+    font-size: 14px;
+  }
+
+
+  tbody {
+    font-size: 14px;
+  }
+
+  .body{
+    padding-bottom: 1rem; 
+    padding-top: 1rem; 
+    border-bottom: 1px solid #ced4da;
+  }
+
+  // table tr:nth-child(even) {
+  //   background: #f1f4ff;
+  // }
+}
+
+
+.Incoming {
+  background-color: rgb(255, 228, 228);
+}
+.Available {
+  background-color: rgb(234, 234, 255);
+}
+.OnHand {
+  background-color: rgb(253, 255, 230);
+}
+.Outgoing {
+  background-color: rgb(228, 253, 238);
+}

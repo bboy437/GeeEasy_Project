@@ -1,0 +1,47 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Order Summary
+            </th>
+            <th> </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td > <label class="summaryHeader"> Total Price : </label> </td>
+            <td>
+                <p class="summaryRow">
+                    {{data.total_price |  number : '1.2-2' }} {{'' + 'THB'}}
+                </p>
+            </td>
+        </tr>
+        <!-- <tr>
+            <td> <label class="summaryHeader"> Total Sub : </label> </td>
+            <td>
+                <p class="summaryRow"> {{data.total_sub | number : '1.2-2'}} {{'' + 'THB'}}</p>
+            </td>
+        </tr> -->
+        <tr>
+            <td> <label class="summaryHeader"> Total Discount : </label> </td>
+            <td *ngIf="data.total_discount > 0">
+                <p class="summaryRow"> -{{data.total_discount | number : '1.2-2'}} {{'' + 'THB'}}</p>
+            </td>
+            <td *ngIf="data.total_discount == 0">
+                <p class="summaryRow"> {{data.total_discount | number : '1.2-2'}} {{'' + 'THB'}}</p>
+            </td>
+        </tr>
+        <tr>
+            <td> <label class="summaryHeader"> Total Vat : </label> </td>
+            <td>
+                <p class="summaryRow"> {{data.total_vat | number : '1.2-2'}} {{'' + 'THB'}}</p>
+            </td>
+        </tr>
+        <tr>
+            <td> <label class="summaryRow"> Grand Total : </label> </td>
+            <td>
+                <p class="summaryRow"> {{data.total_grand |number : '1.2-2'}} {{'' + 'THB'}}</p>
+            </td>
+        </tr>
+    </tbody>
+</table>

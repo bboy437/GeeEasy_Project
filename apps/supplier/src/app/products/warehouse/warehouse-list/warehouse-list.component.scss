@@ -1,0 +1,24 @@
+@import "../../../../../../../libs/theme-supplier/src/lib/styles/themes";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+@include nb-install-component() {
+  .show-grid {
+    .row {
+      margin: -0.5rem;
+    }
+
+    div[class^="col-"] {
+      padding: 0.5rem;
+      box-sizing: border-box;
+
+      div {
+        padding: 0.5rem 0.25rem;
+        border-radius: 0.25rem;
+      }
+    }
+  }
+  
+
+
+}

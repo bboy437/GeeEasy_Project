@@ -1,0 +1,171 @@
+<div class="pages" [formGroup]="Form">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <nb-icon icon="cube-outline"></nb-icon>
+                                <label>Transfer Stock<span class="p-0-12">/</span>{{arrData.product_title}}</label>
+                            </div>
+                            <div class="col-auto">
+                                <button nbButton size="medium" [disabled]="!Form.valid" [nbSpinner]="loadingSave"
+                                    nbSpinnerStatus="success" style="float: right;margin: 3px 0 3px 1rem;"
+                                    (click)="btnSaveClick()" status="success">
+                                    Transfer
+                                </button>
+                                <button nbButton size="medium" style="float: right;margin: 3px 0 3px 1rem;"
+                                    (click)="btnCancelClick()" status="danger">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="primary">
+            <nb-card style="padding: 1rem 0.5rem 0.5rem 0.5rem; min-height: calc(100vh - 190px);">
+                <nb-card-body>
+                    <div class="row">
+                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="text-align: center">
+                                <div class="cover-background-image" style="margin-bottom: 1rem;">
+                                    <div class="background-image padding-top-30"
+                                        [ngClass]="{'active' : arrData.product_image_url === '-' || arrData.product_image_url === ''}"
+                                        [ngStyle]="{'background-image': 'url('+arrData.product_image_url+')'}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-auto mr-auto">
+                                        <label>Product Name : </label>
+                                    </div>
+                                    <div class="col">
+                                        <label>{{arrData.product_title}}</label>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-auto mr-auto">
+                                        <label>Product SKU :</label>
+                                    </div>
+                                    <div class="col">
+                                        <label class="sku">{{arrData.product_sku}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                            <div class="row">
+                                <div class="col">
+                                    <label style="font-size: 16px; font-weight: bold;">From</label>
+                                </div>
+                                <div class="col-lg-12">
+                                    <table class="table">
+                                        <colgroup>
+                                            <col />
+                                            <col class="Outgoing" />
+                                            <col class="Available" />
+                                            <col class="OnHand" />
+                                            <col class="Incoming" />
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 40%;">Warehouse</th>
+                                                <th style="text-align: center">Available</th>
+                                                <th style="text-align: center">On Hand</th>
+                                                <th style="text-align: center">Outgoing</th>
+                                                <th style="text-align: center">Incoming</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 40%;">
+                                                    <label>
+                                                        {{warehouse_name === undefined ? "No Warehouse" : warehouse_name}}</label>
+                                                </td>
+                                                <td>
+                                                    <input style="text-align: center; color: black;" fullWidth nbInput
+                                                        status="primary" type="text" libOnlyCharacternumber
+                                                        mask="separator.0" thousandSeparator="," status="primary"
+                                                        formControlName="available_From" (keydown)="keyDown($event)" />
+                                                </td>
+                                                <td>
+                                                    <input style="text-align: center; color: black;" fullWidth nbInput
+                                                        status="primary" type="text" libOnlyCharacternumber
+                                                        mask="separator.0" thousandSeparator="," status="primary"
+                                                        formControlName="onhand_From" (keydown)="keyDown($event)" />
+                                                </td>
+                                                <td>
+                                                    <input style="text-align: center; color: black;" fullWidth nbInput
+                                                        status="primary" type="text" libOnlyCharacternumber
+                                                        mask="separator.0" thousandSeparator="," status="primary"
+                                                        formControlName="outgoing_From" (keydown)="keyDown($event)" />
+                                                </td>
+                                                <td>
+                                                    <input style="text-align: center; color: black;" fullWidth nbInput
+                                                        status="primary" type="text" libOnlyCharacternumber
+                                                        mask="separator.0" thousandSeparator="," status="primary"
+                                                        formControlName="incoming_From" (keydown)="keyDown($event)" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label style="font-size: 16px; font-weight: bold;">To</label>
+                                </div>
+                                <div class="col-lg-12">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 40%;">Warehouse</th>
+                                                <th style="text-align: center; width: 150px;">Quantity</th>
+                                                <th style="text-align: center"></th>
+                                                <th style="text-align: center"></th>
+                                                <th style="text-align: center"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 40%;">
+                                                    <ngx-select [allowClear]="true" [items]="arrWarehouse"
+                                                        optionValueField="warehouse_id" optionTextField="warehouse_name"
+                                                        formControlName="warehouse_id"
+                                                        placeholder="--------- Choose ---------">
+                                                    </ngx-select>
+                                                </td>
+                                                <td>
+                                                    <input style="text-align: center" fullWidth nbInput status="primary"
+                                                        type="text" libOnlyCharacternumber mask="separator.0"
+                                                        thousandSeparator="," status="primary"
+                                                        formControlName="onhand_To"
+                                                        (keyup)="onKeyQTY($event.target.value)" />
+                                                </td>
+                                                <td>
+                                                </td>
+                                                <td>
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

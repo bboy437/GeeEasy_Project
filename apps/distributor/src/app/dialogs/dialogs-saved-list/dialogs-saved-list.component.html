@@ -1,0 +1,117 @@
+<nb-card>
+    <nb-card-header>
+        <nb-icon icon="people-outline"></nb-icon>
+        <label style="font-size: 20px">Saved Lists</label>
+    </nb-card-header>
+    <nb-card-body>
+
+        <div *ngIf="isData == 'new'">
+            <div [formGroup]="saveListForm">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>List Name</label>
+                        <nb-select placeholder="-------------- Choose ---------------" fullWidth outline
+                            status="primary" formControlName="name"
+                            [ngClass]="{ 'is-invalid': submitted && f.suppliername.errors }">
+                            <nb-option *ngFor="let item of arrSaveList" [value]="item.supplier_lists_id">
+                                {{item.supplier_lists_name}}
+                            </nb-option>
+                        </nb-select>
+                    </div>
+                </div><br>
+                <div class="row" style="text-align: center">
+                    <div class="col-md-12">
+                        <button nbButton style="width: 100px" status="danger"
+                            (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                        <button nbButton [nbSpinner]="loading" nbSpinnerStatus="success"
+                            [disabled]="!saveListForm.valid" style="width: 100px" status="success"
+                            (click)="btnOkClick()">OK</button>
+                    </div>
+                </div><br>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="cover-button">
+                            <button nbButton status="primary" fullWidth (click)="btnCreate()">Create new saved
+                                list</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="isData == 'create'">
+            <div [formGroup]="saveListForm">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Name</label>
+                        <input nbInput status="primary" type="text" nbInput fullWidth formControlName="name"
+                            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+                    </div>
+                </div><br>
+                <div class="row" style="text-align: center">
+                    <div class="col-md-12">
+                        <button nbButton style="width: 100px" status="danger"
+                            (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                        <button [nbSpinner]="loading" nbSpinnerStatus="success" nbButton style="width: 100px"
+                            [disabled]="!saveListForm.valid" status="success" (click)="btnCreateClick()">Create</button>
+                    </div>
+                </div><br>
+            </div>
+        </div>
+
+        <div *ngIf="isData == 'Rename'">
+            <div [formGroup]="saveListForm">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Name</label>
+                        <input nbInput status="primary" type="text" nbInput fullWidth formControlName="name"
+                            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+                    </div>
+                </div><br>
+                <div class="row" style="text-align: center">
+                    <div class="col-md-12">
+                        <button nbButton style="width: 100px" status="danger"
+                            (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                        <button [nbSpinner]="loading" nbSpinnerStatus="success" nbButton style="width: 100px"
+                            status="success" [disabled]="!saveListForm.valid" (click)="btnRenameClick()">Update</button>
+                    </div>
+                </div><br>
+            </div>
+        </div>
+
+        <div *ngIf="isData == 'deleteList'">
+            <div class="row" style="padding-top: 1rem; text-align: center;">
+                <div class="col-md-12" style="padding-top: 1rem;">
+                    <label style="font-size: 16px;">Are you sure you want to Delete ?</label>
+                </div>
+            </div><br>
+            <div class="row" style="text-align: center;">
+                <div class="col-md-12">
+                    <button nbButton style="width: 100px" status="gray"
+                        (click)="btnCancelClick()">Back</button>&nbsp;&nbsp;
+                    <button [nbSpinner]="loading" nbSpinnerStatus="success" nbButton style="width: 100px"
+                        status="danger" (click)="btnDeleteAllClick()">Delete</button>
+                </div>
+            </div><br>
+        </div>
+
+        <div *ngIf="isData == 'delete'">
+            <div class="row" style="padding-top: 1rem; text-align: center;">
+                <div class="col-md-12" style="padding-top: 1rem;">
+                    <label style="font-size: 16px;">Are you sure you want to Delete ?</label>
+                </div>
+            </div><br>
+            <div class="row" style="text-align: center;">
+                <div class="col-md-12">
+                    <button nbButton style="width: 100px" status="gray"
+                        (click)="btnCancelClick()">Back</button>&nbsp;&nbsp;
+                    <button [nbSpinner]="loading" nbSpinnerStatus="success" nbButton style="width: 100px"
+                        status="danger" (click)="btnDeleteClick()">Delete</button>
+                </div>
+            </div><br>
+        </div>
+
+
+    </nb-card-body>
+</nb-card>

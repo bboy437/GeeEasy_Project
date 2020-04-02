@@ -1,0 +1,349 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <nb-icon icon="cube-outline"></nb-icon>
+                        <label>Manage Stock</label>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body style="min-height: calc(100vh - 280px);">
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                                        <div class="cover-form icon">
+                                            <nb-icon style="right: 0px;" icon="search-outline"></nb-icon>
+                                            <nb-icon *ngIf="service.searchTerm" (click)="btnRefresh()"
+                                                style="float: right;left: 0; cursor: pointer;" icon="close-outline">
+                                            </nb-icon>
+                                            <input libOnlyCharacterDefault nbInput status="primary" type="text" nbInput
+                                                fullWidth status="primary" placeholder="Search for name"
+                                                [(ngModel)]="service.searchTerm" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div *ngIf="!isReload">
+                                    <table class="table hover" style="width: 100%;"
+                                        *ngIf="stock$ | async as Products ; else loading">
+                                        <colgroup>
+                                            <col />
+                                            <col />
+                                            <col />
+                                            <col />
+                                            <col class="Outgoing" />
+                                            <col class="Available" />
+                                            <col class="OnHand" />
+                                            <col class="Incoming" />
+                                            <col />
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
+                                                <th>Images</th>
+                                                <th></th>
+                                                <th style="text-align: left; min-width: 200px;">
+                                                    Item
+                                                </th>
+                                                <th scope="col" style="text-align: left; min-width: 200px;">
+                                                    Warehouse Name
+                                                </th>
+                                                <th style="text-align: center; min-width: 120px;">
+                                                    Available
+                                                </th>
+                                                <th style="text-align: center; min-width: 120px;">
+                                                    On Hand
+                                                </th>
+                                                <th style="text-align: center; min-width: 120px;">
+                                                    Outgoing
+                                                </th>
+                                                <th style="text-align: center; min-width: 120px;">
+                                                    Incoming
+                                                </th>
+                                                <th class="left">
+                                                    Status
+                                                </th>
+                                                <th class="left">
+                                                    Created
+                                                </th>
+                                                <th class="left">
+                                                    Updated
+                                                </th>
+                                                <th style="text-align: right; cursor: pointer;" (click)="btnReload()">
+                                                    <nb-icon icon="refresh-outline"></nb-icon>
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody style="cursor: pointer;">
+                                            <tr *ngFor="let products of Products" (click)="btnRowClick(products)">
+                                                <td style="text-align: center">
+                                                    <div class="cover-background-image">
+                                                        <div class="background-image padding-width-100px-height-100px"
+                                                            [ngClass]="{'active' : products.product_image_url === '-' || products.product_image_url=== ''}"
+                                                            [ngStyle]="{'background-image': 'url('+products.product_image_url+')'}">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div *ngIf="products.supplier_id === 0">
+                                                        <nb-icon style="font-size: 2rem;" icon="inbox-outline">
+                                                        </nb-icon>
+                                                    </div>
+                                                </td>
+                                                <td style="text-align: left;">
+                                                    <div style="text-align: left;">
+                                                        <ngb-highlight [result]="products.product_title"
+                                                            [term]="service.searchTerm">
+                                                        </ngb-highlight>
+                                                    </div>
+                                                    <div style="padding-top: 1rem;">
+                                                        <ngb-highlight class="sku" [result]="products.product_sku"
+                                                            [term]="service.searchTerm">
+                                                        </ngb-highlight>
+                                                    </div>
+                                                </td>
+                                                <td style="text-align: left;">
+                                                    <div *ngFor="let warehouse of products.product_warehouse_array">
+                                                        <ngb-highlight [result]="warehouse.warehouse_name"
+                                                            [term]="service.searchTerm">
+                                                        </ngb-highlight>
+                                                    </div>
+                                                </td>
+                                                <td class="cover qty">
+                                                    <ngb-highlight
+                                                        [result]="products.checkin_data.onhand - products.checkin_data.outgoing | number  "
+                                                        [term]="service.searchTerm">
+                                                    </ngb-highlight>
+                                                </td>
+                                                <td class="cover qty">
+                                                    <ngb-highlight [result]="products.checkin_data.onhand | number "
+                                                        [term]="service.searchTerm">
+                                                    </ngb-highlight>
+                                                </td>
+                                                <td class="cover qty">
+                                                    <ngb-highlight [result]="products.checkin_data.outgoing | number  "
+                                                        [term]="service.searchTerm">
+                                                    </ngb-highlight>
+                                                </td>
+                                                <td class="cover qty">
+                                                    <ngb-highlight [result]="products.checkin_data.incoming | number  "
+                                                        [term]="service.searchTerm">
+                                                    </ngb-highlight>
+                                                </td>
+                                                <td tyle="text-align: left;">
+                                                    <ngb-highlight
+                                                        [ngClass]="products.product_is_active  == 1 ? 'active' : 'inactive' "
+                                                        [result]="products.product_is_active  == 1 ? 'Active' : 'Inactive'  "
+                                                        [term]="service.searchTerm">
+                                                    </ngb-highlight>
+                                                </td>
+                                                <td style="text-align: left;">
+                                                    <ngb-highlight
+                                                        [result]="products.create_time  * 1000 | date : 'dd/MM/yyyy' "
+                                                        [term]="service.searchTerm">
+                                                    </ngb-highlight>
+                                                </td>
+                                                <td style="text-align: left;">
+                                                    <ngb-highlight
+                                                        [result]="(products.update_time === 0) ? (products.create_time * 1000 | date : 'dd/MM/yyyy') : (products.update_time * 1000 | date : 'dd/MM/yyyy') "
+                                                        [term]="service.searchTerm">
+                                                    </ngb-highlight>
+                                                </td>
+                                                <td class="right" (click)="$event.stopPropagation()">
+                                                    <button nbButton size="small"
+                                                        style="margin-bottom: 0.74rem; color: white! important;"
+                                                        (click)="btnTransfer(products, products.warehouse_id)">
+                                                        transfer
+                                                    </button>
+                                                    <!-- <div *ngFor="let item of products.product_row_display_array">
+                                                        <div *ngIf="products.product_row_display_array.length > 1">
+                                                            <div *ngFor="let purchase_data of item.purchase_data"
+                                                                style="padding-bottom: 0rem; padding-top: 1rem; border-bottom: 1px solid #ced4da;">
+                                                                <button nbButton size="small"
+                                                                    style="margin-bottom: 0.74rem; color: white! important;"
+                                                                    (click)="btnTransfer(purchase_data, item.warehouse_id, products)">
+                                                                    transfer
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngIf="products.product_row_display_array.length === 1">
+                                                            <div *ngFor="let purchase_data of item.purchase_data"
+                                                                style="padding-bottom: 0rem; padding-top: 1rem; border-bottom: 1px solid #ced4da;">
+                                                                <button nbButton size="small"
+                                                                    style="margin-bottom: 0.74rem; color: white! important;"
+                                                                    (click)="btnTransfer(purchase_data, item.warehouse_id, products)">
+
+                                                                    transfer
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div> -->
+                                                </td>
+                                            </tr>
+
+                                            <tr *ngIf="Products.length == 0"
+                                                style="height:300px; background-color: white;">
+                                                <td colspan="12" style="padding-top: 50px; text-align: center;">
+                                                    <img src="assets/images/loading.png" width="300"><br><br>
+                                                    <label>No data.</label>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <ng-template #loading>
+                                        <table class="table hover" style="width: 100%;">
+                                            <colgroup>
+                                                <col />
+                                                <col />
+                                                <col />
+                                                <col class="Outgoing" />
+                                                <col class="Available" />
+                                                <col class="OnHand" />
+                                                <col class="Incoming" />
+                                                <col />
+                                            </colgroup>
+                                            <thead>
+                                                <tr>
+                                                    <th>Images</th>
+                                                    <th style="text-align: left; min-width: 200px;">
+                                                        Item
+                                                    </th>
+                                                    <th scope="col" style="text-align: left; min-width: 200px;">
+                                                        Warehouse Name
+                                                    </th>
+                                                    <th style="text-align: center; min-width: 120px;">
+                                                        Available
+                                                    </th>
+                                                    <th style="text-align: center; min-width: 120px;">
+                                                        On Hand
+                                                    </th>
+                                                    <th style="text-align: center; min-width: 120px;">
+                                                        Outgoing
+                                                    </th>
+                                                    <th style="text-align: center; min-width: 120px;">
+                                                        Incoming
+                                                    </th>
+                                                    <th class="left">
+                                                        Status
+                                                    </th>
+                                                    <th class="left">
+                                                        Created
+                                                    </th>
+                                                    <th class="left">
+                                                        Updated
+                                                    </th>
+                                                    <th style="text-align: right; cursor: pointer;"
+                                                        (click)="btnReload()">
+                                                        <nb-icon icon="refresh-outline"></nb-icon>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr style="height:300px; background-color: white;">
+                                                    <td colspan="12" style="padding-top: 50px;">
+                                                        <div style="height: 100px;background-color: white;"
+                                                            [nbSpinner]="loading" nbSpinnerStatus="primary">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </ng-template>
+                                </div>
+                                <div class="cover-table" *ngIf="isReload">
+                                    <table class="table hover" style="width: 100%;">
+                                        <colgroup>
+                                            <col />
+                                            <col />
+                                            <col />
+                                            <col />
+                                            <col class="Outgoing" />
+                                            <col class="Available" />
+                                            <col class="OnHand" />
+                                            <col class="Incoming" />
+                                            <col />
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
+                                                <th>Images</th>
+                                                <th style="text-align: left; min-width: 200px;">
+                                                    Item
+                                                </th>
+                                                <th scope="col" style="text-align: left; min-width: 200px;">
+                                                    Warehouse Name
+                                                </th>
+                                                <th style="text-align: center; min-width: 120px;">
+                                                    Available
+                                                </th>
+                                                <th style="text-align: center; min-width: 120px;">
+                                                    On Hand
+                                                </th>
+                                                <th style="text-align: center; min-width: 120px;">
+                                                    Outgoing
+                                                </th>
+                                                <th style="text-align: center; min-width: 120px;">
+                                                    Incoming
+                                                </th>
+                                                <th class="left">
+                                                    Status
+                                                </th>
+                                                <th class="left">
+                                                    Created
+                                                </th>
+                                                <th class="left">
+                                                    Updated
+                                                </th>
+                                                <th style="text-align: right; cursor: pointer;" (click)="btnReload()">
+                                                    <nb-icon icon="refresh-outline"></nb-icon>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr style="height:300px; background-color: white;">
+                                                <td colspan="12" style="padding-top: 50px;">
+                                                    <div style="height: 100px;background-color: white;"
+                                                        [nbSpinner]="isReload" nbSpinnerStatus="primary">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+                <nb-card-footer>
+                    <div *ngIf="!isReload && !loading"
+                        class="col-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-between p-2 ng-star-inserted">
+                        <ngb-pagination [collectionSize]="total$ | async" [(page)]="service.page"
+                            [pageSize]="service.pageSize">
+                        </ngb-pagination>
+                        <select class="custom-select" style="width: auto" name="pageSize"
+                            [(ngModel)]="service.pageSize">
+                            <option [ngValue]="10">10 items per page</option>
+                            <option [ngValue]="20">20 items per page</option>
+                            <option [ngValue]="50">50 items per page</option>
+                        </select>
+                    </div>
+                </nb-card-footer>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

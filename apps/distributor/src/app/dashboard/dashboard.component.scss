@@ -1,0 +1,35 @@
+@import "../../../../../libs/theme/src/lib/styles/themes";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+.pages {
+    nb-card {
+        nb-card-body {
+            .body {
+                .cover {
+                    nb-icon {
+                        font-size: 4rem;
+                        margin-bottom: 0.5rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// nb-calendar{
+//     position: fixed;
+//     right: 15px;
+//     width: 13vw;
+// }
+
+.cover-number {
+    .number {
+        line-height: 1;
+        font-size: 40px;
+        font-weight: bold;
+        color: rgb(237, 100, 100);
+    }
+}
+
+@include nb-install-component() {}

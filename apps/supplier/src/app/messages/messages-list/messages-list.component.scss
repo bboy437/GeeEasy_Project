@@ -1,0 +1,124 @@
+@import "../../../../../../libs/theme-supplier/src/lib/styles/themes";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+@include nb-install-component() {
+
+  input[type="file"] {
+    display: none;
+  }
+
+  .custom-file-upload {
+    cursor: pointer;
+    padding: 0.54rem 0.9rem;
+    border-style: solid;
+    border-width: 0.125rem;
+    text-transform: capitalize;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    border-color: #49506b;
+
+  }
+
+  .listStatus {
+    background-color: #42aaff12;
+  }
+}
+
+nb-card-header {
+  border-bottom: 0px solid #edf1f7;
+  &.messages {
+    padding: 12px;
+    border: 1px solid #49506b;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: #435486;
+    color: white;
+  }
+}
+nb-card-body {
+  &.messages {
+    border: 1px solid #49506b;
+  }
+}
+
+.chat-lit {
+  display: block;
+  width: 100%;
+  height: 469px;
+  border: 1px solid #49506b;
+  // padding-left: 1rem;
+
+  div.chat {
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin: 0;
+    height: calc(556px - 90px);
+    width: 100%;
+    padding-right: 10px;
+    overflow: auto;
+    cursor: pointer;
+
+    .scrollMe {
+      overflow: auto;
+    }
+
+    div.row {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #49506b;
+      img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        background: #c5cee0;
+        background-position: center;
+      }
+      label {
+        padding-left: 1rem;
+        font-size: 14px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+nb-card-footer {
+  &.messages {
+    border-bottom: 1px solid #49506b;
+    border-left: 1px solid #49506b;
+    border-right: 1px solid #49506b;
+  }
+}
+
+nb-list-item:first-child {
+  border-top: 1px solid #49506b;
+}
+
+nb-list-item {
+  cursor: pointer;
+  padding: 0.5rem;
+  border-bottom: 1px solid #49506b;
+  .scrollMe {
+    overflow: auto;
+  }
+  img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: #c5cee0;
+    background-position: center;
+  }
+  label {
+    padding-left: 1rem;
+    font-size: 14px;
+    cursor: pointer;
+    &.time {
+      float: right;
+    }
+  }
+}

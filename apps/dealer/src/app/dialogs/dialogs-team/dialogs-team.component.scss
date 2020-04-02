@@ -1,0 +1,34 @@
+@import "../../../../../../libs/theme-dealer/src/lib/styles/themes";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+nb-checkbox {
+    &.position-fixed {
+        position: fixed;
+    }
+}
+
+@include nb-install-component() {
+  .show-grid {
+    .row {
+      margin: -0.5rem;
+    }
+
+    div[class^="col-"] {
+      padding: 0.5rem;
+      box-sizing: border-box;
+
+      div {
+        text-align: center;
+        padding: 0.5rem 0.25rem;
+        border-radius: 0.25rem;
+      }
+    }
+  }
+  .delete {
+    padding-top: 0.7rem;
+    color: red;
+    cursor: pointer;
+    padding-right: 0.2rem;
+  }
+}

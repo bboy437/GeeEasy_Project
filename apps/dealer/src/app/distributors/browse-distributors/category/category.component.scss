@@ -1,0 +1,38 @@
+@import "../../../../../../../libs/theme-dealer/src/lib/styles/themes";
+@import "~@nebular/bootstrap/styles/buttons";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+@include nb-install-component() {
+}
+
+.active_d {
+	color: #fff;
+	
+	background-color: #f84d2f; 
+  }
+
+button {
+	&.fix-set {
+		float : right;
+		padding-right: 1rem;
+	}
+}
+ 
+.list {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.nb-theme-dark nb-icon {
+	
+}
+tbody {
+	tr {
+		td {
+			nb-icon {
+				float: right;
+			}
+		}
+	}
+}

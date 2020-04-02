@@ -1,0 +1,215 @@
+<div class="pages" [formGroup]="Form">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <nb-icon icon="people-outline"></nb-icon>
+                                <label>Saved List<span class="p-0-12">/</span>Detail</label>
+                            </div>
+                            <div class="col-auto">
+                                <button style="float: right;margin: 3px 0;" nbButton size="medium" status="danger"
+                                    (click)="btnCancelClick()">
+                                    Back
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;margin-bottom: 0.1rem;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label>{{arrSupplier.supplier_name}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="primary">
+            <nb-card>
+                <nb-card-body>
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <div class="row show-grid" style="text-align: center">
+                                        <div class="col-lg-12">
+                                            <project-display-file-image theme="white"
+                                                [image_url_array]="image.main_image.get"></project-display-file-image>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <div class="row show-grid">
+                                        <div class="col-lg-12">
+                                            <label>Supplier Name :</label>
+                                            <input nbInput status="primary" type="text" class="btnDisabled" nbInput
+                                                fullWidth formControlName="suppliername" /><br>
+                                        </div>
+                                    </div>
+                                    <div class="row show-grid">
+                                        <div class="col-lg-12">
+                                            <label>Product Category :</label>
+                                            <input nbInput status="primary" type="text" class="btnDisabled" nbInput
+                                                fullWidth formControlName="productcategory" /><br>
+                                        </div>
+                                    </div>
+
+                                    <div class="row show-grid">
+                                        <div class="col-lg-12">
+                                            <label>Catalog Keyword:</label>
+                                            <input nbInput status="primary" type="text" class="btnDisabled" nbInput
+                                                fullWidth formControlName="catalogkeyword" /><br>
+                                        </div>
+                                    </div>
+                                    <div class="row show-grid">
+                                        <div class="col-lg-12">
+                                            <label>Supplier Keyword :</label>
+                                            <input nbInput status="primary" type="text" class="btnDisabled" nbInput
+                                                fullWidth formControlName="supplierkeyword" /><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <div class="row show-grid">
+                                        <div class="col-lg-12">
+                                            <label>First Name :</label>
+                                            <input nbInput status="primary" type="text" class="btnDisabled" nbInput
+                                                fullWidth formControlName="firstName" /><br>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <label>Last Name :</label>
+                                            <input nbInput status="primary" type="text" class="btnDisabled" nbInput
+                                                fullWidth formControlName="lastName" /><br>
+                                        </div>
+                                    </div>
+                                    <div class="row show-grid">
+                                        <div class="col-lg-12">
+                                            <label>Company Name :</label>
+                                            <input nbInput status="primary" type="text" class="btnDisabled" nbInput
+                                                fullWidth formControlName="companyName" /><br>
+                                        </div>
+                                    </div>
+                                    <div class="row show-grid">
+                                        <div class="col-lg-12">
+                                            <label>Email :</label>
+                                            <input nbInput status="primary" type="text" class="btnDisabled" nbInput
+                                                fullWidth formControlName="emailAddress" /><br>
+                                        </div>
+                                    </div>
+                                    <div class="row show-grid">
+                                        <div class="col-lg-12">
+                                            <label>Telephone Number :</label>
+                                            <input nbInput status="primary" type="text" libOnlyCharacterphonnumber
+                                                class="btnDisabled" nbInput fullWidth formControlName="phoneNo" /><br>
+                                        </div>
+                                    </div>
+                                    <div class="row show-grid">
+                                        <div class="col-lg-12">
+                                            <label>Mobile Phone Number :</label>
+                                            <input nbInput status="primary" type="text" mask='000-000-0000'
+                                                placeholder="XXX-XXX-XXXX" class="btnDisabled" nbInput fullWidth
+                                                formControlName="mobileNo" /><br>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <div class="row show-grid">
+                                        <div class="col-lg-12">
+                                            <label>Address :</label>
+                                            <textarea style="min-height: 90px;" nbInput status="primary" type="text"
+                                                class="btnDisabled" nbInput fullWidth
+                                                formControlName="AddressFull"> </textarea><br>
+                                        </div>
+                                    </div>
+                                    <div class="row show-grid">
+                                        <div class="col-lg-12">
+                                            <label>Address Number :</label>
+                                            <input nbInput status="primary" type="text" class="btnDisabled" nbInput
+                                                fullWidth formControlName="AddressNo" /><br>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <label>Tambon :</label>
+                                            <input nbInput status="primary" type="text" class="btnDisabled" nbInput
+                                                fullWidth formControlName="tambon" /><br>
+                                        </div>
+                                    </div>
+                                    <div class="row show-grid">
+                                        <div class="col-lg-12">
+                                            <label>Amphoe :</label>
+                                            <input nbInput status="primary" type="text" class="btnDisabled" nbInput
+                                                fullWidth formControlName="amphoe" /><br>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <label>Province :</label>
+                                            <input nbInput status="primary" type="text" class="btnDisabled" nbInput
+                                                fullWidth formControlName="province" /><br>
+                                        </div>
+                                    </div>
+                                    <div class="row show-grid">
+                                        <div class="col-12 col-sm-12 col-md-6 col-lg-6" style="text-align: left;">
+                                            <label>Zipcode :</label>
+                                            <input nbInput status="primary" type="text" class="btnDisabled" nbInput
+                                                fullWidth formControlName="zipcode" />
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-6 col-lg-6" style="text-align: left;">
+                                            <label> Latitude Longitude</label>
+                                            <input nbInput status="primary" type="text" class="btnDisabled" disabled
+                                                fullWidth
+                                                [(ngModel)]="arrSupplier.supplier_addr_location_lat + ',' + arrSupplier.supplier_addr_location_lng"
+                                                [ngModelOptions]="{standalone: true}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+            <nb-card *ngIf="arrSupplierProduct.length > 0">
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <project-comp-products-supplier-detail [data]="arrSupplierProduct"></project-comp-products-supplier-detail>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+            <nb-card>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                        *ngIf="!loading && arrSupplier.supplier_addr_location_lat != 0 && arrSupplier.supplier_addr_location_lng != 0">
+                                        <project-map [let]="arrSupplier.supplier_addr_location_lat"
+                                            [long]="arrSupplier.supplier_addr_location_lng"></project-map>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

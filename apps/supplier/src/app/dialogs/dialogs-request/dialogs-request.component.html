@@ -1,0 +1,50 @@
+<div class="pages" [formGroup]="Form" (ngSubmit)="onSubmit()">
+    <nb-card>
+        <nb-card-header>
+            <div class="header">
+                <nb-icon icon="people-outline"></nb-icon>
+                <label style="font-size: 20px">Reply Distributor</label>
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <div class="row">
+                <div class="col-md-12" style="margin-bottom: 0.5rem;">
+                    <label>Massage</label>
+                    <input libOnlyCharacterDefault status="primary" type="text" nbInput fullWidth
+                        formControlName="massage" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.massage.errors }" />
+                    <div *ngIf="submitted && !!f.massage.errors">
+                        <div class="required" *ngIf="!!f.massage.errors.required">
+                            Massage is required
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label>Action</label>
+                    <nb-select placeholder="----Choose----" fullWidth status="primary"
+                        [ngClass]="{ 'is-invalid': submitted && f.action_id.errors }" formControlName="action_id">
+                        <nb-option value="1">Confirmed</nb-option>
+                        <nb-option value="2">Postpone the response</nb-option>
+                        <nb-option value="3">Canceled</nb-option>
+                    </nb-select><br />
+                    <div *ngIf="submitted && !!f.action_id.errors">
+                        <div class="required" *ngIf="!!f.action_id.errors.required">
+                            Action is required
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </div><br>
+
+            <div class="row" style="text-align: center">
+                <div class="col-md-12">
+                    <button nbButton style="width: 100px" status="danger"
+                        (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                    <button nbButton style="width: 100px" status="success" (click)="btnSaveClick()">OK</button>
+
+                </div>
+            </div><br>
+
+        </nb-card-body>
+    </nb-card>
+</div>

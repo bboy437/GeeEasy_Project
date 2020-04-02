@@ -1,0 +1,53 @@
+<div class="pages" [formGroup]="ReplyForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <nb-icon icon="browser-outline"></nb-icon>
+                        <label style="font-size: 18px; font-weight: bold">Reply PO</label>
+                    </div>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Note</label>
+                            <input libOnlyCharacterDefault status="primary" type="text" nbInput fullWidth
+                                formControlName="note" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.note.errors }" />
+                            <div *ngIf="submitted && !!f.note.errors" class="invalid-feedback">
+                                <div style="text-align: left" *ngIf="!!f.note.errors.required">
+                                    Note is required
+                                </div>
+                            </div>
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label> Date</label>
+                            <input [ngClass]="{ 'is-invalid': submitted && f.date.errors }" status="primary" type="text"
+                                class="form-control" bsDatepicker #dp="bsDatepicker"
+                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-red' }"
+                                formControlName="date">
+                            <div *ngIf="submitted && !!f.date.errors" class="invalid-feedback">
+                                <div style="text-align: left" *ngIf="!!f.date.errors.required">
+                                    Date is required
+                                </div>
+                            </div>
+                        </div>
+                    </div><br>
+                    <div class="row" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem">
+                        <div class="col-md-12">
+                            <button nbButton style="width: 100px" status="danger"
+                                (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                            <button [disabled]="!ReplyForm.valid" [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny"
+                                nbSpinnerStatus="success" nbButton style="width: 100px" status="success"
+                                (click)="btnSaveClick()">OK</button>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+
+        </div>
+    </div>
+</div>

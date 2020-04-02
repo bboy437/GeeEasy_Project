@@ -1,0 +1,65 @@
+<div class="pages" [formGroup]="Form">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <nb-icon icon="cube-outline"></nb-icon>
+                        <label style="font-size: 20px">Add Product Wholesale</label>
+                    </div>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="row">
+                        <div class="col-md-12" style="margin-bottom: 0.5rem;">
+                            <label>Qty Minimum</label>
+                            <input libOnlyCharacterDefault libOnlyCharacternumber mask="separator.0"
+                                thousandSeparator="," status="primary" type="text" nbInput fullWidth
+                                formControlName="qty_minimum" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.qty_minimum.errors }"
+                                (keyup)="onKeyMinimum($event)" />
+                            <div *ngIf="submitted && !!f.qty_minimum.errors" class="invalid-feedback">
+                                <div style="text-align: left" *ngIf="!!f.qty_minimum.errors.required">
+                                    Qty Minimum is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="margin-bottom: 0.5rem;">
+                            <label>Wholesale Price</label>
+                            <input libOnlyCharacterDefault libOnlyCharacternumber mask="separator.2"
+                                thousandSeparator="," status="primary" type="text" nbInput fullWidth
+                                formControlName="product_price" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.product_price.errors }" />
+                            <div *ngIf="submitted && !!f.product_price.errors" class="invalid-feedback">
+                                <div style="text-align: left" *ngIf="!!f.product_price.errors.required">
+                                    Wholesale Price is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="margin-bottom: 0.5rem;">
+                            <label>Retail Price</label>
+                            <input libOnlyCharacterDefault libOnlyCharacternumber mask="separator.2"
+                                thousandSeparator="," status="primary" type="text" nbInput fullWidth
+                                formControlName="retail_product_price" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.retail_product_price.errors }" />
+                            <div *ngIf="submitted && !!f.retail_product_price.errors" class="invalid-feedback">
+                                <div style="text-align: left" *ngIf="!!f.retail_product_price.errors.required">
+                                    Retail Price is required
+                                </div>
+                            </div>
+                        </div>
+                    </div><br>
+
+                    <div class="row" style="text-align: center">
+                        <div class="col-md-12">
+                            <button nbButton style="width: 100px" status="danger"
+                                (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                            <button nbButton style="width: 100px" status="success" (click)="btnSaveClick()">OK</button>
+
+                        </div>
+                    </div><br>
+
+                </nb-card-body>
+            </nb-card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,224 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body style="padding-bottom: 0rem; margin-bottom: -1.5rem;">
+                    <div class="cover-header header">
+                        <div class="row">
+                            <div class="cover-form icon" style="margin-bottom: 0.7rem;padding: 0 0.5rem 0 0;">
+                                <nb-icon icon="search-outline"></nb-icon>
+                                <nb-icon *ngIf="strname" (click)="btnRefresh()"
+                                    style="float: right;left: 0; cursor: pointer;" icon="close-outline">
+                                </nb-icon>
+                                <input libOnlyCharacterDefault status="primary" type="text" nbInput fullWidth
+                                    status="primary" placeholder="Search for name" [(ngModel)]="strname"
+                                    (keyup)="filterPoNo($event.target.value)" />
+                            </div>
+                            <div class="cover-form" style="margin-bottom: 0.7rem;">
+                                <nb-select (selectedChange)="filterStatus($event)"
+                                    placeholder="--------- Choose ---------" fullWidth outline status="primary"
+                                    [(ngModel)]="strStatus">
+                                    <nb-option value="">All Status</nb-option>
+                                    <nb-option value="0">Waiting</nb-option>
+                                    <nb-option value="1">Verified</nb-option>
+                                </nb-select>
+                            </div>
+                            <div class="cover-form button" style="margin-bottom: 0.7rem;">
+                                <button nbButton size="small" status="gray" (click)="btnReset()">
+                                    Reset
+                                </button>
+                            </div>
+                            <!-- <div class="cover-form button" style="margin-bottom: 0.7rem;">
+                                <button nbButton size="small" status="success" (click)="btnFilter()">
+                                    Apply filters
+                                </button>
+                            </div> -->
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body style="padding: 1rem; min-height: calc(100vh - 450px);">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="cover-table" *ngIf="!isReload">
+                                <table class="table hover" style="width: 100%;"
+                                    *ngIf="arrRequestList$ | async as arrRequestList ; else loading">
+                                    <thead>
+                                        <tr>
+                                            <th class="left" style="min-width: 100px;">
+                                                Status
+                                            </th>
+                                            <th style="min-width: 100px; text-align: center;">
+                                                Answer
+                                            </th>
+                                            <th class="left" style="min-width: 300px;">
+                                                Distributor Name
+                                            </th>
+                                            <th class="left" style="min-width: 600px;">
+                                                Massages
+                                            </th>
+                                            <th (click)="btnReload()">
+                                                <nb-icon style="float: right; cursor: pointer;" icon="refresh-outline">
+                                                </nb-icon>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let Request of arrRequestList"
+                                            (click)="btnRowClick(Request.request_information_id)">
+                                            <td class="left">
+                                                <ngb-highlight
+                                                    [result]="Request.verified === 0 ? 'Waiting':
+                                                                    (Request.verified === 1 ? 'Verified' :Request.request_information_status_id  )"
+                                                    [term]="service.searchTerm"
+                                                    [ngClass]="Request.verified === 0 ? 'status orange':
+                                                    (Request.verified === 1 ? 'status primary' :Request.request_information_status_id  )">
+                                                </ngb-highlight>
+                                            </td>
+                                            <td class="left">
+                                                <ngb-highlight [result]="Request.request_information_is_answer === 0 ? 'No':
+                                                                (Request.request_information_is_answer === 1 ? 'Yes' :
+                                                                Request.request_information_is_answer )"
+                                                    [term]="service.searchTerm">
+                                                </ngb-highlight>
+                                            </td>
+                                            <td class="left">
+                                                <ngb-highlight
+                                                    [result]="Request.request_information_from.distributor_name"
+                                                    [term]="service.searchTerm"></ngb-highlight>
+                                            </td>
+                                            <td class="left">
+                                                <ngb-highlight [result]="Request.request_information_message"
+                                                    [term]="service.searchTerm">
+                                                </ngb-highlight>
+                                            </td>
+                                            <!-- <td class="right">
+                                                <a *ngFor="let r of Request.ref_1" (click)="openUrl(r.file_url)"
+                                                    style="cursor: pointer;">
+                                                    <nb-icon icon="image-outline"></nb-icon>
+                                                </a>
+                                            </td> -->
+                                            <td class="right">
+                                                <button nbButton size="small" status="success"
+                                                    (click)="btnRequest(Request.request_information_id);$event.stopPropagation()">
+                                                    Reply
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="arrRequestList.length == 0"
+                                            style="height:300px; background-color: #222b45;">
+                                            <td colspan="6" style="padding-top: 50px;">
+                                                <img src="assets/images/loading.png" width="300"><br><br>
+                                                <label>No data.</label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <ng-template #loading>
+                                    <table class="table hover" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th class="left" style="min-width: 100px;">
+                                                    Status
+                                                </th>
+                                                <th style="min-width: 100px; text-align: center;">
+                                                    Answer
+                                                </th>
+                                                <th class="left" style="min-width: 300px;">
+                                                    Distributor Name
+                                                </th>
+                                                <th class="left" style="min-width: 600px;">
+                                                    Massages
+                                                </th>
+                                                <th (click)="btnReload()">
+                                                    <nb-icon style="float: right; cursor: pointer;"
+                                                        icon="refresh-outline">
+                                                    </nb-icon>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="unset" style="height:300px; background-color: #222b45;">
+                                                <td colspan="5" style="padding-top: 50px;">
+                                                    <div style="height: 100px;background-color: #222b45;"
+                                                        [nbSpinner]="loading" nbSpinnerStatus="warning">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </ng-template>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="cover-table" *ngIf="isReload">
+                                <table class="table hover" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th class="left" style="min-width: 100px;">
+                                                Status
+                                            </th>
+                                            <th style="min-width: 100px; text-align: center;">
+                                                Answer
+                                            </th>
+                                            <th class="left" style="min-width: 300px;">
+                                                Distributor Name
+                                            </th>
+                                            <th class="left" style="min-width: 600px;">
+                                                Massages
+                                            </th>
+                                            <th (click)="btnReload()">
+                                                <nb-icon style="float: right; cursor: pointer;" icon="refresh-outline">
+                                                </nb-icon>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="unset" style="height:300px; background-color: #222b45;">
+                                            <td colspan="5" style="padding-top: 50px;">
+                                                <div style="height: 100px;background-color: #222b45;"
+                                                    [nbSpinner]="isReload" nbSpinnerStatus="warning">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div *ngIf="!isReload && !loading" class="cover-body footer">
+                <div class="cover-pagination">
+                    <ngb-pagination [collectionSize]="totalList$ | async" [(page)]="service.page"
+                        [pageSize]="service.pageSize"></ngb-pagination>
+                    <select class="custom-select" name="pageSize" [(ngModel)]="service.pageSize"
+                        style="float: right;margin: 0;">
+                        <option [ngValue]="10">10 items per page</option>
+                        <option [ngValue]="20">20 items per page</option>
+                        <option [ngValue]="50">50 items per page</option>
+                    </select>
+                </div>
+            </div> -->
+                </nb-card-body>
+                <nb-card-footer>
+                    <div class="row">
+                        <div *ngIf="!isReload && !loading"
+                            class="col-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-between p-2">
+                            <ngb-pagination [collectionSize]="totalList$ | async" [(page)]="service.page"
+                                [pageSize]="service.pageSize"></ngb-pagination>
+                            <select class="custom-select" style="width: auto" name="pageSize"
+                                [(ngModel)]="service.pageSize" [ngModelOptions]="{standalone: true}">
+                                <option [ngValue]="10">10 items per page</option>
+                                <option [ngValue]="20">20 items per page</option>
+                                <option [ngValue]="50">50 items per page</option>
+                                <option [ngValue]="100">100 items per page</option>
+                            </select>
+                        </div>
+                    </div>
+                </nb-card-footer>
+            </nb-card>
+        </div>
+    </div>
+</div>

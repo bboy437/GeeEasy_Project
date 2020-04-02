@@ -1,0 +1,73 @@
+// .table th,
+// .table td {
+//   padding: 0.5rem;
+//   vertical-align: top;
+
+//   input {
+//     &.disabled {
+//       text-align: right;
+//       color: black;
+//     }
+//   }
+// }
+
+.sku_supplier {
+  color: #fff;
+  background: #141a30;
+  padding: 0.5rem;
+  margin: 0 1rem !important;
+  position: relative;
+}
+
+.cover-input,
+.cover-select,
+.cover-textarea {
+  margin-bottom: 1rem;
+
+  &.price {
+    label,
+    a,
+    ngx-select {
+      float: right;
+      margin: 10px;
+      position: relative;
+      margin-bottom: -30px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #666666;
+      cursor: default;
+    }
+
+    input,
+    select {
+      padding-right: 45px !important;
+    }
+  }
+
+
+}
+
+
+
+.cover {
+  &.qty {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: black;
+  }
+  &.price {
+    text-align: right;
+    font-size: 18px;
+    font-weight: 600;
+    color: black;
+  }
+  &.thb{
+    text-align: center;
+    font-size: 14px;
+    padding-left: 0.5rem;
+    color: #666666;
+    font-weight: 600;
+  }
+  
+}

@@ -1,0 +1,96 @@
+@import "../../../../../../libs/theme-supplier/src/lib/styles/themes";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+.display_table {
+  &.height_48px {
+    height: 48px;
+    label {
+      float: left;
+      font-size: 17px;
+      font-weight: 600;
+    }
+  }
+  width: 100%;
+  display: table;
+  vertical-align: middle;
+  .display_table_cell {
+    display: table-cell;
+    vertical-align: middle;
+    & * {
+      padding: 0;
+      margin: 0;
+    }
+  }
+}
+
+.padding-0 {
+  padding: 0 !important;
+}
+
+.padding-auto-0 {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+.margin-0 {
+  margin: 0 !important;
+}
+
+table {
+  &.set {
+    color: unset;
+  }
+}
+
+@include nb-install-component() {
+  .show-grid {
+    .row {
+      margin: -0.5rem;
+    }
+
+    div[class^="col-"] {
+      padding: 0.5rem;
+      box-sizing: border-box;
+
+      div {
+        padding: 0.5rem 0.25rem;
+        border-radius: 0.25rem;
+      }
+    }
+  }
+
+  thead {
+    font-size: 14px;
+  }
+  tbody {
+    font-size: 14px;
+  }
+
+  .form-controls {
+    display: block;
+    width: 100%;
+    padding: 0.4375rem 1.125rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.5rem;
+    color: #495057;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    background-color: #f7f9fc;
+    border-color: #edf1f7;
+    &:focus {
+      background-color: #fff;
+      // border-color: #3366ff;
+      border: 0.5px solid #3366ff;
+      box-shadow: 0 0 0 0.375rem #e4e6e9;
+    }
+  }
+
+  .divdata {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+}

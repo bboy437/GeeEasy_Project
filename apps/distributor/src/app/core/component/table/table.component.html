@@ -1,0 +1,17 @@
+<table class="table hover" >
+    <thead *ngFor="let thead of table.thead">
+        <tr *ngFor="let tr of thead.tr">
+            <th *ngFor="let th of tr.th" [attr.rowspan]="th.rowspan" [attr.colspan]="th.colspan">
+                {{th.title}}
+            </th>
+        </tr>
+    </thead>
+    <tbody *ngFor="let tbody of table.tbody">
+        <tr *ngFor="let tr of tbody.tr">
+            <td *ngFor="let td of tr.td" [attr.rowspan]="td.rowspan" [attr.colspan]="td.colspan">
+                {{td.title}}
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div></div>

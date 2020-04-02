@@ -1,0 +1,255 @@
+<div class="pages" [formGroup]="Form">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <nb-icon class="icon-header" icon="pie-chart-outline"></nb-icon>
+                                <label>Order Bills <span class="p-0-12">/</span> Detail </label>
+                            </div>
+                            <div class="col-auto">
+                                <button [disabled]="arrOrder.dealer_order_is_confirm == 1" *ngIf="!loading && !name"
+                                    style="float: right;margin: 3px 0px 3px 1rem;" nbButton size="medium"
+                                    status="success" (click)="confirmPaid()">
+                                    Pay
+                                </button>
+                                <!-- <button *ngIf="!loading && !name" [disabled]="arrOrder.dealer_order_is_confirm == 1"
+                                    style="float: right;margin: 3px 0px 3px 1rem;" nbButton size="medium"
+                                    status="success" (click)="confirmOrder()">
+                                    Comfirm
+                                </button>
+                                <button *ngIf="!loading && !name"
+                                    [disabled]="arrOrder.dealer_order_is_confirm == 0 || arrOrder.dealer_order_delivery_id == 1"
+                                    style="float: right;margin: 3px 0px 3px 1rem;" nbButton size="medium"
+                                    status="success" (click)="confirmDelivery()">
+                                    Delivery
+                                </button> -->
+                                <button style="float: right;margin: 3px 0px 3px 1rem;" nbButton size="medium"
+                                    status="danger" (click)="btnCancel()">
+                                    Back
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="margin-bottom: 0.1rem;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label>Order No. {{arrOrder.dealer_order_number}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="success">
+            <div class="row">
+                <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <nb-card>
+                                <nb-card-body>
+                                    <div class="body">
+                                        <div class="row">
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                        <label> Order No. : </label>
+                                                    </div>
+                                                    <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                        <div class="cover-input">
+                                                            <input nbInput status="primary" type="text" status="basic"
+                                                                fullWidth formControlName="dealer_order_number" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input-icon">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Delivery Date : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <nb-icon icon="calendar-outline"></nb-icon>
+                                                            <input nbInput status="primary" type="text" fullWidth
+                                                                bsDatepicker #dp="bsDatepicker"
+                                                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-red' }"
+                                                                formControlName="delivery_date" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Delivery Location : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <textarea style="min-height: 90px;" type="text"
+                                                                status="basic" nbInput fullWidth
+                                                                formControlName="delivery_location"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Billing Name : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <input nbInput status="primary" type="text" fullWidth
+                                                                formControlName="billing_name" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Billing Address : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <textarea style="min-height: 90px;" type="text"
+                                                                status="basic" nbInput fullWidth
+                                                                formControlName="billing_address"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Billing Payment Term : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <input nbInput status="primary" type="text" status="basic"
+                                                                fullWidth formControlName="billing_payment_term" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label>Order Note : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <input nbInput status="primary" type="text" status="basic"
+                                                                fullWidth formControlName="purchase_order_note" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Payment Status </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <label
+                                                                [ngClass]="arrOrder.dealer_order_paid_confirm_id == 0 ? 'status red' : 
+                                                            (arrOrder.dealer_order_paid_confirm_id  == 1 ? 'status success' : 
+                                                            (arrOrder.dealer_order_paid_confirm_id  == 2 ? 'status primary' : arrOrder.dealer_order_paid_confirm_id))">
+                                                                {{arrOrder.dealer_order_paid_confirm_id == 0 ? 'No Paid' : 
+                                                                (arrOrder.dealer_order_paid_confirm_id  == 1 ? 'Fully Paid' : 
+                                                                (arrOrder.dealer_order_paid_confirm_id  == 2 ? 'Partially Paid' : arrOrder.dealer_order_paid_confirm_id))}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Shipment Status </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <label
+                                                                [ngClass]="arrOrder.dealer_order_delivery_id == 0 ? 'status red' : 
+                                                            (arrOrder.dealer_order_delivery_id  == 1 ? 'status success' : 
+                                                            (arrOrder.dealer_order_delivery_id  == 2 ? 'status primary' : arrOrder.dealer_order_paid_confirm_id))">{{arrOrder.dealer_order_delivery_id == 0 ? 'No Fulfillment' : 
+                                                                (arrOrder.dealer_order_delivery_id  == 1 ? 'Fully Fulfil' : 
+                                                                (arrOrder.dealer_order_delivery_id  == 2 ? 'Partially Fulfill' : arrOrder.dealer_order_delivery_id))}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Confirm : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <label
+                                                                [ngClass]="arrOrder.dealer_order_delivery_id == 0 ? 'status red' : 'status success'">
+                                                                {{arrOrder.dealer_order_is_confirm == 0 ? 'Waiting' : 'Confirm'}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                            <label> Message : </label>
+                                                        </div>
+                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                                                            <label>{{arrOrder.purchase_order_reply_msg}} </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <nb-card>
+                                <nb-card-body>
+                                    <project-comp-products *ngIf="arrOrderProduct" [arrProduct]="arrOrderProduct"
+                                        [arrSummary]="arrOrderSummary" [status]="'Order'"></project-comp-products>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <nb-card>
+                                <nb-card-body>
+                                    <project-comp-summary *ngIf="arrOrderSummary" [data]="arrOrderSummary"
+                                        [status]="'Order'">
+                                    </project-comp-summary>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

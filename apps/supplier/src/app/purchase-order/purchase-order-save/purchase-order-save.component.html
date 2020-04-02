@@ -1,0 +1,405 @@
+
+
+<div class="pages">
+    <form [formGroup]="orderForm">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                <nb-card style="padding: 0;">
+                    <nb-card-header>
+                        <div class="header">
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <nb-icon icon="browser-outline"></nb-icon>
+                                    <label>My Purchase<span class="p-0-12">/</span>New PO</label>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <button style="float: right;margin: 3px 0px 3px 1rem;" nbButton type="button"
+                                        size="medium" status="success" (click)="btnSaveClick()">
+                                        Save
+                                    </button>
+                                    <button style="float: right;margin: 3px 0px 3px 1rem;" nbButton type="button"
+                                        size="medium" status="gray" (click)="btnClear()">
+                                        Clear
+                                    </button>
+                                    <button style="float: right;margin: 3px 0px 3px 1rem;" nbButton type="button"
+                                        size="medium" status="danger" (click)="btnCancel()">
+                                        Cancel
+                                    </button>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </nb-card-header>
+                </nb-card>
+            </div>
+            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                <nb-card style="padding: 0;">
+                    <nb-card-body>
+                        <div class="row show-grid">
+                            <div class="col-lg-6" style="padding-top: 0;">
+                                <label>Supplier Name</label>
+                                <nb-select [ngClass]="{ 'is-invalid': submitted && (supplierName == ''|| supplierName == undefined) }"  placeholder="--------- Choose ---------" fullWidth outline status="basic"
+                                    [(ngModel)]="supplierName" [ngModelOptions]="{standalone: true}">
+                                    <nb-option *ngFor="let supplier  of arrSupplier" [value]="supplier.supplier_name"
+                                        (click)="btnIDClick(supplier.supplier_id)">
+                                        {{supplier.supplier_name}}
+                                    </nb-option>
+                                </nb-select>
+                                <div style="text-align: left; color: #dc3545;font-size: 12px"
+                                    *ngIf="arrobjRow.Supplier == ''">
+                                    Tambon is required
+                                </div>
+                                <div style="text-align: left;">
+                                    Ex. TTY SUPPLIER INTERNATIONAL
+                                </div>
+                            </div>
+                            
+
+                            <!-- <div class="col" style="padding-top: 1.7rem;">
+                                <button nbButton type="button" size="medium" status="primary"
+                                    (click)="createSupplier()">
+                                    Create
+                                </button>
+                            </div> -->
+                        </div>
+                        <div class="row show-grid">
+                            <div class="col-lg-6" >
+                                <label>Billing Name</label>
+                                <input libOnlyCharacterDefault status="primary" type="text" nbInput fullWidth status="basic"
+                                    formControlName="BillingName" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f.BillingName.errors }"
+                                    [(ngModel)]="arrobjRow.billing_name" />
+                                <div *ngIf="submitted && !!f.BillingName.errors" class="invalid-feedbacks">
+                                    <div style="text-align: left" *ngIf="!!f.BillingName.errors.required">
+                                        Billing Name is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label>Billing Address</label>
+                                <input libOnlyCharacterDefault status="primary" nbInput fullWidth status="basic" type="text"
+                                    class="form-control" [(ngModel)]="arrobjRow.billing_address"
+                                    formControlName="BillingAddress"
+                                    [ngClass]="{ 'is-invalid': submitted && f.BillingAddress.errors }" />
+
+                                <div *ngIf="submitted && !!f.BillingAddress.errors" class="invalid-feedbacks">
+                                    <div style="text-align: left" *ngIf="!!f.BillingAddress.errors.required">
+                                        Billing Address is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <nb-tabset (changeTab)="onChangeTab($event.tabTitle)">
+                            <nb-tab tabTitle="Product Name">
+                            </nb-tab>
+                            <nb-tab tabTitle="Product Group Name">
+                            </nb-tab>
+                        </nb-tabset>
+                        <div *ngIf="strTab == 'Product Group Name'" class="row">
+                            <div class="col-lg-6">
+                                <label>Product Group Name</label>
+                                <nb-select [ngClass]="{ 'is-invalid': submitted && (strProductGroup == '' || strProductGroup == undefined) }"  placeholder="--------- Choose ---------" fullWidth outline status="basic"
+                                    [(ngModel)]="strProductGroup" [ngModelOptions]="{standalone: true}">
+                                    <nb-option *ngFor="let item of arrProductsGroup" [value]="item.inventory_group_name"
+                                        (click)="btnProductGroup(item.inventory_group_array)">
+                                        {{item.inventory_group_name}}
+                                    </nb-option>
+                                </nb-select>
+                            </div>
+                        </div><br>
+
+                        <div class="row" style=" border-bottom: 2px solid #dee2e6; margin: 0 0;">
+                            <div class="col-sm-6"><label>Item Name</label></div>
+                            <div class="col-sm-2"> <label>Quantity</label> </div>
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label>Unit Price</label>
+                                            </div>
+                                            <div class="col-6">
+                                                <label>Total Price</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" *ngFor="let products of arrobjRowProduct; let i=index"
+                            style="padding-top: 0.5rem;">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-auto mr-auto" (click)="openImg(products.product_image_url)"
+                                        style="cursor: pointer;">
+                                        <div class="cover-background-image">
+                                            <div class="background-image padding-width-100px-height-100px"
+                                                [ngClass]="{'active' : products.product_image_url === '-' || products.product_image_url === ''}"
+                                                [ngStyle]="{'background-image': 'url('+products.product_image_url+')'}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col" style="text-align: left;">
+                                        <label>{{products.product_name}}</label><br>
+                                        <label class="bg-status-primary">{{products.product_sku}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <!-- <input libOnlyCharacterDefault type="number"
+                                    onKeyPress="if(this.value.length==6) return false;" nbInput fullWidth status="basic"
+                                    formControlName="qty" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f.qty.errors }"
+                                    [(ngModel)]="products.product_qty"
+                                    (input)="onSearchChange($event.target.value, products)" />
+                                <div *ngIf="submitted && !!f.qty.errors" class="invalid-feedbacks">
+                                    <div style="text-align: left" *ngIf="!!f.qty.errors.required">
+                                        Quantity is required
+                                    </div>
+                                </div> -->
+                                <input libOnlyCharacterDefault  type="text" libOnlyCharacternumber mask="separator.0" thousandSeparator="," onKeyPress="if(this.value.length==6) return false;" nbInput
+                                    fullWidth status="basic" [(ngModel)]="products.product_qty"
+                                    [ngModelOptions]="{standalone: true}"
+                                    (keyup)="onSearchChange($event.target.value, products)">
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="col-6" style="line-height: 3;">
+                                                <label 
+                                                        *ngIf="products.isCheckPlice == true">{{products.product_price | number:'1.2-2'}}</label>
+                                                    <s 
+                                                        *ngIf="products.isCheckPlice == false">{{products.product_price | number:'1.2-2'}}</s>
+                                                    <label style="padding-left: 1rem;"
+                                                        *ngIf="products.isCheckPlice == false">{{products.numSales | number:'1.2-2'}}</label>
+                                   
+                                            </div>
+                                            <div class="col-6"  style="line-height: 3;">
+                                                <label>{{products.product_totalplice | number:'1.2-2'}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="row">
+                                            <div class="col-auto mr-auto">
+                                            </div>
+                                            <div class="col-auto" style="line-height: 3;" [nbPopover]="tabs">
+                                                <div class="d-inline" style="display: inline;padding-right: rem;cursor: pointer;" 
+                                                (click)="btnSelectWholesale(products.product_wholesale_array)">
+                                                    <nb-icon  icon="list-outline"></nb-icon>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto" style="line-height: 3;">
+                                                <div class="d-inline" style="display: inline;padding-right: 0rem;" (click)="btnDeleteProduct(i)">
+                                                    <nb-icon style="
+                                                    margin-left: 1.25rem;
+                                                " icon="close-outline"></nb-icon>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div style=" border-bottom: 1px solid #dee2e6; width: 100%;margin: 0.5rem 0 0.5rem 0;"></div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="arrobjRowProduct.length == 0" class="list">
+                            <div class="row">
+                                <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="text-align: center;">
+                                    <img src="assets/images/loading.png" width="300">
+                                </div>
+                                <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="text-align: center;">
+                                    <label>Please select Product </label>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div *ngIf="strTab == 'Product Name'" class="row"
+                            style="border-bottom: 1px solid #dee2e6;margin: 0;">
+                            <div class="col-sm-4" style="padding: 0;">
+                                <ng-template #rt let-r="result" let-t="term">
+                                    <div class="row">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="padding-right: 0.5rem;">
+                                                        <div class="cover-background-image">
+                                                            <div class="background-image padding-width-100px-height-100px"
+                                                                [ngClass]="{'active' : r.product_image_url === '-' || r.product_image_url === ''}"
+                                                                [ngStyle]="{'background-image': 'url('+r.product_image_url+')'}">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="left">
+                                                        <ngb-highlight [result]="r.product_name" [term]="t">
+                                                        </ngb-highlight><br>
+                                                        <ngb-highlight [result]="r.product_sku" [term]="t">
+                                                        </ngb-highlight>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </ng-template>
+                                <div class="cover-form icon">
+                                    <nb-icon icon="search-outline"></nb-icon>
+                                    <input libOnlyCharacterDefault status="primary" nbInput fullWidth status="basic" (focus)="onFocus($event)"
+                                        id="typeahead-template" type="text" class="form-control"
+                                        [(ngModel)]="selectedValue" [ngModelOptions]="{standalone: true}"
+                                        placeholder="Search for product" [ngbTypeahead]="search" [resultTemplate]="rt"
+                                        [inputFormatter]="formatter" />
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="strTab == 'Product Group Name'" class="row"
+                            style="padding: 0.5rem; border-bottom: 1px solid #dee2e6;margin: 0;">
+                            <div class="col-sm-4">
+                                <ng-template #rt1 let-r="result" let-t="term">
+                                    <div class="row">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="padding-right: 0.5rem;">
+                                                        <div class="cover-background-image">
+                                                            <div class="background-image padding-width-100px-height-100px"
+                                                                [ngClass]="{'active' : r.product_image_url === '-' || r.product_image_url === ''}"
+                                                                [ngStyle]="{'background-image': 'url('+r.product_image_url+')'}">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="left">
+                                                        <ngb-highlight [result]="r.product_name" [term]="t">
+                                                        </ngb-highlight><br>
+                                                        <ngb-highlight [result]="r.product_sku" [term]="t">
+                                                        </ngb-highlight>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </ng-template>
+                                <div class="cover-form icon">
+                                    <nb-icon icon="search-outline"></nb-icon>
+                                    <input libOnlyCharacterDefault status="primary" nbInput fullWidth status="basic" (focus)="onFocus($event)"
+                                        id="typeahead-template" type="text" class="form-control"
+                                        [(ngModel)]="selectedValue1" [ngModelOptions]="{standalone: true}"
+                                        [ngbTypeahead]="search1" [resultTemplate]="rt1" [inputFormatter]="formatter1" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row show-grid">
+                            <div class="col-lg-12">
+                                <ng-template #tabs>
+                                    <div class="p-4">
+                                        <table class="table hover" style="color: white;">
+                                            <tbody>
+                                                <tr *ngFor="let Wholesale  of arrWholesale">
+                                                    <td style="font-size: 14px;">
+                                                        {{ '≥' + ' ' + Wholesale.qty_minimum + ' ' + 'unit'}}</td>
+                                                    <td style="font-size: 14px;"> {{ Wholesale.product_price }}</td>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </ng-template>
+
+                                <div class="col-sm-4 col-sm-offset-8" style="float: right; padding: 1rem 0;">
+                                    <table class="table table-striped text-right" style="color: white;">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <strong style="font-size: 18px;">
+                                                        Total
+                                                    </strong>
+                                                </td>
+                                                <td>
+                                                    <strong style="font-size: 18px;">
+                                                       {{sum |  number : '1.2-2'}} {{'' + 'THB'}}
+                                                    </strong>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row show-grid">
+                            <div class="col-lg-6 ">
+                                <label>Delivery Date</label>
+                                <div class="row show-grid cover-input-icon" style="padding-top: 0rem;">
+                                    <div class="col" style="padding-right: 0rem;">
+                                        <nb-icon style="left: 0;" (click)="dp.show()" icon="calendar-outline"></nb-icon>
+                                        <input status="primary" nbInput fullWidth status="basic" type="text"
+                                            placeholder="dd-MM-yyyy" formControlName="deliveryDate" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && f.deliveryDate.errors }"
+                                            bsDatepicker #dp="bsDatepicker"
+                                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-red', showWeekNumbers:false  }"
+                                            [(ngModel)]="delivery_date" [minDate]="minDate" [maxDate]="maxDate"
+                                            (ngModelChange)="updateMyDate($event)">
+                                        <div *ngIf="submitted && !!f.deliveryDate.errors" class="invalid-feedbacks">
+                                            <div class="required" style="text-align: left"
+                                                *ngIf="!!f.deliveryDate.errors.required">
+                                                Delivery Date is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-6">
+                                <label>Billing Payment Term (Day)</label>
+                                <input libOnlyCharacterDefault status="primary" nbInput fullWidth status="basic" id="typeahead-focus"
+                                    type="text" class="form-control" [(ngModel)]="arrobjRow.billing_payment_term"
+                                    [ngbTypeahead]="search3" (focus)="focus$.next($event.target.value)"
+                                    (click)="click$.next($event.target.value)" #instance="ngbTypeahead"
+                                    formControlName="BillingTerm"
+                                    [ngClass]="{ 'is-invalid': submitted && f.BillingTerm.errors }" />
+
+                                <div *ngIf="submitted && !!f.BillingTerm.errors" class="invalid-feedbacks">
+                                    <div style="text-align: left" *ngIf="!!f.BillingTerm.errors.required">
+                                        Billing Term is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row show-grid">
+                            <div class="col-lg-6">
+                                <label>Warehouse Name</label>
+                                <nb-select [ngClass]="{ 'is-invalid': submitted && (arrobjRow.warehouse_id == '' || arrobjRow.warehouse_id == undefined) }"  placeholder="--------- Choose ---------" fullWidth outline status="basic"
+                                    [(ngModel)]="arrobjRow.warehouse_id" [ngModelOptions]="{standalone: true}">
+                                    <nb-option *ngFor="let warehouse  of arrWarehouse" [value]="warehouse.warehouse_id">
+                                        {{warehouse.warehouse_name}}
+                                    </nb-option>
+                                </nb-select>
+                                <div class="invalid-feedbacks" *ngIf="submitted && (arrobjRow.warehouse_id == '' || arrobjRow.warehouse_id == undefined)">
+                                    <div style="text-align: left">Warehouse Name is required</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 cover-textarea">
+                                <label>Note</label>
+                                <textarea rows="3" type="text" nbInput fullWidth status="basic" class="form-control"
+                                    [(ngModel)]="arrobjRow.note" [ngModelOptions]="{standalone: true}"></textarea>
+                            </div>
+                        </div>
+
+                    </nb-card-body>
+                </nb-card>
+            </div>
+            <div class="col-12 col-md-12 col-lg-12 col-xl-12" >
+                <project-footercomponent> </project-footercomponent>
+            </div>
+        </div>
+    </form>
+</div>

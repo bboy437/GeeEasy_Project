@@ -1,0 +1,280 @@
+<div class="pages" [formGroup]="Form">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <nb-icon class="icon-header" icon="person-outline"></nb-icon>
+                                <label>Seller<span class="p-0-12">/</span>Product<span
+                                        class="p-0-12">/</span>Detail</label>
+                            </div>
+
+                            <div class="col-auto">
+                                <button *ngIf="!loading" style="float: right;margin: 3px 0px 3px 1rem;" nbButton
+                                    type="button" size="medium" status="success" (click)="btnEditClick()">
+                                    Edit
+                                </button>
+                                <button style="float: right;margin: 3px 0px 3px 1rem;" nbButton type="button"
+                                    size="medium" status="danger" (click)="btnBackClick()">
+                                    Back
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;margin-bottom: 0.1rem;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label>{{arrProduct.product_title}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="success">
+            <nb-card class="box-shadow-unset">
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-4 col-xl-4">
+                                        <div class="cover-background-image">
+                                            <div style="text-align: center;"
+                                                class="background-image padding-width-300px-height-200px"
+                                                [ngClass]="{'active' : arrProduct.product_image_url === '-' || arrProduct.product_image_url === ''}"
+                                                [ngStyle]="{'background-image': 'url('+arrProduct.product_image_url+')'}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-8 col-xl-8">
+                                        <div class="row">
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                                style="padding-bottom: 0.5rem; padding-top: 0.5rem;">
+                                                <label style="padding-right: 1rem;font-size: 0.9375rem;">
+                                                    Product Name :
+                                                </label>
+                                                <label
+                                                    style="font-size: 0.9375rem;font-weight: 600;">{{Form.value.product_title}}
+                                                </label>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                                style="padding-bottom: 0.5rem; padding-top: 0.5rem;">
+                                                <label style="padding-right: 1rem;font-size: 0.9375rem;">
+                                                    Product SKU :
+                                                </label>
+                                                <label class="sku"
+                                                    style="font-size: 0.9375rem;font-weight: 600;">{{Form.value.product_sku}}
+                                                </label>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                                style="padding-bottom: 0.5rem; padding-top: 0.5rem;">
+                                                <label style="padding-right: 1rem;font-size: 0.9375rem;">
+                                                    Product Price :
+                                                </label>
+                                                <label
+                                                    style="font-size: 0.9375rem;font-weight: 600;">{{Form.value.product_price  |  number : '1.2-2'}}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                                style="padding-bottom: 1rem;">
+                                                <div class="cover-background-image">
+                                                    <div class="background-image padding-top-60"
+                                                        [ngClass]="{'active' : arrProduct.product_image_url === '-' || arrProduct.product_image_url === ''}"
+                                                        [ngStyle]="{'background-image': 'url('+arrProduct.product_image_url+')'}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <label>Product Name :</label>
+                                                    <input libOnlyCharacterDefault type="text" nbInput fullWidth
+                                                        formControlName="product_title" />
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <label>Product SKU :</label>
+                                                    <input libOnlyCharacterDefault type="text" nbInput fullWidth
+                                                        formControlName="product_sku" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="padding-top: 1rem;">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left; ">
+                                                <label>Image</label>
+                                            </th>
+                                            <th style="text-align: left">
+                                                <label>Product Name</label>
+                                            </th>
+                                            <th style="text-align: right; width: 10%;">
+                                                <label>Quantity</label>
+                                            </th>
+                                            <th style="text-align: right">
+                                                <label>Unit Price</label>
+                                            </th>
+                                            <th style="text-align: right; width: 50%;">
+                                                <div class="row">
+                                                    <div class="col-3">
+                                                        <label>Minimum Qty</label>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <label>Unit Price</label>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <label>Discount</label>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <label></label>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <label>Sales Price</label>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="text-align: left">
+                                                <div class="cover-background-image">
+                                                    <div class="background-image padding-width-100px-height-100px"
+                                                        [ngClass]="{'active' : arrProduct.product_image_url === '-' || arrProduct.product_image_url === ''}"
+                                                        [ngStyle]="{'background-image': 'url('+arrProduct.product_image_url+')'}">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="text-align: left">
+                                                <label>{{arrProduct.product_title}}</label><br>
+                                                <label class="sku">{{arrProduct.product_sku}}</label>
+                                            </td>
+                                            <td>
+                                                <div class="cover-input">
+                                                    <input disabled style="text-align: right;" type="text"
+                                                        libOnlyCharacterDefault libOnlyCharacternumber
+                                                        mask="separator.0" thousandSeparator=","
+                                                        onKeyPress="if(this.value.length==7) return false;" nbInput
+                                                        fullWidth status="basic" [(ngModel)]="arrProduct.product_qty"
+                                                        [ngModelOptions]="{standalone: true}">
+                                                </div>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <label style="padding-top: 0.5rem">
+                                                    {{arrProduct.product_price |  number : '1.2-2'}}
+                                                </label>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <div class="row"
+                                                    *ngFor="let wholesale of arrProduct.product_wholesale_array; let i=index">
+                                                    <div class="col-3">
+                                                        <div class="cover-input">
+                                                            <input disabled style="text-align: right;" type="text"
+                                                                libOnlyCharacterDefault libOnlyCharacternumber
+                                                                mask="separator.0" thousandSeparator=","
+                                                                onKeyPress="if(this.value.length==7) return false;"
+                                                                nbInput fullWidth status="basic"
+                                                                [(ngModel)]="wholesale.qty_minimum "
+                                                                [ngModelOptions]="{standalone: true}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="cover-input">
+                                                            <input disabled style="text-align: right;" type="text"
+                                                                libOnlyCharacterDefault libOnlyCharacternumber
+                                                                mask="separator.2" thousandSeparator="," nbInput
+                                                                fullWidth status="basic"
+                                                                [(ngModel)]="wholesale.unit_price"
+                                                                [ngModelOptions]="{standalone: true}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="cover-input" *ngIf="wholesale.thb == true">
+                                                            <input disabled style="text-align: right;" type="text"
+                                                                libOnlyCharacterDefault libOnlyCharacternumber
+                                                                mask="separator.0" thousandSeparator=","
+                                                                onKeyPress="if(this.value.length==7) return false;"
+                                                                nbInput fullWidth status="basic"
+                                                                [(ngModel)]="wholesale.discount_thb"
+                                                                [ngModelOptions]="{standalone: true}">
+                                                        </div>
+                                                        <div class="cover-input" *ngIf="wholesale.percent == true">
+                                                            <input disabled style="text-align: right;" type="text"
+                                                                libOnlyCharacterDefault libOnlyCharacternumber
+                                                                mask="separator.0" thousandSeparator=","
+                                                                onKeyPress="if(this.value.length==7) return false;"
+                                                                nbInput fullWidth status="basic"
+                                                                [(ngModel)]="wholesale.discount_percent "
+                                                                [ngModelOptions]="{standalone: true}">
+                                                        </div>
+
+
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <div *ngIf="wholesale.thb == true"
+                                                            style="float: left; padding: 0;">
+                                                            <nb-checkbox disabled status="primary"
+                                                                [(ngModel)]="wholesale.thb"
+                                                                [ngModelOptions]="{standalone: true}">
+                                                                <label style="color: black;">THB</label>
+                                                            </nb-checkbox>
+                                                        </div>
+                                                        <div *ngIf="wholesale.percent == true"
+                                                            style="float: left; padding: 0;">
+                                                            <nb-checkbox disabled status="primary"
+                                                                [(ngModel)]="wholesale.percent"
+                                                                [ngModelOptions]="{standalone: true}">
+                                                                <label style="color: black;">%</label>
+                                                            </nb-checkbox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <label style="padding-top: 0.5rem">
+                                                            {{wholesale.sales_price |  number : '1.2-2'}}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="loading || arrProduct.length == 0"
+                                            style="height:300px; background-color: white;">
+                                            <td colspan="6" style="padding-top: 50px; text-align: center;">
+                                                <img src="assets/images/loading.png" width="300"><br><br>
+                                                <label>No data.</label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

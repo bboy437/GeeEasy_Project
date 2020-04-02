@@ -1,0 +1,196 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <nb-icon icon="cube-outline"></nb-icon>
+                                <label *ngIf="status == 'list'">Manage Products<span
+                                        class="p-0-12">/</span>Detail</label>
+                                <label *ngIf="status == 'group'">Products Group<span
+                                        class="p-0-12">/</span>Detail</label>
+                                <label *ngIf="status == 'stock'">Manage Stock<span class="p-0-12">/</span>Detail</label>
+                            </div>
+                            <div class="col-auto">
+                                <button style="float: right;margin: 3px 0 3px 0.5rem;" nbButton size="medium"
+                                    status="danger" (click)="btnCancelClick()">
+                                    Back
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;margin-bottom: 0.1rem;">
+                <nb-card-header style="padding: 0.5rem 0;">
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label *ngIf="status == 'list'">{{arrProductDetail.product_title}}</label>
+                                <label *ngIf="status == 'group'">{{arrProductDetail.product_title}}</label>
+                                <label *ngIf="status == 'stock'">{{arrProductDetail.product_title}}</label>
+                                <label class="sku">{{arrProductDetail.product_sku}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card [nbSpinner]="loading" nbSpinnerStatus="primary">
+                <nb-card-body style="padding: 1rem 0;">
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6" style="text-align: center">
+                                        <project-display-file-image theme="white"
+                                            [image_url_array]="image.main_image.get"></project-display-file-image>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <label class="label col-sm-3 col-form-label"
+                                                            style="font-size: 14px; line-height:unset">Product Name
+                                                            :</label>
+                                                        <div class="col-sm-9">
+                                                            <input nbInput disabled status="primary" type="text"
+                                                                status="primary" nbInput fullWidth
+                                                                [(ngModel)]="arrProductDetail.product_title" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <label class="label col-sm-3 col-form-label"
+                                                            style="font-size: 14px; line-height:unset">Product
+                                                            Price :</label>
+                                                        <div class="col-sm-9">
+                                                            <input nbInput disabled status="primary" type="text"
+                                                                status="primary" nbInput fullWidth
+                                                                [(ngModel)]="arrProductDetail.product_price" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <label class="label col-sm-3 col-form-label"
+                                                            style="font-size: 14px; line-height:unset">Product SKU
+                                                            :</label>
+                                                        <div class="col-sm-9">
+                                                            <input nbInput disabled status="primary" type="text"
+                                                                status="primary" nbInput fullWidth
+                                                                [(ngModel)]="arrProductDetail.product_sku" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <div class="row">
+                                                        <label class="label col-sm-3 col-form-label"
+                                                            style="font-size: 14px; line-height:unset">Note
+                                                            :</label>
+                                                        <div class="col-sm-9">
+                                                            <input nbInput disabled status="primary" type="text"
+                                                                status="primary" nbInput fullWidth
+                                                                [(ngModel)]="arrProductDetail.note" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <table class="table">
+                                    <colgroup>
+                                        <col *ngIf="status == 'list'" />
+                                        <col />
+                                        <col />
+                                        <col class="Available" />
+                                        <col class="OnHand" />
+                                        <col class="Outgoing" />
+                                        <col class="Incoming" />
+                                        <col />
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th *ngIf="status == 'list'">
+                                                <nb-checkbox [checked]="checkedAll" status="primary"
+                                                    (checkedChange)="updateStatusAll($event)"></nb-checkbox>
+                                            </th>
+                                            <th style="text-align: left">PO No.</th>
+                                            <th style="text-align: left">Warehouse Name</th>
+                                            <th style="text-align: center">Available</th>
+                                            <th style="text-align: center">On Hand</th>
+                                            <th style="text-align: center">Outgoing</th>
+                                            <th style="text-align: center">Incoming</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- <ng-container *ngFor="let item of arrProductDetails"> -->
+                                        <tr *ngFor="let item of arrProductDetails">
+                                            <td *ngIf="status == 'list'">
+                                                <nb-checkbox status="primary"
+                                                    [ngModel]="item.product_row_data.product_is_active == 1 ? true : item.product_row_data.product_is_active == 0 ? false : null"
+                                                    (checkedChange)="updateStatus($event, item)"></nb-checkbox>
+                                            </td>
+                                            <td style="text-align: left">
+                                                <div *ngFor="let purchase_data of item.purchase_data;">
+                                                    <label>
+                                                        {{purchase_data.purchase_order_number}}
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td style="text-align: left">
+                                                <div *ngFor="let warehouse_data of item.warehouse_data;">
+                                                    <label>
+                                                        {{warehouse_data.warehouse_name}}
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td class="cover qty">
+                                                <input nbInput status="primary" class="disbletable" type="number"
+                                                    disabled nbInput
+                                                    [(ngModel)]="item.checkin_data.onhand - item.checkin_data.outgoing" />
+                                            </td>
+                                            <td class="cover qty">
+                                                <input nbInput status="primary" class="disbletable" type="number"
+                                                    nbInput disabled
+                                                    [(ngModel)]="item.checkin_data.onhand + item.checkin_data.onhand_manual" />
+                                            </td>
+                                            <td class="cover qty">
+                                                <input nbInput status="primary" class="disbletable" type="number"
+                                                    nbInput disabled [(ngModel)]="item.checkin_data.outgoing " />
+                                            </td>
+                                            <td class="cover qty">
+                                                <input nbInput status="primary" class="disbletable" type="number"
+                                                    nbInput disabled [(ngModel)]="item.checkin_data.incoming " />
+                                            </td>
+                                        </tr>
+                                        <!-- </ng-container> -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1 @@
+export { SellerProductDetailComponent } from "./seller-product-detail.component";

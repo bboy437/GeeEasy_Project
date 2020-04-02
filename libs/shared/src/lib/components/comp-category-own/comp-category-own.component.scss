@@ -1,0 +1,73 @@
+.row {
+    margin: 0 -0.5rem;
+
+    .col,
+    div[class^="col-"] {
+        padding: 0 0.5rem;
+    }
+}
+
+.header {
+  &.Supplier {
+    border: 1px solid #edf1f7;
+    padding: 1rem;
+    background-color: #1a2038;
+  }
+
+}
+.Supplier{
+  background-color: #1a2038;
+}
+
+
+
+.table {
+    &.Dealer {
+      tbody {
+        tr {
+          &.active {
+            color: white !important;
+            background-color: #f84d2f !important;
+          }
+          &:hover {
+            cursor: pointer;
+            background-color: rgba(236, 43, 43, 0.034);
+            color: black;
+          }
+        }
+      }
+    }
+    &.Distributor {
+      tbody {
+        tr {
+          &.active {
+            color: white !important;
+            background-color: #1a34b8 !important;
+          }
+          &:hover {
+            cursor: pointer;
+            background-color: rgba(43, 62, 236, 0.041);
+            color: black;
+          }
+        }
+      }
+    }
+    &.Supplier {
+      tbody {
+        tr {
+          &.active {
+            color: white !important;
+            background-color: #1c294e !important;
+          }
+          &:hover {
+            cursor: pointer;
+            // background-color: #7c7e845e;
+            // background-color: #1c2943b3;
+            background-color: rgb(32, 39, 65);
+            color: white;
+          }
+        }
+      }
+    }
+  }
+  

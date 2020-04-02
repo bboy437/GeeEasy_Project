@@ -1,0 +1,723 @@
+<div class="cover-pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="cover-header header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <nb-icon icon="file-text-outline"></nb-icon>
+                                <label>Commercial Invoice</label>
+                            </div>
+                            <div class="col-auto">
+                                <button nbButton size="medium" status="success" (click)="printPage('page')">
+                                    Print
+                                </button>
+                                <button nbButton size="medium" status="danger" (click)="btnCancelClick()">
+                                    Cancel
+                                </button>
+                            
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+    </div>
+</div>
+
+<nb-card>
+    <nb-card-body>
+        <div class="page" id="page">
+            <div class="row" style="margin: 0 -5px; padding-top: 1rem; padding-bottom: 1rem">
+                <div class="col-12 ">
+                    <div class="col-padiing text-center">
+                        <label style="font-size: 20px">COMMERCIAL INVOICE</label><br>
+                    </div>
+                </div>
+            </div>
+            <div class="subpage" style="border: 1px solid #d3d3d3; ">
+                <div class="row" style="margin: 0 -5px">
+                    <div class="col-6 col-f"
+                        style="border-bottom: 1px solid #d3d3d3; border-right: 1px solid #d3d3d3; ">
+                        <div class="col-padiing">
+                            <label>Exporter</label><br>
+                            <label>{{arrDocFrom.name}}</label><br>
+                            <label>{{arrDocFrom.address}}</label><br>
+                            <label>{{arrDocFrom.tel}}</label>
+                        </div>
+                    </div>
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3; ">
+                        <div class="row">
+                            <div class="col-12 col-f" style="border-bottom: 1px solid #d3d3d3; ">
+                                <div class="col-padiing text-right">
+                                    <label>Pages</label><br>
+                                    <label>1 of 1</label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f"
+                                style="border-bottom: 1px solid #d3d3d3; border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing">
+                                    <label>Invoice Number & Date</label><br>
+                                    <label>{{arrDoc.purchase_order_number}}</label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3; ">
+                                <div class="col-padiing">
+                                    <label>Bill of Lading Number</label><br>
+                                    <label>{{arrDoc.date * 100 | date: 'dd/MM/yyyy'}}</label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f ">
+                                <div class="col-padiing">
+                                    <label>Reference</label><br>
+                                    <label>{{arrDoc.supplier_reference}}</label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f ">
+                                <div class="col-padiing">
+                                    <label>Buyer Reference</label><br>
+                                    <label>{{arrDoc.supplier_reference}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin: 0 -5px">
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3; border-right: 1px solid #d3d3d3;">
+                        <div class="row">
+                            <div class="col-12 col-f">
+                                <div class="col-padiing">
+                                    <label>Consignee</label><br>
+                                    <label>{{arrDocTo.name}}</label><br>
+                                    <label>{{arrDocTo.address}}</label><br>
+                                    <label>{{arrDocTo.tel}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3">
+                        <div class="col-12 col-f">
+                            <div class="col-padiing">
+                                <label>Buyer (If not Consignee)</label><br><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin: 0 -5px">
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3; border-right: 1px solid #d3d3d3;">
+                        <div class="row">
+                            <div class="col-6 col-f">
+                                <div class="col-padiing">
+                                    <label>Method of Dispatch</label><br><br>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f">
+                                <div class="col-padiing">
+                                    <label>Type of Shipment</label><br><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3">
+                        <div class="row">
+                            <div class="col-6 col-f">
+                                <div class="col-padiing">
+                                    <label>Country Of Origin of Goods</label><br><br>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f">
+                                <div class="col-padiing">
+                                    <label>Country of Final Destination</label><br><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin: 0 -5px">
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3; border-right: 1px solid #d3d3d3;">
+                        <div class="row">
+                            <div class="col-6 col-f"
+                                style="border-right: 1px solid #d3d3d3; border-bottom: 1px solid #d3d3d3">
+                                <div class="col-padiing">
+                                    <label>Vessel / Aircraft</label><br><br>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3">
+                                <div class="col-padiing">
+                                    <label>Voyage No</label><br><br>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f" style="border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing">
+                                    <label>Port of Loading</label><br><br>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f ">
+                                <div class="col-padiing">
+                                    <label>Date of Departure</label><br><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3">
+                        <div class="col-6 col-f ">
+                            <div class="col-padiing">
+                                <label>Terms / Method of Payment</label><br><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin: 0 -5px">
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3; border-right: 1px solid #d3d3d3;">
+                        <div class="row">
+                            <div class="col-6 col-f">
+                                <div class="col-padiing">
+                                    <label>Port of Discharge</label><br><br>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f">
+                                <div class="col-padiing">
+                                    <label>Final Destination</label><br><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3">
+                        <div class="row">
+                            <div class="col-6 col-f">
+                                <div class="col-padiing">
+                                    <label>Marine Cover Policy No</label><br><br>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f">
+                                <div class="col-padiing">
+                                    <label>Letter Of Credit No</label><br><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ---------------------------- -->
+                <!-- Center -->
+
+                <div class="row" style="margin: 0 -5px">
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3; border-right: 1px solid #d3d3d3;">
+                        <div class="row">
+                            <div class="col-4 col-f border-right-1" style="border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing text-center">
+                                    <label>Product Code</label>
+                                </div>
+                            </div>
+                            <div class="col-8 col-f ">
+                                <div class="col-padiing text-center">
+                                    <label>Description of Goods</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-f border-bottom-1" style="border-bottom: 1px solid #d3d3d3;">
+                        <div class="row">
+                            <div class="col-3 col-f" style="border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing text-center">
+                                    <label>Unit Quantity</label>
+                                </div>
+                            </div>
+                            <div class="col-3 col-f" style="border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing text-center">
+                                    <label>Unit Type</label>
+                                </div>
+                            </div>
+                            <div class="col-3 col-f" style="border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing text-center">
+                                    <label>Price</label>
+                                </div>
+                            </div>
+                            <div class="col-3 col-f ">
+                                <div class="col-padiing text-center">
+                                    <label>Amount</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngFor="let item of productDoc" style="margin: 0 -5px">
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3; border-right: 1px solid #d3d3d3;">
+                        <div class="row">
+                            <div class="col-4 col-f" style="border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing text-center">
+                                    <label>{{item.product_data.product_id}}</label>
+                                </div>
+                            </div>
+                            <div class="col-8 col-f ">
+                                <div class="col-padiing text-center">
+                                    <label>{{item.product_data.product_title}}</label>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3;">
+                        <div class="row">
+                            <div class="col-3 col-f " style="border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing text-center">
+                                    <label>{{item.request_product_qty}}</label>
+                                </div>
+                            </div>
+                            <div class="col-3 col-f" style="border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing text-center">
+                                <label>-</label>
+                                </div>
+                            </div>
+                            <div class="col-3 col-f" style="border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing text-center">
+                                    <label>{{item.request_product_price}}</label>
+                                </div>
+                            </div>
+                            <div class="col-3 col-f ">
+                                <div class="col-padiing text-center">
+                                    <label>{{item.request_product_qty * item.request_product_price}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+                <!-- ---------------------------- -->
+                <!-- footer -->
+
+                <div class="row" style="margin: 0 -5px">
+                    <div class="col-6 col-f"
+                        style="border-bottom: 1px solid #d3d3d3; border-right: 1px solid #d3d3d3; border-top: 1px solid #d3d3d3;">
+                        <div class="col-padiing text-right">
+                            <label>Consignment Total</label>
+                        </div>
+                    </div>
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3; border-top: 1px solid #d3d3d3;">
+                        <div class="col-padiing text-right">
+                        <label>{{orderSummary.total_grand}}</label>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-f " style="border-right: 1px solid #d3d3d3;">
+                        <div class="col-padiing ">
+                            <label>Additional Information</label>
+                        </div>
+                    </div>
+                    <div class="col-6 col-f ">
+                        <div class="row">
+                            <div class="col-12 col-f" style="border-bottom: 1px solid #d3d3d3;">
+                                <div class="col-padiing ">
+                                    <br><br>
+                                </div>
+                            </div>
+                            <div class="col-12 col-f" style="border-bottom: 1px solid #d3d3d3;">
+                                <div class="col-padiing ">
+                                    <label>Invoice Total (Incotems@ 2010)</label><br><br>
+                                </div>
+                            </div>
+                            <div class="col-12 col-f" style="border-bottom: 1px solid #d3d3d3;">
+                                <div class="col-padiing ">
+                                    <label>Place and Date if lssue</label><br><br>
+                                </div>
+                            </div>
+                            <div class="col-12 col-f" style="border-bottom: 1px solid #d3d3d3;">
+                                <div class="col-padiing ">
+                                    <label>Signatory Company</label><br><br>
+                                </div>
+                            </div>
+                            <div class="col-12 col-f border-bottom-1">
+                                <div class="col-padiing ">
+                                    <label>Name of Authorized Signatory</label><br><br>
+                                </div>
+                            </div>
+                            <div class="col-12 col-f ">
+                                <div class="col-padiing ">
+                                    <label>Signature</label><br><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nb-card-body>
+</nb-card>
+
+<nb-card>
+    <nb-card-header>
+        <div class="row">
+            <div class="col-auto mr-auto">
+                <img src="assets/images/placeorder.svg" class="pull-left m-r" width="45">&nbsp;
+                <label style="font-size: 18px; font-weight: bold">Commercial Invoice</label>
+            </div>
+            <div class="col-auto">
+                <button nbButton style="width: 100px" status="danger" (click)="btnCancelClick()">Cancel</button>&nbsp;
+                <button nbButton style="width: 100px" status="success" (click)="printPage('page')">Print</button>
+            </div>
+        </div>
+
+    </nb-card-header>
+    <nb-card-body>
+        <div class="page" id="page">
+            <div class="row" style="margin: 0 -5px; padding-top: 1rem; padding-bottom: 1rem">
+                <div class="col-12 ">
+                    <div class="col-padiing text-center">
+                        <label style="font-size: 20px">COMMERCIAL INVOICE</label><br>
+                    </div>
+                </div>
+            </div>
+            <div class="subpage" style="border: 1px solid #d3d3d3; ">
+                <!-- Header -->
+                <!-- ---------------------------- -->
+                <div class="row" style="margin: 0 -5px">
+                    <div class="col-6 col-f"
+                        style="border-bottom: 1px solid #d3d3d3; border-right: 1px solid #d3d3d3; ">
+                        <div class="col-padiing">
+                            <label>Exporter</label><br>
+                            <label>{{arrDocFrom.name}}</label><br>
+                            <label>{{arrDocFrom.address}}</label><br>
+                            <label>{{arrDocFrom.tel}}</label>
+                        </div>
+                    </div>
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3; ">
+                        <div class="row">
+                            <div class="col-12 col-f" style="border-bottom: 1px solid #d3d3d3; ">
+                                <div class="col-padiing text-right">
+                                    <label>Pages</label><br>
+                                    <label>1 of 1</label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f"
+                                style="border-bottom: 1px solid #d3d3d3; border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing">
+                                    <label>Invoice Number & Date</label><br>
+                                    <label>{{arrDoc.purchase_order_number}}</label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3; ">
+                                <div class="col-padiing">
+                                    <label>Bill of Lading Number</label><br>
+                                    <label>{{arrDoc.date * 100 | date: 'dd/MM/yyyy'}}</label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f ">
+                                <div class="col-padiing">
+                                    <label>Reference</label><br>
+                                    <label>{{arrDoc.supplier_reference}}</label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f ">
+                                <div class="col-padiing">
+                                    <label>Buyer Reference</label><br>
+                                    <label>{{arrDoc.supplier_reference}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin: 0 -5px">
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3; border-right: 1px solid #d3d3d3;">
+                        <div class="row">
+                            <div class="col-12 col-f">
+                                <div class="col-padiing">
+                                    <label>Consignee</label><br>
+                                    <label>{{arrDocTo.name}}</label><br>
+                                    <label>{{arrDocTo.address}}</label><br>
+                                    <label>{{arrDocTo.tel}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3">
+                        <div class="col-12 col-f">
+                            <div class="col-padiing">
+                                <label>Buyer (If not Consignee)</label><br>
+                                <label>-</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin: 0 -5px">
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3; border-right: 1px solid #d3d3d3;">
+                        <div class="row">
+                            <div class="col-6 col-f">
+                                <div class="col-padiing">
+                                    <label>Method of Dispatch</label><br>
+                                    <label>-</label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f">
+                                <div class="col-padiing">
+                                    <label>Type of Shipment</label><br>
+                                    <label>-</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3">
+                        <div class="row">
+                            <div class="col-6 col-f">
+                                <div class="col-padiing">
+                                    <label>Country Of Origin of Goods</label><br>
+                                    <label>-</label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f">
+                                <div class="col-padiing">
+                                    <label>Country of Final Destination</label><br>
+                                    <label>-</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin: 0 -5px">
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3; border-right: 1px solid #d3d3d3;">
+                        <div class="row">
+                            <div class="col-6 col-f"
+                                style="border-right: 1px solid #d3d3d3; border-bottom: 1px solid #d3d3d3">
+                                <div class="col-padiing">
+                                    <label>Vessel / Aircraft</label><br>
+                                    <label>-</label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3">
+                                <div class="col-padiing">
+                                    <label>Voyage No</label><br>
+                                    <label>-</label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f" style="border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing">
+                                    <label>Port of Loading</label><br>
+                                    <label>-</label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f ">
+                                <div class="col-padiing">
+                                    <label>Date of Departure</label><br>
+                                    <label>-</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3">
+                        <div class="col-6 col-f ">
+                            <div class="col-padiing">
+                                <label>Terms / Method of Payment</label><br>
+                                <label>.......................</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin: 0 -5px">
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3; border-right: 1px solid #d3d3d3;">
+                        <div class="row">
+                            <div class="col-6 col-f">
+                                <div class="col-padiing">
+                                    <label>Port of Discharge</label><br>
+                                    <label>-</label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f">
+                                <div class="col-padiing">
+                                    <label>Final Destination</label><br>
+                                    <label>-</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3">
+                        <div class="row">
+                            <div class="col-6 col-f">
+                                <div class="col-padiing">
+                                    <label>Marine Cover Policy No</label><br>
+                                    <label>-</label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f">
+                                <div class="col-padiing">
+                                    <label>Letter Of Credit No</label><br>
+                                    <label>-</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ---------------------------- -->
+                <!-- Center -->
+
+                <div class="row" style="margin: 0 -5px">
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3; border-right: 1px solid #d3d3d3;">
+                        <div class="row">
+                            <div class="col-3 col-f border-right-1" style="border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing text-center">
+                                    <label>Product Code</label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f ">
+                                <div class="col-padiing text-center" style="border-right: 1px solid #d3d3d3;">
+                                    <label>Description of Goods</label>
+                                </div>
+                            </div>
+                            <div class="col-3 col-f ">
+                                <div class="col-padiing text-center">
+                                    <label>HS Code</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-f border-bottom-1" style="border-bottom: 1px solid #d3d3d3;">
+                        <div class="row">
+                            <div class="col-3 col-f" style="border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing text-center">
+                                    <label>Unit Quantity</label>
+                                </div>
+                            </div>
+                            <div class="col-3 col-f" style="border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing text-center">
+                                    <label>Unit Type</label>
+                                </div>
+                            </div>
+                            <div class="col-3 col-f" style="border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing text-center">
+                                    <label>Price</label>
+                                </div>
+                            </div>
+                            <div class="col-3 col-f ">
+                                <div class="col-padiing text-center">
+                                    <label>Amount</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3; border-right: 1px solid #d3d3d3;">
+                        <div class="row">
+                            <div class="col-3 col-f" style="border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing text-center">
+                                    <label>P001</label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-f ">
+                                <div class="col-padiing text-center" style="border-right: 1px solid #d3d3d3;">
+                                    <label>-</label>
+                                </div>
+                            </div>
+                            <div class="col-3 col-f ">
+                                <div class="col-padiing text-center">
+                                    <label>-</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3;">
+                        <div class="row">
+                            <div class="col-3 col-f " style="border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing text-center">
+                                    <label>10</label>
+                                </div>
+                            </div>
+                            <div class="col-3 col-f" style="border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing text-center">
+                                    <label>10</label>
+                                </div>
+                            </div>
+                            <div class="col-3 col-f" style="border-right: 1px solid #d3d3d3;">
+                                <div class="col-padiing text-center">
+                                    <label>1d3d3d3</label>
+                                </div>
+                            </div>
+                            <div class="col-3 col-f ">
+                                <div class="col-padiing text-center">
+                                    <label>500366</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+                <!-- ---------------------------- -->
+                <!-- footer -->
+
+                <div class="row" style="margin: 0 -5px">
+                    <div class="col-6 col-f"
+                        style="border-bottom: 1px solid #d3d3d3; border-right: 1px solid #d3d3d3; border-top: 1px solid #d3d3d3;">
+                        <div class="col-padiing text-right">
+                            <label>Consignment Total</label>
+                        </div>
+                    </div>
+                    <div class="col-6 col-f" style="border-bottom: 1px solid #d3d3d3; border-top: 1px solid #d3d3d3;">
+                        <div class="col-padiing text-right">
+                            <label>2d3d3d30</label>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-f " style="border-right: 1px solid #d3d3d3;">
+                        <div class="col-padiing ">
+                            <label>Additional Information</label>
+                        </div>
+                    </div>
+                    <div class="col-6 col-f ">
+                        <div class="row">
+                            <div class="col-12 col-f" style="border-bottom: 1px solid #d3d3d3;">
+                                <div class="col-padiing ">
+                                    <label>.......................</label><br>
+                                    <label>.......................</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-f" style="border-bottom: 1px solid #d3d3d3;">
+                                <div class="col-padiing ">
+                                    <label>Invoice Total (Incotems@ 2010)</label><br>
+                                    <label>.......................</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-f" style="border-bottom: 1px solid #d3d3d3;">
+                                <div class="col-padiing ">
+                                    <label>Place and Date if lssue</label><br>
+                                    <label>.......................</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-f" style="border-bottom: 1px solid #d3d3d3;">
+                                <div class="col-padiing ">
+                                    <label>Signatory Company</label><br>
+                                    <label>.......................</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-f border-bottom-1">
+                                <div class="col-padiing ">
+                                    <label>Name of Authorized Signatory</label><br>
+                                    <label>.......................</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-f ">
+                                <div class="col-padiing ">
+                                    <label>Signature</label><br>
+                                    <label>.......................</label><br>
+                                    <label>.......................</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- ---------------------------- -->
+            </div>
+        </div>
+    </nb-card-body>
+</nb-card>

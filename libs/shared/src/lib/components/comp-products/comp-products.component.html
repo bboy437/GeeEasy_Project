@@ -1,0 +1,178 @@
+<div class="row" *ngIf="status == 'Order'">
+    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+        <table class="table no-hover">
+            <thead>
+                <tr>
+                    <th style="min-width: 100px; text-align: left;">Image</th>
+                    <th style="min-width: 600px; text-align: left;">Product Name</th>
+                    <th style="min-width: 145px; text-align: center;">Quantity</th>
+                    <th style="min-width: 300px;text-align: right;">Unit Price</th>
+                    <th style="min-width: 300px;text-align: right;">Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of arrProduct; let i = index">
+                    <td style="text-align: left;">
+                        <div class="cover-background-image">
+                            <div class="background-image padding-width-100px-height-100px"
+                                [ngClass]="{'active' : product.product_image_url === '-' || product.product_image_url === ''}"
+                                [ngStyle]="{'background-image': 'url('+product.product_image_url+')'}">
+                            </div>
+                        </div>
+                    </td>
+                    <td style="text-align: left;">
+                        <div>
+                            <label>{{product.product_name}}</label>
+                        </div>
+                        <div>
+                            <label class="sku">{{product.product_sku}}</label>
+                        </div>
+                        <div class="cover-input">
+                            <label> {{product.product_note}}</label>
+                        </div>
+                    </td>
+                    <td>
+                        <input nbInput status="primary" type="text" fullWidth disabled class="cover qty"
+                            [ngModel]="product.product_qty  | number" />
+                    </td>
+                    <td>
+                        <div class="cover-input price">
+                            <a>THB</a>
+                            <input nbInput status="primary" type="text" class="cover price" fullWidth disabled
+                                [ngModel]="product.product_price | number : '1.2-2'" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cover-input price">
+                            <a>THB</a>
+                            <input nbInput status="primary" type="text" class="cover price" fullWidth disabled
+                                [ngModel]="product.product_qty * product.product_price | number : '1.2-2'" />
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+        <div class="row">
+            <div class="col-12 offset-md-6 col-md-6 offset-lg-6  col-lg-6 offset-xl-6 col-xl-6">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <td style="text-align: right; padding: 0.75rem;">
+                                <strong style="font-size: 18px;">
+                                    Total
+                                </strong>
+                            </td>
+                            <td style="text-align: right; padding: 0.75rem;">
+                                <strong style="font-size: 18px;">
+                                    {{arrSummary.total_price |  number : '1.2-2'}} {{'' + 'THB'}}
+                                </strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="status == 'PO'">
+    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+        <table class="table no-hover">
+            <thead>
+                <tr>
+                    <th style="min-width: 100px; text-align: left;">Image</th>
+                    <th style="min-width: 600px; text-align: left;">Product Name</th>
+                    <th style="min-width: 145px; text-align: center;">Quantity</th>
+                    <th style="min-width: 100px;"></th>
+                    <th style="min-width: 250px;text-align: right;">Unit Price</th>
+                    <th style="min-width: 250px;text-align: right;">Total Price</th>
+                </tr>
+            </thead>
+            <tbody style="cursor: pointer;">
+                <tr *ngFor="let product of arrProduct; let i = index">
+                    <td class="left">
+                        <div class="cover-background-image">
+                            <div class="background-image padding-width-100px-height-100px"
+                                [ngClass]="{'active' : product.request_product_image_url === '-' || product.request_product_image_url === ''}"
+                                [ngStyle]="{'background-image': 'url('+product.request_product_image_url+')'}">
+                            </div>
+                        </div>
+                    </td>
+                    <td class="left">
+                        <div>
+                            <label>{{product.request_product_name}}</label>
+                        </div>
+                        <div>
+                            <label *ngIf="colorSKU == 'supplier'"
+                                class="sku_supplier">{{product.request_product_sku}}</label>
+                            <label *ngIf="colorSKU != 'supplier'" class="sku">{{product.request_product_sku}}</label>
+                        </div>
+                        <div>
+                            <a> {{product.product_data.product_data.product_attribute.weight | number}}</a>
+                            <a> {{product.product_data.product_data.product_attribute.weight_unit}}</a>
+                        </div>
+                        <div class="cover-input" *ngIf="product.product_note !== '' && product.product_note !== '-'">
+                            <label> {{product.product_note}}</label>
+                        </div>
+                    </td>
+                    <td>
+                        <input nbInput status="primary" type="text" fullWidth disabled class="cover qty"
+                            [ngModel]="product.request_product_qty  | number" />
+                    </td>
+                    <td>
+                        <div style="padding-top: 0.5rem; font-weight: 600;">
+                            {{product.product_data.product_unit }}
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="cover-input price">
+                            <a> {{product.product_data.product_data.product_currency_code }}</a>
+                            <input nbInput status="primary" type="text" class="cover price" fullWidth disabled
+                                [ngModel]="product.request_product_price | number : '1.2-2'" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cover-input price">
+                            <a> {{product.product_data.product_data.product_currency_code }}</a>
+                            <input nbInput status="primary" type="text" class="cover price" fullWidth disabled
+                                [ngModel]="product.request_product_qty * product.request_product_price | number : '1.2-2'" />
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+        <div class="row">
+            <div class="col-12 offset-md-6 col-md-6 offset-lg-6  col-lg-6 offset-xl-6 col-xl-6">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <td style="text-align: right; padding: 0.75rem;">
+                                <strong *ngIf="colorSKU == 'supplier'" style="font-size: 18px; color:white">
+                                    Total
+                                </strong>
+                                <strong *ngIf="colorSKU != 'supplier'" style="font-size: 18px">
+                                    Total
+                                </strong>
+                            </td>
+                            <td style="text-align: right; padding: 0.75rem;">
+                                <strong *ngIf="colorSKU == 'supplier'" style="font-size: 18px;  color:white">
+                                    {{arrSummary.total_price |  number : '1.2-2'}} {{'' + 'THB'}}
+                                </strong>
+                                <strong *ngIf="colorSKU != 'supplier'" style="font-size: 18px;">
+                                    {{arrSummary.total_price |  number : '1.2-2'}} {{'' + 'THB'}}
+                                </strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

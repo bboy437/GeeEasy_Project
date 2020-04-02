@@ -1,0 +1,295 @@
+<div class="pages" [formGroup]="Form">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <nb-icon class="icon-header" icon="shuffle-2-outline"></nb-icon>
+                                <label>My Order</label>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <button *ngIf="isStatus == false" style="float: right;margin: 3px 0 3px 0.5rem;"
+                                    nbButton size="medium" status="primary" (click)="btnNewClick()">
+                                    New Order
+                                </button>
+                                <button *ngIf="isStatus == true" style="float: right;margin: 3px 0 3px 0.5rem;" nbButton
+                                    size="medium" status="danger" (click)="btnBackClick()">
+                                    Back
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="cover-form icon">
+                                <label>Search by Order No.</label>
+                                <nb-icon style="right: 0px;" icon="search-outline"></nb-icon>
+                                <nb-icon *ngIf="Form.value.strOrder" (click)="btnRefresh()"
+                                    style="float: right;left: 0; cursor: pointer;" icon="close-outline">
+                                </nb-icon>
+                                <input libOnlyCharacterDefault nbInput status="primary" type="text" fullWidth
+                                    placeholder="Search" formControlName="strOrder"
+                                    (keyup)="filterOrderNo($event.target.value)" />
+                            </div>
+                        </div>
+                        <div class="col-lg-2" *ngIf="isStatus == false">
+                            <div class="cover-form">
+                                <label>Distributor Name</label>
+                                <nb-select (selectedChange)="filterDealerName($event)" multiple fullWidth
+                                    placeholder="------ Choose ------" status="basic" formControlName="multiproperty">
+                                    <nb-option *ngFor="let item of arrDistributor" [value]="item.distributor_name">
+                                        {{item.distributor_name}}
+                                    </nb-option>
+                                </nb-select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="cover-form">
+                                <label>Payment Status</label>
+                                <nb-select placeholder="------ Choose ------" (selectedChange)="filterStatus($event)"
+                                    fullWidth outline status="basic" formControlName="strStatus">
+                                    <nb-option value="">All Payment</nb-option>
+                                    <nb-option value="0">No Paid</nb-option>
+                                    <nb-option value="2">Partially Paid</nb-option>
+                                    <nb-option value="1">Fully Paid</nb-option>
+                                </nb-select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="cover-form">
+                                <label>Shipment Status</label>
+                                <nb-select placeholder="------ Choose ------"
+                                    (selectedChange)="filterShipmentStatus($event)" fullWidth outline status="basic"
+                                    formControlName="strShipmentStatus">
+                                    <nb-option value="">All Shipment</nb-option>
+                                    <nb-option value="0">No Fulfillment</nb-option>
+                                    <nb-option value="2">Partially Fulfill</nb-option>
+                                    <nb-option value="1">Fully Fulfill</nb-option>
+                                </nb-select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="cover-form icon">
+                                <label>Start Date to End Date</label>
+                                <nb-icon icon="calendar-outline"></nb-icon>
+                                <input nbInput status="primary" type="text" nbInput fullWidth status="basic"
+                                    placeholder="Start Date to End Date" formControlName="daterangepickerModel"
+                                    #daterangepicker="bsDaterangepicker" bsDaterangepicker
+                                    [bsConfig]="{ rangeInputFormat: 'DD/MM/YYYY', containerClass: 'theme-red' }"
+                                    (bsValueChange)="filterDate($event)">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2" style="padding-top: 30px">
+                            <button style="margin: 0 0.5rem 0 0;" nbButton size="small" status="gray"
+                                (click)="btnReset()">Reset</button>
+                            <!-- <button style="margin: 0 0.5rem 0 0;" nbButton size="small" status="success">Apply
+                                filters</button> -->
+
+                        </div>
+                    </div><br>
+                    <div *ngIf="!isReload">
+                        <table class="table hover" style="width: 100%;" *ngIf="arrOrder$ | async as arrOrder ; else loading">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;" scope="col" sortable="purchase_order_is_confirm"
+                                        (sort)="onSort($event)">Confirm
+                                    </th>
+                                    <th style="text-align: left;" scope="col" sortable="purchase_order_is_confirm"
+                                        (sort)="onSort($event)">Payment Status
+                                    </th>
+                                    <th style="text-align: left;" scope="col" sortable="purchase_order_is_confirm"
+                                        (sort)="onSort($event)">Shipment Status
+                                    </th>
+                                    <th style="text-align: left;" scope="col" sortable="purchase_order_number"
+                                        (sort)="onSort($event)">Order No.
+                                    </th>
+                                    <th style="width: 30%; text-align: left;" scope="col" sortable="Supplier"
+                                        (sort)="onSort($event)">
+                                        Distributor Name</th>
+                                    <th style="text-align: left;" scope="col" sortable="delivery_date"
+                                        (sort)="onSort($event)">Date</th>
+                                    <th style="text-align: right;" scope="col" sortable="total_price"
+                                        (sort)="onSort($event)">Order Total
+                                    </th>
+                                    <th style="text-align: right; cursor: pointer;" (click)="btnReload()">
+                                        <nb-icon icon="refresh-outline"></nb-icon>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody style="cursor: pointer;">
+                                <ng-container *ngFor="let Order of arrOrder;">
+                                    <tr *ngFor="let d of Order.distributor_data "
+                                        (click)="btnRowClick(Order.dealer_order_id)">
+                                        <td style="text-align: left;">
+                                            <ngb-highlight [result]="Order.dealer_order_is_confirm == 0 ? 'Waiting': ''"
+                                                [term]="service.searchTerm"
+                                                [ngClass]="Order.dealer_order_is_confirm == 0 ? 'status red': ''">
+                                            </ngb-highlight>
+                                            <ngb-highlight [result]="Order.dealer_order_is_confirm == 1 ? 'Confirm': ''"
+                                                [term]="service.searchTerm"
+                                                [ngClass]="Order.dealer_order_is_confirm == 1 ? 'status success': ''">
+                                            </ngb-highlight>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <ngb-highlight
+                                                [result]="Order.dealer_order_paid_confirm_id == 0 ? 'No Paid': ''"
+                                                [term]="service.searchTerm"
+                                                [ngClass]="Order.dealer_order_paid_confirm_id == 0 ? 'status red': ''">
+                                            </ngb-highlight>
+                                            <ngb-highlight
+                                                [result]="Order.dealer_order_paid_confirm_id == 1 ? 'Fully Paid': ''"
+                                                [term]="service.searchTerm"
+                                                [ngClass]="Order.dealer_order_paid_confirm_id == 1 ? 'status success': ''">
+                                            </ngb-highlight>
+                                            <ngb-highlight
+                                                [result]="Order.dealer_order_paid_confirm_id == 2 ? 'Partially Paid': ''"
+                                                [term]="service.searchTerm"
+                                                [ngClass]="Order.dealer_order_paid_confirm_id == 2 ? 'status primary': ''">
+                                            </ngb-highlight>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <ngb-highlight
+                                                [result]="Order.dealer_order_delivery_id == 0 ? 'No Fulfillment': ''"
+                                                [term]="service.searchTerm"
+                                                [ngClass]="Order.dealer_order_delivery_id == 0 ? 'status red': ''">
+                                            </ngb-highlight>
+                                            <ngb-highlight
+                                                [result]="Order.dealer_order_delivery_id == 1 ? 'Fully Fulfil': ''"
+                                                [term]="service.searchTerm"
+                                                [ngClass]="Order.dealer_order_delivery_id == 1 ? 'status success': ''">
+                                            </ngb-highlight>
+                                            <ngb-highlight
+                                                [result]="Order.dealer_order_delivery_id == 2 ? 'Partially Fulfill': ''"
+                                                [term]="service.searchTerm"
+                                                [ngClass]="Order.dealer_order_delivery_id == 2 ? 'status primary': ''">
+                                            </ngb-highlight>
+
+
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <ngb-highlight [result]="Order.dealer_order_number "
+                                                [term]="service.searchTerm">
+                                            </ngb-highlight>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <ngb-highlight [result]="d.distributor_name" [term]="service.searchTerm">
+                                            </ngb-highlight>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <ngb-highlight
+                                                [result]="Order.dealer_order_create * 1000 | date :'dd/MM/yyyy' "
+                                                [term]="service.searchTerm">
+                                            </ngb-highlight>
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <ngb-highlight
+                                                [result]="Order.dealer_order_summary.total_price | number : '1.2-2'"
+                                                [term]="service.searchTerm">
+                                            </ngb-highlight>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </ng-container>
+                                <tr *ngIf="arrOrder.length == 0" style="height:300px; background-color: white;">
+                                    <td colspan="8" style="padding-top: 50px; text-align: center;">
+                                        <img src="assets/images/loading.png" width="300"><br><br>
+                                        <label>No data.</label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ng-template #loading>
+                            <table class="table hover" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" sortable="purchase_order_is_confirm" (sort)="onSort($event)">
+                                            Status
+                                        </th>
+                                        <th scope="col" sortable="purchase_order_number" (sort)="onSort($event)">Order
+                                            No.
+                                        </th>
+                                        <th style="width: 50%;" scope="col" sortable="Supplier" (sort)="onSort($event)">
+                                            Dealer
+                                            Name</th>
+                                        <th scope="col" sortable="delivery_date" (sort)="onSort($event)">Date</th>
+                                        <th style="text-align: right;" scope="col" sortable="total_price"
+                                            (sort)="onSort($event)">Order Total
+                                        </th>
+                                        <th style="text-align: right; cursor: pointer;" (click)="btnReset()">
+                                            <nb-icon icon="refresh-outline"></nb-icon>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="height:300px; background-color: white;">
+                                        <td colspan="5" style="padding-top: 50px;">
+                                            <div style="height: 100px;background-color: white;" [nbSpinner]="loading"
+                                                nbSpinnerStatus="success">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ng-template>
+                    </div>
+                    <div class="cover-table" *ngIf="isReload">
+                        <table class="table hover" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th scope="col" sortable="purchase_order_is_confirm" (sort)="onSort($event)">Status
+                                    </th>
+                                    <th scope="col" sortable="purchase_order_number" (sort)="onSort($event)">Order No.
+                                    </th>
+                                    <th style="width: 50%;" scope="col" sortable="Supplier" (sort)="onSort($event)">
+                                        Dealer
+                                        Name</th>
+                                    <th scope="col" sortable="delivery_date" (sort)="onSort($event)">Date</th>
+                                    <th style="text-align: right;" scope="col" sortable="total_price"
+                                        (sort)="onSort($event)">Order Total
+                                    </th>
+                                    <th style="text-align: right; cursor: pointer;" (click)="btnReset()">
+                                        <nb-icon icon="refresh-outline"></nb-icon>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="height:300px; background-color: white;">
+                                    <td colspan="5" style="padding-top: 50px;">
+                                        <div style="height: 100px;background-color: white;" [nbSpinner]="isReload"
+                                            nbSpinnerStatus="success">
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    <div *ngIf="!isReload && !loading" class="d-flex justify-content-between p-2">
+                        <ngb-pagination [collectionSize]="total$ | async" [(page)]="service.page"
+                            [pageSize]="service.pageSize">
+                        </ngb-pagination>
+                        <select class="custom-select" style="width: auto" name="pageSize"
+                            (change)="onPageChange($event.target.value)">
+                            <option [value]="10">10 items per page</option>
+                            <option [value]="20">20 items per page</option>
+                            <option [value]="50">50 items per page</option>
+                        </select>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

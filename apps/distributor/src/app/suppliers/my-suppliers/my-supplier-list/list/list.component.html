@@ -1,0 +1,90 @@
+<div *ngIf="!isReload">
+    <table class="table hover" style="width: 100%;" *ngIf="mySuplierList$ | async as mySuplierLists ; else loading">
+        <thead>
+            <tr>
+                <th class="left">
+                    Product Category
+                </th>
+                <th scope="col" style="text-align: right; cursor: pointer;" (click)="btnReload()">
+                    <nb-icon icon="refresh-outline"></nb-icon>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="2">
+                    <div class="cover-form icon">
+                        <nb-icon style="right: 0px;" icon="search-outline"></nb-icon>
+                        <nb-icon *ngIf="service.searchTerm" (click)="btnRefresh()"
+                            style="float: right;left: 0; cursor: pointer;" icon="close-outline">
+                        </nb-icon>
+                        <input libOnlyCharacterDefault nbInput status="primary" type="text" nbInput fullWidth
+                            status="primary" placeholder="Search for name enter" [(ngModel)]="service.searchTerm" />
+                    </div>
+                </td>
+            </tr>
+            <tr *ngFor="let myverifed of mySuplierLists"
+                (click)="btnClickItem(myverifed.product_category_id, myverifed.product_category_name)">
+                <td class="left" colspan="2" [ngClass]="{'active': myverifed.product_category_id==strID}">
+                    <a>{{myverifed.product_category_name}}</a>
+                    <nb-icon *ngIf="myverifed.product_category_id==strID" style="float: right; cursor: pointer;"
+                        icon="arrow-ios-forward-outline">
+                    </nb-icon>
+                </td>
+            </tr>
+            <tr *ngIf="mySuplierLists.length == 0" style="height:300px; background-color: white;">
+                <td colspan="2" style="padding-top: 50px;">
+                    <img src="assets/images/loading.png" width="250"><br><br>
+                    <label>No data.</label>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <ng-template #loading>
+        <table class="table hover" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th class="left">
+                        Product Category
+                    </th>
+                    <th scope="col" style="text-align: right; cursor: pointer;" (click)="btnReload()">
+                        <nb-icon icon="refresh-outline"></nb-icon>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="height:300px; background-color: white;">
+                    <td colspan="2" style="padding-top: 50px;">
+                        <div style="height: 100px;background-color: white;" [nbSpinner]="loading"
+                            nbSpinnerStatus="primary">
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </ng-template>
+</div>
+<div *ngIf="isReload">
+    <table class="table hover" style="width: 100%;">
+        <thead>
+            <tr>
+                <th class="left">
+                    Product Category
+                </th>
+                <th scope="col" style="text-align: right; cursor: pointer;" (click)="btnReload()">
+                    <nb-icon icon="refresh-outline"></nb-icon>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="height:300px; background-color: white;">
+                <td colspan="2" style="padding-top: 50px;">
+                    <div style="height: 100px;background-color: white;" [nbSpinner]="isReload"
+                        nbSpinnerStatus="primary">
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>

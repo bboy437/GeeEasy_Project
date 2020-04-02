@@ -1,0 +1,300 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-12">
+                    <nb-card>
+                        <nb-card-header>
+                            <div class="header">
+                                <div class="row">
+                                    <div class="col-auto mr-auto">
+                                        <nb-icon class="icon-header" icon="archive-outline"></nb-icon>
+                                        <label>
+                                            Retailer<span class="p-0-12">/</span>Product Retailer<span
+                                                class="p-0-12">/</span>{{(RowID === 'new')?'Create Product':'Update Product'}}
+                                        </label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button [nbSpinner]="product.update" nbSpinnerStatus="success" nbButton
+                                            size="medium" status="success" (click)="clickUpdateOrNew()">
+                                            {{(RowID === 'new')?'Save':'Update'}}
+                                        </button>
+                                        <button nbButton size="medium" status="danger" (click)="clickCancelOrBack()">
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </nb-card-header>
+                    </nb-card>
+                </div>
+                <div class="col-12" *ngIf="arrobjRow.product_title !== '' && arrobjRow.product_title !== undefined ">
+                    <nb-card class="margin-bottom-0-1-rem" [nbSpinner]="loading" nbSpinnerStatus="success">
+                        <nb-card-header>
+                            <div class="header">
+                                <div class="row">
+                                    <div class="col-auto mr-auto">
+                                        <label>
+                                            {{arrobjRow.product_title}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </nb-card-header>
+                    </nb-card>
+                </div>
+                <div class="col-12">
+                    <nb-card class="box-shadow-unset" [nbSpinner]="loading" nbSpinnerStatus="success"
+                        nbSpinnerSize="giant">
+                        <nb-card-body>
+                            <div class="body">
+                                <form [formGroup]="Form">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <project-file-image theme="white" [image_url_array]="product.main_image.get">
+                                                    </project-file-image>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="cover-input">
+                                                                <label>Product Name</label>
+                                                                <input nbInput fullWidth type="text" status="primary"
+                                                                    formControlName="product_title"
+                                                                    [ngClass]="{ 'is-invalid': submitted && f.product_title.errors }" />
+                                                                <div *ngIf="submitted && !!f.product_title.errors"
+                                                                    class="invalid-feedback">
+                                                                    <div class="required"
+                                                                        *ngIf="!!f.product_title.errors.required">
+                                                                        Product Name is required
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="cover-input">
+                                                                <label>Product SKU</label>
+                                                                <input libOnlyCharacterDefault nbInput fullWidth
+                                                                    type="text" status="primary"
+                                                                    formControlName="product_sku"
+                                                                    [ngClass]="{ 'is-invalid': submitted && f.product_sku.errors }" />
+                                                                <div *ngIf="submitted && !!f.product_sku.errors"
+                                                                    class="invalid-feedback">
+                                                                    <div class="required"
+                                                                        *ngIf="!!f.product_sku.errors.required">
+                                                                        Product SKU is required
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="cover-input">
+                                                                <label>Product Quantity</label>
+                                                                <input nbInput fullWidth type="text" status="primary"
+                                                                    libOnlyCharacternumber mask="separator.0"
+                                                                    thousandSeparator=","
+                                                                    formControlName="product_stock"
+                                                                    [ngClass]="{ 'is-invalid': submitted && f.product_stock.errors }" />
+                                                                <div *ngIf="submitted && !!f.product_stock.errors"
+                                                                    class="invalid-feedback">
+                                                                    <div class="required"
+                                                                        *ngIf="!!f.product_stock.errors.required">
+                                                                        Product Quantity is required
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="cover-input">
+                                                                <label>Product Price</label>
+                                                                <input libOnlyCharacterDefault nbInput fullWidth
+                                                                    type="text" status="primary" mask="separator.2"
+                                                                    thousandSeparator=","
+                                                                    formControlName="product_price"
+                                                                    [ngClass]="{ 'is-invalid': submitted && f.product_price.errors }" />
+                                                                <div *ngIf="submitted && !!f.product_price.errors"
+                                                                    class="invalid-feedback">
+                                                                    <div class="required"
+                                                                        *ngIf="!!f.product_price.errors.required">
+                                                                        Product Price is required
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </nb-card-body>
+                    </nb-card>
+                </div>
+                <div class="col-12">
+                    <nb-card class="margin-bottom-0-1-rem">
+                        <nb-card-header>
+                            <div class="header">
+                                <div class="row">
+                                    <div class="col-auto mr-auto">
+                                        <label>
+                                            Product Wholesale
+                                        </label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button nbButton size="medium" status="success"
+                                            (click)="productWholesaleArray().push()">
+                                            Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </nb-card-header>
+                    </nb-card>
+                </div>
+                <div class="col-12">
+                    <nb-card class="box-shadow-unset">
+                        <nb-card-body>
+                            <div class="body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="center">
+                                                        <label>Minimum Qty</label>
+                                                    </th>
+                                                    <th class="center">
+                                                        <label>Unit Price</label>
+                                                    </th>
+                                                    <th class="center">
+                                                        <label>Discount</label>
+                                                    </th>
+                                                    <th class="center"></th>
+                                                    <th class="center">
+                                                        <label>Sales Price</label>
+                                                    </th>
+                                                    <th class="center"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of product_wholesale_array; let i=index">
+                                                    <td>
+                                                        <div class="cover-input">
+                                                            <input nbInput fullWidth status="basic" type="text"
+                                                                libOnlyCharacternumber mask="separator.0"
+                                                                thousandSeparator=","
+                                                                [(ngModel)]="item.product_wholesale.qty_minimum"
+                                                                [ngClass]="{ 'is-invalid': item.status.qty_minimum }"
+                                                                [ngModelOptions]="{standalone: true}"
+                                                                (keyup)="productWholesaleArray().update(i,'qty_minimum')">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cover-input">
+                                                            <input nbInput fullWidth status="basic" type="text"
+                                                                libOnlyCharacternumber mask="separator.2"
+                                                                thousandSeparator=","
+                                                                [(ngModel)]="item.product_wholesale.product_price"
+                                                                [ngClass]="{ 'is-invalid': item.status.product_price }"
+                                                                [ngModelOptions]="{standalone: true}"
+                                                                (keyup)="productWholesaleArray().update(i,'product_price')">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cover-input"
+                                                            *ngIf="item.discount === 'discount_thb'">
+                                                            <input nbInput fullWidth status="basic" type="text"
+                                                                libOnlyCharacternumber mask="separator.2"
+                                                                thousandSeparator=","
+                                                                [(ngModel)]="item.product_wholesale.discount_thb"
+                                                                [ngModelOptions]="{standalone: true}"
+                                                                (keyup)="productWholesaleArray().update(i,'discount_thb')">
+                                                        </div>
+                                                        <div class="cover-input"
+                                                            *ngIf="item.discount === 'discount_percent'">
+                                                            <input nbInput fullWidth status="basic" type="text"
+                                                                libOnlyCharacternumber mask="separator.0"
+                                                                thousandSeparator=","
+                                                                [(ngModel)]="item.product_wholesale.discount_percent"
+                                                                [ngModelOptions]="{standalone: true}"
+                                                                (keyup)="productWholesaleArray().update(i,'discount_percent')">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <nb-radio-group [name]="i" [(ngModel)]="item.discount"
+                                                            (valueChange)="productWholesaleArray().onChange(i,$event)"
+                                                            [ngModelOptions]="{standalone: true}">
+                                                            <nb-radio value="discount_thb">THB</nb-radio>
+                                                            <nb-radio value="discount_percent">%</nb-radio>
+                                                        </nb-radio-group>
+                                                    </td>
+                                                    <td>
+                                                        <label>
+                                                            {{item.product_discount |  number : '1.2-2'}}
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <nb-icon icon="close-outline"
+                                                            (click)="productWholesaleArray().remove(i,item)"></nb-icon>
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+                                                    <td class="left" colspan="6">
+                                                        <button nbButton  size="small" status="success" (click)="productWholesaleArray().push()">
+                                                            Add
+                                                        </button>
+                                                    </td>
+                                                </tr> -->
+                                                <tr *ngIf="product_wholesale_array.length === 0">
+                                                    <td colspan="6">
+                                                        <img src="assets/images/loading.png" width="300">
+                                                        <br><br>
+                                                        <label>
+                                                            No Data.
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </nb-card-body>
+                    </nb-card>
+                </div>
+                <div class="col-12">
+                    <nb-card class="margin-bottom-0-1-rem">
+                        <nb-card-header>
+                            <div class="header">
+                                <div class="row">
+                                    <div class="col-auto mr-auto">
+                                        <label>
+                                            Image Lists
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </nb-card-header>
+                    </nb-card>
+                </div>
+                <div class="col-12">
+                    <nb-card class="box-shadow-unset">
+                        <nb-card-body>
+                            <project-file-upload theme="white" [image_url_array]="product.product_image_array.get">
+                            </project-file-upload>
+                        </nb-card-body>
+                    </nb-card>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

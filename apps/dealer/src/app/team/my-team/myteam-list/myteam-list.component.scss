@@ -1,0 +1,23 @@
+@import "../../../../../../../libs/theme-dealer/src/lib/styles/themes";
+
+@include nb-install-component() {
+  // .active_d {
+  //   color: #fff;
+  //   background-color: #f84d2f;
+  // }
+}
+
+.table {
+  thead {
+    font-size: 14px;
+  }
+  tbody {
+    font-size: 14px;
+    tr {
+      &.active {
+        color: white;
+        background-color: #f84d2f;
+      }
+    }
+  }
+}

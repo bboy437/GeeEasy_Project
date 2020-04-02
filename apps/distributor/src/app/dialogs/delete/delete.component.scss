@@ -1,0 +1,37 @@
+@import "../../../../../../libs/theme/src/lib/styles/themes";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+.cover-button {
+  text-align: center;
+  padding-top: 15px;
+  border-top: 1px solid #edf1f7;
+}
+@include nb-install-component() {
+  .show-grid {
+    .row {
+      margin: -0.5rem;
+    }
+
+    div[class^="col-"] {
+      padding: 0.5rem;
+      box-sizing: border-box;
+
+      div {
+        text-align: center;
+        padding: 0.5rem 0.25rem;
+        border-radius: 0.25rem;
+      }
+    }
+  }
+  nb-card {
+    // max-width: 600px;
+    // max-height: 600px;
+    width: 350px;
+
+  }
+  nb-card-body {
+    overflow: hidden;
+  }
+
+
+}

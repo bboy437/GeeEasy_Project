@@ -1,0 +1,177 @@
+@import "../../../../../../../libs/theme-dealer/src/lib/styles/themes";
+@import "~@nebular/bootstrap/styles/buttons";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+.pages {
+    nb-card {
+        &.cover-title {
+            padding: 0;
+            margin-bottom: 0.1rem;
+        }
+        nb-card-header {
+            header {
+                .row {
+                    .col-auto {
+                        button {
+
+                        }
+                    }   
+                }
+            }
+        }
+    }
+}
+
+
+
+
+.cover-phone-number {
+  span {
+    &.phone {
+      padding: 0.5rem;
+      font-weight: bold;
+      display: inline-table;
+      margin: 0 0.5rem 0.5rem 0;
+      nb-icon {
+        top: -8px;
+        right: -8px;
+        font-size: 16px;
+        cursor: pointer;
+        position: relative;
+      }
+    }
+  }
+}
+
+@include nb-install-component() {
+}
+
+.uploadfilecontainer {
+  // background-image: url("../../../../assets/images/cloud-2044823_960_720.png");
+  // background-repeat: no-repeat;
+  // background-size: 80px;
+  // background-position: center;
+  // height: 400px;
+  // width: 100%;
+  // margin: 0.5rem auto;
+  // border: 2px dashed #1c8adb;
+  // border-radius: 10px;
+  // cursor: pointer;
+  position: relative;
+  background-color: #fafafa !important;
+  max-width: 100%;
+  max-height: 100%;
+  min-height: 450px;
+  outline: none;
+  border: 1px solid #eaeaea;
+  border-radius: 5px;
+  margin: 0.5rem 0 1rem 0;
+}
+
+.uploadfilecontainer:hover {
+  cursor: pointer;
+  background-color: #9ecbec !important;
+  opacity: 0.8;
+}
+
+.cover-input center {
+  text-align: center;
+}
+
+.imgsize {
+  max-width: 100%;
+  margin: auto;
+  max-height: 100%;
+}
+
+.uppy-Dashboard-inner {
+  width: 750px;
+  // height: 69vh;
+  height: 10vh;
+  position: relative;
+  background-color: #fafafa !important;
+  max-width: 100%;
+  max-height: 100%;
+  // min-height: 450px;
+  min-height: 300px;
+  outline: none;
+  border: 1px solid #eaeaea;
+  border-radius: 5px;
+  .uppy-Dashboard-innerWrap {
+    opacity: 1;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    border-radius: 5px;
+    .uppy-Dashboard-dropFilesHereHint {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: center;
+      align-items: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      visibility: hidden;
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      bottom: 7px;
+      left: 7px;
+      padding-top: 90px;
+      border: 1px dashed #2275d7;
+      border-radius: 3px;
+      z-index: 2000;
+      text-align: center;
+      background-position: 50% 50%;
+      background-repeat: no-repeat;
+      color: #707070;
+      font-size: 16px;
+    }
+    .uppy-DashboardAddFiles {
+      margin: 7px;
+      border-radius: 3px;
+      border: 1px dashed #dfdfdf;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+      text-align: center;
+      -ms-flex: 1;
+      flex: 1;
+      .uppy-DashboardTabs {
+        align-items: center;
+        .uppy-Dashboard-dropFilesTitle {
+          max-width: 470px;
+          font-size: 20px;
+          max-width: 500px;
+          text-align: center;
+          line-height: 1.35;
+          font-weight: 400;
+          color: #525252;
+          margin: auto;
+          padding: 0 15px;
+          font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+          span {
+            color: rgba(34, 117, 215, 0.9);
+          }
+        }
+      }
+    }
+  }
+}
+
+.cover-textarea {
+  textarea {
+    min-height: 90px;
+  }
+}

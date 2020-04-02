@@ -1,0 +1,35 @@
+version: 0.2
+#BUILD_ENV:"production"
+#BUCKET_NAME: "dist.gee-supply.com" "sup.gee-supply.com"
+#APP_NAME: "distributor" "supplier"
+# environment_variables:
+#   plaintext:
+#     APP_NAME: "distributor" "supplier"
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10
+    commands:
+      - npm install -g @angular/cli@latest
+      - npm install --save-dev @angular-devkit/build-angular@latest
+  build:
+    commands:
+      - echo Build started on `date`
+      - npx npm-force-resolutions
+      - npm install
+      - increase-memory-limit
+      - ng build $APP_NAME --configuration=$BUILD_ENV --build-optimizer
+  post_build:
+    commands:
+      - aws s3 sync dist/apps/$APP_NAME s3://$BUCKET_NAME --delete
+      #- aws s3 rm s3://$BUCKET_NAME --recursive
+      # - echo S3 bucket is cleared.
+      - echo S3 is synced.
+      #- aws s3 cp s3://$BUCKET_NAME/angular-user-profile s3://$BUCKET_NAME --recursive
+      - echo Build completed on `date`
+artifacts:
+    type: zip
+    files:
+      - '**/*'
+    discard-paths: yes
+    base-directory: 'dist'

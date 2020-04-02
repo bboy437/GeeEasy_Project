@@ -1,0 +1,15 @@
+<nb-card status="{{i== 0 ? 'success': 'primary'}}" *ngFor="let b of arrblog ; let i = index">
+    <nb-card-header>{{b.content_title}}</nb-card-header>
+    <nb-card-body>
+        <div class="row">
+            <div class="col-lg-4" style="text-align: center">
+                <img [src]="b.content_image_cover_url" style="width: 100%; height: 100%">
+            </div>
+
+            <div class="col-lg-8">
+                {{b.content_excerp}}
+            </div>
+        </div>
+    </nb-card-body>
+    <nb-card-footer>{{b.content_author}}</nb-card-footer>
+</nb-card>

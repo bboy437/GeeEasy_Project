@@ -1,0 +1,72 @@
+<!-- Confrim -->
+<div class="pages" [formGroup]="From" (ngSubmit)="onSubmit()">
+    <nb-card>
+        <nb-card-header>
+            <div class="header">
+                <nb-icon icon="pie-chart-outline"></nb-icon>
+                <label style="font-size: 18px; font-weight: bold">Confirm Payment</label>
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <div class="row">
+                <div class="col-md-12">
+                    <label> Status</label>
+                    <nb-select placeholder="-------------- Choose ---------------" formControlName="confirm_id"
+                        fullWidth outline status="primary" (selectedChange)="changeConfirm($event)">
+                        <nb-option [value]=1>Fully Paid</nb-option>
+                        <nb-option [value]=2>Partailly Paid</nb-option>
+                    </nb-select>
+                    <div *ngIf="submitted && !!f.confirm_id.errors" class="invalid-feedback">
+                        <div style="text-align: left" *ngIf="!!f.confirm_id.errors.required">
+                            Status is required
+                        </div>
+                    </div><br><br>
+                </div>
+                <div class="col-md-12">
+                    <label> Balance</label>
+                    <!-- oninput="this.value = Math.abs(this.value)" type="number"  -->
+                    <input style="color: black;" nbInput fullWidth type="text" libOnlyCharacternumber mask="separator.2"
+                        thousandSeparator="," formControlName="confirm_balance" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.confirm_balance.errors }"
+                        (keyup)="keyValue($event.target.value, From.value.confirm_balance)" />
+                    <div *ngIf="submitted && !!f.confirm_balance.errors" class="invalid-feedback">
+                        <div style="text-align: left" *ngIf="!!f.confirm_balance.errors.required">
+                            Balance is required
+                        </div>
+                    </div><br>
+                </div>
+                <div class="col-md-12">
+                    <label> Reference</label>
+                    <!-- oninput="this.value = Math.abs(this.value)" type="number"  -->
+                    <input nbInput fullWidth type="text" formControlName="confirm_reference" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.confirm_reference.errors }" />
+                    <div *ngIf="submitted && !!f.confirm_reference.errors" class="invalid-feedback">
+                        <div style="text-align: left" *ngIf="!!f.confirm_reference.errors.required">
+                            Reference is required
+                        </div>
+                    </div><br>
+                </div>
+                <div class="col-md-12">
+                    <label> Messages</label>
+                    <input nbInput status="primary" type="text" fullWidth formControlName="confirm_message"
+                        class="form-control" [ngClass]="{ 'is-invalid': submitted && f.confirm_message.errors }" />
+                    <div *ngIf="submitted && !!f.confirm_message.errors" class="invalid-feedback">
+                        <div style="text-align: left" *ngIf="!!f.confirm_message.errors.required">
+                            Messages is required
+                        </div>
+                    </div><br>
+                </div>
+            </div>
+            <br>
+            <div class="row" style="text-align: center;">
+                <div class="col-md-12">
+                    <button nbButton style="width: 100px" status="danger"
+                        (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                    <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success"
+                        [disabled]="!From.valid" nbButton style="width: 100px" status="success"
+                        (click)="btnComfrimPaidClick()">OK</button>
+                </div>
+            </div><br>
+        </nb-card-body>
+    </nb-card>
+</div>

@@ -1,0 +1,49 @@
+<div class="cover-pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="cover-header header">
+                        <nb-icon icon="radio-outline"></nb-icon>
+                        <label>My Notification</label>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="row">
+                <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                    <nb-card size="small">
+                        <nb-list>
+                            <nb-list-item *ngFor="let user of users">
+                                <nb-user [name]="user.name" [title]="user.title">
+                                </nb-user>
+                            </nb-list-item>
+                        </nb-list>
+                    </nb-card>
+                </div>
+                <div class="col-12 col-md-9 col-lg-9 col-xl-9">
+                    <nb-card status="success">
+                        <nb-card-header>Nebula</nb-card-header>
+                        <nb-card-body>
+                            A nebula is an interstellar cloud of dust, hydrogen, helium and other ionized gases.
+                            Originally, nebula was a name for any diffuse astronomical object,
+                            including galaxies beyond the Milky Way.
+                        </nb-card-body>
+                        <nb-card-footer>By Wikipedia</nb-card-footer>
+                    </nb-card>
+
+                    <nb-card status="danger">
+                        <nb-card-header>Nebula</nb-card-header>
+                        <nb-card-body>
+                            A nebula is an interstellar cloud of dust, hydrogen, helium and other ionized gases.
+                            Originally, nebula was a name for any diffuse astronomical object,
+                            including galaxies beyond the Milky Way.
+                        </nb-card-body>
+                        <nb-card-footer>By Wikipedia</nb-card-footer>
+                    </nb-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

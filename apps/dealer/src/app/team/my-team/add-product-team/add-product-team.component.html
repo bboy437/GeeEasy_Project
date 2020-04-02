@@ -1,0 +1,306 @@
+<div class="pages" [formGroup]="FromProduct">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding:0;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <nb-icon class="icon-header" icon="people-outline"></nb-icon>
+                                <label>My Team<span class="p-0-12">/</span>Add Product to Team</label>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <button style="float: right;margin: 3px 0px 3px 1rem;" nbButton type="button"
+                                    size="medium" status="danger" (click)="btnBackClick()">
+                                    Back
+                                </button>
+                                <!-- <button style="float: right;margin: 3px 0px 3px 1rem;" nbButton type="button"
+                                    size="medium" status="success" (click)="btnSaveClick()">
+                                    Save
+                                </button> -->
+                                <!-- <button style="float: right;margin: 3px 0px 3px 1rem;" nbButton type="button"
+                                    size="medium" status="gray" (click)="btnClearClick()">
+                                    Clear
+                                </button>
+                                <button style="float: right;margin: 3px 0px 3px 1rem;" nbButton type="button"
+                                    size="medium" status="danger" (click)="btnCancelClick()">
+                                    Cancel
+                                </button> -->
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding:0;margin-bottom: 0.1rem;">
+                <nb-card-header style="padding: 0.5rem 0;">
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label>{{group_name}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="success">
+            <nb-card>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                        <!-- <ngx-select [allowClear]="true" [items]="arrProducts"
+                                            optionValueField="product_name" optionTextField="product_name"
+                                            formControlName="product_id" placeholder="Search Product"
+                                            (selectionChanges)="productChange($event)">
+                                        </ngx-select> -->
+                                        <ngx-select [allowClear]="true" [items]="arrProducts"
+                                            optionValueField="product_name" optionTextField="product_name "
+                                            formControlName="product_id" placeholder="Search Product"
+                                            (selectionChanges)="productChange($event)">
+                                        </ngx-select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div *ngIf="warehouse.length == 0" style="padding-bottom: 8rem;"></div>
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="padding-top: 1rem;"
+                                *ngIf="warehouse.length > 0">
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-4 col-xl-4">
+                                        <div class="cover-background-image">
+                                            <div style="text-align: center;"
+                                                class="background-image padding-width-300px-height-200px"
+                                                [ngClass]="{'active' : warehouse[0].product_image_url === '-' || warehouse[0].product_image_url === ''}"
+                                                [ngStyle]="{'background-image': 'url('+warehouse[0].product_image_url+')'}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-8 col-xl-8">
+                                        <div class="row">
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                                style="padding-bottom: 0.5rem; padding-top: 0.5rem;">
+                                                <label style="padding-right: 1rem;font-size: 0.9375rem;">
+                                                    Product Name :
+                                                </label>
+                                                <label
+                                                    style="font-size: 0.9375rem;font-weight: 600;">{{FromProduct.value.product_title}}
+                                                </label>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                                style="padding-bottom: 0.5rem; padding-top: 0.5rem;">
+                                                <label style="padding-right: 1rem;font-size: 0.9375rem;">
+                                                    Product SKU :
+                                                </label>
+                                                <label class="sku"
+                                                    style="font-size: 0.9375rem;font-weight: 600;">{{FromProduct.value.product_sku}}
+                                                </label>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                                style="padding-bottom: 0.5rem; padding-top: 0.5rem;">
+                                                <label style="padding-right: 1rem;font-size: 0.9375rem;">
+                                                    Product Price :
+                                                </label>
+                                                <label
+                                                    style="font-size: 0.9375rem;font-weight: 600;">{{FromProduct.value.product_price}}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="padding-top: 1rem;">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 5%;">
+                                                        <!-- <nb-checkbox style="padding: 0rem;"
+                                                            [disabled]="warehouse.length == 0" [checked]="checkedAll"
+                                                            status="primary" (checkedChange)="updateStatusAll($event)">
+                                                        </nb-checkbox> -->
+                                                    </th>
+                                                    <th style="text-align: left; width: 15%;">Warehouse ID</th>
+                                                    <th style="text-align: left; width: 30%;">Warehouse Name</th>
+                                                    <th style="text-align: right;">Stock</th>
+                                                    <th style="text-align: right; width: 15%;">Quantity</th>
+                                                    <th style="text-align: right">Unit Price</th>
+                                                    <th style="text-align: left"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <ng-container *ngFor="let item of warehouse">
+                                                    <tr *ngFor="let w of item.warehouse; let i=index">
+                                                        <td>
+                                                            <nb-checkbox status="primary"
+                                                                [ngModel]="w.product_is_active"
+                                                                [ngModelOptions]="{standalone: true}"
+                                                                (checkedChange)="updateStatus($event, w)">
+                                                            </nb-checkbox>
+                                                        </td>
+                                                        <td style="text-align: left;">
+                                                            <label style="padding-top: 0.5rem;">
+                                                                {{w.warehouse_id == 0 ? 'No ID' : w.warehouse_id}}
+                                                            </label>
+                                                        </td>
+                                                        <td style="text-align: left;">
+                                                            <label style="padding-top: 0.5rem;">
+                                                                {{w.warehouse_id == 0 ? '-' : w.warehouse_data[0].warehouse_name}}
+                                                            </label>
+                                                        </td>
+                                                        <td style="text-align: right;">
+                                                            <div style="padding-top: 0.5rem;">
+                                                                <label style="padding-right: 0.5rem;"
+                                                                    *ngIf="w.product_qty > 0">
+                                                                    {{w.checkin_data.qty |  number}}
+                                                                </label>
+                                                                <nb-icon *ngIf="w.product_qty > 0"
+                                                                    icon="arrow-forward-outline"></nb-icon>
+                                                                <label style="padding-left: 0.5rem;">
+                                                                    {{w.checkin_data.onhand |  number}}
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+                                                        <td style="text-align: right;">
+                                                            <input style="text-align: right;" type="text"
+                                                                libOnlyCharacterDefault libOnlyCharacternumber
+                                                                mask="separator.0" thousandSeparator=","
+                                                                onKeyPress="if(this.value.length==7) return false;"
+                                                                nbInput fullWidth status="basic"
+                                                                [(ngModel)]="w.product_qty"
+                                                                [ngModelOptions]="{standalone: true}"
+                                                                (keyup)="onKeyQuantity($event.target.value, w)">
+                                                        </td>
+                                                        <td style="text-align: right;">
+                                                            <label style="padding-top: 0.5rem;">
+                                                                {{w.product_price |  number : '1.2-2'}}
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <div style="padding-top: 0.5rem;">
+                                                                <button [disabled]="!w.product_is_active" nbButton
+                                                                    size="tiny" (click)="transferChange(w)">
+                                                                    Transfer
+                                                                </button>
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngIf="loading || warehouse.length == 0"
+                                                        style="height:300px; background-color: white;">
+                                                        <td colspan="6" style="padding-top: 50px; text-align: center;">
+                                                            <img src="assets/images/loading.png" width="300"><br><br>
+                                                            <label>No data.</label>
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding:0;margin-bottom: 0.1rem;">
+                <nb-card-header style="padding: 0.5rem 0;">
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label>Existing Products</label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="success">
+            <nb-card>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="padding-top: 1rem;">
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align: left">Image</th>
+                                                    <th style="text-align: left; width: 40%;">Product Name</th>
+                                                    <th style="text-align: left;">Date</th>
+                                                    <th style="text-align: right;">Team Stock</th>
+                                                    <th style="text-align: right">Unit Price</th>
+                                                    <th style="text-align: left"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of products; let i=index">
+                                                    <td style="text-align: left">
+                                                        <div class="cover-background-image">
+                                                            <div class="background-image padding-width-100px-height-100px"
+                                                                [ngClass]="{'active' : item.product_image_url === '-' || item.product_image_url === ''}"
+                                                                [ngStyle]="{'background-image': 'url('+item.product_image_url+')'}">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td style="text-align: left;">
+                                                        <label>{{item.product_title}}</label><br>
+                                                        <label class="sku">{{item.product_sku}}</label>
+                                                    </td>
+                                                    <td style="text-align: left;">
+                                                        <label style="padding-top: 0.5rem">
+                                                            {{item.create_time * 1000 |  date: 'dd/MM/yyyy'}}
+                                                        </label>
+                                                    </td>
+                                                    <td style="text-align: right;">
+                                                        <label style="padding-top: 0.5rem">
+                                                            {{item.checkin_data.onhand |  number}}
+                                                        </label>
+                                                    </td>
+                                                    <td style="text-align: right;">
+                                                        <label style="padding-top: 0.5rem">
+                                                            {{item.product_price |  number : '1.2-2'}}
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <div style="padding-top: 0.5rem;">
+                                                            <nb-icon icon="close-outline" (click)="btnDeleteProduct(i)">
+                                                            </nb-icon>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="loading || products.length == 0"
+                                                    style="height:300px; background-color: white;">
+                                                    <td colspan="6" style="padding-top: 50px; text-align: center;">
+                                                        <img src="assets/images/loading.png" width="300"><br><br>
+                                                        <label>No data.</label>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+
+
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

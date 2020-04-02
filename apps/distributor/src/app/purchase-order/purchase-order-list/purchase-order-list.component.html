@@ -1,0 +1,400 @@
+<div class="cover-pages" [formGroup]="Form">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="cover-header header">
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <nb-icon icon="browser-outline"></nb-icon>
+                                <label>My Purchase</label>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <button nbButton size="medium" status="primary" (click)="btnNewClick()">
+                                    New Purchase Order
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body style="padding: 1rem; min-height: calc(100vh - 290px);">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="cover-header header" style="padding: 0;">
+                                <div class="row">
+                                    <div class="cover-form icon">
+                                        <label>Search by PO No.</label>
+                                        <nb-icon icon="search-outline"></nb-icon>
+                                        <nb-icon *ngIf="Form.value.strPONo" (click)="btnRefresh()"
+                                            style="float: right;left: 0; cursor: pointer;" icon="close-outline">
+                                        </nb-icon>
+                                        <input libOnlyCharacterDefault nbInput status="primary" type="text" nbInput
+                                            fullWidth status="basic" placeholder="Search" formControlName="strPONo"
+                                            (keyup)="filterPoNo($event.target.value)" />
+                                    </div>
+                                    <div class="cover-form">
+                                        <label>Supplier Name</label>
+                                        <nb-select *ngIf="isStatus == true" [disabled]="isStatus == true"
+                                            placeholder="------ Choose ------" fullWidth outline status="basic"
+                                            [(ngModel)]="strSupplerName" [ngModelOptions]="{standalone: true}">
+                                            <nb-option *ngFor="let item of arrSuppler" [value]="item.supplier_name">
+                                                {{item.supplier_name}}
+                                            </nb-option>
+                                        </nb-select>
+                                        <nb-select (selectedChange)="filterSupplierName($event)"
+                                            *ngIf="isStatus == false" multiple placeholder="------ Choose ------"
+                                            status="basic" formControlName="multiproperty" fullWidth>
+                                            <nb-option *ngFor="let item of arrSuppler" [value]="item.supplier_name">
+                                                {{item.supplier_name}}
+                                            </nb-option>
+                                        </nb-select>
+                                    </div>
+                                    <div class="cover-form">
+                                        <label>Status</label>
+                                        <nb-select placeholder="------ Choose ------"
+                                            (selectedChange)="filterStatus($event)" fullWidth outline status="basic"
+                                            formControlName="strStatus">
+                                            <nb-option value="">All Status</nb-option>
+                                            <nb-option value="0">Waiting</nb-option>
+                                            <nb-option value="1">Confirmed</nb-option>
+                                            <nb-option value="4">Delivered</nb-option>
+                                            <nb-option value="5">Paid</nb-option>
+                                            <nb-option value="6">Check-In</nb-option>
+                                            <nb-option value="2">In Negotiation</nb-option>
+                                            <nb-option value="3">Canceled</nb-option>
+
+                                        </nb-select>
+                                    </div>
+                                    <div class="cover-form icon">
+                                        <label>Start Date to End Date</label>
+                                        <nb-icon icon="calendar-outline"></nb-icon>
+                                        <input nbInput status="primary" type="text" nbInput fullWidth status="basic"
+                                            placeholder="Start Date to End Date" formControlName="daterangepickerModel"
+                                            #daterangepicker="bsDaterangepicker" bsDaterangepicker
+                                            [bsConfig]="{ rangeInputFormat: 'DD/MM/YYYY', containerClass: 'theme-red' }"
+                                            (bsValueChange)="filterDate($event)">
+                                    </div>
+                                    <div class="cover-form button">
+                                        <div class="top"></div>
+                                        <button nbButton size="small" status="gray" (click)="btnReset()">
+                                            Reset
+                                        </button>
+                                    </div>
+                                    <div class="cover-form button" *ngIf="isStatus == true">
+                                        <div class="top"></div>
+                                        <button nbButton size="small" status="danger" (click)="btnBackClick()">
+                                            Back
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div *ngIf="!isReload">
+                                <table class="table hover" *ngIf="arrPurchase$ | async as arrPurchase ; else loading">
+                                    <thead>
+                                        <tr>
+                                            <th style="min-width: 160px;" class="left">
+                                                Status
+                                            </th>
+                                            <th style="width: 100px;" class="left">
+                                                PO No.
+                                            </th>
+                                            <th style="width: 20%; min-width: 250px;" class="left">
+                                                Supplier Name
+                                            </th>
+                                            <th style="text-align: center;">
+                                                Confirmed
+                                            </th>
+                                            <th style="text-align: center;">
+                                                Delivered
+                                            </th>
+                                            <th style="text-align: center;">
+                                                Paid
+                                            </th>
+                                            <th style="text-align: center; min-width: 100px;">
+                                                Check-In
+                                            </th>
+                                            <th style="min-width: 50px;"> </th>
+                                            <th class="left" style="min-width: 120px;">
+                                                Delivery Date
+                                            </th>
+                                            <th class="left">
+                                                PO Date
+                                            </th>
+                                            <th class="left">
+                                                Updated
+                                            </th>
+                                            <th style="text-align: right; min-width: 200px;">
+                                                Order Total
+                                            </th>
+
+                                            <th style="cursor: pointer;" (click)="btnReload()">
+                                                <nb-icon icon="refresh-outline"></nb-icon>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let purchase of arrPurchase ; let i=index"
+                                            (click)="btnRowClick(purchase.purchase_order_id)">
+                                            <td class="left">
+                                                <div>
+                                                    <ngb-highlight *ngIf="purchase.po_status === 0" [result]="purchase.purchase_order_reply_id === 0 ? 'Waiting' : 
+                            (purchase.purchase_order_reply_id === 1 ? 'Confirmed' : 
+                            (purchase.purchase_order_reply_id === 2 ? 'In Negotiation' : 
+                            (purchase.purchase_order_reply_id === 3 ? 'Canceled' :purchase.purchase_order_reply_id )))"
+                                                        [term]="service.searchTerm" [ngClass]="[purchase.purchase_order_reply_id === 0 ? 'status primary' : 
+                            (purchase.purchase_order_reply_id === 1  ? 'status success' : 
+                            (purchase.purchase_order_reply_id === 2 ? 'status orange' : 
+                            (purchase.purchase_order_reply_id === 3 ? 'status red' : 'status red' )))]">
+                                                    </ngb-highlight>
+                                                    <label *ngIf="purchase.po_status === 1"></label>
+                                                </div>
+                                            </td>
+                                            <td class="left">
+                                                <ngb-highlight [result]="purchase.purchase_order_number "
+                                                    [term]="service.searchTerm">
+                                                </ngb-highlight>
+                                            </td>
+                                            <td class="left">
+                                                <ngb-highlight [result]="purchase.supplier_name "
+                                                    [term]="service.searchTerm">
+                                                </ngb-highlight>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <div *ngIf="purchase.order_status_btn.button_confirm === 1">
+                                                    <nb-icon class="icon-success" icon="checkmark-circle-2-outline">
+                                                    </nb-icon>
+                                                </div>
+                                                <div *ngIf="purchase.order_status_btn.button_confirm === 0">
+                                                    <nb-icon class="icon-close" icon="close-circle-outline">
+                                                    </nb-icon>
+                                                </div>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <div
+                                                    *ngIf="purchase.purchase_order_status_display.po_is_delivery === 1">
+                                                    <nb-icon class="icon-success" icon="checkmark-circle-2-outline">
+                                                    </nb-icon>
+                                                </div>
+                                                <div
+                                                    *ngIf="purchase.purchase_order_status_display.po_is_delivery === 0">
+                                                    <nb-icon class="icon-close" icon="close-circle-outline">
+                                                    </nb-icon>
+                                                </div>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <div *ngIf="purchase.order_status_btn.button_paid === 1">
+                                                    <nb-icon class="icon-success" icon="checkmark-circle-2-outline">
+                                                    </nb-icon>
+                                                </div>
+                                                <div *ngIf="purchase.order_status_btn.button_paid === 0">
+                                                    <nb-icon class="icon-close" icon="close-circle-outline">
+                                                    </nb-icon>
+                                                </div>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <div *ngIf="purchase.purchase_order_status_display.po_is_invoice === 1">
+                                                    <nb-icon class="icon-success" icon="checkmark-circle-2-outline">
+                                                    </nb-icon>
+                                                </div>
+                                                <div *ngIf="purchase.purchase_order_status_display.po_is_invoice === 0">
+                                                    <nb-icon class="icon-close" icon="close-circle-outline">
+                                                    </nb-icon>
+                                                </div>
+                                            </td>
+                                            <td></td>
+                                            <td class="left">
+                                                <ngb-highlight
+                                                    [result]="purchase.delivery_date * 1000 | date :'dd/MM/yyyy' "
+                                                    [term]="service.searchTerm">
+                                                </ngb-highlight>
+                                            </td>
+                                            <td class="left">
+                                                <ngb-highlight
+                                                    [result]="purchase.purchase_order_create * 1000 | date :'dd/MM/yyyy' "
+                                                    [term]="service.searchTerm">
+                                                </ngb-highlight>
+                                            </td>
+                                            <td class="left">
+                                                <ngb-highlight
+                                                    [result]="purchase.purchase_order_update * 1000 | date :'dd/MM/yyyy' "
+                                                    [term]="service.searchTerm">
+                                                </ngb-highlight>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <ngb-highlight class="cover price"
+                                                    [result]="purchase.purchase_order_summary.total_grand | number : '1.2-2'"
+                                                    [term]="service.searchTerm">
+                                                </ngb-highlight>
+                                                <label class="cover thb">THB</label>
+                                                <!-- <label style="padding-left: 0.2rem;">THB</label> -->
+                                            </td>
+                                            <td>
+
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="arrPurchase.length == 0"
+                                            style="height:300px; background-color: #ffffff;">
+                                            <td colspan="12" style="padding-top: 50px; text-align: center;">
+                                                <img src="assets/images/loading.png" width="300"><br><br>
+                                                <label>No data.</label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <ng-template #loading>
+                                    <table class="table hover" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th style="min-width: 160px;" class="left">
+                                                    Status
+                                                </th>
+                                                <th style="width: 100px;" class="left">
+                                                    PO No.
+                                                </th>
+                                                <th style="width: 20%; min-width: 250px;" class="left">
+                                                    Supplier Name
+                                                </th>
+                                                <th style="text-align: center;">
+                                                    Confirmed
+                                                </th>
+                                                <th style="text-align: center;">
+                                                    Delivered
+                                                </th>
+                                                <th style="text-align: center;">
+                                                    Paid
+                                                </th>
+                                                <th style="text-align: center; min-width: 100px;">
+                                                    Check-In
+                                                </th>
+                                                <th style="min-width: 50px;"> </th>
+                                                <th class="left" style="min-width: 120px;">
+                                                    Delivery Date
+                                                </th>
+                                                <th class="left">
+                                                    PO Date
+                                                </th>
+                                                <th class="left">
+                                                    Updated
+                                                </th>
+                                                <th style="text-align: right; min-width: 200px;">
+                                                    Order Total
+                                                </th>
+
+                                                <th style="cursor: pointer;" (click)="btnReload()">
+                                                    <nb-icon icon="refresh-outline"></nb-icon>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr style="height:300px; background-color: white;">
+                                                <td colspan="12" style="padding-top: 50px;">
+                                                    <div style="height: 100px;background-color: white;"
+                                                        [nbSpinner]="loading" nbSpinnerStatus="primary">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                </ng-template>
+                            </div>
+                            <div class="cover-table" *ngIf="isReload">
+                                <table class="table hover" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th style="min-width: 160px;" class="left">
+                                                Status
+                                            </th>
+                                            <th style="width: 100px;" class="left">
+                                                PO No.
+                                            </th>
+                                            <th style="width: 20%; min-width: 250px;" class="left">
+                                                Supplier Name
+                                            </th>
+                                            <th style="text-align: center;">
+                                                Confirmed
+                                            </th>
+                                            <th style="text-align: center;">
+                                                Delivered
+                                            </th>
+                                            <th style="text-align: center;">
+                                                Paid
+                                            </th>
+                                            <th style="text-align: center; min-width: 100px;">
+                                                Check-In
+                                            </th>
+                                            <th style="min-width: 50px;"> </th>
+                                            <th class="left" style="min-width: 120px;">
+                                                Delivery Date
+                                            </th>
+                                            <th class="left">
+                                                PO Date
+                                            </th>
+                                            <th class="left">
+                                                Updated
+                                            </th>
+                                            <th style="text-align: right; min-width: 200px;">
+                                                Order Total
+                                            </th>
+
+                                            <th style="cursor: pointer;" (click)="btnReload()">
+                                                <nb-icon icon="refresh-outline"></nb-icon>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="height:300px; background-color: white;">
+                                            <td colspan="12" style="padding-top: 50px;">
+                                                <div style="height: 100px;background-color: white;"
+                                                    [nbSpinner]="isReload" nbSpinnerStatus="primary">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            <!-- <div *ngIf="!isReload && !loading"
+                                class="col-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-between p-2">
+                                <ngb-pagination [collectionSize]="total$ | async" [(page)]="service.page"
+                                    [pageSize]="service.pageSize"></ngb-pagination>
+                                <select class="custom-select" style="width: auto" name="pageSize"
+                                    [(ngModel)]="service.pageSize" [ngModelOptions]="{standalone: true}">
+                                    <option [ngValue]="10">10 items per page</option>
+                                    <option [ngValue]="20">20 items per page</option>
+                                    <option [ngValue]="50">50 items per page</option>
+                                    <option [ngValue]="100">100 items per page</option>
+                                </select>
+                            </div> -->
+                        </div>
+                    </div>
+                </nb-card-body>
+                <nb-card-footer>
+                    <div class="row">
+                        <div *ngIf="!isReload && !loading"
+                            class="col-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-between p-2">
+                            <ngb-pagination [collectionSize]="total$ | async" [(page)]="service.page"
+                                [pageSize]="service.pageSize"></ngb-pagination>
+                            <select class="custom-select" style="width: auto" name="pageSize"
+                                [(ngModel)]="service.pageSize" [ngModelOptions]="{standalone: true}">
+                                <option [ngValue]="10">10 items per page</option>
+                                <option [ngValue]="20">20 items per page</option>
+                                <option [ngValue]="50">50 items per page</option>
+                                <option [ngValue]="100">100 items per page</option>
+                            </select>
+                        </div>
+                    </div>
+                </nb-card-footer>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

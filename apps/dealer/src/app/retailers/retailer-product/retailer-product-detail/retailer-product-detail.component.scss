@@ -1,0 +1,46 @@
+nb-card {
+    &.topic {
+        padding: 0;
+        margin-bottom: 0.1rem;
+    }
+}
+nb-card {
+    &.padding-0 {
+        padding: 0 !important;
+    }
+
+    &.margin-bottom-0-1-rem {
+        margin-bottom: 0.1rem;
+    }
+}
+
+table {
+    thead {
+        tr {
+            th {
+                padding: 0.5rem 0;
+                &.width-55 {
+                    width: 55px;
+                }
+            }
+        }
+    }
+    tbody {
+        tr {
+            td {
+                .cover-input {
+                    input {
+                        text-align: right !important;
+                    }
+                }
+
+                label {
+                    padding-top: 0.5rem;
+                }
+                nb-icon {
+                    margin-top: 0.5rem;
+                }
+            }
+        }
+    }
+}

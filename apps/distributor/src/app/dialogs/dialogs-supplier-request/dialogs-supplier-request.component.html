@@ -1,0 +1,159 @@
+<form [formGroup]="RequestForm" (ngSubmit)="onSubmit()">
+    <div class="pages">
+        <nb-card style=" width: 100%;">
+            <nb-card-header>
+                <div class="header">
+                    <nb-icon icon="people-outline"></nb-icon>
+                    <label>Request Supplier</label>
+                </div>
+            </nb-card-header>
+            <nb-card-body>
+                <nb-card>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Messages :</label>
+                            <input nbInput status="primary" type="text" nbInput fullWidth formControlName="massage"
+                                class="form-control" [ngClass]="{ 'is-invalid': submitted && f.massage.errors }" />
+                            <div *ngIf="submitted && !!f.massage.errors" class="invalid-feedback">
+                                <div style="text-align: left" *ngIf="!!f.massage.errors.required">
+                                    Messages is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </nb-card>
+                <nb-card style="height: 20rem; width: 100%;" [nbSpinner]="loading" nbSpinnerStatus="primary">
+                    <!-- <nb-card-header style="border-bottom: 0px solid #edf1f7;">
+                        <div class="row">
+                            <div class="col">
+                                <a style="font-size: 16px; cursor: pointer;" (click)="getFileList()">My file </a>
+                                <a style="font-size: 16px; cursor: pointer;" *ngIf="name1">> {{name1}} </a>
+                            </div>
+                        </div>
+                    </nb-card-header> -->
+                    <!-- <nb-list>
+                        <nb-list-item *ngFor="let f of arrFileList; let i = index">
+                            <div *ngIf="f.isUpload == 'img'">
+                                <img src="{{f.file_row_url}}" class="imgstatus">
+                                <a style="font-size: 13px; padding-left: 0.5rem;">{{f.folder_name}}</a>
+                                <nb-checkbox style="float: right;" status="danger" [(ngModel)]="f.ischecked"
+                                    [ngModelOptions]="{standalone: true}" (checkedChange)="toggle($event, f, i)">
+                                </nb-checkbox>
+                            </div>
+                            <div *ngIf="f.isUpload == 'PDF'">
+                                <img src="assets/images/pdf-1.png" class="imgstatus">
+                                <a style="font-size: 13px; padding-left: 0.5rem;">{{f.file_row_title}}</a>
+                                <nb-checkbox style="float: right;" status="danger" [(ngModel)]="f.ischecked"
+                                    [ngModelOptions]="{standalone: true}" (checkedChange)="toggle($event, f, i)">
+                                </nb-checkbox>
+                            </div>
+                            <div *ngIf="f.isUpload == 'xltx'">
+                                <img src="assets/images/excel.png" class="imgstatus">
+                                <a style="font-size: 13px; padding-left: 0.5rem;">{{f.file_row_title}}</a>
+                                <nb-checkbox style="float: right;" status="danger" [(ngModel)]="f.ischecked"
+                                    [ngModelOptions]="{standalone: true}" (checkedChange)="toggle($event, f, i)">
+                                </nb-checkbox>
+                            </div>
+                            <div *ngIf="f.isUpload == 'no file'" (click)="folder1(f.file_row_id, f.file_row_title)"
+                                style="cursor: pointer;">
+                                <img src="assets/images/folders.png" class="imgstatus">
+                                <a style="font-size: 13px; padding-left: 0.5rem;">{{f.file_row_title}}</a>
+                            </div> 
+                        </nb-list-item>
+                    </nb-list> -->
+
+                    <nb-card-header>
+                        <div class="row">
+                            <div class="col">
+                                <div class="display_table height_48px">
+                                    <div class="display_table_cell">
+                                        <label style="cursor: pointer;">
+                                            <a (click)="getFileList()">
+                                                Folder Name
+                                            </a>
+                                            <span class="p-0-12" *ngIf="name1">/</span>
+                                            <a (click)="folder1(name1)" *ngIf="name1">
+                                                {{name1}}
+                                            </a>
+                                            <span class="p-0-12" *ngIf="name2">/</span>
+                                            <a (click)="folder1(name2)" *ngIf="name2">
+                                                {{name2}}
+                                            </a>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto mr-auto"> </div>
+                        </div>
+                    </nb-card-header>
+                    <nb-list *ngIf="arrFileList.length > 0">
+                        <nb-list-item *ngFor="let f of arrFileList"
+                            [ngClass]="{'checkData':f.folder_name === 'customsupplier' || f.folder_name === 'supplier'|| f.folder_name === 'dealer'|| f.folder_name === 'uppy-php-example' || f.folder_name === 'uppy'}"
+                            style="cursor: pointer;">
+                            <div (click)="folder1(f.folder_name)" style="cursor: pointer;">
+                                <nb-icon icon="folder-outline"></nb-icon>
+                                <a style="font-size: 13px; padding-left: 0.5rem;">{{f.folder_name}}</a>
+                            </div>
+                        </nb-list-item>
+                    </nb-list>
+
+                    <nb-list *ngIf="arrFileListFile.length > 0">
+                        <nb-list-item *ngFor="let f1 of arrFileListFile">
+                            <div (click)="folder2(f1.folder_name, f1.folder_file_array)" style="cursor: pointer;">
+                                <nb-icon icon="folder-outline"></nb-icon>
+                                <a style="font-size: 13px; padding-left: 0.5rem;">{{f1.folder_name}}</a>
+                            </div>
+                        </nb-list-item>
+                    </nb-list>
+
+                    <nb-list *ngIf="arrFileListFile1.length > 0">
+
+                        <nb-list-item
+                            style="padding-top: 0.2rem; padding-bottom: 0.2rem; border-top: 1px solid #ffffff;">
+                            <div style="cursor: pointer;">
+                                <label style="font-size: 14px; margin-top: 0.2rem;">Title</label>
+                                <nb-checkbox style="float: right;" status="danger" [(ngModel)]="ischeckedAll"
+                                    [ngModelOptions]="{standalone: true}" (checkedChange)="toggleAll($event)">
+                                </nb-checkbox>
+                                <label style="padding-right: 1rem;font-size: 13px;float: right;margin-top: 0.2rem;">
+                                    Select All
+                                </label>
+                            </div>
+                        </nb-list-item>
+
+                        <nb-list-item *ngFor="let f of arrFileListFile1 ; let i = index">
+                            <div style="cursor: pointer;">
+                                <nb-icon icon="image-outline"></nb-icon>
+                                <label style="font-size: 13px; padding-left: 0.5rem;"
+                                    title="{{f.file_name}}">{{f.file_name}}</label>
+                                <nb-checkbox style="float: right;" status="danger" [(ngModel)]="f.ischecked"
+                                    [ngModelOptions]="{standalone: true}" (checkedChange)="toggle($event, f, i)">
+                                </nb-checkbox>
+                            </div>
+                        </nb-list-item>
+                    </nb-list>
+
+                    <div *ngIf="arrFileList.length == 0 && arrFileListFile.length == 0 && arrFileListFile1.length == 0"
+                        style="height:200px; background-color: white;">
+                        <div style="padding-top: 10px; text-align: center;">
+                            <img src="assets/images/loading.png" width="200"><br><br>
+                            <label>No data.</label>
+                        </div>
+                    </div>
+                </nb-card>
+
+
+                <div class="row" style="text-align: center">
+                    <div class="col-md-12">
+                        <button nbButton style="width: 100px" status="danger"
+                            (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                        <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success"
+                            [disabled]="!RequestForm.value.massage" nbButton style="width: 100px" status="success"
+                            (click)="btnSaveClick()">Send</button>
+                    </div>
+                </div><br>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</form>

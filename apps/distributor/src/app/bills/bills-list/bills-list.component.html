@@ -1,0 +1,302 @@
+<div class="cover-pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="cover-header header">
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <nb-icon icon="pie-chart-outline"></nb-icon>
+                                <label>My Bills</label>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding-top: 0.5rem;">
+                <nb-card-body style="min-height: calc(100vh - 290px);">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="Form">
+                            <div class="cover-header header">
+                                <div class="row">
+                                    <div class="cover-form icon">
+                                        <label>Search by PO No.</label>
+                                        <nb-icon icon="search-outline"></nb-icon>
+                                        <nb-icon *ngIf="Form.value.strPONo" (click)="btnRefresh()"
+                                            style="float: right;left: 0; cursor: pointer;" icon="close-outline">
+                                        </nb-icon>
+                                        <input libOnlyCharacterDefault nbInput status="primary" type="text" nbInput
+                                            fullWidth status="basic" placeholder="Search" formControlName="strPONo"
+                                            (keyup)="filterPoNo($event.target.value)" />
+                                    </div>
+
+                                    <div class="cover-form">
+                                        <label>Supplier</label>
+                                        <nb-select (selectedChange)="filterSupplierName($event)" multiple
+                                            placeholder="All Supplier" status="basic" formControlName="multiproperty"
+                                            fullWidth>
+                                            <nb-option *ngFor="let item of arrSuppler" [value]="item.supplier_name">
+                                                {{item.supplier_name}}
+                                            </nb-option>
+                                        </nb-select>
+                                    </div>
+                                    <div class="cover-form">
+                                        <label>Status</label>
+                                        <nb-select placeholder="All Status" fullWidth outline status="basic"
+                                            (selectedChange)="filterStatus($event)" formControlName="strStatus">
+                                            <nb-option value="All Status">All Status</nb-option>
+                                            <nb-option value="Unpaid">Unpaid</nb-option>
+                                            <nb-option value="Partial">Partially</nb-option>
+                                            <nb-option value="Paid">Paid</nb-option>
+                                        </nb-select>
+                                    </div>
+                                    <div class="cover-form icon">
+                                        <label>Start Date to End Date</label>
+                                        <nb-icon icon="calendar-outline"></nb-icon>
+                                        <input nbInput status="primary" type="text" nbInput fullWidth status="basic"
+                                            placeholder="Start Date to End Date" formControlName="daterangepickerModel"
+                                            #daterangepicker="bsDaterangepicker" bsDaterangepicker
+                                            [bsConfig]="{ rangeInputFormat: 'DD/MM/YYYY', containerClass: 'theme-red' }"
+                                            (bsValueChange)="filterDate($event)">
+                                    </div>
+                                    <div class="cover-form button" style="padding-top: 2rem;">
+                                        <button nbButton size="small" status="gray" (click)="btnReset()">
+                                            Reset
+                                        </button>
+                                    </div>
+                                    <!-- <div class="cover-form button" style="padding-top: 2rem;">
+                                        <button nbButton size="small" status="success" (click)="btnFilter()">
+                                            Apply filters
+                                        </button>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="cover-body body">
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div *ngIf="!isReload">
+                                            <table class="table hover" style="width: 100%;"
+                                                *ngIf="arrBills$ | async as arrBills ; else loading">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="left" style="text-align: left;" scope="col"
+                                                            sortable="purchase_order_is_confirm"
+                                                            (sort)="onSort($event)">Status</th>
+                                                        <th scope="col" style="text-align: left;"
+                                                            sortable="purchase_order_number" (sort)="onSort($event)">PO
+                                                            No.</th>
+                                                        <th class="left" style="width: 40%;" scope="col"
+                                                            sortable="Supplier" (sort)="onSort($event)">Supplier
+                                                            Name</th>
+                                                        <th scope="col" style="text-align: left;"
+                                                            sortable="delivery_date" (sort)="onSort($event)">
+                                                            Delivery Date</th>
+                                                        <th scope="col" style="text-align: left;"
+                                                            sortable="delivery_date" (sort)="onSort($event)">
+                                                            Bill Date</th>
+                                                        <th scope="col" style="text-align: left;"
+                                                            sortable="delivery_date" (sort)="onSort($event)">
+                                                            Updated</th>
+                                                        <th style="text-align: right;" scope="col"
+                                                            sortable="total_price" (sort)="onSort($event)">Order
+                                                            Total</th>
+                                                        <th (click)="btnReload()" style="width: 44px;">
+                                                            <nb-icon style="float: right; cursor: pointer;"
+                                                                icon="refresh-outline">
+                                                            </nb-icon>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="cursor: pointer">
+                                                    <ng-container *ngFor="let bills of arrBills;">
+                                                        <tr *ngFor="let name of bills.supplier_data_array"
+                                                            (click)="btnRowClick(bills.purchase_order_id)">
+                                                            <td style="text-align: left;">
+                                                                <ngb-highlight [result]="bills.purchase_order_paid_id === 0 ? 'Unpaid':
+                                                                 (bills.purchase_order_paid_id === 1 ? 'Paid' :
+                                                                 (bills.purchase_order_paid_id === 2 ? 'Partial' : 
+                                                                 bills.purchase_order_paid_id))"
+                                                                    [ngClass]="bills.purchase_order_paid_id === 0 ? 'status red':
+                                                                 (bills.purchase_order_paid_id === 1 ? 'status success' :
+                                                                 (bills.purchase_order_paid_id === 2 ? 'status orange' :'status success'))"
+                                                                    [term]="service.searchTerm"></ngb-highlight>
+                                                            </td>
+                                                            <td style="text-align: left;">
+                                                                <ngb-highlight [result]="bills.purchase_order_number"
+                                                                    [term]="service.searchTerm"></ngb-highlight>
+                                                            </td>
+                                                            <td style="text-align: left;">
+                                                                <ngb-highlight [result]="name.supplier_name"
+                                                                    [term]="service.searchTerm"></ngb-highlight>
+                                                            </td>
+                                                            <td style="text-align: left;">
+                                                                <ngb-highlight
+                                                                    [result]="bills.delivery_date * 1000 | date :'dd/MM/yyyy'"
+                                                                    [term]="service.searchTerm"></ngb-highlight>
+                                                            </td>
+                                                            <td style="text-align: left;">
+                                                                <ngb-highlight
+                                                                    [result]="bills.purchase_order_create * 1000 | date :'dd/MM/yyyy'"
+                                                                    [term]="service.searchTerm"></ngb-highlight>
+                                                            </td>
+                                                            <td style="text-align: left;">
+                                                                <ngb-highlight
+                                                                    [result]="bills.purchase_order_update * 1000 | date :'dd/MM/yyyy'"
+                                                                    [term]="service.searchTerm"></ngb-highlight>
+                                                            </td>
+                                                            <td style="text-align: right;">
+                                                                <ngb-highlight class="cover price"
+                                                                    [result]="bills.purchase_order_summary.total_price | number : '1.2-2'"
+                                                                    [term]="service.searchTerm"></ngb-highlight>
+                                                                <label class="cover thb">THB</label>
+                                                            </td>
+                                                            <td>
+
+                                                            </td>
+                                                        </tr>
+                                                    </ng-container>
+                                                    <tr *ngIf="arrBills.length == 0"
+                                                        style="height:300px; background-color: #ffffff;">
+                                                        <td colspan="7" style="padding-top: 50px; text-align: center;">
+                                                            <img src="assets/images/loading.png" width="300"><br><br>
+                                                            <label>No data.</label>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <ng-template #loading>
+                                                <table class="table hover" style="width: 100%;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="left" style="text-align: left;" scope="col"
+                                                                sortable="purchase_order_is_confirm"
+                                                                (sort)="onSort($event)">Status</th>
+                                                            <th scope="col" style="text-align: left;"
+                                                                sortable="purchase_order_number"
+                                                                (sort)="onSort($event)">PO
+                                                                No.</th>
+                                                            <th class="left" style="width: 40%;" scope="col"
+                                                                sortable="Supplier" (sort)="onSort($event)">Supplier
+                                                                Name</th>
+                                                            <th scope="col" style="text-align: left;"
+                                                                sortable="delivery_date" (sort)="onSort($event)">
+                                                                Delivery Date</th>
+                                                            <th scope="col" style="text-align: left;"
+                                                                sortable="delivery_date" (sort)="onSort($event)">
+                                                                Bill Date</th>
+                                                            <th scope="col" style="text-align: left;"
+                                                                sortable="delivery_date" (sort)="onSort($event)">
+                                                                Updated</th>
+                                                            <th style="text-align: right;" scope="col"
+                                                                sortable="total_price" (sort)="onSort($event)">Order
+                                                                Total</th>
+                                                            <th (click)="btnReload()" style="width: 44px;">
+                                                                <nb-icon style="float: right; cursor: pointer;"
+                                                                    icon="refresh-outline">
+                                                                </nb-icon>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="unset"
+                                                            style="height:300px; background-color: #ffffff;">
+                                                            <td colspan="7" style="padding-top: 50px;">
+                                                                <div style="height: 100px;background-color: #ffffff;"
+                                                                    [nbSpinner]="loading" nbSpinnerStatus="primary">
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </ng-template>
+                                        </div>
+                                        <div class="cover-table" *ngIf="isReload">
+                                            <table class="table hover" style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="left" style="text-align: left;" scope="col"
+                                                            sortable="purchase_order_is_confirm"
+                                                            (sort)="onSort($event)">Status</th>
+                                                        <th scope="col" style="text-align: left;"
+                                                            sortable="purchase_order_number" (sort)="onSort($event)">PO
+                                                            No.</th>
+                                                        <th class="left" style="width: 40%;" scope="col"
+                                                            sortable="Supplier" (sort)="onSort($event)">Supplier
+                                                            Name</th>
+                                                        <th scope="col" style="text-align: left;"
+                                                            sortable="delivery_date" (sort)="onSort($event)">
+                                                            Delivery Date</th>
+                                                        <th scope="col" style="text-align: left;"
+                                                            sortable="delivery_date" (sort)="onSort($event)">
+                                                            Bill Date</th>
+                                                        <th scope="col" style="text-align: left;"
+                                                            sortable="delivery_date" (sort)="onSort($event)">
+                                                            Updated</th>
+                                                        <th style="text-align: right;" scope="col"
+                                                            sortable="total_price" (sort)="onSort($event)">Order
+                                                            Total</th>
+                                                        <th (click)="btnReload()" style="width: 44px;">
+                                                            <nb-icon style="float: right; cursor: pointer;"
+                                                                icon="refresh-outline">
+                                                            </nb-icon>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="unset" style="height:300px; background-color: #ffffff;">
+                                                        <td colspan="7" style="padding-top: 50px;">
+                                                            <div style="height: 100px;background-color: #ffffff;"
+                                                                [nbSpinner]="isReload" nbSpinnerStatus="primary">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!-- <div *ngIf="!isReload && !loading"
+                                        class="col-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-between p-2">
+                                        <ngb-pagination [collectionSize]="total$ | async" [(page)]="service.page"
+                                            [pageSize]="service.pageSize"></ngb-pagination>
+                                        <select class="custom-select" style="width: auto" name="pageSize"
+                                            [(ngModel)]="service.pageSize">
+                                            <option [ngValue]="10">10 items per page</option>
+                                            <option [ngValue]="20">20 items per page</option>
+                                            <option [ngValue]="50">50 items per page</option>
+                                            <option [ngValue]="100">100 items per page</option>
+                                        </select>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+                <nb-card-footer>
+                    <div class="row">
+                        <div *ngIf="!isReload && !loading"
+                            class="col-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-between p-2">
+                            <ngb-pagination [collectionSize]="total$ | async" [(page)]="service.page"
+                                [pageSize]="service.pageSize"></ngb-pagination>
+                            <select class="custom-select" style="width: auto" name="pageSize"
+                                [(ngModel)]="service.pageSize" [ngModelOptions]="{standalone: true}">
+                                <option [ngValue]="10">10 items per page</option>
+                                <option [ngValue]="20">20 items per page</option>
+                                <option [ngValue]="50">50 items per page</option>
+                                <option [ngValue]="100">100 items per page</option>
+                            </select>
+                        </div>
+                    </div>
+                </nb-card-footer>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

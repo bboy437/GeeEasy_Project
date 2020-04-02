@@ -1,0 +1,61 @@
+@import "../../../../../../libs/theme-supplier/src/lib/styles/themes";
+@import "~@nebular/bootstrap/styles/buttons";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+@import "@uppy/core/dist/style.css";
+@import "@uppy/dashboard/dist/style.css";
+
+@include nb-install-component() {
+  .row {
+    .rhead {
+      border-bottom: 2px solid #dee2e6;
+      border-top: 1px solid #dee2e6;
+      padding-top: 0.5rem;
+      font-size: 14px;
+    }
+    .rbody {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #dee2e6;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  }
+}
+
+.checkData {
+  display: none;
+}
+
+
+p {
+  font-family: Lato;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  cursor: pointer;
+}
+
+.imgstatus {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+input[type="file"] {
+  display: none;
+}
+.custom-file-upload {
+  cursor: pointer;
+  background-color: #3366ff;
+  border-color: #3366ff;
+  color: #ffffff;
+  padding: 0.625rem 1.125rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1rem;
+}
+

@@ -1,0 +1,77 @@
+@import "../../../../../../../libs/theme-supplier/src/lib/styles/themes.scss";
+@import "~@nebular/bootstrap/styles/buttons";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+
+.padding-0 {
+  padding: 0!important;
+}
+
+.padding-auto-0 {
+  padding-right: 0!important;
+  padding-left: 0!important;
+}
+
+.margin-0 {
+  margin: 0!important;
+}
+nb-card-body{
+  overflow: hidden;
+}
+
+.table {
+  tbody {
+    tr {
+      td {
+        &.active {
+          color: white;
+          background-color: #1a34b8;
+        }
+      }
+    }
+  }
+}
+
+thead {
+  font-size: 14px;
+  text-align: center;
+}
+tbody {
+  font-size: 14px;
+  text-align: center;
+}
+
+@include nb-install-component() {
+  .show-grid {
+    .row {
+      margin: -0.5rem;
+    }
+
+    div[class^="col-"] {
+      padding: 0.5rem;
+      box-sizing: border-box;
+
+      div {
+        text-align: center;
+        padding: 0.5rem 0.25rem;
+        border-radius: 0.25rem;
+      }
+    }
+  }
+  nb-list-item{
+    padding-bottom: 0.2rem;
+    padding-top: 0.2rem;
+    overflow: hidden
+  }
+  
+  thead {
+    font-size: 14px;
+    text-align: center;
+  }
+  tbody {
+    font-size: 14px;
+    text-align: center;
+  }
+
+}

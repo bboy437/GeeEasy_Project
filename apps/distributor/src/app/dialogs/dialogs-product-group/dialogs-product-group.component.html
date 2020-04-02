@@ -1,0 +1,74 @@
+<div class="pages">
+    <nb-card *ngIf="status == 'create'">
+        <nb-card-header>
+            <img src="assets/images/inventory.svg" class="pull-left m-r" width="45">&nbsp;
+            <label style="font-size: 20px">My Products Group</label>
+        </nb-card-header>
+        <nb-card-body>
+            <form [formGroup]="productGroupForm">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Product Group Name</label>
+                        <input nbInput status="primary" type="text" nbInput fullWidth formControlName="productname"
+                            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.productname.errors }"
+                            [(ngModel)]="arrobjRow.name" />
+                        <div *ngIf="submitted && !!f.productname.errors" class="invalid-feedback">
+                            <div style="text-align: left" *ngIf="!!f.productname.errors.required">Product Group Name is
+                                required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form><br>
+
+            <div class="row" style="text-align: center">
+                <div class="col-md-12">
+                    <button nbButton style="width: 100px" status="danger"
+                        (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                    <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success"
+                        [disabled]="!arrobjRow.name" nbButton style="width: 100px" status="success"
+                        (click)="btnSaveClick()">Create</button>
+
+                </div>
+            </div><br>
+            <!-- status="success" status="danger"  -->
+        </nb-card-body>
+    </nb-card>
+    <nb-card *ngIf="status == 'addProductTogroup'">
+        <nb-card-header>
+            <img src="assets/images/inventory.svg" class="pull-left m-r" width="45">&nbsp;
+            <label style="font-size: 20px">Add Products To Group</label>
+        </nb-card-header>
+        <nb-card-body>
+            <form [formGroup]="productGroupForm">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="cover-input">
+                            <label>Group Name</label>
+                            <ngx-select [allowClear]="true" libOnlyCharacterDefault
+                                [ngClass]="{ 'is-invalid': submitted && f.productname.errors }" [items]="arrProducts"
+                                optionValueField="inventory_group_id" optionTextField="inventory_group_name"
+                                formControlName="productname" placeholder="Search for name">
+                            </ngx-select>
+                            <div *ngIf="submitted && !!f.productname.errors">
+                                <div class="required" *ngIf="!!f.productname.errors.required">
+                                    Group Name is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form><br>
+
+            <div class="row" style="text-align: center">
+                <div class="col-md-12">
+                    <button nbButton style="width: 100px" status="danger"
+                        (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                    <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success"
+                        [disabled]="!productGroupForm.valid" nbButton style="width: 100px" status="success"
+                        (click)="btnAddProductClick()">OK</button>
+                </div>
+            </div><br>
+        </nb-card-body>
+    </nb-card>
+</div>

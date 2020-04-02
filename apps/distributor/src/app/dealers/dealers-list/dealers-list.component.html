@@ -1,0 +1,218 @@
+<div class="cover-pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="cover-header header">
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <nb-icon icon="grid-outline"></nb-icon>
+                                <label>Dealers</label>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <button nbButton size="medium" status="primary" (click)="btnNewClick()">
+                                    New Dealer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body style="padding: 1rem; min-height: calc(100vh - 280px);">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="cover-header header" style="padding: 0;">
+                                <div class="row">
+                                    <div class="cover-form icon">
+                                        <nb-icon icon="search-outline"></nb-icon>
+                                        <nb-icon *ngIf="service.searchTerm" (click)="btnRefresh()"
+                                            style="float: right;left: 0; cursor: pointer;" icon="close-outline">
+                                        </nb-icon>
+                                        <input libOnlyCharacterDefault nbInput status="primary" type="text" nbInput
+                                            fullWidth status="basic" placeholder="Search for name"
+                                            [(ngModel)]="service.searchTerm" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="cover-table" *ngIf="!isReload">
+                                <table class="table hover" style="width: 100%;"
+                                    *ngIf="dealerslist$ | async as dealerslist ; else loading">
+                                    <thead>
+                                        <tr>
+                                            <th class="left" scope="col">
+                                                Image
+                                            </th>
+                                            <th style="width: 20%;" class="left" scope="col">
+                                                Dealer Name
+                                            </th>
+                                            <th class="left" scope="col">
+                                                Email
+                                            </th>
+                                            <th class="left" scope="col">
+                                                Contact Number
+                                            </th>
+                                            <th class="left" scope="col">
+                                                Location
+                                            </th>
+                                            <th></th>
+                                            <th style="text-align: right; cursor: pointer;" (click)="btnReload()">
+                                                <nb-icon icon="refresh-outline"></nb-icon>
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody style="cursor: pointer;">
+                                        <tr *ngFor="let d of dealerslist; let i=index"
+                                            (click)="btnRowClick(d.dealer_id);">
+                                            <td class="left">
+                                                <div class="cover-background-image">
+                                                    <div class="background-image padding-width-100px-height-100px"
+                                                        [ngClass]="{'active' : d.dealer_image_url === '-' || d.dealer_image_url=== ''}"
+                                                        [ngStyle]="{'background-image': 'url('+d.dealer_image_url+')'}">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="left">
+                                                <ngb-highlight [result]="d.dealer_name " [term]="service.searchTerm">
+                                                </ngb-highlight>
+                                            </td>
+                                            <td class="left">
+                                                <ngb-highlight [result]="d.dealer_email " [term]="service.searchTerm">
+                                                </ngb-highlight>
+                                            </td>
+                                            <td class="left">
+                                                <ngb-highlight [result]="d.dealer_mobile" [term]="service.searchTerm">
+                                                </ngb-highlight>
+                                            </td>
+                                            <td class="left">
+                                                <ngb-highlight
+                                                    [result]="d.dealer_addr_amphoe + ',' + d.dealer_addr_province"
+                                                    [term]="service.searchTerm">
+                                                </ngb-highlight>
+                                            </td>
+                                            <td style="text-align: right; ">
+                                                <button nbButton size="small" status="primary"
+                                                    style="background-color: white; color: black! important; border-color: #bdb8b8;"
+                                                    (click)="btnViewClick(d); $event.stopPropagation()">
+                                                    View Order
+                                                </button>
+                                            </td>
+                                            <td style="text-align: right; ">
+                                                <button nbButton size="small" status="info"
+                                                    style="background-color: white; color: black! important; border-color: #bdb8b8;">
+                                                    View Product
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="dealerslist.length == 0"
+                                            style="height:300px; background-color: white;">
+                                            <td colspan="7" style="padding-top: 50px;">
+                                                <img src="assets/images/loading.png" width="300"><br><br>
+                                                <label>No data.</label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <ng-template #loading>
+                                    <table class="table hover" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th class="left" scope="col">
+                                                    Image
+                                                </th>
+                                                <th class="left" scope="col">
+                                                    Dealer Name
+                                                </th>
+                                                <th class="left" scope="col">
+                                                    Email
+                                                </th>
+                                                <th class="left" scope="col">
+                                                    Contact Number
+                                                </th>
+                                                <th class="left" scope="col">
+                                                    Location
+                                                </th>
+                                                <th></th>
+                                                <th style="text-align: right; cursor: pointer;" (click)="btnReload()">
+                                                    <nb-icon icon="refresh-outline"></nb-icon>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr style="height:300px; background-color: white;">
+                                                <td colspan="7" style="padding-top: 50px;">
+                                                    <div style="height: 100px;background-color: white;"
+                                                        [nbSpinner]="loading" nbSpinnerStatus="primary">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </ng-template>
+                            </div>
+                            <div class="cover-table" *ngIf="isReload">
+                                <table class="table hover" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th class="left" scope="col">
+                                                Image
+                                            </th>
+                                            <th class="left" scope="col">
+                                                Dealer Name
+                                            </th>
+                                            <th class="left" scope="col">
+                                                Email
+                                            </th>
+                                            <th class="left" scope="col">
+                                                Contact Number
+                                            </th>
+                                            <th class="left" scope="col">
+                                                Location
+                                            </th>
+                                            <th></th>
+                                            <th style="text-align: right; cursor: pointer;" (click)="btnReload()">
+                                                <nb-icon icon="refresh-outline"></nb-icon>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="height:300px; background-color: white;">
+                                            <td colspan="6" style="padding-top: 50px;">
+                                                <div style="height: 100px;background-color: white;"
+                                                    [nbSpinner]="isReload" nbSpinnerStatus="primary">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+                <nb-card-footer>
+                    <div *ngIf="!isReload && !loading"
+                        class="col-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-between p-2">
+                        <ngb-pagination [collectionSize]="tatallist$ | async" [(page)]="service.page"
+                            [pageSize]="service.pageSize"></ngb-pagination>
+                        <select class="custom-select" style="width: auto" name="pageSize"
+                            [(ngModel)]="service.pageSize">
+                            <option [ngValue]="10">10 items per page</option>
+                            <option [ngValue]="20">20 items per page</option>
+                            <option [ngValue]="50">50 items per page</option>
+                            <option [ngValue]="100">100 items per page</option>
+                        </select>
+                    </div>
+                </nb-card-footer>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

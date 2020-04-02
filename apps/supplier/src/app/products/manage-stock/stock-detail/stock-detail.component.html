@@ -1,0 +1,329 @@
+<div class="pages" [formGroup]="Form">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <nb-icon icon="cube-outline"></nb-icon>
+                                <label>Manage Stock<span class="p-0-12">/</span>Detail</label>
+                            </div>
+                            <div class="col-auto">
+                                <!-- <button nbButton size="medium" status="success" (click)="btnEditeClick()">
+                                    Edit
+                                </button> -->
+                                <button nbButton size="medium" status="danger" (click)="btnCancelClick()">
+                                    Back
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;margin-bottom: 0.1rem;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label>{{product_category_name}}</label><label
+                                    class="status bg-status-primary">{{arrProductDetail.product_sku}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="warning">
+            <nb-card>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-6 col-xl-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="cover-background-image">
+                                            <div class="background-image padding-top-60"
+                                                [ngClass]="{'active' : arrProductDetail.product_image_url === '-' || arrProductDetail.product_image_url === ''}"
+                                                [ngStyle]="{'background-image': 'url('+arrProductDetail.product_image_url+')'}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-6 col-xl-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="row">
+                                            <!-- <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <nb-checkbox disabled status="primary"
+                                                        [checked]=" this.arrProductDetail.product_public_status_id === 1">
+                                                        Active</nb-checkbox>
+                                                </div>
+                                            </div> -->
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <label style="padding-right: 1rem;">Status :</label>
+                                                    <label *ngIf="Form.value.product_public_status_id === 'Active'"
+                                                        class="active">{{Form.value.product_public_status_id}}</label>
+                                                        <label *ngIf="Form.value.product_public_status_id === 'Inactive'"
+                                                        class="inactive">{{Form.value.product_public_status_id}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <label>Product Name :</label>
+                                                    <input libOnlyCharacterDefault status="primary" type="text" nbInput
+                                                        fullWidth status="primary" formControlName="product_name" />
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <label>Product Category :</label>
+                                                    <input libOnlyCharacterDefault status="primary" type="text" nbInput
+                                                        fullWidth status="primary"
+                                                        formControlName="product_category_name" />
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <label>Custom Category :</label>
+                                                    <input libOnlyCharacterDefault status="primary" type="text" nbInput
+                                                        fullWidth status="primary"
+                                                        formControlName="category_custom_keyword" />
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                                        <!-- <div class="cover-input">
+                                                            <label>Buy Price (Cost) :</label>
+                                                            <input libOnlyCharacterDefault libOnlyCharacternumber
+                                                                mask="separator.2" thousandSeparator=","
+                                                                status="primary" type="text" nbInput fullWidth
+                                                                formControlName="product_price" />
+                                                        </div> -->
+                                                        <label>Buy Price (Cost) :</label>
+                                                        <div class="cover-input price">
+                                                            <a>{{arrProductDetail.product_currency_code}}</a>
+                                                            <input style="text-align: right;" libOnlyCharacterDefault
+                                                                libOnlyCharacternumber mask="separator.2"
+                                                                thousandSeparator="," status="primary" type="text"
+                                                                nbInput fullWidth formControlName="product_price" />
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                                                        <div class="cover-input">
+                                                            <label>Currency :</label>
+                                                            <input libOnlyCharacterDefault status="primary" type="text"
+                                                                nbInput fullWidth status="primary"
+                                                                formControlName="product_currency_code" />
+                                                        </div>
+                                                    </div> -->
+                                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                                        <div class="cover-input">
+                                                            <label>Initial Stock :</label>
+                                                            <input style="text-align: right;" libOnlyCharacterDefault
+                                                                libOnlyCharacternumber mask="separator.2"
+                                                                thousandSeparator="," status="primary" type="text"
+                                                                nbInput fullWidth formControlName="initial_stock" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                                        <div class="cover-input">
+                                                            <label>Product SKU :</label>
+                                                            <input libOnlyCharacterDefault status="primary" type="text"
+                                                                nbInput fullWidth status="primary"
+                                                                formControlName="product_sku" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                                        <div class="cover-input">
+                                                            <label>Product Barcode :</label>
+                                                            <input libOnlyCharacterDefault status="primary" type="text"
+                                                                nbInput fullWidth status="primary"
+                                                                formControlName="product_barcode" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <label>Product Unit :</label>
+                                                    <input libOnlyCharacterDefault status="primary" type="text" nbInput
+                                                        fullWidth status="primary" formControlName="product_unit" />
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                                        <div class="cover-input">
+                                                            <label>Country :</label>
+                                                            <input libOnlyCharacterDefault status="primary" type="text"
+                                                                nbInput fullWidth status="primary"
+                                                                formControlName="product_country" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                                        <div class="cover-input">
+                                                            <label>Channel :</label>
+                                                            <input libOnlyCharacterDefault status="primary" type="text"
+                                                                nbInput fullWidth status="primary"
+                                                                formControlName="product_channel" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="cover-input">
+                                                    <label>Warehouse Name :</label>
+                                                    <input libOnlyCharacterDefault status="primary" type="text" nbInput
+                                                        fullWidth status="primary" formControlName="warehouse_name" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <div class="cover-input">
+                                                <label>Product Wholesale :</label>
+                                                <table class="table hover" >
+                                                    <thead>
+                                                        <th scope="col">
+                                                            Qty Minimum
+                                                        </th>
+                                                        <th scope="col">
+                                                            Product Price
+                                                        </th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr
+                                                            *ngFor="let item of arrProductDetail.product_wholesale_array; ">
+                                                            <td>
+                                                                <div class="cover-input">
+                                                                    <input libOnlyCharacterDefault status="primary" type="text" nbInput disabled
+                                                                        fullWidth status="primary"
+                                                                        [(ngModel)]="item.qty_minimum"
+                                                                        [ngModelOptions]="{standalone: true}">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+
+                                                                <div class="cover-input">
+                                                                    <input libOnlyCharacterDefault status="primary" type="text" nbInput disabled
+                                                                        fullWidth status="primary"
+                                                                        [(ngModel)]="item.product_price"
+                                                                        [ngModelOptions]="{standalone: true}">
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="cover-input">
+                                            <label>Product Wholesale :</label>
+                                        </div>
+                                        <table class="table no-hover">
+                                            <thead>
+                                                <th style="width: 15%;  text-align: right;">
+                                                    <label>Qty Minimum</label>
+                                                </th>
+                                                <th style="width: 20%;  text-align: right;">
+                                                    <label> Wholesale Price</label>
+                                                </th>
+                                                <th style="width: 20%;  text-align: right;">
+                                                    <label> Retail Price</label>
+                                                </th>
+                                                <th></th>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of arrWholesale; ">
+                                                    <td>
+                                                        <div class="cover-input">
+                                                            <input style="text-align: right;" libOnlyCharacterDefault
+                                                                status="primary" type="text" nbInput disabled
+                                                                libOnlyCharacternumber mask="separator.0"
+                                                                thousandSeparator="," fullWidth status="primary"
+                                                                [(ngModel)]="item.qty_minimum"
+                                                                [ngModelOptions]="{standalone: true}">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cover-input price">
+                                                            <a>THB</a>
+                                                            <input style="text-align: right;" libOnlyCharacterDefault
+                                                                status="primary" type="text" nbInput disabled
+                                                                libOnlyCharacternumber mask="separator.2"
+                                                                thousandSeparator="," fullWidth status="primary"
+                                                                [(ngModel)]="item.product_price"
+                                                                [ngModelOptions]="{standalone: true}">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cover-input price">
+                                                            <a>THB</a>
+                                                            <input style="text-align: right;" libOnlyCharacterDefault
+                                                                status="primary" type="text" nbInput disabled
+                                                                libOnlyCharacternumber mask="separator.2"
+                                                                thousandSeparator="," fullWidth status="primary"
+                                                                [(ngModel)]="item.retail_product_price"
+                                                                [ngModelOptions]="{standalone: true}">
+                                                        </div>
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;margin-bottom: 0.1rem;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label>Image Lists</label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <project-list-file-upload theme="dark" [image_url_array]="product.product_image_array.get"></project-list-file-upload>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

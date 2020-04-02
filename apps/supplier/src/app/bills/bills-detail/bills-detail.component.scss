@@ -1,0 +1,86 @@
+@import "../../../../../../libs/theme-supplier/src/lib/styles/themes";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+.font-weight-bold {
+  & * {
+    font-weight: bold !important;
+  }
+}
+
+nb-icon {
+  &.icon-success {
+    color: #28a745;
+    font-size: 1.5rem;
+  }
+  &.icon-close {
+    color: #dee2e6;
+    font-size: 1.5rem;
+  }
+}
+
+
+nb-card {
+  &.table-set {
+    nb-card-body {
+      table {
+        margin-bottom: 0 !important;
+        &.table {
+          thead {
+            tr {
+              th {}
+            }
+          }
+          tbody {
+            tr {
+              td {
+                & * {
+                  margin-bottom: 0 !important;
+                }
+                &.right {
+                  text-align: right;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.bg-status-primary {
+  color: #fff;
+  background: #141a30;
+  padding: 0.5rem;
+  position: relative;
+}
+
+@include nb-install-component() {
+  .show-grid {
+    .row {
+      margin: -0.5rem;
+    }
+
+    div[class^="col-"] {
+      padding: 0.5rem;
+      box-sizing: border-box;
+
+      div {
+        padding: 0.5rem 0.25rem;
+        border-radius: 0.25rem;
+      }
+    }
+  }
+
+  .cardbody {
+    max-height: 500px;
+  }
+
+  thead {
+    font-size: 15px;
+  }
+  tbody {
+    font-size: 15px;
+  }
+}

@@ -1,0 +1,163 @@
+<div class="pages" [formGroup]="Form">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding:0;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <nb-icon class="icon-header" icon="people-outline"></nb-icon>
+                                <label>My Team<span class="p-0-12">/</span>Detail</label>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <button *ngIf="!loading" style="float: right;margin: 3px 0 3px 1rem;" nbButton
+                                    size="medium" status="success" (click)="createNewTeam()">
+                                    Edit
+                                </button>
+                                <button style="float: right;margin: 3px 0 3px 1rem;" nbButton size="medium"
+                                    status="danger" (click)="btnCancelClick()">
+                                    Back
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding:0;margin-bottom: 0.1rem;">
+                <nb-card-header style="padding: 0.5rem 0;">
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label>{{arrobjRow.group_name}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="success">
+            <nb-card>
+                <nb-card-body style="padding: 1rem 0; ">
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6" style="text-align: center">
+                                        <div class="cover-background-image" style="margin-bottom: 1rem;">
+                                            <div class="background-image padding-top-10"
+                                                [ngClass]="{'active' : arrobjRow.group_image_url === '-' || arrobjRow.group_image_url === ''}"
+                                                [ngStyle]="{'background-image': 'url('+arrobjRow.group_image_url+')'}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                        <div class="cover-input">
+                                            <label>Name</label>
+                                            <input nbInput status="primary" type="text" class="btnDisabled" fullWidth
+                                                formControlName="group_name" />
+                                        </div>
+                                        <!-- <div class="cover-input">
+                                            <label>Group</label>
+                                            <input nbInput status="primary" type="text" class="btnDisabled" disabled
+                                                nbInput fullWidth [(ngModel)]="group_name" />
+                                        </div> -->
+
+                                        <div class="row ">
+                                            <div class="col-auto mr-auto">
+                                                <div class="cover-input">
+                                                    <button nbButton size="medium" status="primary"
+                                                        (click)="addSellerToTeamChange()">
+                                                        Add Seller to Team
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="cover-input">
+                                                    <button nbButton size="medium" status="primary"
+                                                        (click)="addProductToTeamChange()">
+                                                        Add Product to Team
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding:0;margin-bottom: 0.1rem;">
+                <nb-card-header style="padding: 0.5rem 0;">
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label>Sellers</label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" >
+            <nb-card>
+                <nb-card-body style="padding: 1rem 0; ">
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left">Image</th>
+                                            <th style="text-align: left">Name</th>
+                                            <th style="text-align: left">Contact No.</th>
+                                            <th style="text-align: left">Email</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of arrUser; let i=index" (click)="btnRowClick(item.user_id)">
+                                            <td style="text-align: left">
+                                                <div class="cover-background-image">
+                                                    <div class="background-image padding-width-100px-height-100px"
+                                                        [ngClass]="{'active' : item.user_image_url === '-' || item.user_image_url === ''}"
+                                                        [ngStyle]="{'background-image': 'url('+item.user_image_url+')'}">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="text-align: left">{{item.user_name}}</td>
+                                            <td style="text-align: left">{{item.user_mobile}}</td>
+                                            <td style="text-align: left">{{item.user_email}}</td>
+                                            <td>
+                                                <button
+                                                    (click)="addProductToSellerChange(item, $event.stopPropagation())"
+                                                    nbButton size="small" status="primary">
+                                                    Add Product to Seller
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="arrUser.length == 0" style="height:300px; background-color: white;">
+                                            <td colspan="4" style="padding-top: 50px; text-align: center;">
+                                                <img src="assets/images/loading.png" width="300"><br><br>
+                                                <label>No data.</label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

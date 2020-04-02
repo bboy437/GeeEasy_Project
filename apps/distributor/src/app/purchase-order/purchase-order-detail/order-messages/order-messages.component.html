@@ -1,0 +1,26 @@
+<nb-chat title="PO Messages" size="medium" status="danger">
+    <nb-chat-message *ngFor="let message of messages"
+                     [message]="message.text_detail"
+                     [date]="message.create_time * 1000 "
+                     [reply]="message.text_type_id == 2"
+                     [avatar]=""></nb-chat-message>
+    <nb-chat-form (send)="sendMessage($event)" [message]="istypeing" [showButton]="istypeing == ''? false : true"  [dropFiles]="true">
+    </nb-chat-form>
+  </nb-chat>
+
+
+  <!-- <nb-chat title="John" size="medium" status="success">
+    <nb-chat-message *ngFor="let message of messages"
+                     [type]="message.type"
+                     [message]="message.text"
+                     [reply]="!message.reply"
+                     [sender]="message.user.name"
+                     [date]="message.date"
+                     [files]="message.files"
+                     [quote]="message.quote"
+                     [latitude]="message.latitude"
+                     [longitude]="message.longitude"
+                     [avatar]="message.user.avatar"></nb-chat-message>
+    <nb-chat-form (send)="sendMessage($event, 'John', 'https://i.gifer.com/no.gif', true)" [showButton]="false" [dropFiles]="true">
+    </nb-chat-form>
+  </nb-chat> -->

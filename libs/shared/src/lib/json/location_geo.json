@@ -1,0 +1,26 @@
+[
+  {
+    "location_geo_id": 1,
+    "name": "ภาคเหนือ"
+  },
+  {
+    "location_geo_id": 2,
+    "name": "ภาคกลาง"
+  },
+  {
+    "location_geo_id": 3,
+    "name": "ภาคตะวันออกเฉียงเหนือ"
+  },
+  {
+    "location_geo_id": 4,
+    "name": "ภาคตะวันตก"
+  },
+  {
+    "location_geo_id": 5,
+    "name": "ภาคตะวันออก"
+  },
+  {
+    "location_geo_id": 6,
+    "name": "ภาคใต้"
+  }
+]

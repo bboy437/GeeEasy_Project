@@ -1,0 +1,205 @@
+
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card *ngIf="status == 'po'">
+                <nb-card-header class="dialogs">
+                    <div class="header">
+                        <nb-icon icon="alert-circle-outline"></nb-icon>
+                        <label>Confirm Cancellation</label>
+                    </div>
+                </nb-card-header>
+                <nb-card-body style="padding: 1rem;">
+                    <div class="row" style="padding-top: 1rem;">
+                        <div class="col-auto">
+                            <!-- <img src="assets/images/cancel.png" width="50"> -->
+
+                            <!-- <nb-icon icon="alert-circled"  pack="ion"></nb-icon> -->
+                        </div>
+                        <div class="col-auto mr-auto" style="padding-top: 1rem;">
+                            <label style="font-size: 16px;">Are you sure you want to Cancel ?</label>
+                        </div>
+                    </div><br>
+                    <div class="row" style="text-align: center;">
+                        <div class="col-md-12">
+                            <button nbButton style="width: 100px" status="danger"
+                                (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                            <button nbButton style="width: 100px" status="success" (click)="btnOkClick()">OK</button>
+                        </div>
+                    </div><br>
+                </nb-card-body>
+            </nb-card>
+            <nb-card *ngIf="status == 'checkin'">
+                <nb-card-header class="dialogs">
+                    <div class="header">
+                        <nb-icon icon="alert-circle-outline"></nb-icon>
+                        <label>ERROR</label>
+                    </div>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="row" style="padding-top: 1rem; text-align: center;">
+                        <div class="col-md-12">
+                            <label style="font-size: 16px;">Quantity cannot be equal to 0 or greater Incoming.</label>
+                        </div>
+                    </div><br>
+                    <div class="row" style="text-align: center;">
+                        <div class="col-md-12">
+                            <button nbButton style="width: 100px" status="success" (click)="btnOkClick()">OK</button>
+                        </div>
+                    </div><br>
+                </nb-card-body>
+            </nb-card>
+            <nb-card *ngIf="status == 'Quantity'">
+                <nb-card-header class="dialogs">
+                    <div class="header">
+                        <nb-icon icon="alert-circle-outline"></nb-icon>
+                        <label>ERROR</label>
+                    </div>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="row" style="padding-top: 1rem; text-align: center;">
+                        <div class="col-md-12">
+                            <label style="font-size: 16px;">Quantity is greater than 0.</label>
+                        </div>
+                    </div><br>
+                    <div class="row" style="text-align: center;">
+                        <div class="col-md-12">
+                            <button nbButton style="width: 100px" status="success" (click)="btnOkClick()">OK</button>
+                        </div>
+                    </div><br>
+                </nb-card-body>
+            </nb-card>
+            <nb-card *ngIf="status == 'Price'">
+                <nb-card-header class="dialogs">
+                    <div class="header">
+                        <nb-icon icon="alert-circle-outline"></nb-icon>
+                        <label>ERROR</label>
+                    </div>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="row" style="padding-top: 1rem; text-align: center;">
+                        <div class="col-md-12">
+                            <label style="font-size: 16px;">Price is greater than 0.</label>
+                        </div>
+                    </div><br>
+                    <div class="row" style="text-align: center;">
+                        <div class="col-md-12">
+                            <button nbButton style="width: 100px" status="success" (click)="btnOkClick()">OK</button>
+                        </div>
+                    </div><br>
+                </nb-card-body>
+            </nb-card>
+            <nb-card *ngIf="status == 'summary'">
+                <nb-card-header class="dialogs">
+                    <div class="header">
+                        <nb-icon icon="alert-circle-outline"></nb-icon>
+                        <label>ERROR</label>
+                    </div>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="row" style="padding-top: 1rem; text-align: center;">
+                        <div class="col-md-12">
+                            <label style="font-size: 16px;">Discount is greater than Total Price</label>
+                        </div>
+                    </div><br>
+                    <div class="row" style="text-align: center;">
+                        <div class="col-md-12">
+                            <button nbButton style="width: 100px" status="success" (click)="btnOkClick()">OK</button>
+                        </div>
+                    </div><br>
+                </nb-card-body>
+            </nb-card>
+            <nb-card *ngIf="status == 'sku'">
+                <nb-card-header class="dialogs">
+                    <div class="header">
+                        <nb-icon icon="alert-circle-outline"></nb-icon>
+                        <label>ERROR</label>
+                    </div>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="row" style="padding-top: 1rem; text-align: center;">
+                        <div class="col-md-12">
+                            <label style="font-size: 16px;">Product SKU is the same as another name.</label>
+                        </div>
+                    </div><br>
+                    <div class="row" style="text-align: center;">
+                        <div class="col-md-12">
+                            <button nbButton style="width: 100px" status="success" (click)="btnOkClick()">OK</button>
+                        </div>
+                    </div><br>
+                </nb-card-body>
+            </nb-card>
+            <nb-card *ngIf="status == 'Product QtyMinimum'" style="width: 600px;">
+                <nb-card-header class="dialogs">
+                    <div class="header">
+                        <nb-icon icon="alert-circle-outline"></nb-icon>
+                        <label>ERROR</label>
+                    </div>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row" style="padding-top: 1rem;">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="cover-input" >
+                                    <label>Qty Minimum has duplicate values.</label>
+                                </div>
+                                <table class="table no-hover">
+                                    <thead>
+                                        <th style="width: 15%; text-align: center;">
+                                            <label>Qty Minimum</label>
+                                        </th>
+                                        <th style="width: 20%;  text-align: right;">
+                                            <label> Wholesale Price</label>
+                                        </th>
+                                        <th style="width: 20%;  text-align: right;">
+                                            <label> Retail Price</label>
+                                        </th>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of data; let i=index;">
+                                            <td style="text-align: center;">
+                                                <div class="cover-input">
+                                                    <input disabled class="cover qty" libOnlyCharacterDefault
+                                                        status="primary" type="text" libOnlyCharacternumber
+                                                        mask="separator.0" thousandSeparator="," nbInput fullWidth
+                                                        status="primary" [(ngModel)]="item.qty_minimum"
+                                                        [ngModelOptions]="{standalone: true}">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="cover-input price">
+                                                    <a>THB</a>
+                                                    <input disabled class="cover price" libOnlyCharacterDefault
+                                                        status="primary" type="text" libOnlyCharacternumber
+                                                        mask="separator.2" thousandSeparator="," nbInput fullWidth
+                                                        status="primary" [(ngModel)]="item.product_price"
+                                                        [ngModelOptions]="{standalone: true}">
+
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="cover-input price">
+                                                    <a class="cover thb">THB</a>
+                                                    <input disabled class="cover price" libOnlyCharacterDefault
+                                                        status="primary" type="text" libOnlyCharacternumber
+                                                        mask="separator.2" thousandSeparator="," nbInput fullWidth
+                                                        status="primary" [(ngModel)]="item.retail_product_price"
+                                                        [ngModelOptions]="{standalone: true}">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="text-align: center;">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <button nbButton style="width: 100px" status="success" (click)="btnOkClick()">OK</button>
+                        </div>
+                    </div><br>
+                </nb-card-body>
+            </nb-card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,651 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <nb-icon class="icon-header" icon="shuffle-2-outline"></nb-icon>
+                        <label>My Order<span class="p-0-12">/</span>Create Order</label>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0.5rem;">
+                <nb-card-body>
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <nb-stepper #stepper>
+                                <nb-step [stepControl]="supplierNameForm" label="Distributor">
+                                    <div class="row">
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <form [formGroup]="supplierNameForm" (ngSubmit)="onSupplierNameSubmit()">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <div class="body">
+                                                            <div class="row">
+                                                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                                    <div class="cover center">
+                                                                        <label>Let's get started</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                                    <div class="cover center">
+                                                                        <label>Setting up your standing order is easy —
+                                                                            name it and choose a vendor.</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <div class="header">
+                                                            <div class="d-flex justify-content-center"
+                                                                style="padding-top: 1rem;">
+                                                                <div class="cover-input">
+                                                                    <label class="left">Distributor Name</label>
+                                                                    <!-- <nb-select
+                                                                            placeholder="-------------- Choose ---------------"
+                                                                            fullWidth outline status="basic"
+                                                                            [(ngModel)]="supplierName"
+                                                                            formControlName="supplierNameCtrl"
+                                                                            [ngClass]="{ 'is-invalid': submitted && f.supplierNameCtrl.errors }">
+                                                                            <nb-option *ngFor="let d  of arrDealer"
+                                                                                [value]="d.dealer_name"
+                                                                                (click)="btnIDClick(d)">
+                                                                                {{d.dealer_name}}
+                                                                            </nb-option>
+                                                                        </nb-select> -->
+                                                                    <div class="example-block">
+                                                                        <div class="example-block__item">
+                                                                            <ngx-select [allowClear]="true"
+                                                                                libOnlyCharacterDefault
+                                                                                [ngClass]="{ 'is-invalid': submitted && f.dealerNameCtrl.errors }"
+                                                                                [items]="arrDistributor"
+                                                                                optionValueField="distributor_id"
+                                                                                optionTextField="distributor_name"
+                                                                                formControlName="dealerNameCtrl"
+                                                                                placeholder="Search for name"
+                                                                                (selectionChanges)="btnIDClick($event)">
+                                                                            </ngx-select>
+                                                                        </div>
+                                                                        <div *ngIf="submitted && !!f.dealerNameCtrl.errors"
+                                                                            class="invalid-feedbacks">
+                                                                            <div [ngClass]="{ 'required': submitted && f.dealerNameCtrl.errors }"
+                                                                                style="text-align: left; padding-top: 0.2rem;"
+                                                                                *ngIf="!!f.dealerNameCtrl.errors.required">
+                                                                                Distributor Name is required
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <div class="row">
+                                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="body">
+                                                        <div class="row">
+                                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                                <div class="row">
+                                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                                        <div class="row">
+                                                                            <div
+                                                                                class="col-12 col-md-12 col-lg-6 col-xl-6">
+                                                                                <div class="cover-input">
+                                                                                    <label>Dealer Name :</label>
+                                                                                    <input disabled nbInput
+                                                                                        status="basic" type="text"
+                                                                                        fullWidth
+                                                                                        [(ngModel)]="arrDealerName.dealer_name" />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div
+                                                                                class="col-12 col-md-12 col-lg-6 col-xl-6">
+                                                                                <div class="row">
+                                                                                    <div
+                                                                                        class="col-12 col-md-12 col-lg-6 col-xl-6">
+                                                                                        <div class="cover-input">
+                                                                                            <label>First Name :</label>
+                                                                                            <input disabled nbInput
+                                                                                                status="basic"
+                                                                                                type="text" fullWidth
+                                                                                                [(ngModel)]="arrDealerName.dealer_first_name" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="col-12 col-md-12 col-lg-6 col-xl-6">
+                                                                                        <div class="cover-input">
+                                                                                            <label>Last Name :</label>
+                                                                                            <input disabled nbInput
+                                                                                                status="basic"
+                                                                                                type="text" fullWidth
+                                                                                                [(ngModel)]="arrDealerName.dealer_last_name" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                                        <div class="row">
+                                                                            <div
+                                                                                class="col-12 col-md-12 col-lg-6 col-xl-6">
+                                                                                <div class="cover-input">
+                                                                                    <label>Email :</label>
+                                                                                    <input disabled nbInput
+                                                                                        status="basic" type="text"
+                                                                                        fullWidth
+                                                                                        [(ngModel)]="arrDealerName.dealer_email" />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div
+                                                                                class="col-12 col-md-12 col-lg-3 col-xl-3">
+                                                                                <div class="cover-input">
+                                                                                    <label>Telephone Number :</label>
+                                                                                    <input disabled nbInput
+                                                                                        status="basic" type="text"
+                                                                                        libOnlyCharacterphonnumber
+                                                                                        fullWidth
+                                                                                        [(ngModel)]="arrDealerName.dealer_tel" />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div
+                                                                                class="col-12 col-md-12 col-lg-3 col-xl-3">
+                                                                                <div class="cover-input">
+                                                                                    <label>Mobile Phone Number :</label>
+                                                                                    <input disabled nbInput
+                                                                                        status="basic" type="text"
+                                                                                        mask='000-000-0000'
+                                                                                        placeholder="XXX-XXX-XXXX"
+                                                                                        fullWidth
+                                                                                        [(ngModel)]="arrDealerName.dealer_mobile" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                                        <div class="row">
+                                                                            <div
+                                                                                class="col-12 col-md-12 col-lg-6 col-xl-6">
+                                                                                <div class="cover-input">
+                                                                                    <label>Address :</label>
+                                                                                    <textarea disabled nbInput
+                                                                                        style="min-height: 90px;"
+                                                                                        status="basic" type="text"
+                                                                                        fullWidth
+                                                                                        [(ngModel)]="arrDealerName.dealer_addr_full">
+                                                                                    </textarea>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div
+                                                                                class="col-12 col-md-12 col-lg-6 col-xl-6">
+                                                                                <div class="cover-input">
+                                                                                    <label> Address Number :</label>
+                                                                                    <input disabled nbInput
+                                                                                        status="basic" type="text"
+                                                                                        fullWidth
+                                                                                        [(ngModel)]="arrDealerName.dealer_addr_number" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                                        <div class="row">
+                                                                            <div
+                                                                                class="col-12 col-md-12 col-lg-6 col-xl-6">
+                                                                                <div class="cover-input">
+                                                                                    <label>Tambon :</label>
+                                                                                    <input disabled nbInput
+                                                                                        status="basic" type="text"
+                                                                                        fullWidth
+                                                                                        [(ngModel)]="arrDealerName.dealer_addr_tambon" />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div
+                                                                                class="col-12 col-md-12 col-lg-6 col-xl-6">
+                                                                                <div class="cover-input">
+                                                                                    <label>Amphoe :</label>
+                                                                                    <input disabled nbInput
+                                                                                        status="basic" type="text"
+                                                                                        fullWidth
+                                                                                        [(ngModel)]="arrDealerName.dealer_addr_amphoe" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                                        <div class="row">
+                                                                            <div
+                                                                                class="col-12 col-md-12 col-lg-6 col-xl-6">
+                                                                                <div class="cover-input">
+                                                                                    <label>Province :</label>
+                                                                                    <input disabled nbInput
+                                                                                        status="basic" type="text"
+                                                                                        fullWidth
+                                                                                        [(ngModel)]="arrDealerName.dealer_addr_province" />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div
+                                                                                class="col-12 col-md-12 col-lg-6 col-xl-6">
+                                                                                <div class="cover-input"><label>Zipcode
+                                                                                        :</label>
+                                                                                    <input disabled nbInput
+                                                                                        status="basic" type="text"
+                                                                                        fullWidth
+                                                                                        [(ngModel)]="arrDealerName.dealer_addr_post" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div><br>
+                                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="body">
+                                                        <div class="cover center" style="padding-top: 1rem;">
+                                                            <button nbButton style="width: 100px"
+                                                                (click)="btnClickSupplierName()" nbStepperNext>
+                                                                Next
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </nb-step>
+
+                                <nb-step [stepControl]="productsForm" label="Products And Quantities">
+                                    <form [formGroup]="productsForm" (ngSubmit)="onProductsSubmit()">
+                                        <nb-tabset (changeTab)="onChangeTab($event.tabTitle)">
+                                            <nb-tab tabTitle="Product Name" style="padding-bottom: 0rem;">
+                                            </nb-tab>
+                                        </nb-tabset>
+                                        <style type="text/css">
+                                            .border-bottom-dee2e6 {
+                                                border-bottom: 2px solid #dee2e6;
+                                            }
+
+                                            .cover-margin {
+                                                margin-top: 0.5rem !important;
+                                                padding-bottom: 0.5rem !important;
+                                            }
+
+                                            .cover-margin nb-icon {
+                                                float: right;
+                                            }
+                                        </style>
+                                        <!-- <div class="row">
+                                            <div class="col-12 border-bottom-dee2e6">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label>Item Name</label>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <label>Quantity</label>
+                                                    </div>
+                                                    <div class=" col-4">
+                                                        <div class="row">
+                                                            <div class="col-8">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label>Unit Price</label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label>Total Price</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 cover-margin border-bottom-dee2e6"
+                                                *ngFor="let products of arrobjRowProduct; let i=index">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="row">
+                                                            <div class="col-auto mr-auto"
+                                                                (click)="openImg(products.product_image_url)">
+                                                                <div class="cover-background-image">
+                                                                    <div class="background-image padding-width-100px-height-100px"
+                                                                        [ngClass]="{'active' : products.product_image_url === '-' || products.product_image_url === ''}"
+                                                                        [ngStyle]="{'background-image': 'url('+products.product_image_url+')'}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col">
+                                                                <label>{{products.product_name}}</label><br>
+                                                                <label class="sku">{{products.product_sku}}</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="text" libOnlyCharacternumber mask="separator.0"
+                                                            thousandSeparator=","
+                                                            onKeyPress="if(this.value.length==7) return false;" nbInput
+                                                            fullWidth status="basic" [(ngModel)]="products.product_qty"
+                                                            [ngModelOptions]="{standalone: true}"
+                                                            (keyup)="onKeyQTY($event.target.value, products)">
+                                                    </div>
+                                                    <div class=" col-4">
+                                                        <div class="row">
+                                                            <div class="col-8">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <input type="text" libOnlyCharacternumber
+                                                                            mask="separator.2" thousandSeparator=","
+                                                                            nbInput status="basic" fullWidth
+                                                                            class="form-control"
+                                                                            [(ngModel)]="products.product_price"
+                                                                            [ngModelOptions]="{standalone: true}"
+                                                                            (keyup)="onKeyPrice($event.target.value, products)" />
+                                                                    </div>
+                                                                    <div class="col-6" style="padding-top: 0.5rem;">
+                                                                        <label>{{products.product_totalplice | number : '1.2-2'}}</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4"
+                                                                style="cursor: pointer; padding-top: 0.5rem;">
+                                                                <nb-icon icon="close-outline"
+                                                                    (click)="btnDeleteProduct(i)"></nb-icon>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> -->
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <table class="table hover" >
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="left">Image</th>
+                                                            <th style="width: 40%;" class="left">Product Name</th>
+                                                            <th style="text-align: right;">Quantity</th>
+                                                            <th style="text-align: right;">Unit Price</th>
+                                                            <th style="text-align: right; width: 10%;">Total Price</th>
+                                                            <th style="text-align: right;"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let products of arrobjRowProduct; let i=index">
+                                                            <td class="left">
+                                                                <div class="cover-background-image">
+                                                                    <div class="background-image padding-width-100px-height-100px"
+                                                                        [ngClass]="{'active' : products.product_image_url === '-' || products.product_image_url === ''}"
+                                                                        [ngStyle]="{'background-image': 'url('+products.product_image_url+')'}">
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="left">
+                                                                <label>{{products.product_name}}</label><br>
+                                                                <label class="sku">{{products.product_sku}}</label>
+                                                            </td>
+                                                            <td style="text-align: right;">
+                                                                <input style="text-align: right;" type="text"
+                                                                    libOnlyCharacterDefault libOnlyCharacternumber
+                                                                    mask="separator.0" thousandSeparator=","
+                                                                    onKeyPress="if(this.value.length==7) return false;"
+                                                                    nbInput fullWidth status="basic"
+                                                                    [(ngModel)]="products.product_qty"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    (keyup)="onKeyQTY($event.target.value, products)">
+                                                            </td>
+                                                            <td style="text-align: right;">
+                                                                <input style="text-align: right;" type="text"
+                                                                    libOnlyCharacterDefault libOnlyCharacternumber
+                                                                    mask="separator.2" thousandSeparator="," nbInput
+                                                                    status="basic" fullWidth class="form-control"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    (ngModelChange)="products.product_price=$event"
+                                                                    [ngModel]="products.product_price  | number:'1.2-2' "
+                                                                    (keyup)="onKeyPrice($event.target.value, products)" />
+                                                            </td>
+                                                            <td style="text-align: right;">
+                                                                <label
+                                                                    style="font-size: 15px;padding-top: 0.5rem;font-weight: 600;">
+                                                                    {{products.product_totalplice |  number : '1.2-2'}}
+                                                                </label>
+                                                            </td>
+                                                            <td>
+                                                                <div style="cursor: pointer; padding-top: 0.5rem;">
+                                                                    <nb-icon icon="close-outline"
+                                                                        (click)="btnDeleteProduct(i)">
+                                                                    </nb-icon>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="arrobjRowProduct.length == 0" class="list" style="margin: 2rem 0;">
+                                            <div class="row">
+                                                <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                                    style="text-align: center;">
+                                                    <img src="assets/images/loading.png" width="300">
+                                                </div>
+                                                <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                                    style="text-align: center; padding-top: 1rem;">
+                                                    <label style="color: #dc3545;">Please select Product </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div *ngIf="strTab == 'Product Name'" class="row"
+                                            style="padding: 0.5rem; border-bottom: 2px solid #dee2e6;">
+                                            <div class="col-sm-4">
+                                                <ng-template #rt let-r="result" let-t="term">
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="padding-right: 0.5rem;">
+                                                                    <div class="cover-background-image">
+                                                                        <div class="background-image padding-width-100px-height-100px"
+                                                                            [ngClass]="{'active' : r.product_image_url === '-' || r.product_image_url === ''}"
+                                                                            [ngStyle]="{'background-image': 'url('+r.product_image_url+')'}">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="left">
+                                                                    <ngb-highlight [result]="r.product_title"
+                                                                        [term]="t">
+                                                                    </ngb-highlight><br>
+                                                                    <ngb-highlight [result]="r.product_sku" [term]="t">
+                                                                    </ngb-highlight>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </ng-template>
+                                                <div class="cover-form icon" style="margin-top: 1rem;">
+                                                    <nb-icon style="right: 0px;" icon="search-outline"></nb-icon>
+                                                    <nb-icon *ngIf="productsName" (click)="btnRefresh()"
+                                                        style="float: right;left: 0; cursor: pointer;"
+                                                        icon="close-outline">
+                                                    </nb-icon>
+                                                    <input libOnlyCharacterDefault nbInput status="basic" (focus)="onFocus($event)"
+                                                        id="typeahead-template" type="text" fullWidth
+                                                        class="form-control" [(ngModel)]="productsName"
+                                                        [ngModelOptions]="{standalone: true}" [ngbTypeahead]="search"
+                                                        [resultTemplate]="rt" placeholder="Search for product"
+                                                        [inputFormatter]="formatter" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <input style="background-color: #ffffff; color: white;
+                                                border: 0px solid white;" type="text" formControlName="productsCtrl"
+                                                    [(ngModel)]="isCheckProduct">
+                                            </div>
+                                        </div>
+
+                                        <div class="row show-grid">
+                                            <div class="col-lg-12" style="padding: 0.5rem 0;">
+                                                <div class="row">
+                                                    <div class="col-8"></div>
+                                                    <div class="col-4">
+                                                        <table class="table table-striped  text-right">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <strong style="font-size: 18px;">
+                                                                            Total
+                                                                        </strong>
+                                                                    </td>
+                                                                    <td>
+                                                                        <strong style="font-size: 18px;">
+                                                                           {{sum |  number : '1.2-2'}} {{'' + 'THB'}}
+                                                                        </strong>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row show-grid" style="text-align: center">
+                                            <div class="col-lg-12" style="padding-top: 2rem">
+                                                <button nbButton style="width: 100px" status="danger"
+                                                    nbStepperPrevious>Back</button>&nbsp;&nbsp;
+                                                <button nbButton style="width: 100px" nbStepperNext
+                                                    (click)="btnClickProduct()">next</button>
+                                            </div>
+                                        </div><br>
+                                    </form>
+                                </nb-step>
+
+                                <nb-step [stepControl]="confirmForm" label="Confirm">
+                                    <form [formGroup]="confirmForm" (ngSubmit)="onConfirmSubmit()"
+                                        class="step-container">
+                                        <div class="row show-grid">
+                                            <div class="col-lg-6">
+                                                <div class="cover-input">
+                                                    <label>Delivery Date</label>
+                                                    <div class="row show-grid cover-input-icon"
+                                                        style="padding-top: 0rem;">
+                                                        <div class="col" style="padding-right: 0rem;">
+                                                            <nb-icon icon="calendar-outline"></nb-icon>
+                                                            <input nbInput status="basic" type="text" fullWidth
+                                                                formControlName="DeliveryDate" class="form-control"
+                                                                [ngClass]="{ 'is-invalid': submitted && c.DeliveryDate.errors }"
+                                                                bsDatepicker #dp="bsDatepicker"
+                                                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-red' }">
+                                                        </div>
+                                                        <div *ngIf="submitted && !!c.DeliveryDate.errors"
+                                                            class="invalid-feedback">
+                                                            <div style="text-align: left"
+                                                                *ngIf="!!c.DeliveryDate.errors.required">
+                                                                Delivery Date is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="cover-input">
+                                                    <label>Billing Payment Term (Day)</label>
+                                                    <ngx-select [allowClear]="true" libOnlyCharacterDefault
+                                                        [ngClass]="{ 'is-invalid': submitted && c.BillingTerm.errors }"
+                                                        [items]="payment" formControlName="BillingTerm"
+                                                        placeholder="Day">
+                                                    </ngx-select>
+
+                                                    <div *ngIf="submitted && !!c.BillingTerm.errors"
+                                                        class="invalid-feedbacks">
+                                                        <div class="required"
+                                                            style="color: #dc3545;text-align: left;font-size: 12px;"
+                                                            *ngIf="!!c.BillingTerm.errors.required">
+                                                            Billing Payment Term is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row show-grid">
+                                            <div class="col-lg-6">
+                                                <div class="cover-input">
+                                                    <label>Billing Name</label>
+                                                    <input nbInput status="basic" type="text" fullWidth
+                                                        formControlName="BillingName" class="form-control"
+                                                        [ngClass]="{ 'is-invalid': submitted && c.BillingName.errors }" />
+                                                    <div *ngIf="submitted && !!c.BillingName.errors"
+                                                        class="invalid-feedback">
+                                                        <div style="text-align: left"
+                                                            *ngIf="!!c.BillingName.errors.required">
+                                                            Billing Name is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="cover-input">
+                                                    <label>Billing Address</label>
+                                                    <textarea rows="3" nbInput status="basic" type="text" fullWidth
+                                                        formControlName="BillingAddress" class="form-control"
+                                                        [ngClass]="{ 'is-invalid': submitted && c.BillingAddress.errors }"></textarea>
+                                                    <div *ngIf="submitted && !!c.BillingAddress.errors"
+                                                        class="invalid-feedback">
+                                                        <div style="text-align: left"
+                                                            *ngIf="!!c.BillingAddress.errors.required">
+                                                            Billing Address required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row show-grid">
+                                            <div class="col-lg-6">
+                                                <div class="cover-input">
+                                                    <label>Note</label>
+                                                    <textarea style="min-height: 90px;" nbInput status="primary"
+                                                        type="text" nbInput status="primary" fullWidth
+                                                        class="form-control" formControlName="Note"
+                                                        [ngClass]="{ 'is-invalid': submitted && c.Note.errors }"></textarea>
+                                                    <div *ngIf="submitted && !!c.Note.errors" class="invalid-feedback">
+                                                        <div style="text-align: left" *ngIf="!!c.Note.errors.required">
+                                                            Note required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                    <div class="row show-grid" style="text-align: center;padding-top: 2rem;">
+                                        <div class="col-lg-12">
+                                            <button nbButton style="width: 100px" status="danger"
+                                                nbStepperPrevious>Back</button>&nbsp;&nbsp;
+                                            <button nbButton style="width: 100px" status="success" nbStepperNext
+                                                (click)="btnClickonConfirmSubmit()">Confirm</button>
+                                        </div>
+                                    </div>
+                                </nb-step>
+                            </nb-stepper>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

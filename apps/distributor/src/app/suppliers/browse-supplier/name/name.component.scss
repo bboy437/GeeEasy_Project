@@ -1,0 +1,175 @@
+@import "../../../../../../../libs/theme/src/lib/styles/themes";
+@import "~@nebular/bootstrap/styles/buttons";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+.display_table {
+  &.height_48px {
+    height: 48px;
+    label {
+      font-size: 17px;
+      font-weight: 600;
+    }
+  }
+  width: 100%;
+  display: table;
+  vertical-align: middle;
+  .display_table_cell {
+    display: table-cell;
+    vertical-align: middle;
+    & * {
+      padding: 0;
+      margin: 0;
+    }
+  }
+}
+
+.table {
+  tbody {
+    tr {
+      td {
+        &.active {
+          color: white;
+          background-color: #1a34b8;
+        }
+      }
+    }
+  }
+}
+
+.padding-0 {
+  padding: 0 !important;
+}
+
+.padding-auto-0 {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+.margin-0 {
+  margin: 0 !important;
+}
+
+@include nb-install-component() {
+  .row {
+    .rhead {
+      border-bottom: 2px solid #dee2e6;
+      border-top: 1px solid #dee2e6;
+      padding-top: 0.5rem;
+      font-size: 14px;
+    }
+    .rbody {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #dee2e6;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  }
+
+  .show-grid {
+    .row {
+      margin: -0.5rem;
+    }
+    button {
+      &.demo {
+        &:focus {
+          background-color: #00d68f;
+          color: #ffffff;
+          // box-shadow: 0 0 0 0.375rem #00d68f;
+        }
+        &.active {
+          background-color: #00d68f;
+          color: #ffffff;
+        }
+      }
+      &.demo1 {
+        &:focus {
+          background-color: #ffaa00;
+          color: #ffffff;
+        }
+        &.active {
+          background-color: #ffaa00;
+          color: #ffffff;
+        }
+      }
+      &.demo2 {
+        &:focus {
+          background-color: #0095ff;
+          color: #ffffff;
+        }
+        &.active {
+          background-color: #0095ff;
+          color: #ffffff;
+        }
+      }
+      &.demo3 {
+        &:focus {
+          background-color: #ff3d71;
+          color: #ffffff;
+          // box-shadow: 0 0 0 0.375rem #ff3d71;
+        }
+        &.active {
+          background-color: #ff3d71;
+          color: #ffffff;
+        }
+      }
+    }
+    div[class^="col-"] {
+      padding: 0.5rem;
+      box-sizing: border-box;
+
+      div {
+        text-align: center;
+        padding: 0.5rem 0.25rem;
+        border-radius: 0.25rem;
+      }
+    }
+  }
+
+  nb-card {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  thead {
+    font-size: 14px;
+    text-align: center;
+  }
+  tbody {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .nbscoll {
+    overflow: hidden;
+  }
+
+  .example-container {
+    margin-bottom: 1.5rem;
+  }
+  .own-scroll {
+    // height: 50vh;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  agm-map {
+    height: 500px;
+  }
+
+  // .nbButton{
+  //   button-outline-color: #c71b05,
+  // }
+
+  .nb-theme-default [nbButton]:focus {
+    box-shadow: 0 0 0 0.375rem #dc3545;
+    outline: none;
+  }
+}
+
+.list {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  padding-left: 0rem;
+  padding-right: 0rem;
+}

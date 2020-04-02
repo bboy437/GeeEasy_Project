@@ -1,0 +1,82 @@
+<div class="pages">
+        <!-- <div class="header {{active}}"> -->
+            <div class="row">
+                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                    <div class="row">
+                        <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="row"
+                                style="border-bottom: 2px solid #edf1f7; border-top: 1px solid #edf1f7; padding-top: 0.7rem; padding-bottom: 0.8rem; font-size: 14px; font-weight: bold; margin: -0.10px;">
+    
+                                <div class="col-auto mr-auto">
+                                    <nb-icon (click)="onPressBack()" style="float: left; cursor: pointer;"
+                                        icon="arrow-ios-back-outline">
+                                    </nb-icon>
+                                </div>
+                                <div class="col" style="text-align: center;">
+                                    <label> {{lastName[this.lastCount]}}</label>
+                                </div>
+                                <div class="col-auto">
+                                    <nb-icon (click)="btnReload()" style="float: right; cursor: pointer;"
+                                        icon="refresh-outline">
+                                    </nb-icon>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="cover-form icon" style="padding-top: 1rem;">
+                                <nb-icon icon="search-outline"></nb-icon>
+                                <nb-icon *ngIf="strFillter" (click)="refreshCate()"
+                                    style="float: right;left: 0; cursor: pointer;" icon="close-outline">
+                                </nb-icon>
+                                <input libOnlyCharacterDefault status="primary" type="text" nbInput fullWidth
+                                    status="primary" placeholder="Search for category " [(ngModel)]="strFillter"
+                                    [ngModelOptions]="{standalone: true}"
+                                    (keyup)="filterCategoryName($event.target.value)" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading"
+                        nbSpinnerStatus="{{strLoading}}">
+                            <nb-card style="height: 200px;">
+                                <nb-card-body class="{{active}}">
+                                    <table class="table {{active}}">
+                                        <tbody>
+                                            <tr *ngFor="let c  of thisArray"
+                                                [ngClass]="{'active': c.product_category_id == numID}"
+                                                (click)="get_category_view(c, c.product_category_name)">
+                                                <td class="left">
+                                                    {{c.product_category_name}}
+                                                    <nb-icon *ngIf="c.product_category_total_child > 0"
+                                                        style="float: right; cursor: pointer;"
+                                                        icon="arrow-ios-forward-outline">
+                                                    </nb-icon>
+                                                    <nb-checkbox class="important" disabled *ngIf="c.isActive"
+                                                        [(ngModel)]="c.isActive" style="float: right;padding: 0;"
+                                                        status="danger">
+                                                    </nb-checkbox>
+                                                </td>
+                                            </tr>
+                                            <!-- <tr *ngIf="thisArray.length == 0"
+                                        style="height:300px; background-color: #ffffff;">
+                                        <td colspan="2" style="padding-top: 50px;">
+                                            <img src="assets/images/loading.png" width="300"><br><br>
+                                            <label>No data.</label>
+                                        </td>
+                                    </tr> -->
+                                        </tbody>
+                                    </table>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                        <!-- <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                            <input libOnlyCharacterDefault status="primary" type="text" nbInput fullWidth status="primary"
+                                placeholder="category name" [(ngModel)]="strFillter"
+                                [ngModelOptions]="{standalone: true}" />
+                        </div> -->
+                    </div>
+                    <!-- <div style="height: 100px;background-color: #ffffff;" [nbSpinner]="loading" nbSpinnerStatus="primary">
+                </div> -->
+                </div>
+    
+            </div>
+        <!-- </div> -->
+    </div>

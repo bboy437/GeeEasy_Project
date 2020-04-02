@@ -1,0 +1,72 @@
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(255, 255, 255);
+  font: 12pt "Tahoma";
+}
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+.page {
+  width: 210mm;
+  height: 340mm;
+  margin: 10mm auto;
+}
+.subpage {
+  padding: 0 5px;
+  border: 1px solid #d3d3d3;;
+  height: 300mm;
+  outline: 2cm rgb(255, 255, 255) solid;
+
+  .row {
+    margin: 0 -5px;
+    .col-f {
+      padding: 0 5px;
+     
+    }
+  }
+}
+
+.col-padiing {
+  padding: 0.1cm;
+  font-size: 12px;
+  margin: 0px;
+
+  &.text-right {
+    text-align: right;
+  }
+  &.text-center {
+    text-align: center;
+    font-size: 9.5px;
+  }
+}
+
+label {
+  display: inline-block;
+  margin: 0rem;
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+@media print {
+  html,
+  body {
+    width: 210mm;
+    height: 297mm;
+  }
+  .page {
+    margin: 0;
+    border: initial;
+    border-radius: initial;
+    width: initial;
+    min-height: initial;
+    box-shadow: initial;
+    background: initial;
+    page-break-after: always;
+  }
+}

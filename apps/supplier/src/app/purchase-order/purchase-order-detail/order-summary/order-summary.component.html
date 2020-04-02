@@ -1,0 +1,56 @@
+<table class="table hover" style="color: white;">
+    <thead>
+        <tr>
+            <th>
+                PO Summary
+            </th>
+            <th> </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td> <label class="summaryHeader"> Total Price : </label> </td>
+            <td>
+                <p class="summaryRow">
+                    {{data.total_price |  number : '1.2-2' }} {{'' + data.product_currency_code}}
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td> <label class="summaryHeader"> Total Discount : </label> </td>
+            <td>
+                <p class="summaryRow">
+                    <input libOnlyCharacterDefault [disabled]="openConfirm"  libOnlyCharacternumber mask="separator.2" thousandSeparator=","
+                    style="width: 100px;font-size: 18px;text-align: right;margin-right: 1rem;" status="primary" type="text"
+                    status="basic" nbInput fullWidth [(ngModel)]="data.total_discount"
+                    (keyup)="cuculate($event, data)" />{{'' + data.product_currency_code}}
+                </p>
+            </td>
+
+        </tr>
+        <tr>
+            <td> <label class="summaryHeader"> Subtotal : </label> </td>
+            <td>
+                <p class="summaryRow"> {{data.total_vat_none | number : '1.2-2'}} {{'' + data.product_currency_code}}</p>
+            </td>
+        </tr>
+        <tr>
+            <td> <label class="summaryHeader" style="font-weight: bolder;"> Total Vat : </label> </td>
+            <td>
+                <p class="summaryRow"> {{data.total_vat | number : '1.2-2'}} {{'' + data.product_currency_code}}</p>
+            </td>
+        </tr>
+        <tr>
+            <td> <label class="summaryRow"> Grand Total : </label> </td>
+            <td>
+                <p class="summaryRow"> {{data.total_grand |number : '1.2-2'}} {{'' + data.product_currency_code}}</p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: right;">
+                <button [disabled]="openConfirm || openUpdate"   nbButton size="small" status="success" (click)="update()">
+                    Update Summary </button >
+            </td>
+        </tr>
+    </tbody>
+</table>

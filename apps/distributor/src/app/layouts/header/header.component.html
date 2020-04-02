@@ -1,0 +1,29 @@
+<div class="header-container">
+  <div class="logo-container">
+    <a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
+      <nb-icon icon="menu-2-outline" style="color: #ffffff"></nb-icon>
+    </a>
+    <a class="logo" href="#" (click)="navigateHome()" style="color: #ffffff">GeeEasy</a>
+  </div>
+</div>
+
+<div class="header-container" [formGroup]="Form">
+
+  <input libOnlyCharacternumber nbInput status="primary" type="text" fullWidth placeholder="ID" formControlName="id" />
+  <button style="float: right;margin: 3px 0 3px 0.5rem;" nbButton size="medium" status="primary" (click)="btnOkClick(this.Form.value.id)">
+    OK
+  </button>
+
+  <nb-actions size="small">
+
+    <!-- <nb-action class="control-item">
+        <nb-search type="rotate-layout"></nb-search>
+      </nb-action> -->
+    <nb-action class="control-item" (click)="showToast(true, 'primary')" icon="email-outline"></nb-action>
+    <nb-action class="control-item" icon="bell-outline"></nb-action>
+    <nb-action class="user-action" *nbIsGranted="['view', 'user']">
+      <nb-user [nbContextMenu]="userMenu" [onlyPicture]="userPictureOnly" [name]="user?.name" [picture]="">
+      </nb-user>
+    </nb-action>
+  </nb-actions>
+</div>

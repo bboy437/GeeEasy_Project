@@ -1,0 +1,15 @@
+<nb-card size="small">
+    <nb-card-body>
+        <nb-tabset fullWidth>
+            <nb-tab *ngFor="let g of arrGuide ; let i = index" tabTitle="{{g.content_title}}" active="{{i == 0}}" style="padding: 1rem 0;text-align: left;">
+                <div class="guide">  
+                    <img class="top" [src]="g.content_image_cover_url"><br>
+                    <!-- <a>{{g.content_title}}</a> -->
+                    <!-- {{g.content_detail}} -->
+                    <div [innerHTML]="g.content_detail"></div>
+                </div>
+            </nb-tab>
+        </nb-tabset>
+    </nb-card-body>
+</nb-card>
+

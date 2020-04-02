@@ -1,0 +1,30 @@
+
+<div class="pages">
+    <nb-card>
+        <nb-card-header>
+            <div class="header">
+                <nb-icon icon="checkmark-square-2-outline"></nb-icon>
+                <label>Check In</label>
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+                    <nb-select placeholder="All Status" fullWidth outline status="primary" [(ngModel)]="strCheckin">
+                        <nb-option *ngIf="data == 0" value="0">All Check-In</nb-option>
+                        <nb-option value="1">Partial Check-In</nb-option>
+                    </nb-select>
+                </div>
+            </div>
+            <div class="row" style="text-align: center; padding-top: 2.5rem;">
+                <div class="col-md-12">
+                    <button nbButton style="width: 100px" status="danger"
+                        (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                    <button nbButton [disabled]="strCheckin == ''" style="width: 100px" status="success"
+                        (click)="btnSaveClick()">OK</button>
+                </div>
+            </div><br>
+        </nb-card-body>
+    </nb-card>
+</div>

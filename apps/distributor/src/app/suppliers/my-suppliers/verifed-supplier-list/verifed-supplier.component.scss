@@ -1,0 +1,80 @@
+@import "../../../../../../../libs/theme/src/lib/styles/themes";
+@import "~@nebular/bootstrap/styles/buttons";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+.display_table {
+  &.height_48px {
+    height: 48px;
+  }
+  width: 100%;
+  display: table;
+  vertical-align: middle;
+  .display_table_cell {
+    display: table-cell;
+    vertical-align: middle;
+    & * {
+      padding: 0;
+      margin: 0;
+    }
+  }
+}
+
+
+.table {
+  tbody {
+    tr {
+      td {
+        &.active {
+          color: white;
+          background-color: #1a34b8;
+        }
+      }
+    }
+  }
+}
+
+.padding-0 {
+  padding: 0!important;
+}
+
+.padding-auto-0 {
+  padding-right: 0!important;
+  padding-left: 0!important;
+}
+
+.margin-0 {
+  margin: 0!important;
+}
+
+.pages {
+  nb-card {
+    nb-card-header {
+      label { 
+        &.height-calc-48px {
+          height: calc(48px - 0.5rem);
+        }
+        float: left; 
+        font-size: 17px; 
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+@include nb-install-component() {}
+thead {
+  font-size: 14px;
+  text-align: center;
+}
+tbody {
+  font-size: 14px;
+  text-align: center;
+}
+
+.list {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+

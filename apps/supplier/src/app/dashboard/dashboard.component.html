@@ -1,0 +1,50 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-10">
+            <div class="row">
+                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                    <div class="row">
+                        <div class="col-6 col-md-4 col-lg-4 col-xl-4" *ngFor="let data of data"
+                            style="cursor: pointer;">
+                            <nb-card (click)="btnClick(data.url)">
+                                <nb-card-body>
+                                    <div class="body">
+                                        <div class="cover center">
+                                            <div class="row">
+                                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <nb-icon icon="{{data.icon}}"></nb-icon>
+                                                </div>
+                                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <label class="size-14PX weight-bold lines-one">{{data.name}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                    <project-guide></project-guide>
+                </div>
+                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-6 col-xl-6">
+                            <project-intro></project-intro>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-6 col-xl-6">
+                            <project-blog></project-blog>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-2 d-none d-xl-block">
+            <nb-calendar [(date)]="date"></nb-calendar>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

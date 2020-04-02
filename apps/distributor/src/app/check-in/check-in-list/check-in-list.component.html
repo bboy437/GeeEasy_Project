@@ -1,0 +1,208 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <nb-icon icon="checkmark-square-2-outline"></nb-icon>
+                        <label>Check In</label>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body style="min-height: calc(100vh - 290px);">
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                                        <div class="cover-form icon">
+                                            <nb-icon style="right: 0px;" icon="search-outline"></nb-icon>
+                                            <nb-icon *ngIf="service.searchTerm" (click)="btnRefresh()"
+                                                style="float: right;left: 0; cursor: pointer;" icon="close-outline">
+                                            </nb-icon>
+                                            <input libOnlyCharacterDefault nbInput status="primary" type="text" nbInput
+                                                fullWidth status="basic" placeholder="Search for name"
+                                                [(ngModel)]="service.searchTerm" />
+                                        </div>
+                                    </div>
+                                    <!-- (keyup.enter)="filter($event.target.value)"  -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div *ngIf="!isReload">
+                                    <table class="table hover" style="width: 100%;"
+                                        *ngIf="arrCheckIn$ | async as checkins ; else loading">
+                                        <thead>
+                                            <tr>
+                                                <th class="left" scope="col" sortable="Status" (sort)="onSort($event)">
+                                                    PO No.
+                                                </th>
+                                                <th style="width: 50%;" class="left" scope="col" sortable="Status"
+                                                    (sort)="onSort($event)">
+                                                    Supplier Name
+                                                </th>
+                                                <th class="left" scope="col" sortable="Status" (sort)="onSort($event)">
+                                                    Delivery Date
+                                                </th>
+                                                <th class="right" scope="col" sortable="Status" (sort)="onSort($event)">
+                                                    Order Total
+                                                </th>
+                                                <th style="cursor: pointer;" (click)="btnReload()">
+                                                    <nb-icon icon="refresh-outline"></nb-icon>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <!-- *ngIf="arrCheckIn$ | async as checkins" -->
+                                        <tbody style="cursor: pointer;">
+                                            <tr *ngFor="let checkin of checkins"
+                                                (click)="btnRowClick(checkin.purchase_order_id)">
+
+                                                <td class="left">
+                                                    <ngb-highlight [result]="checkin.purchase_order_number"
+                                                        [term]="service.searchTerm">
+                                                    </ngb-highlight>
+                                                </td>
+                                                <td class="left">
+                                                    <ngb-highlight
+                                                        [result]="checkin.supplier_data_array[0].supplier_name"
+                                                        [term]="service.searchTerm">
+                                                    </ngb-highlight>
+                                                </td>
+                                                <td class="left">
+                                                    <ngb-highlight
+                                                        [result]="checkin.delivery_date * 1000 | date: 'dd/MM/yyyy'"
+                                                        [term]="service.searchTerm">
+                                                    </ngb-highlight>
+                                                </td>
+                                                <td class="right">
+                                                    <ngb-highlight class="cover price"
+                                                        [result]="checkin.purchase_order_summary.total_grand | number : '1.2-2'"
+                                                        [term]="service.searchTerm">
+                                                    </ngb-highlight>
+                                                    <label class="cover thb">THB</label>
+                                                </td>
+                                                <td>
+                                                    <button nbButton size="small"
+                                                        style="margin-bottom: 0.74rem; color: white! important;"
+                                                        (click)="checkIn(checkin.purchase_order_id, checkin); $event.stopPropagation()">
+                                                        Check In
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="checkins.length == 0"
+                                                style="height:300px; background-color: white;">
+                                                <td colspan="6" style="padding-top: 50px;">
+                                                    <img src="assets/images/loading.png" width="300"><br><br>
+                                                    <label>No data.</label>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <ng-template #loading>
+                                        <table class="table hover" style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th class="left" scope="col" sortable="Status"
+                                                        (sort)="onSort($event)">
+                                                        PO No.
+                                                    </th>
+                                                    <th style="width: 50%;" class="left" scope="col" sortable="Status"
+                                                        (sort)="onSort($event)">
+                                                        Supplier Name
+                                                    </th>
+                                                    <th class="left" scope="col" sortable="Status"
+                                                        (sort)="onSort($event)">
+                                                        Delivery Date
+                                                    </th>
+                                                    <th class="right" scope="col" sortable="Status"
+                                                        (sort)="onSort($event)">
+                                                        Order Total
+                                                    </th>
+                                                    <th style="cursor: pointer;" (click)="btnRefresh()">
+                                                        <nb-icon icon="refresh-outline"></nb-icon>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr style="height:300px; background-color: white;">
+                                                    <td colspan="6" style="padding-top: 50px;">
+                                                        <div style="height: 100px;background-color: white;"
+                                                            [nbSpinner]="loading" nbSpinnerStatus="primary">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+
+                                        </table>
+                                    </ng-template>
+                                </div>
+                                <div class="cover-table" *ngIf="isReload">
+                                    <table class="table hover" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th class="left" scope="col" sortable="Status" (sort)="onSort($event)">
+                                                    PO No.
+                                                </th>
+                                                <th style="width: 50%;" class="left" scope="col" sortable="Status"
+                                                    (sort)="onSort($event)">
+                                                    Supplier Name
+                                                </th>
+                                                <th class="left" scope="col" sortable="Status" (sort)="onSort($event)">
+                                                    Delivery Date
+                                                </th>
+                                                <th class="right" scope="col" sortable="Status" (sort)="onSort($event)">
+                                                    Order Total
+                                                </th>
+                                                <th style="cursor: pointer;" (click)="btnRefresh()">
+                                                    <nb-icon icon="refresh-outline"></nb-icon>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr style="height:300px; background-color: white;">
+                                                <td colspan="6" style="padding-top: 50px;">
+                                                    <div style="height: 100px;background-color: white;"
+                                                        [nbSpinner]="isReload" nbSpinnerStatus="primary">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+                <nb-card-footer>
+                    <div class="row">
+                        <div *ngIf="!isReload && !loading"
+                            class="col-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-between p-2">
+                            <ngb-pagination [collectionSize]="total$ | async" [(page)]="service.page"
+                                [pageSize]="service.pageSize"></ngb-pagination>
+                            <select class="custom-select" style="width: auto" name="pageSize"
+                                [(ngModel)]="service.pageSize" [ngModelOptions]="{standalone: true}">
+                                <option [ngValue]="10">10 items per page</option>
+                                <option [ngValue]="20">20 items per page</option>
+                                <option [ngValue]="50">50 items per page</option>
+                                <option [ngValue]="100">100 items per page</option>
+                            </select>
+                        </div>
+                    </div>
+                </nb-card-footer>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

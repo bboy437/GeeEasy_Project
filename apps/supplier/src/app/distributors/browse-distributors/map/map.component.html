@@ -1,0 +1,140 @@
+<div class="pages">
+  <div class="row">
+    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+      <div class="body">
+        <div class="row">
+
+          <!-- <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="row">
+              <div class="col-auto mr-auto">
+                <div class="display_table height_48px">
+                  <div class="display_table_cell">
+                    <label style="cursor: pointer;">
+                      <a (click)="getCategory()">List Name </a>
+                      <span *ngIf="strsupCate && strsupCate != '' && strsupCate != undefined" class="p-0-12">/</span>
+                      {{(strsupCate && strsupCate != '' && strsupCate != undefined)?strsupCate:''}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-3 col-md-3 col-lg-3 col-xl-3" style="padding-bottom: 1rem">
+            <div class="row">
+              <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                <div class="row"
+                  style="border-bottom: 2px solid #dee2e6; border-top: 1px solid #dee2e6; padding-top: 0.7rem; padding-bottom: 0.8rem; font-size: 14px; margin: -0.10px;">
+                  <div class="col-sm-12" style=" font-weight: bold; text-align: left;">
+                    Product Category Name
+                    <nb-icon (click)="btnReload()" icon="refresh-outline"
+                      style="float: right;margin-right: 1rem; cursor: pointer;">
+                    </nb-icon>
+                  </div>
+                </div>
+                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                  <div class="cover-form icon" style="padding-top: 0.5rem;">
+                    <nb-icon style="right: 0px;" icon="search-outline"></nb-icon>
+                    <nb-icon *ngIf="strCategoryName" (click)="refreshCate()"
+                      style="float: right;left: 0; cursor: pointer;" icon="close-outline"></nb-icon>
+                    <input libOnlyCharacterDefault type="text" nbInput fullWidth status="primary"
+                      placeholder="Search for category" [(ngModel)]="strCategoryName"
+                      [ngModelOptions]="{standalone: true}" (keyup)="filterCategoryName($event.target.value)" />
+                  </div>
+                </div>
+                <div class="row cover-set" [ngClass]="{ 'active_all':strsupCate == '' || strsupCate == undefined }">
+                  <div class="col-12" (click)="ngOnInit()">
+                    <div class="row">
+                      <div class="col">
+                        <div class="cover-background-image">
+                          <div class="background-image padding-width-100px-height-100px"
+                            style="background-image: url(https://cdn3.iconfinder.com/data/icons/procurement-process-flat/64/search-vender-verify-check-supplier-128.png);">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col">
+                        View All
+                        <nb-icon *ngIf="strsupCate == '' || strsupCate == undefined"
+                          style="float: right; cursor: pointer;" icon="arrow-ios-forward-outline">
+                        </nb-icon>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 border-bottom-1"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" *ngFor="let c of arrCategory"  [ngClass]="{ 'active_d':strsupCate == c.product_category_name}"
+                  (click)="subCate(c.product_category_child_array, c.product_category_id, c.product_category_name)"
+                  style="padding-top: 0.8rem; padding-bottom: 0.8rem;  border-bottom: 1px solid #dee2e6; font-size: 14px; cursor: pointer; margin: -0.10px;">
+                  <div class="col">
+                    <div class="cover-background-image">
+                      <div class="background-image padding-width-100px-height-100px"
+                        [ngClass]="{'active' : c.product_category_image_url === '-' || c.product_category_image_url === ''}"
+                        [ngStyle]="{'background-image': 'url('+c.product_category_image_url+')'}">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    {{c.product_category_name}}
+                    <nb-icon *ngIf="strsupCate == c.product_category_name"
+                      style="float: right; cursor: pointer;" icon="arrow-ios-forward-outline">
+                    </nb-icon>
+                  </div>
+                </div>
+                <div *ngIf="loading" style="height: 100px;background-color: #ffffff;" [nbSpinner]="loading"
+                  nbSpinnerStatus="warning">
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+            <project-comp-category-browse [status]="'Supplier'" [map]="'View All'" (categoryID)="categoryEvent($event)">
+            </project-comp-category-browse>
+          </div>
+
+          <div class="col-12 col-9 col-md-9 col-lg-9 col-xl-9" style="padding-bottom: 1rem">
+            <div class="row">
+              <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                <div class="row"
+                  style="border-bottom: 2px solid #dee2e6; border-top: 1px solid #dee2e6; padding-top: 0.7rem; padding-bottom: 0.8rem; font-size: 14px; margin: -0.10px;">
+                  <div class="col-sm-12" style="font-weight: bold; text-align: left;">
+                    Address : {{address}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                <div class="cover-form icon" style="padding-top: 1rem;">
+                  <nb-icon style="right: 0px;" icon="search-outline"></nb-icon>
+                  <nb-icon *ngIf="strMap" (click)="btnRefresh()" style="float: right;left: 0; cursor: pointer;"
+                    icon="close-outline"></nb-icon>
+                  <input libOnlyCharacterDefault nbInput status="primary" nbInput fullWidth status="primary" type="text"
+                    class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Location"
+                    autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search [(ngModel)]="strMap">
+                </div>
+              </div>
+              <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading1" nbSpinnerStatus="warning">
+                <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+                  <agm-marker *ngFor="let m of arrDistributor; " [latitude]="m.distributor_addr_lat"
+                    [longitude]="m.distributor_addr_lng" [iconUrl]="m.image_url" [title]="m.distributor_name"
+                    [markerDraggable]="true" (dragEnd)="markerDragEnd($event)">
+                    <agm-info-window [disableAutoPan]="false" #infoWindow>
+                      <a (click)="btnRowMab(m.supplier_id)"
+                        style="color: #111;font-weight: bold;font-size: 18px;cursor: pointer;">
+                        {{m.distributor_name}}
+                      </a>
+                    </agm-info-window>
+                  </agm-marker>
+                </agm-map>
+                <!-- <div style="height: 100px;background-color: #ffffff;" [nbSpinner]="loading" nbSpinnerStatus="warning">
+                </div> -->
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

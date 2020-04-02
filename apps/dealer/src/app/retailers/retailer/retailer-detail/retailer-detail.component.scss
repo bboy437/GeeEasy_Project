@@ -1,0 +1,44 @@
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+@import "../../../../../../../libs/theme-dealer/src/lib/styles/themes";
+
+.right {
+    text-align: right;
+}
+.center {
+    text-align: center;
+}
+
+nb-card {
+    &.margin-bottom-0-1-rem {
+        margin-bottom: 0.1rem;
+    }
+}
+
+.cover-background-image {
+    &.margin-bottom-1rem {
+        margin-bottom: 1rem;
+    }
+}
+
+.cover-status {
+    text-align: center;
+    .top {
+        line-height: 1;
+        font-size: 10px;
+    }
+    .body {
+        font-weight: bold;
+    }
+}
+.ngx-datatable 
+.ngx-datatable {
+    .datatable-header {
+        
+    }
+    .datatable-body-row {
+        .datatable-body-cell {
+
+        }
+    }
+}

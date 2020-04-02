@@ -1,0 +1,28 @@
+@import "../../../../../../../libs/theme-supplier/src/lib/styles/themes";
+@import "~@nebular/bootstrap/styles/buttons";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+@include nb-install-component() {
+}
+
+.active{
+    border-radius: 1rem;
+    font-family: Open Sans, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    background-color: #049062;
+    color: white;
+}
+
+
+.inactive{
+    border-radius: 1rem;
+    font-family: Open Sans, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    background-color: #49506b;
+    color: white;
+}

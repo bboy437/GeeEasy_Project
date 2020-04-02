@@ -1,0 +1,38 @@
+@import "../../../../../../../libs/theme-supplier/src/lib/styles/themes";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+@include nb-install-component() {
+}
+.Incoming {
+  background-color: #710000;
+}
+.Available {
+  background-color: #000092;
+}
+.OnHand {
+  background-color: #7f8a00;
+}
+.Outgoing {
+  background-color: #008636;
+}
+
+.active {
+  border-radius: 1rem;
+  font-family: Open Sans, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  background-color: #049062;
+  color: white;
+}
+
+.inactive {
+  border-radius: 1rem;
+  font-family: Open Sans, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  background-color: #49506b;
+  color: white;
+}

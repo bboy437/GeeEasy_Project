@@ -1,0 +1,704 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <nb-icon icon="checkmark-square-2-outline"></nb-icon>
+                                <label *ngIf="status == '0'">Check In<span class="p-0-12">/</span>All Check-In</label>
+                                <label *ngIf="status == '1'">Check In<span class="p-0-12">/</span>Partial
+                                    Check-In</label>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <button [disabled]="checkedAll == false" *ngIf="status == '0' && !loading "
+                                    style="float: right;margin: 3px 0 3px 1rem;" nbButton size="medium" status="primary"
+                                    (click)="btnSaveClick()">
+                                    Check-in
+                                </button>
+                                <button style="float: right;margin: 3px 0 3px 1rem;" nbButton size="medium"
+                                    status="danger" (click)="btnCancelClick()">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;margin-bottom: 0.1rem;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label *ngIf="status == '0'">PO No. {{RowID}}</label>
+                                <label *ngIf="status == '1'">PO No. {{RowID}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="primary">
+            <nb-card>
+                <nb-card-body style="min-height: calc(100vh - 350px);">
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div *ngIf="status == '0'">
+                                    <table class="table hover" style="width: 100%;">
+                                        <colgroup>
+                                            <col />
+                                            <col />
+                                            <col />
+                                            <col class="Outgoing" />
+                                            <col class="Available" />
+                                            <col class="OnHand" />
+                                            <col class="Incoming" />
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
+                                                <th style="min-width: 100px" class="left">Images</th>
+                                                <th class="left" style="min-width: 250px;">Item</th>
+                                                <th class="left" style="min-width: 250px;">Warehouse Name</th>
+                                                <th style="text-align: center; min-width: 120px;">Incoming</th>
+                                                <th style="text-align: center; min-width: 120px;">Available</th>
+                                                <th style="text-align: center; min-width: 120px;">On Hand</th>
+                                                <th style="text-align: center; min-width: 120px;">Outgoing</th>
+                                                <th style="min-width:120px"></th>
+                                                <th style="min-width:250px"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let CheckIn of arrCheckIn; let i = index">
+                                                <td style="text-align: center">
+                                                    <div class="cover-background-image">
+                                                        <div class="background-image padding-width-100px-height-100px"
+                                                            [ngClass]="{'active' : CheckIn.request_product_image_url === '-' || CheckIn.request_product_image_url === ''}"
+                                                            [ngStyle]="{'background-image': 'url('+CheckIn.request_product_image_url+')'}">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="left" style="width: 20%;">
+                                                    <div class="left">
+                                                        <label>{{CheckIn.request_product_name}}</label>
+                                                    </div>
+                                                    <div class="left">
+                                                        <label class="sku">{{CheckIn.request_product_sku}}</label>
+                                                    </div>
+                                                    <div class="left">
+                                                        <label>{{CheckIn.product_attribute.weight | number}}</label>
+                                                        <label
+                                                            style="padding-left: 0.2rem;">{{CheckIn.product_attribute.weight_unit}}</label>
+                                                    </div>
+                                                </td>
+                                                <td class="left">
+                                                    <div class="left">
+                                                        <nb-select placeholder="Choose Warehouse" style="width: 220px;"
+                                                            outline status="basic" [(ngModel)]="CheckIn.warehouse_id"
+                                                            (selectedChange)="warehouseID($event, CheckIn)">
+                                                            <nb-option value="0">Choose Warehouse</nb-option>
+                                                            <nb-option *ngFor="let item of arrWarehouse"
+                                                                [value]="item.warehouse_id">
+                                                                {{item.warehouse_name}}
+                                                            </nb-option>
+                                                        </nb-select>
+                                                    </div>
+                                                </td>
+                                                <td class="cover qty">
+                                                    <label>
+                                                        {{CheckIn.checkin_data.incoming | number}}
+                                                    </label>
+                                                </td>
+                                                <td class="cover qty">
+                                                    <label>
+                                                        {{CheckIn.checkin_data.available | number}}
+                                                    </label>
+                                                </td>
+                                                <td class="cover qty">
+                                                    <label>
+                                                        {{CheckIn.checkin_data.onhand | number}}
+                                                    </label>
+                                                </td>
+                                                <td class="cover qty">
+                                                    <label>
+                                                        {{CheckIn.checkin_data.outgoing | number}}
+                                                    </label>
+                                                </td>
+                                                <td style="text-align: left">
+                                                    <div>
+                                                        <button size="small" nbButton status="gray"
+                                                            (click)="btnImageClick(CheckIn)">Add Image
+                                                        </button>
+                                                    </div>
+                                                    <div>
+                                                        <button size="small" nbButton status="gray"
+                                                            (click)="btnNoteClick(CheckIn)">Add Note
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td style="text-align: left">
+                                                    <div style="padding-bottom: 1rem;">
+                                                        <a *ngIf="CheckIn.image_array !== undefined">
+                                                            Upload ({{CheckIn.image_array.length}}) file
+                                                        </a>
+                                                    </div>
+                                                    <div class="left" *ngIf="CheckIn.note !== undefined">
+                                                        <textarea rows="5" nbInput status="primary" type="text" nbInput
+                                                            fullWidth [(ngModel)]="CheckIn.note">
+                                                         </textarea>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div *ngIf="status == '1'">
+                                    <table class="table hover" style="width: 100%;">
+                                        <colgroup>
+                                            <col />
+                                            <col />
+                                            <col />
+                                            <col />
+                                            <col class="Outgoing" />
+                                            <col class="Available" />
+                                            <col class="OnHand" />
+                                            <col class="Incoming" />
+                                            <col />
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
+                                                <th style="min-width: 100px" class="left">Images</th>
+                                                <th class="left" style="min-width: 250px;">Item</th>
+                                                <th class="left" style="min-width: 250px;">Warehouse Name</th>
+                                                <th style="text-align: center; min-width: 120px;">Quantity</th>
+                                                <th style="text-align: center; min-width: 120px;">Incoming</th>
+                                                <th style="text-align: center; min-width: 120px;">Available</th>
+                                                <th style="text-align: center; min-width: 120px;">On Hand</th>
+                                                <th style="text-align: center; min-width: 120px;">Outgoing</th>
+                                                <th style="min-width:120px"></th>
+                                                <th style="min-width:120px"></th>
+                                                <th style="min-width:250px"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let CheckIn of arrCheckIn; let i = index">
+                                                <td style="text-align: center">
+                                                    <div class="cover-background-image">
+                                                        <div class="background-image padding-width-100px-height-100px"
+                                                            [ngClass]="{'active' : CheckIn.request_product_image_url === '-' || CheckIn.request_product_image_url === ''}"
+                                                            [ngStyle]="{'background-image': 'url('+CheckIn.request_product_image_url+')'}">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="left">
+                                                    <div class="left">
+                                                        <label>{{CheckIn.request_product_name}}</label>
+                                                    </div>
+                                                    <div class="left">
+                                                        <label class="sku">{{CheckIn.request_product_sku}}</label>
+                                                    </div>
+                                                    <div class="left">
+                                                        <label>{{CheckIn.product_attribute.weight | number}}</label>
+                                                        <label
+                                                            style="padding-left: 0.2rem;">{{CheckIn.product_attribute.weight_unit}}</label>
+                                                    </div>
+                                                </td>
+                                                <td class="left">
+                                                    <div class="left" *ngIf="CheckIn.incomingSum > 0">
+                                                        <nb-select placeholder="Choose Warehouse" style="width: 220px;"
+                                                            status="primary" [(ngModel)]="CheckIn.warehouse_id"
+                                                            (selectedChange)="warehouseID($event)">
+                                                            <nb-option value="">Choose Warehouse</nb-option>
+                                                            <nb-option *ngFor="let item of arrWarehouse"
+                                                                [value]="item.warehouse_id">
+                                                                {{item.warehouse_name}}
+                                                            </nb-option>
+                                                        </nb-select>
+                                                    </div>
+                                                    <div class="left" *ngIf="CheckIn.incomingSum <= 0">
+                                                        <label>{{CheckIn.warehouse_name}}</label>
+                                                    </div>
+                                                </td>
+                                                <td class="right">
+                                                    <div *ngIf="CheckIn.incomingSum > 0">
+                                                        <input nbInput status="primary"
+                                                            style="text-align: center; font-size: 18px; max-width: 7rem"
+                                                            type="text" libOnlyCharacternumber mask="separator.0"
+                                                            thousandSeparator="," [(ngModel)]="CheckIn.checkin_qty "
+                                                            [ngModelOptions]="{standalone: true}"
+                                                            (keyup)="checkQty($event.target.value, CheckIn)" />
+                                                    </div>
+                                                </td>
+                                                <td class="cover qty" style="padding-top: 1.3rem;">
+                                                    <label>{{CheckIn.incomingSum}}</label>
+                                                </td>
+                                                <td class="cover qty" style="padding-top: 1.3rem;">
+                                                    <label>{{CheckIn.availableSum}}</label>
+                                                </td>
+                                                <td class="cover qty" style="padding-top: 1.3rem;">
+                                                    <label>{{CheckIn.onhandSum}}</label>
+                                                </td>
+                                                <td class="cover qty" style="padding-top: 1.3rem;">
+                                                    <label c>{{CheckIn.checkin_data.outgoing}}</label>
+                                                </td>
+
+                                                <td class="right">
+                                                    <div *ngIf="CheckIn.incomingSum > 0">
+                                                        <button
+                                                            [disabled]="CheckIn.checkin_qty <= 0 || CheckIn.warehouse_id == '' || CheckIn.incomingSum <= 0 "
+                                                            size="small"
+                                                            [status]="CheckIn.checkin_qty <= 0 || CheckIn.warehouse_id == '' || CheckIn.incomingSum <= 0 ? 'gray' : 'primary' "
+                                                            nbButton
+                                                            (click)="btncheckInPartial(CheckIn)">Check-in</button>
+                                                    </div>
+                                                </td>
+                                                <td style="text-align: left">
+                                                    <div *ngIf="CheckIn.incomingSum > 0 && CheckIn.checkin_qty > 0">
+                                                        <button [disabled]="CheckIn.incomingSum <= 0" size="small"
+                                                            nbButton status="gray" (click)="btnImageClick(CheckIn)">Add
+                                                            Image
+                                                        </button>
+                                                    </div>
+                                                    <div *ngIf="CheckIn.incomingSum > 0  && CheckIn.checkin_qty > 0">
+                                                        <button [disabled]="CheckIn.incomingSum <= 0" size="small"
+                                                            nbButton status="gray" (click)="btnNoteClick(CheckIn)">Add
+                                                            Note
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td style="text-align: left">
+                                                    <div style="padding-bottom: 1rem;">
+                                                        <a *ngIf="CheckIn.image_array !== undefined">
+                                                            Upload ({{CheckIn.image_array.length}}) file
+                                                        </a>
+                                                    </div>
+                                                    <div class="left" *ngIf="CheckIn.note !== undefined">
+                                                        <textarea rows="5" nbInput status="primary" type="text" nbInput
+                                                            fullWidth [(ngModel)]="CheckIn.note">
+                                                         </textarea>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+                <nb-card-footer *ngIf="!isProduct">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div style="padding: 1rem; text-align: center;">
+                                <button nbButton status="success" (click)="addProduct()">Add Other Product</button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-footer>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="isProduct">
+            <nb-card style="padding: 0;margin-bottom: 0.1rem;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <button nbSpinnerSize="tiny" [nbSpinner]="isSaveProduct" nbSpinnerStatus="success"
+                                    style="float: right;margin: 3px 0 3px 1rem;" nbButton size="medium" status="success"
+                                    (click)="btnSave()">
+                                    Save
+                                </button>
+                                <button style="float: right;margin: 3px 0 3px 1rem;" nbButton size="medium"
+                                    status="danger" (click)="btnCancel()">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="isProduct" [formGroup]="productForm">
+            <nb-card>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <project-file-image theme="white" [image_url_array]="product.main_image.get">
+                                        </project-file-image>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="cover-input">
+                                            <label>Product Name :</label>
+                                            <input libOnlyProductName status="primary" type="text" nbInput fullWidth
+                                                status="primary" formControlName="product_title" class="form-control"
+                                                [ngClass]="{ 'is-invalid': submitted && f.product_title.errors }" />
+                                            <div *ngIf="submitted && !!f.product_title.errors">
+                                                <div class="required" *ngIf="!!f.product_title.errors.required">
+                                                    Product Name is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                                <label>Product Price :</label>
+                                                <div class="cover-input price">
+                                                    <a>{{productForm.value.product_currency_code}}</a>
+                                                    <input style="text-align: right;" libOnlyCharacterDefault
+                                                        status="primary" type="text" libOnlyCharacternumber
+                                                        mask="separator.2" thousandSeparator="," nbInput fullWidth
+                                                        formControlName="product_price" class="form-control"
+                                                        [ngClass]="{ 'is-invalid': submitted && f.product_price.errors }" />
+                                                    <div *ngIf="submitted && !!f.product_price.errors">
+                                                        <div class="required" *ngIf="!!f.product_price.errors.required">
+                                                            Product Price is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                                                <div class="cover-input">
+                                                    <label>Currency:</label>
+                                                    <ngx-select [allowClear]="true"
+                                                        [ngClass]="{ 'is-invalid': submitted && f.product_currency_code.errors }"
+                                                        [items]="arrCurrency" optionValueField="currency_name"
+                                                        optionTextField="currency_name"
+                                                        formControlName="product_currency_code">
+                                                    </ngx-select>
+                                                    <div *ngIf="submitted && !!f.product_currency_code.errors">
+                                                        <div class="required"
+                                                            *ngIf="!!f.product_currency_code.errors.required">
+                                                            Currency is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                                                <div class="cover-input">
+                                                    <label>Quantity:</label>
+                                                    <input style="text-align: right;" libOnlyCharacterDefault
+                                                        status="primary" type="text" libOnlyCharacternumber
+                                                        mask="separator.0" thousandSeparator="," nbInput fullWidth
+                                                        formControlName="qty" class="form-control"
+                                                        [ngClass]="{ 'is-invalid': submitted && f.qty.errors }"
+                                                        (keyup)="onKeyQuantity($event.target.value)" />
+                                                    <div *ngIf="submitted && !!f.qty.errors">
+                                                        <div class="required" *ngIf="!!f.qty.errors.required">
+                                                            Quantity is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="row">
+                                            <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                                                <div class="cover-input">
+                                                    <label>Product SKU :</label>
+                                                    <input libOnlySKU status="primary" type="text" nbInput fullWidth
+                                                        status="primary" class="form-control"
+                                                        formControlName="product_sku"
+                                                        [ngClass]="{ 'is-invalid': submitted && f.product_sku.errors }" />
+                                                    <div *ngIf="submitted && !!f.product_sku.errors">
+                                                        <div class="required" *ngIf="!!f.product_sku.errors.required">
+                                                            Product SKU is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-2 col-lg-2 col-xl-2">
+                                                <div class="cover-input">
+                                                    <label>Unit :</label>
+                                                    <input libOnlyUnit status="primary" type="text" nbInput fullWidth
+                                                        status="primary" class="form-control"
+                                                        formControlName="product_unit"
+                                                        [ngClass]="{ 'is-invalid': submitted && f.product_unit.errors }" />
+                                                    <div *ngIf="submitted && !!f.product_unit.errors">
+                                                        <div class="required" *ngIf="!!f.product_unit.errors.required">
+                                                            Unit is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="row">
+                                            <div class="col-12 col-12 col-md-4 col-lg-4 col-xl-4">
+                                                <div class="cover-input">
+                                                    <label>Product Width :</label>
+                                                    <input style="text-align: right;" libOnlyCharacternumber
+                                                        mask="separator.0" thousandSeparator="," status="primary"
+                                                        type="text" nbInput fullWidth status="primary"
+                                                        class="form-control" formControlName="width"
+                                                        [ngClass]="{ 'is-invalid': submitted && f.width.errors }" />
+                                                    <div *ngIf="submitted && !!f.width.errors">
+                                                        <div class="required" *ngIf="!!f.width.errors.required">
+                                                            Product Width is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-2 col-lg-2 col-xl-2">
+                                                <div class="cover-input">
+                                                    <label>Unit :</label>
+                                                    <ngx-select [allowClear]="true"
+                                                        [ngClass]="{ 'is-invalid': submitted && f.width_unit.errors }"
+                                                        [items]="arrUnitWH" optionValueField="unit_name"
+                                                        optionTextField="unit_name" formControlName="width_unit">
+                                                    </ngx-select>
+                                                    <div *ngIf="submitted && !!f.width_unit.errors">
+                                                        <div class="required" *ngIf="!!f.width_unit.errors.required">
+                                                            Unit is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-12 col-md-4 col-lg-4 col-xl-4">
+                                                <div class="cover-input">
+                                                    <label>Product Height :</label>
+                                                    <input style="text-align: right;" libOnlyCharacternumber
+                                                        mask="separator.0" thousandSeparator="," status="primary"
+                                                        type="text" nbInput fullWidth status="primary"
+                                                        class="form-control" formControlName="height"
+                                                        [ngClass]="{ 'is-invalid': submitted && f.height.errors }" />
+                                                    <div *ngIf="submitted && !!f.height.errors">
+                                                        <div class="required" *ngIf="!!f.height.errors.required">
+                                                            Product Height is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-2 col-lg-2 col-xl-2">
+                                                <div class="cover-input">
+                                                    <label>Unit :</label>
+                                                    <ngx-select [allowClear]="true"
+                                                        [ngClass]="{ 'is-invalid': submitted && f.height_unit.errors }"
+                                                        [items]="arrUnitWH" optionValueField="unit_name"
+                                                        optionTextField="unit_name" formControlName="height_unit">
+                                                    </ngx-select>
+                                                    <div *ngIf="submitted && !!f.height_unit.errors">
+                                                        <div class="required" *ngIf="!!f.height_unit.errors.required">
+                                                            Unit is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="row">
+                                            <div class="col-12 col-12 col-md-4 col-lg-4 col-xl-4">
+                                                <div class="cover-input">
+                                                    <label>Product Weight :</label>
+                                                    <input style="text-align: right;" libOnlyCharacternumber
+                                                        mask="separator.0" thousandSeparator="," status="primary"
+                                                        type="text" nbInput fullWidth status="primary"
+                                                        class="form-control" formControlName="weight"
+                                                        [ngClass]="{ 'is-invalid': submitted && f.weight.errors }" />
+                                                    <div *ngIf="submitted && !!f.weight.errors">
+                                                        <div class="required" *ngIf="!!f.weight.errors.required">
+                                                            Product Weight is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-2 col-lg-2 col-xl-2">
+                                                <div class="cover-input">
+                                                    <label>Unit :</label>
+                                                    <ngx-select [allowClear]="true"
+                                                        [ngClass]="{ 'is-invalid': submitted && f.weight_unit.errors }"
+                                                        [items]="arrUnitWeight" optionValueField="unit_name"
+                                                        optionTextField="unit_name" formControlName="weight_unit">
+                                                    </ngx-select>
+                                                    <div *ngIf="submitted && !!f.weight_unit.errors">
+                                                        <div class="required" *ngIf="!!f.weight_unit.errors.required">
+                                                            Unit is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                                <div class="cover-input">
+                                                    <label>Country :</label>
+                                                    <ngx-select [allowClear]="true"
+                                                        [ngClass]="{ 'is-invalid': submitted && f.product_country.errors }"
+                                                        [items]="arrCountry" optionValueField="location_name"
+                                                        optionTextField="location_name"
+                                                        formControlName="product_country"
+                                                        placeholder="--------- Choose ---------">
+                                                    </ngx-select>
+                                                    <div *ngIf="submitted && !!f.product_country.errors">
+                                                        <div class="required"
+                                                            *ngIf="!!f.product_country.errors.required">
+                                                            Country is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                                <div class="cover-input">
+                                                    <label>Warehouse Name :</label>
+                                                    <ngx-select [allowClear]="true"
+                                                        [ngClass]="{ 'is-invalid': submitted && f.warehouse_id.errors }"
+                                                        [items]="arrWarehouse" optionValueField="warehouse_id"
+                                                        optionTextField="warehouse_name" formControlName="warehouse_id"
+                                                        placeholder="--------- Choose ---------"
+                                                        (selectionChanges)="btnIDClick($event)">
+                                                    </ngx-select>
+                                                    <div *ngIf="submitted && !!f.warehouse_id.errors">
+                                                        <div class="required" *ngIf="!!f.warehouse_id.errors.required">
+                                                            Warehouse Name is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="cover-input">
+                                            <label>Note</label>
+                                            <textarea rows="3" type="text" nbInput fullWidth status="basic"
+                                                class="form-control"
+                                                [ngClass]="{ 'is-invalid': submitted && f.note.errors }"
+                                                formControlName="note">
+                                             </textarea>
+                                            <div *ngIf="submitted && !!f.note.errors">
+                                                <div class="required" *ngIf="!!f.note.errors.required">
+                                                    Note is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="isProduct">
+            <nb-card style="padding: 0;margin-bottom: 0.1rem;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label>
+                                    Image Lists
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="isProduct">
+            <nb-card>
+                <nb-card-body>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <project-file-upload theme="white" [image_url_array]="product.product_image_array.get">
+                                </project-file-upload>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="product_manual_json.length > 0">
+            <nb-card>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <table class="table hover" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 100px" class="left">Images</th>
+                                            <th style="width: 300px" class="left">Item</th>
+                                            <th tyle="width: 200px" class="left">Warehouse Name</th>
+                                            <th style="width: 100px; text-align: center;">Quantity</th>
+                                            <th style="width: 200px; text-align: right;">Product Price</th>
+                                            <th></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let product of product_manual_json; let i = index">
+                                            <td style="text-align: center">
+                                                <div class="cover-background-image">
+                                                    <div class="background-image padding-width-100px-height-100px"
+                                                        [ngClass]="{'active' : product.product_image_url === '-' || product.product_image_url === ''}"
+                                                        [ngStyle]="{'background-image': 'url('+product.product_image_url+')'}">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="left" style="width: 20%;">
+                                                <div class="left">
+                                                    <label>{{product.product_title}}</label>
+                                                </div>
+                                                <div class="left">
+                                                    <label class="sku">{{product.product_sku}}</label>
+                                                </div>
+                                                <div class="left">
+                                                    <label>{{product.product_attribute.weight | number}}</label>
+                                                    <label
+                                                        style="padding-left: 0.2rem;">{{product.product_attribute.weight_unit}}</label>
+                                                </div>
+                                            </td>
+                                            <td class="left">
+                                                <div class="left">
+                                                    <label>{{product.warehouse_name}}</label>
+                                                </div>
+                                            </td>
+                                            <td class="cover qty">
+                                                <div style="text-align: center;">
+                                                    <label>{{product.qty | number}}</label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div style="text-align: right;">
+                                                    <label
+                                                        class="cover price">{{product.product_price | number : '1.2-2'}}</label>
+                                                    <a class="cover thb">{{product.product_currency_code}}</a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div style="text-align: right;" (click)="btnDeleteProduct(i)">
+                                                    <nb-icon icon="close-outline">
+                                                    </nb-icon>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

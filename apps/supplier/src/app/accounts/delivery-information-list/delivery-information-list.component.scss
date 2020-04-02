@@ -1,0 +1,31 @@
+@import "../../../../../../libs/theme-supplier/src/lib/styles/themes";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+@include nb-install-component() {}
+
+.payment {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-weight: bold;
+    display: inline-table;
+    margin: 0 0.5rem 0.5rem 0;
+    background-color: #f2f2f2;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    border-radius: 0.25rem;
+    nb-icon {
+      top: -8px;
+      right: -8px;
+      font-size: 16px;
+      cursor: pointer;
+      position: relative;
+    }
+  }
+  
+  .active{
+    background-color: #0263b7;
+      color: white;
+  }

@@ -1,0 +1,430 @@
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <nb-icon icon="browser-outline"></nb-icon>
+                                <label *ngIf="RowID == 'new'">My Sale Rep<span class="p-0-12">/</span>New
+                                    Sale</label>
+                                <label *ngIf="RowID != 'new'">My Sale Rep<span class="p-0-12">/</span>Update
+                                    Sale</label>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <button *ngIf="RowID == 'new' && !loading"
+                                    style="float: right;margin: 3px 0px 3px 1rem;" nbButton type="button" size="medium"
+                                    status="success" (click)="btnSaveClick()">
+                                    Save
+                                </button>
+                                <button *ngIf="RowID != 'new' && !loading"
+                                    style="float: right;margin: 3px 0px 3px 1rem;" nbButton type="button" size="medium"
+                                    status="success" (click)="btnSaveClick()">
+                                    Update
+                                </button>
+                                <button *ngIf="RowID == 'new'" style="float: right;margin: 3px 0px 3px 1rem;" nbButton
+                                    type="button" size="medium" status="danger" (click)="btnCancelClick()">
+                                    Cancel
+                                </button>
+                                <button *ngIf="RowID != 'new'" style="float: right;margin: 3px 0px 3px 1rem;" nbButton
+                                    type="button" size="medium" status="danger" (click)="btnBackClick()">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div *ngIf="RowID != 'new'" class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;margin-bottom: 0.1rem;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label>{{arrobjRow.sale_rep_name}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="success">
+            <nb-card class="box-shadow-unset">
+                <nb-card-body>
+                    <div class="body">
+                        <form [formGroup]="SaleForm" (ngSubmit)="onSubmit()">
+                            <div class="row">
+                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="row">
+                                        <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
+
+                                            <div class="cover-input center">
+                                                <div class="uppy-Dashboard-inner"
+                                                    *ngIf="imgURL == undefined || imgURL == '-' "
+                                                    (click)="fileInput.click()" appDragDrop (change)="uploadFile($event.target.files)"
+                                                    (onFileDropped)="uploadFile($event)">
+                                                    <div class="uppy-Dashboard-innerWrap">
+                                                        <div class="uppy-Dashboard-dropFilesHereHint">Drop your files
+                                                            here</div>
+                                                        <div class="uppy-DashboardAddFiles">
+                                                            <input nbInput status="primary" hidden type="file"
+                                                                #fileInput (change)="uploadFile($event.target.files)"
+                                                                accept='image/*'>
+                                                            <div class="uppy-DashboardTabs">
+                                                                <div class="uppy-Dashboard-dropFilesTitle">Drop files
+                                                                    here , paste or <span>browse</span> </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="uppy-Dashboard-inner"
+                                                    *ngIf="imgURL != undefined && imgURL != '-'"
+                                                    (click)="fileInput.click()" appDragDrop (change)="uploadFile($event.target.files)"
+                                                    (onFileDropped)="uploadFile($event)">
+                                                    <div class="uppy-Dashboard-innerWrap">
+                                                        <img *ngIf="imgURL != undefined && imgURL != '-'" class="imgsize" [src]="imgURL"
+                                                             />
+                                                    </div>
+                                                </div>
+                                                <input nbInput status="primary" hidden type="file" #fileInput
+                                                    (change)="uploadFile($event.target.files)" accept='image/*'>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
+                                            <div class="row">
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>Sale Name</label>
+                                                        <input status="primary" type="text" status="primary" nbInput
+                                                            fullWidth formControlName="salename"
+                                                            class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.salename.errors }"
+                                                            [(ngModel)]="arrobjRow.sale_rep_name" />
+                                                        <div *ngIf="submitted && !!f.salename.errors"
+                                                            class="invalid-feedback">
+                                                            <div class="required"
+                                                                *ngIf="!!f.salename.errors.required">
+                                                                Sale Name is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="cover-input">
+                                                        <label>Sale Company :</label>
+                                                        <input status="primary" type="text" status="primary" nbInput
+                                                            fullWidth formControlName="salerepcompany"
+                                                            class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.salerepcompany.errors }"
+                                                            [(ngModel)]="arrobjRow.sale_rep_company" />
+                                                        <div *ngIf="submitted && !!f.salerepcompany.errors"
+                                                            class="invalid-feedback">
+                                                            <div class="required"
+                                                                *ngIf="!!f.salerepcompany.errors.required">
+                                                                Sale Company is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>Sale Tag :</label>
+                                                        <input status="primary" type="text" status="primary" nbInput
+                                                            fullWidth formControlName="saletag"
+                                                            class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.saletag.errors }"
+                                                            [(ngModel)]="arrobjRow.sale_rep_tag" />
+                                                        <div *ngIf="submitted && !!f.saletag.errors"
+                                                            class="invalid-feedback">
+                                                            <div class="required"
+                                                                *ngIf="!!f.saletag.errors.required">
+                                                                Sale Tag is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                               
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="cover-create-topic">
+                                                        <label>
+                                                            Address Information
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>First Name</label>
+                                                        <input libOnlyCharacter status="primary" type="text"
+                                                            status="primary" nbInput fullWidth
+                                                            formControlName="firstName" class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }"
+                                                            [(ngModel)]="arrobjRow.sale_rep_first_name" />
+                                                        <div *ngIf="submitted && !!f.firstName.errors"
+                                                            class="invalid-feedback">
+                                                            <div class="required" *ngIf="!!f.firstName.errors.required">
+                                                                First Name is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>Last Name</label>
+                                                        <input libOnlyCharacter status="primary" type="text"
+                                                            status="primary" nbInput fullWidth
+                                                            formControlName="lastName" class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }"
+                                                            [(ngModel)]="arrobjRow.sale_rep_last_name" />
+                                                        <div *ngIf="submitted && !!f.lastName.errors"
+                                                            class="invalid-feedback">
+                                                            <div class="required" *ngIf="!!f.lastName.errors.required">
+                                                                Last Name is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>Email</label>
+                                                        <input status="primary" type="text" status="primary" nbInput
+                                                            fullWidth formControlName="emailAddress"
+                                                            class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.emailAddress.errors }"
+                                                            [(ngModel)]="arrobjRow.sale_rep_email" />
+                                                        <div *ngIf="submitted && !!f.emailAddress.errors"
+                                                            class="invalid-feedback">
+                                                            <div class="required"
+                                                                *ngIf="!!f.emailAddress.errors.required">
+                                                                Email is required
+                                                            </div>
+                                                            <div class="required" *ngIf="!!f.emailAddress.errors.email">
+                                                                Email must be a valid email
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>Telephone Number</label>
+                                                        <input status="primary" type="text" status="primary" nbInput
+                                                            fullWidth formControlName="telephoneNumber" class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.telephoneNumber.errors }"
+                                                            [(ngModel)]="arrobjRow.sale_rep_tel" libOnlyCharacterphonnumber/>
+                                                        <div *ngIf="submitted && !!f.telephoneNumber.errors"
+                                                            class="invalid-feedback">
+                                                            <div clas="required" *ngIf="!!f.telephoneNumber.errors.required">
+                                                                Telephone Number is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div> -->
+                                                <!-- <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>Mobile Phone Number</label>
+                                                        <input status="primary" type="text" status="primary" nbInput
+                                                            fullWidth formControlName="mobilePhoneNumber" class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.mobilePhoneNumber.errors }"
+                                                            [(ngModel)]="arrobjRow.sale_rep_mobile" mask='000-000-0000' placeholder="XXX-XXX-XXXX"/>
+                                                        <div *ngIf="submitted && !!f.mobilePhoneNumber.errors"
+                                                            class="invalid-feedback">
+                                                            <div clas="required" *ngIf="!!f.mobilePhoneNumber.errors.required">
+                                                                Mobile Phone Number is required
+                                                            </div>
+                                                        </div>z
+                                                    </div>
+                                                </div> -->
+
+                                                <div class="col-12">
+                                                    <div class="cover-phone-number">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="cover-input">
+                                                                    <label>Telephone Number</label>
+                                                                    <input nbInput fullWidth type="text" status="primary" libOnlyCharacterphonnumber formControlName="telephoneNumber" (keyup)="onInput(19,19,$event,phone.tel)" (keyup.enter)="onInArrayPhone(9,19,$event,phone.tel)" 
+                                                                    [(ngModel)]="phone.tel.input" [ngClass]="{'is-invalid': submitted && phone.tel.number === ''}"/>
+                                                                    <div class="invalid-feedback" [ngClass]="{'display-block': submitted && phone.tel.number === ''}">
+                                                                        <div class="required">
+                                                                            Telephone Number is required
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <span class="phone" *ngFor="let item of phone.tel.number_array ; let i = index">
+                                                                    {{item}}<nb-icon (click)="removePhoneNumberIndex(i,phone.tel)" icon="close-outline"></nb-icon>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+            
+                                                <div class="col-12">
+                                                    <div class="cover-phone-number">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="cover-input">
+                                                                    <label>Mobile Phone Number</label>
+                                                                    <input nbInput fullWidth type="text" status="primary" mask='000-000-0000'
+                                                                        placeholder="XXX-XXX-XXXX" (keyup)="inArrayPhone(12,12,$event,phone.mobile)" (keyup.enter)="inArrayPhone(12,12,$event,phone.mobile)" 
+                                                                        [ngClass]="{'is-invalid': submitted && phone.mobile.number === ''}"/>
+                                                                    <div class="invalid-feedback" [ngClass]="{'display-block': submitted && phone.mobile.number === ''}">
+                                                                        <div class="required">
+                                                                            Mobile Phone Number is required
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <span class="phone" *ngFor="let item of phone.mobile.number_array ; let i = index">
+                                                                    {{item}}<nb-icon (click)="removePhoneNumberIndex(i,phone.mobile)" icon="close-outline"></nb-icon>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="cover-input right">
+                                                        <button type="button" nbButton status="primary"  (click)="btnDialogMab()">
+                                                            <nb-icon icon="map-outline"></nb-icon>
+                                                            Search by location
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-textarea">
+                                                        <label>Address</label>
+                                                        <textarea rows="3"type="text" status="primary"
+                                                            nbInput fullWidth formControlName="Address"
+                                                            class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.Address.errors }"
+                                                            [(ngModel)]="arrobjRow.sale_rep_addr_full"></textarea>
+                                                        <div *ngIf="submitted && !!f.Address.errors"
+                                                            class="invalid-feedback">
+                                                            <div class="required" *ngIf="!!f.Address.errors.required">
+                                                                Address isrequired
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label> Address Number</label>
+                                                        <input status="primary" type="text" status="primary" nbInput
+                                                            fullWidth formControlName="number" class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.number.errors }"
+                                                            [(ngModel)]="arrobjRow.sale_rep_addr_number" />
+                                                        <div *ngIf="submitted && !!f.number.errors"
+                                                            class="invalid-feedback">
+                                                            <div class="required" *ngIf="!!f.number.errors.required">
+                                                                Address Number is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-select">
+                                                        <label>Province </label>
+                                                        <nb-select [ngClass]="{ 'is-invalid': submitted && (strState == '' || strState == undefined) }" fullWidth
+                                                            status="primary" (selectedChange)="getStateNew($event)"
+                                                            [(ngModel)]="strState"
+                                                            [ngModelOptions]="{standalone: true}">
+                                                            <nb-option value="">-------------- choose
+                                                                ---------------</nb-option>
+                                                            <nb-option *ngFor="let arrstate of arrobjState"
+                                                                [value]="arrstate.location_name">
+                                                                {{arrstate.location_name}}</nb-option>
+                                                        </nb-select>
+                                                        <div class="invalid-feedback" [ngClass]="{ 'display-block': submitted && (strState == '' || strState == undefined) }">
+                                                            <div clas="required">
+                                                                Province is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-select">
+                                                        <label>Amphoe</label>
+                                                        <nb-select [ngClass]="{ 'is-invalid': submitted && (strCity == '' || strCity ==  undefined)}"
+                                                            placeholder="City" fullWidth status="primary"
+                                                            (selectedChange)="getCityNew($event)" [(ngModel)]="strCity"
+                                                            [ngModelOptions]="{standalone: true}">
+                                                            <nb-option value="">-------------- choose
+                                                                ---------------</nb-option>
+                                                            <nb-option *ngFor="let city of arrobjCity"
+                                                                [value]="city.location_name">
+                                                                {{city.location_name}}</nb-option>
+                                                        </nb-select>
+                                                        <div class="invalid-feedback" [ngClass]="{ 'display-block': submitted && (strCity == '' || strCity ==  undefined) }">
+                                                            <div clas="required">
+                                                                Amphoe is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-select">
+                                                        <label>Tambon</label>
+                                                        <nb-select [ngClass]="{ 'is-invalid': submitted && (strTown == '' || strTown == undefined) }"
+                                                            placeholder="Town" fullWidth status="primary"
+                                                            (selectedChange)="getTownNew($event)" [(ngModel)]="strTown"
+                                                            [ngModelOptions]="{standalone: true}">
+                                                            <nb-option value="">-------------- choose
+                                                                ---------------</nb-option>s
+                                                            <nb-option *ngFor="let Town of arrobjTown"
+                                                                [value]="Town.location_name">
+                                                                {{Town.location_name}}</nb-option>
+                                                        </nb-select>
+                                                        <div class="invalid-feedback" [ngClass]="{ 'display-block': submitted && (strTown == '' || strTown == undefined) }">
+                                                            <div clas="required">
+                                                                Tambon is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="cover-input">
+                                                        <label>Zipcode</label>
+                                                        <input status="primary" type="text" status="primary" nbInput
+                                                            fullWidth formControlName="zipcode" class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.zipcode.errors }"
+                                                            [(ngModel)]="strZipcode" mask='00000' placeholder="XXXXX" />
+                                                        <div *ngIf="submitted && !!f.zipcode.errors"
+                                                            class="invalid-feedback">
+                                                            <div class="required" *ngIf="!!f.zipcode.errors.required">
+                                                                Zipcode is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

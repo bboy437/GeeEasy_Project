@@ -1,0 +1,12 @@
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+@import "../../../../../../../libs/theme-dealer/src/lib/styles/themes";
+
+@include nb-install-component() {
+  thead {
+    font-size: 14px;
+  }
+  tbody {
+    font-size: 14px;
+  }
+}

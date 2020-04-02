@@ -1,0 +1,321 @@
+<div class="pages" [formGroup]="Form">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <nb-icon class="icon-header" icon="people-outline"></nb-icon>
+                                <label>My Team</label>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <!-- <button style="float: right;margin: 3px 0 3px 0.5rem;" nbButton size="medium"
+                                    status="primary" (click)="btnNewClick()">
+                                    New Team
+                                </button> -->
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body>
+                    <div class="row" style="padding: 1rem;">
+                        <div class="col-12 col-lg-3">
+                        </div>
+                        <div class="col-12 col-lg-3">
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6"
+                                    style="font-weight: bold; font-size: 16px; cursor: pointer;">
+                                    {{group_name}}
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <button [disabled]="isStatusGroup"
+                                        style="float: right; margin-left: 5px; margin-bottom: 5px;" nbButton
+                                        type="button" size="tiny" status="primary" (click)="btnGroupDetailClick()">
+                                        Detail
+                                    </button>
+                                    <button [disabled]="isStatusGroup "
+                                        style="float: right; margin-left: 5px; margin-bottom: 5px;" nbButton
+                                        type="button" size="tiny" status="danger" (click)="DeleteGroup()">
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6"
+                                    style="font-weight: bold; font-size: 16px; cursor: pointer;">
+                                    {{team_name}}
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <button [disabled]="isStatusTeam"
+                                        style="float: right; margin-left: 5px; margin-bottom: 5px;" nbButton
+                                        type="button" size="tiny" status="primary" (click)="btnTeamDetailClick()">
+                                        Detail
+                                    </button>
+                                    <button [disabled]="isStatusTeam"
+                                        style="float: right; margin-left: 5px; margin-bottom: 5px;" nbButton
+                                        type="button" size="tiny" status="danger" (click)="DeleteTeam()">
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-lg-3">
+                            <div *ngIf="!loading">
+                                <table class="table no-hover" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left; ">Group </th>
+                                            <th style="text-align: right; cursor: pointer;" (click)="getDataGroup(0)">
+                                                <nb-icon icon="refresh-outline"></nb-icon>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="cursor: pointer;">
+                                        <tr>
+                                            <td colspan="2">
+                                                <div class="cover-form icon">
+                                                    <nb-icon style="right: 0px;" icon="search-outline"></nb-icon>
+                                                    <nb-icon *ngIf="Form.value.strGroup" (click)="btnRefreshGroup()"
+                                                        style="float: right;left: 0; cursor: pointer;"
+                                                        icon="close-outline">
+                                                    </nb-icon>
+                                                    <input libOnlyCharacterDefault nbInput status="primary" type="text"
+                                                        nbInput fullWidth status="basic" placeholder="Search"
+                                                        formControlName="strGroup"
+                                                        (keyup)="filterGroup($event.target.value)" />
+                                                </div>
+                                                <button fullWidth nbButton size="medium" status="primary"
+                                                    (click)="createNewGroup()">
+                                                    Create New Group
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr *ngFor="let t of arrGroup;" (click)="groupChange(t)"
+                                            [ngClass]="{ 'active':t.group_id == group_id_group }">
+                                            <td *ngIf="group_id_group != t.group_id" colspan="2"
+                                                style="text-align: left;">
+                                                <div>
+                                                    <ngb-highlight [result]="t.group_name " [term]="service.searchTerm">
+                                                    </ngb-highlight>
+                                                </div>
+                                            </td>
+                                            <td *ngIf="group_id_group == t.group_id" colspan="1"
+                                                style="text-align: left;">
+                                                <div>
+                                                    <ngb-highlight [result]="t.group_name " [term]="service.searchTerm">
+                                                    </ngb-highlight>
+                                                </div>
+                                            </td>
+                                            <td *ngIf="group_id_group == t.group_id" style="text-align: right;">
+                                                <nb-icon icon="arrow-ios-forward-outline"></nb-icon>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="arrGroup.length == 0" style="height:300px; background-color: white;">
+                                            <td colspan="2" style="padding-top: 50px; text-align: center;">
+                                                <img src="assets/images/loading.png" width="200"><br><br>
+                                                <label>No data.</label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="cover-table" *ngIf="loading">
+                                <table class="table no-hover" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left; ">Group </th>
+                                            <th style="text-align: right; cursor: pointer;" (click)="btnReload()">
+                                                <nb-icon icon="refresh-outline"></nb-icon>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="height:300px; background-color: white;">
+                                            <td colspan="2" style="padding-top: 50px;">
+                                                <div style="height: 100px;background-color: white;"
+                                                    [nbSpinner]="loading" nbSpinnerStatus="success">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-3">
+                            <div *ngIf="!loading1">
+                                <table class="table no-hover" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left; ">Team </th>
+                                            <th style="text-align: right; cursor: pointer;" (click)="getDataGroup(0)">
+                                                <!-- <nb-icon icon="refresh-outline"></nb-icon> -->
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="cursor: pointer;">
+                                        <tr>
+                                            <td colspan="2">
+                                                <div class="cover-form icon">
+                                                    <nb-icon style="right: 0px;" icon="search-outline"></nb-icon>
+                                                    <nb-icon *ngIf="Form.value.strTeam" (click)="btnRefreshTeam()"
+                                                        style="float: right;left: 0; cursor: pointer;"
+                                                        icon="close-outline">
+                                                    </nb-icon>
+                                                    <input libOnlyCharacterDefault nbInput status="primary" type="text"
+                                                        fullWidth placeholder="Search" formControlName="strTeam"
+                                                        (keyup)="filterTeam($event.target.value)" />
+                                                </div>
+                                                <button [disabled]="isStatusGroup" fullWidth nbButton size="medium"
+                                                    status="primary" (click)="createNewTeam()">
+                                                    Create New Team
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr *ngFor="let t of arrTeam;" (click)="teamChange(t)"
+                                            [ngClass]="{ 'active':t.group_id == group_id_team }">
+                                            <td *ngIf="group_id_team != t.group_id" colspan="2"
+                                                style="text-align: left;">
+                                                <div>
+                                                    <ngb-highlight [result]="t.group_name " [term]="service.searchTerm">
+                                                    </ngb-highlight>
+                                                </div>
+                                            </td>
+                                            <td *ngIf="group_id_team == t.group_id" colspan="1"
+                                                style="text-align: left;">
+                                                <div>
+                                                    <ngb-highlight [result]="t.group_name " [term]="service.searchTerm">
+                                                    </ngb-highlight>
+                                                </div>
+                                            </td>
+                                            <td *ngIf="group_id_team == t.group_id" style="text-align: right;">
+                                                <nb-icon icon="arrow-ios-forward-outline"></nb-icon>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="arrTeam.length == 0" style="height:300px; background-color: white;">
+                                            <td colspan="2" style="padding-top: 50px; text-align: center;">
+                                                <img src="assets/images/loading.png" width="200"><br><br>
+                                                <label>No data.</label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="cover-table" *ngIf="loading1">
+                                <table class="table no-hover" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left; ">Team </th>
+                                            <th style="text-align: right; cursor: pointer;" (click)="btnReload()">
+                                                <!-- <nb-icon icon="refresh-outline"></nb-icon> -->
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="height:300px; background-color: white;">
+                                            <td colspan="2" style="padding-top: 50px;">
+                                                <div style="height: 100px;background-color: white;"
+                                                    [nbSpinner]="loading1" nbSpinnerStatus="success">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6">
+                            <div *ngIf="!loading2">
+                                <table class="table hover" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left;">Image</th>
+                                            <th style="text-align: left; width: 60%;">Seller Name </th>
+                                            <th style="text-align: left;">Total </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody style="cursor: pointer;">
+                                        <ng-container *ngFor="let item of arrSeller">
+                                            <tr *ngFor="let t of item.group_user_array;"
+                                                (click)="btnRowClick(t.user_id)">
+                                                <td style="text-align: left;">
+                                                    <div class="cover-background-image">
+                                                        <div class="background-image padding-width-100px-height-100px"
+                                                            [ngClass]="{'active' : t.user_image_url === '-' || t.user_image_url === ''}"
+                                                            [ngStyle]="{'background-image': 'url('+t.user_image_url+')'}">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="text-align: left;">
+                                                    <div style=" padding-top: 1rem;">
+                                                        <ngb-highlight [result]="t.user_name "
+                                                            [term]="service.searchTerm">
+                                                        </ngb-highlight>
+                                                    </div>
+                                                </td>
+                                                <td style="text-align: left;">0.00</td>
+                                            </tr>
+                                        </ng-container>
+                                        <tr *ngIf="arrSeller.length == 0"
+                                            style="height:300px; background-color: white;">
+                                            <td colspan="3" style="padding-top: 50px; text-align: center;">
+                                                <img src="assets/images/loading.png" width="300"><br><br>
+                                                <label>No data.</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="padding-top: 1rem;text-align: center;">
+                                                <button style="width: 200px;" fullWidth nbButton size="medium"
+                                                    status="primary" (click)="btnNewSellerClick()">
+                                                    Create New Seller
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="cover-table" *ngIf="loading2">
+                                <table class="table hover" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left;">Image</th>
+                                            <th style="text-align: left; width: 60%;">Seller Name </th>
+                                            <th style="text-align: left;">Total </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="height:300px; background-color: white;">
+                                            <td colspan="3" style="padding-top: 50px;">
+                                                <div style="height: 100px;background-color: white;"
+                                                    [nbSpinner]="loading2" nbSpinnerStatus="success">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </nb-card-body>
+            </nb-card>
+        </div>
+
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>
