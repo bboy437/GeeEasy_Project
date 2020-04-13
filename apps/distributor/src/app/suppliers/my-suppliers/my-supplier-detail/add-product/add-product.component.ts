@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import {
   ProductAPIService,
@@ -110,7 +110,6 @@ export class AddProductComponent implements OnInit {
       productUnit: ["", Validators.required],
       category_custom_keyword: ["", Validators.required],
       product_country: ["", Validators.required],
-
       product_barcode: ["", Validators.required],
       product_currency_code: ["", Validators.required],
       warehouse_id: ["", Validators.required],
@@ -121,7 +120,8 @@ export class AddProductComponent implements OnInit {
       height_unit: ["", Validators.required],
       weight: ["", Validators.required],
       weight_unit: ["", Validators.required],
-      sku: []
+      sku: [],
+      wholesale: this.formBuilder.array([])
     });
     // product_channel: ['', Validators.required],
     this.productForm.get("product_currency_code").patchValue("THB");
@@ -129,7 +129,23 @@ export class AddProductComponent implements OnInit {
     this.productForm.get("height_unit").patchValue("cm");
     this.productForm.get("weight_unit").patchValue("kg");
     this.productForm.get("product_country").patchValue("Thailand");
+    console.log(this.productForm)
   }
+
+  get f() {
+    return this.productForm.controls;
+  }
+
+  get wholesale(): FormArray {
+    return this.productForm.get('wholesale') as FormArray;
+  }
+
+  onSubmit() {
+    if (this.productForm.invalid) {
+      return;
+    }
+  }
+
 
   getCategory() {
     const value =
@@ -186,29 +202,35 @@ export class AddProductComponent implements OnInit {
     dialogRef.onClose.subscribe(result => {
       console.log("result", result);
       if (result !== undefined) {
-        this.arrWholesale.push(result);
-        this.arrWholesale.forEach(element => {
-          element.product_price =
-            element.product_price % 1 !== 0
-              ? element.product_price
-              : element.product_price + ".00";
-          element.retail_product_price =
-            element.retail_product_price % 1 !== 0
-              ? element.retail_product_price
-              : element.retail_product_price + ".00";
-        });
-        this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
-        console.log("this.arrWholesale", this.arrWholesale);
+        result.product_price = result.product_price % 1 !== 0 ? result.product_price : result.product_price + ".00";
+        result.retail_product_price = result.retail_product_price % 1 !== 0 ? result.retail_product_price : result.retail_product_price + ".00";
+        console.log("result", result);
+
+        this.wholesale.push(
+          this.formBuilder.group(result)
+        );
+
+        const array = this.productForm.controls.wholesale.value
+        array.sort((a, b) => a.qty_minimum - b.qty_minimum)
+        this.productForm.controls.wholesale.patchValue(array)
       }
     });
   }
 
   sortWholesale() {
     if (this.sort) {
-      this.arrWholesale.sort((a, b) => b.qty_minimum - a.qty_minimum);
+      const array = this.productForm.controls.wholesale.value;
+      array.sort((a, b) => b.qty_minimum - a.qty_minimum);
+      this.productForm.controls.wholesale.patchValue(array);
+
+      // this.arrWholesale.sort((a, b) => b.qty_minimum - a.qty_minimum);
       this.sort = false;
     } else {
-      this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
+      const array = this.productForm.controls.wholesale.value;
+      array.sort((a, b) => a.qty_minimum - b.qty_minimum);
+      this.productForm.controls.wholesale.patchValue(array);
+
+      // this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
       this.sort = true;
     }
   }
@@ -229,9 +251,10 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  onKeyMinimum(searchValue, data: any): void {
+  onKeyMinimum(searchValue, data): void {
     console.log(data);
-    if (data.qty_minimum <= 0 || data.qty_minimum === "") {
+    if (data.value.qty_minimum <= 0 || data.value.qty_minimum === "") {
+      data.value.qty_minimum = 1;
       const dialogRef = this.dialogService.open(AleartComponent, {
         context: {
           status: "Quantity"
@@ -239,30 +262,25 @@ export class AddProductComponent implements OnInit {
       });
       dialogRef.onClose.subscribe(result => {
         if (result === "ok") {
-          data.qty_minimum = 1;
+          data.value.qty_minimum = 1;
         }
       });
     }
   }
 
   onCheckWholesale(event) {
-    this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
-    console.log("this.arrWholesale", this.arrWholesale);
+    const array = this.productForm.controls.wholesale.value
+    array.sort((a, b) => a.qty_minimum - b.qty_minimum)
+    this.productForm.controls.wholesale.patchValue(array)
   }
 
   addWarehouse() {
-    // const dialogRef = this.dialogService.open(WarehouseCreateComponent, {
-    // });
-    // dialogRef.onClose.subscribe(result => {
-    //     console.log('result', result);
-    //     if (result !== undefined) {
-    //         this.getWarehouse();
-    //     }
-    // });
   }
 
   deleteWholesale(i) {
-    this.arrWholesale.splice(i, 1);
+    const control = <FormArray>this.productForm.controls['wholesale'];
+    control.removeAt(i);
+    // this.arrWholesale.splice(i, 1);
   }
 
   categoryEvent(event) {
@@ -306,9 +324,6 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  get f() {
-    return this.productForm.controls;
-  }
 
   checkQtyMinimum() {
 
@@ -317,25 +332,25 @@ export class AddProductComponent implements OnInit {
     this.productForm.get("productUnit").patchValue(this.productForm.value.productUnit.replace(/[^\u0E00-\u0E7Fa-zA-Z \.\-]/g, ""));
     this.productForm.get("product_barcode").patchValue(this.productForm.value.product_barcode.replace(/[^A-Z_0-9]/g, ""));
     console.log(this.productForm.value);
+    console.log(this.wholesale);
 
     //Check Vailidate
-
     this.submitted = true;
     if (
-      this.productForm.invalid ||
-      this.product.update ||
-      !this.product.product_image_array_state
+      this.productForm.invalid || this.product.update || !this.product.product_image_array_state
     ) {
       return;
     }
 
+
     //Check Qty Minimum
-    const lookup = this.arrWholesale.reduce((a, e) => {
+    const array = this.productForm.controls.wholesale.value
+    const lookup = array.reduce((a, e) => {
       a[e.qty_minimum] = ++a[e.qty_minimum] || 0;
       return a;
     }, {});
-
-    const value = this.arrWholesale.filter(e => lookup[e.qty_minimum]);
+    const value = array.filter(e => lookup[e.qty_minimum]);
+    console.log(value);
 
     if (value.length > 0) {
       const dialogRef = this.dialogService.open(AleartComponent, {
@@ -350,56 +365,131 @@ export class AddProductComponent implements OnInit {
         }
       });
     } else {
-      if (this.arrWholesale.length > 0) {
-        this.strWholesal = false;
-        this.btnSaveClick();
-      } else {
-        this.strWholesal = true;
-      }
+
+      this.btnSaveClick();
 
     }
 
-    // console.log(this.arrWholesale.filter(e => lookup[e.qty_minimum]));
-    console.log("lookup", lookup);
-    console.log("value", value);
-
-    console.log("arrWholesale", this.arrWholesale);
   }
 
   btnSaveClick() {
-    this.uploadAPIService
-      .uploadImage()
-      .getImageArrayState(this.product.product_image_array.get, state => {
-        this.product.product_image_array_state = state;
+    this.uploadAPIService.uploadImage().getImageArrayState(this.product.product_image_array.get, state => {
+      this.product.product_image_array_state = state;
 
-        //Check Whosale
+      //Check Whosale
+      const array = this.productForm.controls.wholesale.value
+      array.forEach(element => {
+        element.product_price = +element.product_price;
+        element.retail_product_price = +element.retail_product_price;
+      });
+      array.sort((a, b) => a.qty_minimum - b.qty_minimum)
 
-        this.arrWholesale.forEach(element => {
-          element.product_price = +element.product_price;
-          element.retail_product_price = +element.retail_product_price;
-        });
-        this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
-
-        let channel = {
-          one: {
-            target: {
-              value: this.channel.one.input
-            }
+      let channel = {
+        one: {
+          target: {
+            value: this.channel.one.input
           }
-        };
-        this.channelArray().inArrayObjectInput(channel.one, this.channel.one);
+        }
+      };
+      this.channelArray().inArrayObjectInput(channel.one, this.channel.one);
 
-        console.log("productForm", this.productForm);
+      //Check SKU
+      const dataJson = {
+        supplier_id: this.id_local,
+        product_sku: this.productForm.value.productSKU
+      };
+      console.log("SKU : dataJson", dataJson);
 
-
-        //Check SKU
-        const dataJson = {
-          supplier_id: this.id_local,
-          product_sku: this.productForm.value.productSKU
-        };
-        console.log("SKU : dataJson", dataJson);
-
-        if (this.RowID === "new") {
+      if (this.RowID === "new") {
+        this.productAPIService
+          .postSKU(JSON.stringify(dataJson))
+          .subscribe(res => {
+            console.log(res);
+            if (res.response_data === 1) {
+              this.product.update = true;
+              const dataSend = {
+                type_id: 120,
+                file_name: "",
+                file_type: "",
+                supplier_id: this.id_local,
+                user_id: 0
+              };
+              this.uploadAPIService
+                .uploadImage()
+                .getImageArray(
+                  dataSend,
+                  this.product.main_image.get,
+                  red_image_array => {
+                    console.log(
+                      "btnSaveClick : red_image_array : ",
+                      red_image_array
+                    );
+                    this.product.main_image.port = red_image_array;
+                    this.uploadAPIService
+                      .uploadImage()
+                      .getImageArray(
+                        dataSend,
+                        this.product.product_image_array.get,
+                        red_product_image_array => {
+                          console.log(
+                            "btnSaveClick : red_product_image_array : ",
+                            red_product_image_array
+                          );
+                          this.product.product_image_array.port = red_product_image_array;
+                          this.save();
+                        }
+                      );
+                  }
+                );
+            } else {
+              const dialogRef = this.dialogService.open(AleartComponent, {
+                context: {
+                  status: "sku"
+                }
+              });
+              dialogRef.onClose.subscribe(result => { });
+            }
+          });
+      } else {
+        if (
+          this.productForm.value.sku === this.productForm.value.productSKU
+        ) {
+          this.product.update = true;
+          const dataSend = {
+            type_id: 120,
+            file_name: "",
+            file_type: "",
+            supplier_id: this.id_local,
+            user_id: 0
+          };
+          this.uploadAPIService
+            .uploadImage()
+            .getImageArray(
+              dataSend,
+              this.product.main_image.get,
+              red_image_array => {
+                console.log(
+                  "btnSaveClick : red_image_array : ",
+                  red_image_array
+                );
+                this.product.main_image.port = red_image_array;
+                this.uploadAPIService
+                  .uploadImage()
+                  .getImageArray(
+                    dataSend,
+                    this.product.product_image_array.get,
+                    red_product_image_array => {
+                      console.log(
+                        "btnSaveClick : red_product_image_array : ",
+                        red_product_image_array
+                      );
+                      this.product.product_image_array.port = red_product_image_array;
+                      this.save();
+                    }
+                  );
+              }
+            );
+        } else {
           this.productAPIService
             .postSKU(JSON.stringify(dataJson))
             .subscribe(res => {
@@ -449,98 +539,10 @@ export class AddProductComponent implements OnInit {
                 dialogRef.onClose.subscribe(result => { });
               }
             });
-        } else {
-          if (
-            this.productForm.value.sku === this.productForm.value.productSKU
-          ) {
-            this.product.update = true;
-            const dataSend = {
-              type_id: 120,
-              file_name: "",
-              file_type: "",
-              supplier_id: this.id_local,
-              user_id: 0
-            };
-            this.uploadAPIService
-              .uploadImage()
-              .getImageArray(
-                dataSend,
-                this.product.main_image.get,
-                red_image_array => {
-                  console.log(
-                    "btnSaveClick : red_image_array : ",
-                    red_image_array
-                  );
-                  this.product.main_image.port = red_image_array;
-                  this.uploadAPIService
-                    .uploadImage()
-                    .getImageArray(
-                      dataSend,
-                      this.product.product_image_array.get,
-                      red_product_image_array => {
-                        console.log(
-                          "btnSaveClick : red_product_image_array : ",
-                          red_product_image_array
-                        );
-                        this.product.product_image_array.port = red_product_image_array;
-                        this.save();
-                      }
-                    );
-                }
-              );
-          } else {
-            this.productAPIService
-              .postSKU(JSON.stringify(dataJson))
-              .subscribe(res => {
-                console.log(res);
-                if (res.response_data === 1) {
-                  this.product.update = true;
-                  const dataSend = {
-                    type_id: 120,
-                    file_name: "",
-                    file_type: "",
-                    supplier_id: this.id_local,
-                    user_id: 0
-                  };
-                  this.uploadAPIService
-                    .uploadImage()
-                    .getImageArray(
-                      dataSend,
-                      this.product.main_image.get,
-                      red_image_array => {
-                        console.log(
-                          "btnSaveClick : red_image_array : ",
-                          red_image_array
-                        );
-                        this.product.main_image.port = red_image_array;
-                        this.uploadAPIService
-                          .uploadImage()
-                          .getImageArray(
-                            dataSend,
-                            this.product.product_image_array.get,
-                            red_product_image_array => {
-                              console.log(
-                                "btnSaveClick : red_product_image_array : ",
-                                red_product_image_array
-                              );
-                              this.product.product_image_array.port = red_product_image_array;
-                              this.save();
-                            }
-                          );
-                      }
-                    );
-                } else {
-                  const dialogRef = this.dialogService.open(AleartComponent, {
-                    context: {
-                      status: "sku"
-                    }
-                  });
-                  dialogRef.onClose.subscribe(result => { });
-                }
-              });
-          }
         }
-      });
+      }
+    });
+
   }
 
   save() {
@@ -551,11 +553,11 @@ export class AddProductComponent implements OnInit {
           : "-",
       product_name: this.productForm.value.productName,
       product_buy_price: +this.productForm.value.productPrice,
-      product_price: +this.arrWholesale[0].product_price,
+      product_price: +this.wholesale.value[0].product_price,
       product_sku: this.productForm.value.productSKU,
       product_unit: this.productForm.value.productUnit,
       supplier_id: this.supplier_id,
-      product_wholesale_array: this.arrWholesale,
+      product_wholesale_array: this.productForm.controls.wholesale.value,
       product_category_id: this.productForm.value.productCategory,
       category_custom_keyword: this.productForm.value.category_custom_keyword,
       product_currency_code: this.productForm.value.product_currency_code,
@@ -566,9 +568,9 @@ export class AddProductComponent implements OnInit {
       product_public_status_id: this.active,
       product_warehouse_array: [
         {
-          warehouse_id: this.productForm.value.warehouse_id,
+          warehouse_id: +this.productForm.value.warehouse_id,
           warehouse_name: this.warehouse_name,
-          onhand: (+this.productForm.value.initial_stock),
+          onhand: +this.productForm.value.initial_stock,
           available: 0,
           incoming: 0,
           outgoing: 0,

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PurchaseOrderSaveComponent } from './purchase-order-save.component';
+import { NgxSelectComponent } from './ngx-select.component';
 
-describe('PurchaseOrderSaveComponent', () => {
-  let component: PurchaseOrderSaveComponent;
-  let fixture: ComponentFixture<PurchaseOrderSaveComponent>;
+describe('NgxSelectComponent', () => {
+  let component: NgxSelectComponent;
+  let fixture: ComponentFixture<NgxSelectComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PurchaseOrderSaveComponent ]
+      declarations: [ NgxSelectComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PurchaseOrderSaveComponent);
+    fixture = TestBed.createComponent(NgxSelectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

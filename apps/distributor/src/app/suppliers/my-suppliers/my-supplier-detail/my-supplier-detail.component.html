@@ -1,4 +1,4 @@
-<div class="pages">
+<div class="pages" [formGroup]="Form">
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card style="padding: 0;">
@@ -41,183 +41,130 @@
         <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="primary">
             <nb-card>
                 <nb-card-body>
-                    <div class="body">
-                        <div class="row">
-                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                <form [formGroup]="Form">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <div class="row">
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="padding-bottom: 1rem;">
+                                            <project-display-file-image theme="white"
+                                                [image_url_array]="image.main_image.get">
+                                            </project-display-file-image>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
                                     <div class="row">
                                         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                            <div class="row">
-                                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                                    <div class="row show-grid" style="text-align: center">
-                                                        <div class="col-lg-12">
-                                                            <project-display-file-image theme="white"
-                                                                [image_url_array]="image.main_image.get">
-                                                            </project-display-file-image>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                                    <div class="row show-grid">
-                                                        <div class="col-lg-12">
-                                                            <label>Supplier Name :</label>
-                                                            <input nbInput status="primary" type="text"
-                                                                class="btnDisabled" nbInput fullWidth
-                                                                formControlName="suppliername" /><br>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row show-grid">
-                                                        <div class="col-lg-12">
-                                                            <label>Supplier's Product Category :</label>
-                                                            <input nbInput status="primary" type="text"
-                                                                class="btnDisabled" nbInput fullWidth
-                                                                formControlName="productcategory" /><br>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row show-grid">
-                                                        <div class="col-lg-12">
-                                                            <label>Custom Category :</label>
-                                                            <input nbInput status="primary" type="text"
-                                                                class="btnDisabled" nbInput fullWidth
-                                                                formControlName="category_custom_keyword" /><br>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row show-grid">
-                                                        <div class="col-lg-12">
-                                                            <label>Catalog Keyword:</label>
-                                                            <input nbInput status="primary" type="text"
-                                                                class="btnDisabled" nbInput fullWidth
-                                                                formControlName="catalogkeyword" /><br>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row show-grid">
-                                                        <div class="col-lg-12">
-                                                            <label>Supplier Keyword :</label>
-                                                            <input nbInput status="primary" type="text"
-                                                                class="btnDisabled" nbInput fullWidth
-                                                                formControlName="supplierkeyword" /><br>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <project-input inputType="text" label="Supplier Name :"
+                                                [control]="Form.get('suppliername')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Product Category :"
+                                                [control]="Form.get('productcategory')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Catalog Keyword :"
+                                                [control]="Form.get('catalogkeyword')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Supplier Keyword :"
+                                                [control]="Form.get('supplierkeyword')">
+                                            </project-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <div class="row">
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="First Name :"
+                                                [control]="Form.get('firstName')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Last Name :"
+                                                [control]="Form.get('lastName')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Company Name :"
+                                                [control]="Form.get('companyName')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Email :"
+                                                [control]="Form.get('emailAddress')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Telephone Number :"
+                                                [control]="Form.get('phoneNo')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Mobile Phone Number :"
+                                                [control]="Form.get('mobileNo')">
+                                            </project-input>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <div class="row">
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-textarea rows="3" label="Address :"
+                                                [control]="Form.get('AddressFull')">
+                                            </project-textarea>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Address Number :"
+                                                [control]="Form.get('AddressNo')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Province :"
+                                                [control]="Form.get('province')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Amphoe :"
+                                                [control]="Form.get('amphoe')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Tambon :"
+                                                [control]="Form.get('tambon')">
+                                            </project-input>
                                         </div>
                                         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                             <div class="row">
-                                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                                    <div class="row show-grid">
-                                                        <div class="col-lg-12">
-                                                            <label>First Name :</label>
-                                                            <input nbInput status="primary" type="text"
-                                                                class="btnDisabled" nbInput fullWidth
-                                                                formControlName="firstName" /><br>
-                                                        </div>
-                                                        <div class="col-lg-12">
-                                                            <label>Last Name :</label>
-                                                            <input nbInput status="primary" type="text"
-                                                                class="btnDisabled" nbInput fullWidth
-                                                                formControlName="lastName" /><br>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row show-grid">
-                                                        <div class="col-lg-12">
-                                                            <label>Company Name :</label>
-                                                            <input nbInput status="primary" type="text"
-                                                                class="btnDisabled" nbInput fullWidth
-                                                                formControlName="companyName" /><br>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row show-grid">
-                                                        <div class="col-lg-12">
-                                                            <label>Email :</label>
-                                                            <input nbInput status="primary" type="text"
-                                                                class="btnDisabled" nbInput fullWidth
-                                                                formControlName="emailAddress" /><br>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row show-grid">
-                                                        <div class="col-lg-12">
-                                                            <label>Telephone Number :</label>
-                                                            <input nbInput status="primary" type="text"
-                                                                libOnlyCharacterphonnumber class="btnDisabled" nbInput
-                                                                fullWidth formControlName="phoneNo" /><br>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row show-grid">
-                                                        <div class="col-lg-12">
-                                                            <label>Mobile Phone Number :</label>
-                                                            <input nbInput status="primary" type="text"
-                                                                mask='000-000-0000' placeholder="XXX-XXX-XXXX"
-                                                                class="btnDisabled" nbInput fullWidth
-                                                                formControlName="mobileNo" /><br>
-                                                        </div>
-                                                    </div>
-
+                                                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                                    <project-input inputType="text" label="Zipcode :"
+                                                        [control]="Form.get('zipcode')">
+                                                    </project-input>
                                                 </div>
-                                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                                    <div class="row show-grid">
-                                                        <div class="col-lg-12">
-                                                            <label>Address :</label>
-                                                            <textarea style="min-height: 90px;" nbInput status="primary"
-                                                                type="text" class="btnDisabled" nbInput fullWidth
-                                                                formControlName="AddressFull"> </textarea><br>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row show-grid">
-                                                        <div class="col-lg-12">
-                                                            <label>Address Number :</label>
-                                                            <input nbInput status="primary" type="text"
-                                                                class="btnDisabled" nbInput fullWidth
-                                                                formControlName="AddressNo" /><br>
-                                                        </div>
-                                                        <div class="col-lg-12">
-                                                            <label>Tambon :</label>
-                                                            <input nbInput status="primary" type="text"
-                                                                class="btnDisabled" nbInput fullWidth
-                                                                formControlName="tambon" /><br>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row show-grid">
-                                                        <div class="col-lg-12">
-                                                            <label>Amphoe :</label>
-                                                            <input nbInput status="primary" type="text"
-                                                                class="btnDisabled" nbInput fullWidth
-                                                                formControlName="amphoe" /><br>
-                                                        </div>
-                                                        <div class="col-lg-12">
-                                                            <label>Province :</label>
-                                                            <input nbInput status="primary" type="text"
-                                                                class="btnDisabled" nbInput fullWidth
-                                                                formControlName="province" /><br>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row show-grid">
-                                                        <div class="col-12 col-sm-12 col-md-6 col-lg-6"
-                                                            style="text-align: left;">
-                                                            <label>Zipcode :</label>
-                                                            <input nbInput status="primary" type="text"
-                                                                class="btnDisabled" nbInput fullWidth
-                                                                formControlName="zipcode" />
-                                                        </div>
-                                                        <div class="col-12 col-sm-12 col-md-6 col-lg-6"
-                                                            style="text-align: left;">
-                                                            <label> Latitude Longitude</label>
-                                                            <input nbInput status="primary" type="text"
-                                                                class="btnDisabled" disabled fullWidth
-                                                                [(ngModel)]="arrSupplier.supplier_addr_location_lat + ',' + arrSupplier.supplier_addr_location_lng"
-                                                                [ngModelOptions]="{standalone: true}" />
-                                                        </div>
-                                                    </div>
+                                                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                                    <project-input inputType="text" label="Latitude Longitude :"
+                                                        [control]="Form.get('latlong')">
+                                                    </project-input>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </form><br>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </nb-card-body>
             </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card *ngIf="isProduct === true">
                 <nb-card-body>
                     <div class="body">
@@ -227,6 +174,8 @@
                     </div>
                 </nb-card-body>
             </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card>
                 <nb-card-body>
                     <div class="body">
@@ -241,86 +190,8 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <!-- <table class="table no-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th style="text-align: left">Image</th>
-                                                    <th style="text-align: left; width: 30%;">Product Name</th>
-                                                    <th style="text-align: left"> Product SKU</th>
-                                                    <th style="text-align: right">Product Price</th>
-                                                    <th style="text-align: left">Product Wholesale</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr *ngFor="let Product of arrSupplierProduct">
-                                                    <td style="text-align: left">
-                                                        <div class="cover-background-image">
-                                                            <div class="background-image padding-width-100px-height-100px"
-                                                                [ngClass]="{'active' : Product.product_image_url === '-' || Product.product_image_url === ''}"
-                                                                [ngStyle]="{'background-image': 'url('+Product.product_image_url+')'}">
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td style="text-align: left">
-                                                        <label>{{Product.product_name }}</label>
-                                                    </td>
-                                                    <td style="text-align: left">
-                                                        <label class="sku">{{Product.product_sku }}</label>
-                                                    </td>
-                                                    <td style="text-align: right">
-                                                        <label class="cover price">
-                                                            {{Product.product_price | number : '1.2-2' }}
-                                                        </label>
-                                                        <label class="cover thb">THB</label>
-                                                    </td>
-                                                    <td>
-                                                        <div class="row">
-                                                            <div class="col-12" style="padding: 0rem; ">
-                                                                <table class="table no-hover"
-                                                                    style="border: 1px solid #dee2e6">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th
-                                                                                style="text-align: center; width: 40%; border-right: 1px solid #dee2e6;">
-                                                                                Qty Minimum
-                                                                            </th>
-                                                                            <th style="text-align: right">
-                                                                                Wholesale Price
-                                                                            </th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr
-                                                                            *ngFor="let wholesale_array of Product.product_wholesale_array">
-                                                                            <td
-                                                                                style="border-right: 1px solid #dee2e6;">
-                                                                                <a class="cover qty">
-                                                                                    {{wholesale_array.qty_minimum | number}}
-                                                                                </a>
-                                                                            </td>
-                                                                            <td style="text-align: right">
-                                                                                <a class="cover price">
-                                                                                    {{wholesale_array.product_price  | number : '1.2-2'}}
-                                                                                </a>
-                                                                                <a class="cover thb">THB</a>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr *ngIf="arrSupplierProduct.length == 0"
-                                                    style="height:300px; background-color: white;">
-                                                    <td colspan="5" style="padding-top: 50px;">
-                                                        <img src="assets/images/loading.png" width="250"><br><br>
-                                                        <label>No data.</label>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table> -->
-                                        <project-comp-products-supplier-detail [data]="arrSupplierProduct"></project-comp-products-supplier-detail>
+                                        <project-comp-products-supplier-detail [data]="arrSupplierProduct">
+                                        </project-comp-products-supplier-detail>
                                     </div>
                                 </div>
                             </div>
@@ -328,6 +199,8 @@
                     </div>
                 </nb-card-body>
             </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card
                 *ngIf="!loading && arrSupplier.supplier_addr_location_lat != 0 && arrSupplier.supplier_addr_location_lng != 0">
                 <nb-card-body>
@@ -347,11 +220,7 @@
                 </nb-card-body>
             </nb-card>
         </div>
-
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
         </div>
-
     </div>
 </div>
-<!-- <div style="height: 100px;background-color: white;" [nbSpinner]="loading" nbSpinnerStatus="primary">
-</div> -->

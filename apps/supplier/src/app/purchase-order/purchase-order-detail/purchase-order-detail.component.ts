@@ -12,7 +12,7 @@ import { debounceTime, map, mergeMap, groupBy, toArray, reduce } from 'rxjs/oper
 import { Observable, from } from 'rxjs';
 import { AleartComponent } from '../../dialogs/aleart/aleart.component';
 import { DatePipe } from '@angular/common';
-
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from "@angular/forms";
 import { of } from 'rxjs';
 
 
@@ -23,6 +23,7 @@ import { of } from 'rxjs';
 })
 export class PurchaseOrderDetailComponent implements OnInit {
   private UrlRouter_Purchase = "purchases/list";
+
 
   // date = new Date()
   // datetommorw = new Date(this.date.getTime() + (24*60*60*1000));;
@@ -50,6 +51,9 @@ export class PurchaseOrderDetailComponent implements OnInit {
   dueDateStatus: number;
   payment_total: number;
   over: number;
+  sum: number;
+
+  Form: FormGroup;
 
   search = (text$: Observable<string>) =>
     text$.pipe(
@@ -86,6 +90,7 @@ export class PurchaseOrderDetailComponent implements OnInit {
 
 
   constructor(
+    private formBuilder: FormBuilder,
     private dialogService: NbDialogService,
     private router: Router,
     private purchaseAPIService: PurchaseAPIService,
@@ -97,6 +102,7 @@ export class PurchaseOrderDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.buildForm();
     this.getSupplier();
     const params = this.route.snapshot.paramMap;
     if (params.has("id")) {
@@ -155,7 +161,7 @@ export class PurchaseOrderDetailComponent implements OnInit {
           element.product_currency_code = this.arrPurchaseProduct[0].product_data.product_data.product_currency_code;
         });
       }
-      
+
       this.checkin_receive_array = data.response_data[0].checkin_receive_array;
       this.checkin_manual_array = data.response_data[0].checkin_manual_array;
       this.getDoc(this.arrPurchase.purchase_order_id)
@@ -168,7 +174,36 @@ export class PurchaseOrderDetailComponent implements OnInit {
         this.checkReceive_Arrayf(this.checkin_receive_array)
       }
 
+      this.detailForm();
+
     })
+  }
+
+  buildForm() {
+    this.Form = this.formBuilder.group({
+      purchase_order_number: [{ value: "", disabled: true }, Validators.required],
+      delivery_location: [{ value: "", disabled: true }, Validators.required],
+      billing_name: [{ value: "", disabled: true }, Validators.required],
+      billing_address: [{ value: "", disabled: true }, Validators.required],
+      billing_payment_term: [{ value: "", disabled: true }, Validators.required],
+      purchase_order_reply_msg: [{ value: "", disabled: true }, Validators.required],
+      products: this.formBuilder.array([])
+    });
+  }
+
+  get products(): FormArray {
+    return this.Form.get('products') as FormArray;
+  }
+
+  detailForm() {
+    this.Form.patchValue({
+      purchase_order_number: this.arrPurchase.purchase_order_number,
+      delivery_location: this.arrPurchase.delivery_location,
+      billing_name: this.arrPurchase.billing_name,
+      billing_address: this.arrPurchase.billing_address,
+      billing_payment_term: this.arrPurchase.billing_payment_term,
+      purchase_order_reply_msg: this.arrPurchase.purchase_order_reply_msg,
+    });
   }
 
   //check Status Check-in
@@ -242,9 +277,18 @@ export class PurchaseOrderDetailComponent implements OnInit {
     this.arrPurchaseProduct.forEach(element => {
       element.request_product_price = element.request_product_price % 1 !== 0 ? element.request_product_price : element.request_product_price + ".00";
       element.product_default = element.request_product_qty;
+      element.request_product_price_sum = (element.request_product_qty * element.request_product_price) % 1 !== 0 ? (element.request_product_qty * element.request_product_price) : (element.request_product_qty * element.request_product_price) + ".00";
       element.product_status = false;
     });
     console.log('arrPurchaseProduct', this.arrPurchaseProduct);
+
+    this.arrPurchaseProduct.forEach(element => {
+      this.products.push(
+        this.formBuilder.group(element)
+      );
+    });
+
+    this.sumTotal();
 
   }
 
@@ -314,11 +358,8 @@ export class PurchaseOrderDetailComponent implements OnInit {
 
     //check Quantity เหมือนกัน
     if (data.request_product_qty === data.product_default) {
-      console.log('a');
-
       data.product_status = false;
     } else {
-      console.log('b');
       //check Quantity < 0 
       if (data.request_product_qty <= 0 || data.request_product_qty === "") {
         const dialogRef = this.dialogService.open(AleartComponent, {
@@ -330,11 +371,15 @@ export class PurchaseOrderDetailComponent implements OnInit {
           if (result === 'ok') {
             data.request_product_qty = data.product_default;
             data.product_status = false;
+
+            const array = this.Form.controls.products.value
+            this.Form.controls.products.patchValue(array)
           }
         });
       }
       data.product_status = true;
     }
+    this.sumTotal();
 
   }
 
@@ -350,9 +395,12 @@ export class PurchaseOrderDetailComponent implements OnInit {
       dialogRef.onClose.subscribe(result => {
         if (result === 'ok') {
           data.request_product_price = 1;
+          const array = this.Form.controls.products.value
+          this.Form.controls.products.patchValue(array)
         }
       });
     }
+    this.sumTotal();
   }
 
   updatePO() {
@@ -417,16 +465,30 @@ export class PurchaseOrderDetailComponent implements OnInit {
       "product_qty": value.request_product_qty,
       "product_note": value.product_note
     }
+    console.log(dataJson);
     const dataJsons = JSON.stringify(dataJson);
     this.purchaseAPIService.updateProduct(dataJsons).subscribe(data => {
       console.log(data);
-      // this.getPurchaseDetail();
       value.loading = false;
       value.product_status = false;
-      this.getProductData();
+      this.sumTotal();
 
     })
 
+  }
+
+  sumTotal() {
+    this.sum = 0;
+    this.products.value.forEach(x => {
+      x.request_product_price_sum = (x.request_product_qty * x.request_product_price) % 1 !== 0 ? (x.request_product_qty * x.request_product_price) : (x.request_product_qty * x.request_product_price) + ".00";
+      this.sum += +x.request_product_price_sum;
+    });
+
+    if (this.isStatus)
+      this.products.disable();
+
+    const array = <FormArray>this.Form.controls.products.value
+    this.Form.controls.products.patchValue(array)
   }
 
   btnAddProduct(value) {
@@ -490,7 +552,6 @@ export class PurchaseOrderDetailComponent implements OnInit {
     this.getPurchaseDetail();
   }
 
-
   btnNoteClick(data) {
     const dialogRef = this.dialogService.open(DialogsImageComponent, {
       context: {
@@ -516,7 +577,5 @@ export class PurchaseOrderDetailComponent implements OnInit {
     });
 
   }
-
-
 
 }

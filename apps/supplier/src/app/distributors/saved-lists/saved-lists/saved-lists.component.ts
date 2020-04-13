@@ -46,10 +46,9 @@ export class SavedListsComponent implements OnInit {
     private dialogService: NbDialogService,
     iconsLibrary: NbIconLibraries,
     private router: Router, ) {
-
+      
     this.id_local = localStorage.getItem('id');
     console.log(' this.id_local', this.id_local);
-
     iconsLibrary.registerFontPack('ion', { iconClassPrefix: 'ion' });
 
   }
@@ -98,7 +97,6 @@ export class SavedListsComponent implements OnInit {
     this.loading = false;
   }
 
-
   btnDialogSavelists(data, isData) {
     console.log(data);
     this.arrDelete.distributor_id = data.distributor_id;
@@ -123,7 +121,6 @@ export class SavedListsComponent implements OnInit {
       // }
     });
   }
-
 
   btnRename(isData) {
     this.arrRename.distributor_lists_id = this.distributor_lists_id;
@@ -168,8 +165,6 @@ export class SavedListsComponent implements OnInit {
     });
   }
 
-
-
   filterlist(value: any) {
     this.arrSaveList = this.filter.filter(option =>
       option.distributor_lists_name.toLowerCase().indexOf(value.toLowerCase()) > -1).slice(0, 10);
@@ -181,6 +176,7 @@ export class SavedListsComponent implements OnInit {
   btnRowClick(row: any) {
     this.router.navigate([this.UrlRouter_Saves_Detail, row]);
   }
+
   btnRow(e) {
     // this.router.navigate([this.UrlRouter_Saves_Detail, row]);
     if (e.type == "click") {
@@ -188,4 +184,5 @@ export class SavedListsComponent implements OnInit {
       this.router.navigate([this.UrlRouter_Saves_Detail, e.row.distributor_id]);
     }
   }
+
 }

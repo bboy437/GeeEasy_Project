@@ -17,8 +17,13 @@ const routes: Routes = [
       },
       {
         path: "chat/:id/:name",
-        component: ChatListComponent
+        component: ChatListComponent,
       },
+      // {
+      //   path: "chat",
+      //   component: ChatListComponent,
+      //   outlet: 'popup'
+      // },
     ]
   }
 ];

@@ -16,6 +16,9 @@ export class DialogsProductGroupComponent implements OnInit {
   isSaveLodding = false;
   id_local: string;
   arrProducts: any = [];
+  arrobjRow: any = {};
+  productGroupForm: FormGroup;
+  submitted = false;
 
   constructor(
     private productAPIService: ProductAPIService,
@@ -27,18 +30,13 @@ export class DialogsProductGroupComponent implements OnInit {
     console.log(' this.id_local', this.id_local);
   }
 
-  arrobjRow: any = {};
-  productGroupForm: FormGroup;
-  submitted = false;
-
-
   ngOnInit() {
-    this.getProductGroup();
     if (this.status === 'create') {
       this.buildForm();
     }
     if (this.status === 'addProductTogroup') {
       this.buildForm();
+      this.getProductGroup();
     }
   }
 
@@ -49,7 +47,6 @@ export class DialogsProductGroupComponent implements OnInit {
       console.log('this.arrProducts', this.arrProducts);
 
     })
-
   }
 
   buildForm() {
@@ -69,19 +66,19 @@ export class DialogsProductGroupComponent implements OnInit {
     this.save();
   }
 
-
   save() {
-    this.arrobjRow.distributor_id = this.id_local;
-    const dataJson = JSON.stringify(this.arrobjRow);
+    const dataJson = {
+      distributor_id: this.id_local,
+      name: this.productGroupForm.value.productname,
+    }
     console.log(dataJson);
-
-    this.productAPIService.addProductGroup(dataJson).subscribe(data => {
+    this.productAPIService.addProductGroup(JSON.stringify(dataJson)).subscribe(data => {
       console.log(data);
       this.isSaveLodding = false;
       this.ref.close('ok');
     })
-  }
 
+  }
 
   btnAddProductClick() {
     this.submitted = true;
@@ -91,7 +88,6 @@ export class DialogsProductGroupComponent implements OnInit {
     this.isSaveLodding = true;
     this.AddProduct();
   }
-
 
   AddProduct() {
     const dataJson = {
@@ -107,7 +103,6 @@ export class DialogsProductGroupComponent implements OnInit {
       this.ref.close('ok');
     })
   }
-
 
   btnCancelClick(): void {
     this.ref.close();

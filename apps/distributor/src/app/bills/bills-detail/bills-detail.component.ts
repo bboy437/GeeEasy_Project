@@ -6,6 +6,8 @@ import { NbDialogService } from '@nebular/theme';
 import { ConfirmPaymentComponent } from '../../dialogs/confirm-payment/confirm-payment.component';
 import { DatePipe } from '@angular/common'
 
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from "@angular/forms";
+
 @Component({
   selector: 'project-bills-detail',
   templateUrl: './bills-detail.component.html',
@@ -29,9 +31,10 @@ export class BillsDetailComponent implements OnInit {
   payment_total: number;
   over = 0;
 
+  Form: FormGroup;
 
   constructor(
-    private billingAPIService: BillingAPIService,
+    private formBuilder: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private dialogService: NbDialogService,
@@ -42,6 +45,7 @@ export class BillsDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.buildForm();
     const params = this.route.snapshot.paramMap;
     this.RowID = params.get("id");
     if (this.RowID) {
@@ -85,10 +89,33 @@ export class BillsDetailComponent implements OnInit {
       this.differenceDate();
       this.checkPayment()
       this.getDoc();
+      this.detailForm();
 
     })
 
 
+  }
+
+  buildForm() {
+    this.Form = this.formBuilder.group({
+      purchase_order_number: [{ value: "", disabled: true }, Validators.required],
+      delivery_location: [{ value: "", disabled: true }, Validators.required],
+      billing_name: [{ value: "", disabled: true }, Validators.required],
+      billing_address: [{ value: "", disabled: true }, Validators.required],
+      billing_payment_term: [{ value: "", disabled: true }, Validators.required],
+      purchase_order_reply_msg: [{ value: "", disabled: true }, Validators.required],
+    });
+  }
+
+  detailForm() {
+    this.Form.patchValue({
+      purchase_order_number: this.arrBills.purchase_order_number,
+      delivery_location: this.arrBills.delivery_location,
+      billing_name: this.arrBills.billing_name,
+      billing_address: this.arrBills.billing_address,
+      billing_payment_term: this.arrBills.billing_payment_term,
+      purchase_order_reply_msg: this.arrBills.purchase_order_reply_msg,
+    });
   }
 
   getDoc() {

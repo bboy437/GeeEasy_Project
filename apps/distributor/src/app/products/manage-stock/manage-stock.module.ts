@@ -16,8 +16,6 @@ import { LayoutsModule } from '../../layouts/layouts.module';
 import { MapModule } from '../../map/map.module';
 import { ManageStockComponent } from './manage-stock.component';
 import { StockListComponent } from './stock-list/stock-list.component';
-import { StockDetailComponent } from './stock-detail/stock-detail.component';
-import { StockCreateComponent } from './stock-create/stock-create.component';
 import { TransferListComponent } from './transfer-list/transfer-list.component';
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -40,8 +38,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
   declarations: [
     ManageStockComponent,
     StockListComponent,
-    StockDetailComponent,
-    StockCreateComponent,
     TransferListComponent,
   ]
 })

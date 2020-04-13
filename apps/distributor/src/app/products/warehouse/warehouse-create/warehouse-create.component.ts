@@ -139,7 +139,6 @@ export class WarehouseCreateComponent implements OnInit {
         }
     }
 
-
     Builder() {
         this.stockForm = this.fb.group({
             warehouseName: ['', Validators.required],
@@ -173,7 +172,6 @@ export class WarehouseCreateComponent implements OnInit {
         });
     }
 
-
     get f() { return this.stockForm.controls; }
     onSubmit() {
         this.submitted = true;
@@ -184,6 +182,20 @@ export class WarehouseCreateComponent implements OnInit {
 
     /*New Data Location ------------------------ */
 
+    changeLocation(data) {
+        console.log(data);
+        if (data.name === "Province") {
+            this.changeProvince(data.location_name)
+        }
+        if (data.name === "Amphoe") {
+            this.changeAmphoe(data.location_name)
+        }
+        if (data.name === "Tambon") {
+            this.changeTambon(data.location_name)
+        }
+
+    }
+
     changeProvince(location_name) {
         this.stockForm.get('amphoe').patchValue("");
         this.stockForm.get('tambon').patchValue("");
@@ -193,6 +205,7 @@ export class WarehouseCreateComponent implements OnInit {
         this.stockForm.get('location_lat_location_lng').patchValue(0 + ',' + 0);
         this.arrAmphoe = null;
         this.arrTambon = null;
+
         if (this.arrProvince.length > 0) {
             const arrProvince = this.arrProvince.filter((x) => x.location_name === location_name)
             this.get_Amphoe(+arrProvince[0].location_id);
@@ -208,6 +221,7 @@ export class WarehouseCreateComponent implements OnInit {
                 return false;
             });
         };
+
         const newArray = [];
         await this.arrLocation.forEach(row => {
             if (row.parent_id == location_id) {
@@ -225,7 +239,9 @@ export class WarehouseCreateComponent implements OnInit {
             }
             return false;
         });
+
         this.arrAmphoe = newArray;
+
         console.log("get_Amphoe : arrAmphoe", this.arrAmphoe);
     }
 
@@ -243,6 +259,7 @@ export class WarehouseCreateComponent implements OnInit {
     }
 
     async get_Tambon(location_id) {
+
         const get_detail_by_id = (id) => {
             return this.arrLocationDetail.filter(row => {
                 if (row.location_id === id) {
@@ -251,6 +268,7 @@ export class WarehouseCreateComponent implements OnInit {
                 return false;
             });
         };
+
         const newArray = [];
         await this.arrLocation.forEach(row => {
             if (row.parent_id == location_id) {
@@ -281,6 +299,7 @@ export class WarehouseCreateComponent implements OnInit {
             this.stockForm.get('location_lat').patchValue(0);
             this.stockForm.get('location_lng').patchValue(0);
             this.stockForm.get('location_lat_location_lng').patchValue(0 + ',' + 0);
+            console.log("stockForm", this.stockForm.value);
         }
     }
 
@@ -303,6 +322,7 @@ export class WarehouseCreateComponent implements OnInit {
 
     /*Get Amphoe Edit */
     async get_Amphoe_Edit(location_id, strAmphoe, strTambon) {
+
         const get_detail_by_id = (id) => {
             return this.arrLocationDetail.filter(row => {
                 if (row.location_id == id) {
@@ -336,6 +356,7 @@ export class WarehouseCreateComponent implements OnInit {
 
     /*Change Amphoe Edit */
     async changeAmphoeEdit(strAmphoe, strTambon) {
+
         const thisLocation = await this.arrAmphoe.filter(row => {
             if (row.location_name.indexOf(strAmphoe) !== -1) {
                 return true;
@@ -352,6 +373,7 @@ export class WarehouseCreateComponent implements OnInit {
 
     /*Get Tambon Edit */
     async get_Tambon_Edit(location_id, strTambon) {
+
         const get_detail_by_id = (id) => {
             return this.arrLocationDetail.filter(row => {
                 if (row.location_id == id) {
@@ -390,11 +412,11 @@ export class WarehouseCreateComponent implements OnInit {
             const arrTambon = this.arrTambon.filter((x) => x.location_name === strTambon)
             this.stockForm.get('tambon').patchValue(arrTambon[0].location_name);
             this.stockForm.get('zipcode').patchValue(arrTambon[0].location_postcode);
+            console.log("stockForm", this.stockForm.value);
         }
     }
 
     //--------------------------------------------
-
 
     btnDialogMab() {
 
@@ -518,7 +540,7 @@ export class WarehouseCreateComponent implements OnInit {
         }
 
     }
-
+    
     btnCancelClick() {
         const dialogRef = this.dialogService.open(DialogsCancelComponent, {
         });
@@ -536,6 +558,7 @@ export class WarehouseCreateComponent implements OnInit {
         });
 
     }
+
     btnBackClick() {
         const dialogRef = this.dialogService.open(DialogsCancelComponent, {
         });
@@ -548,8 +571,6 @@ export class WarehouseCreateComponent implements OnInit {
             }
         });
     }
-
-
 
     uploadFile(event) {
         if (event.length === 0)
@@ -572,13 +593,13 @@ export class WarehouseCreateComponent implements OnInit {
         this.upload()
     }
 
-
     upload() {
         const dataJson = {
             type_id: 200,
             file_name: this.imagePath.name,
             file_type: this.imagePath.type,
-            distributor_id: this.id_local,
+            supplier_id: this.id_local,
+            distributor_id: 0
         }
 
         this.uploadAPIService.uploadImg(JSON.stringify(dataJson)).subscribe(res => {
@@ -600,8 +621,6 @@ export class WarehouseCreateComponent implements OnInit {
             console.log(res1);
         })
     }
-
-
 
     phoneNumber() {
         let function_phone = {
@@ -740,7 +759,6 @@ export class WarehouseCreateComponent implements OnInit {
             });
         });
     }
-
 
 
 }

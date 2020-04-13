@@ -9,11 +9,13 @@ import { HttpClientModule } from '@angular/common/http';
 import {
   BillingAPIService, LocationAPIService, SupplierAPIService, BrowseSupplierAPIService,
   PurchaseAPIService, CheckinAPIService, WarehouseAPIService, ProductAPIService, DealerAPIService, OrderAPIService,
-  SaveListSupplierAPIService, DistributorAPIService, AccountAPIService, MessagesAPIService, UploadAPIService, DashboardAPIService, SaleRepService
+  SaveListSupplierAPIService, DistributorAPIService, AccountAPIService, MessagesAPIService, UploadAPIService, DashboardAPIService, SaleRepService,
+  ReusableReactiveFormService
 } from '@project/services';
 import { DialogsModule } from './dialogs/dialogs.module';
 import { LayoutsModule } from './layouts/layouts.module';
 import { DropFileModule } from './drop-file/drop-file.module';
+
 
 
 @NgModule({
@@ -28,7 +30,7 @@ import { DropFileModule } from './drop-file/drop-file.module';
     CoresModule.forRoot(),
     DialogsModule,
     LayoutsModule,
-    DropFileModule
+    DropFileModule,
   ],
   providers: [
     BillingAPIService,
@@ -46,8 +48,9 @@ import { DropFileModule } from './drop-file/drop-file.module';
     AccountAPIService,
     MessagesAPIService,
     UploadAPIService,
-    DashboardAPIService, 
-    SaleRepService
+    DashboardAPIService,
+    SaleRepService,
+    ReusableReactiveFormService
 
   ],
   bootstrap: [AppComponent],

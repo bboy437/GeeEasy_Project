@@ -9,40 +9,33 @@
                     </div>
                 </nb-card-header>
                 <nb-card-body>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label>Note</label>
-                            <input libOnlyCharacterDefault status="primary" type="text" nbInput fullWidth
-                                formControlName="note" class="form-control"
-                                [ngClass]="{ 'is-invalid': submitted && f.note.errors }" />
-                            <div *ngIf="submitted && !!f.note.errors" class="invalid-feedback">
-                                <div style="text-align: left" *ngIf="!!f.note.errors.required">
-                                    Note is required
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <project-input libOnly="libOnlyCharacterDefault" inputType="text" label="Note :"
+                                    requiredName="Note" [control]="ReplyForm.get('note')">
+                                </project-input>
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <label> Date</label>
+                                <input [ngClass]="{ 'is-invalid': submitted && f.date.errors }" type="text"
+                                    class="form-control" bsDatepicker #dp="bsDatepicker"
+                                    [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-red' }"
+                                    formControlName="date">
+                                <div *ngIf="submitted && !!f.date.errors" class="invalid-feedback">
+                                    <div style="text-align: left" *ngIf="!!f.date.errors.required">
+                                        Date is required
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div><br>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label> Date</label>
-                            <input [ngClass]="{ 'is-invalid': submitted && f.date.errors }" status="primary" type="text"
-                                class="form-control" bsDatepicker #dp="bsDatepicker"
-                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-red' }"
-                                formControlName="date">
-                            <div *ngIf="submitted && !!f.date.errors" class="invalid-feedback">
-                                <div style="text-align: left" *ngIf="!!f.date.errors.required">
-                                    Date is required
-                                </div>
-                            </div>
-                        </div>
-                    </div><br>
-                    <div class="row" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem">
-                        <div class="col-md-12">
+
+                        <div class="d-flex justify-content-center" style="padding-top: 2rem;">
                             <button nbButton style="width: 100px" status="danger"
-                                (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
-                            <button [disabled]="!ReplyForm.valid" [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny"
-                                nbSpinnerStatus="success" nbButton style="width: 100px" status="success"
-                                (click)="btnSaveClick()">OK</button>
+                                (click)="btnCancelClick()">Cancel</button>
+                            <button [disabled]=" ReplyForm.invalid" [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny"
+                                nbSpinnerStatus="success" nbButton style="width: 100px; margin-left: 0.7rem;"
+                                status="success" (click)="btnSaveClick()">OK</button>
                         </div>
                     </div>
                 </nb-card-body>

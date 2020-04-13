@@ -1,4 +1,4 @@
-<div class="pages">
+<div class="pages" [formGroup]="Form">
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card style="padding: 0;">
@@ -34,7 +34,7 @@
             </nb-card>
         </div>
         <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="warning">
-            <nb-card class="box-shadow-unset">
+            <nb-card>
                 <nb-card-body>
                     <div class="body">
                         <div class="row">
@@ -44,166 +44,105 @@
                                         <div class="row">
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12"
                                                 style="padding-bottom: 1rem;">
-                                                <div class="cover-background-image">
-                                                    <div class="background-image padding-top-60"
-                                                        [ngClass]="{'active' : arrDistributor.distributor_image_url === '-' || arrDistributor.distributor_image_url === ''}"
-                                                        [ngStyle]="{'background-image': 'url('+arrDistributor.distributor_image_url+')'}">
-                                                    </div>
-                                                </div>
+                                                <project-display-file-image theme="dark"
+                                                    [image_url_array]="image.main_image.get">
+                                                </project-display-file-image>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 col-lg-6 col-xl-6">
                                         <div class="row">
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Distributor Name :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput
-                                                        fullWidth [(ngModel)]="arrDistributor.distributor_name" />
-                                                </div>
+                                                <project-input inputType="text" label="Distributor Name :"
+                                                    [control]="Form.get('distributor_name')">
+                                                </project-input>
                                             </div>
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input"
-                                                    *ngFor="let p of arrDistributor.product_category_array">
-                                                    <label>Product Category :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput
-                                                        fullWidth [(ngModel)]="p.product_category_name" />
-                                                </div>
+                                                <project-input inputType="text" label="Product Category :"
+                                                    [control]="Form.get('product_category_name')">
+                                                </project-input>
                                             </div>
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Distributor Keyworde :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput
-                                                        fullWidth
-                                                        [(ngModel)]="arrDistributor.distributor_catalog_keyword" />
-                                                </div>
+                                                <project-input inputType="text" label="Distributor Keyworde :"
+                                                    [control]="Form.get('distributor_catalog_keyword')">
+                                                </project-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top: 1rem;">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="First Name :"
+                                                    [control]="Form.get('distributor_firstname')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="Last Name :"
+                                                    [control]="Form.get('distributor_lastname')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12">
+                                                <project-input inputType="text" label="Email :"
+                                                    [control]="Form.get('distributor_email')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12">
+                                                <project-input inputType="text" label="Telephone Number :"
+                                                    [control]="Form.get('distributor_tel')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12">
+                                                <project-input inputType="text" label="Mobile Phone Number :"
+                                                    [control]="Form.get('distributor_mobile')">
+                                                </project-input>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 col-lg-6 col-xl-6">
                                         <div class="row">
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-textarea rows="3" label="Address :"
+                                                    [control]="Form.get('distributor_addr_full')">
+                                                </project-textarea>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="Address Number :"
+                                                    [control]="Form.get('distributor_addr_number')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="Province :"
+                                                    [control]="Form.get('distributor_addr_province')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="Amphoe :"
+                                                    [control]="Form.get('distributor_addr_amphoe')">
+                                                </project-input>
+                                            </div>
 
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>First Name :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput
-                                                        fullWidth [(ngModel)]="arrDistributor.distributor_firstname" />
-                                                </div>
+                                                <project-input inputType="text" label="Tambon :"
+                                                    [control]="Form.get('distributor_addr_tambon')">
+                                                </project-input>
                                             </div>
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Last Name :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput
-                                                        fullWidth [(ngModel)]="arrDistributor.distributor_lastname" />
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Email :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput
-                                                        fullWidth [(ngModel)]="arrDistributor.distributor_email" />
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Telephone Number :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text"
-                                                        libOnlyCharacterphonnumber nbInput fullWidth
-                                                        [(ngModel)]="arrDistributor.distributor_tel" />
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Mobile Phone Number :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text"
-                                                        mask='000-000-0000' placeholder="XXX-XXX-XXXX" nbInput fullWidth
-                                                        [(ngModel)]="arrDistributor.distributor_mobile" />
-                                                </div>
-                                            </div>
-                                            <!-- <div class="col-12" *ngIf="(arrDistributor.distributor_addr_lat != '' && arrDistributor.distributor_addr_lat != undefined) && 
-                                            (arrDistributor.distributor_addr_lng != ''  && arrDistributor.distributor_addr_lng != undefined)">
-                                                <div class="cover-input">
-                                                    <label>Location Lat :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                        [(ngModel)]="arrDistributor.distributor_addr_lat" />
-                                                </div>
-                                            </div>
-                                            <div class="col-12" *ngIf="(arrDistributor.distributor_addr_lat != '' && arrDistributor.distributor_addr_lat != undefined) && 
-                                            (arrDistributor.distributor_addr_lng != ''  && arrDistributor.distributor_addr_lng != undefined)">
-                                                <div class="cover-input">
-                                                    <label>Location Lng :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                        [(ngModel)]="arrDistributor.distributor_addr_lng" />
-                                                </div>
-                                            </div> -->
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                        <div class="row">
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Address :</label>
-                                                    <textarea rows="3" disabled type="text" nbInput fullWidth
-                                                        [(ngModel)]="arrDistributor.distributor_addr_full">
-                                                        </textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Address Number :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput
-                                                        fullWidth
-                                                        [(ngModel)]="arrDistributor.distributor_addr_number" />
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Province :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput
-                                                        fullWidth
-                                                        [(ngModel)]="arrDistributor.distributor_addr_province" />
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Amphoe :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput
-                                                        fullWidth
-                                                        [(ngModel)]="arrDistributor.distributor_addr_amphoe" />
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Tambon :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput
-                                                        fullWidth
-                                                        [(ngModel)]="arrDistributor.distributor_addr_tambon" />
-                                                </div>
-                                            </div>
-                                            <!-- <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Zipcode :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                        [(ngModel)]="arrDistributor.distributor_addr_post" />
-                                                </div>
-                                            </div> -->
-                                            <div class="col-12">
                                                 <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="cover-input">
-                                                            <label>Zipcode :</label>
-                                                            <input libOnlyCharacterDefault disabled type="text" nbInput
-                                                                fullWidth
-                                                                [(ngModel)]="arrDistributor.distributor_addr_post" />
-                                                        </div>
+                                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                                        <project-input inputType="text" label="Zipcode :"
+                                                            [control]="Form.get('distributor_addr_post')">
+                                                        </project-input>
                                                     </div>
-                                                    <div class="col-6">
-                                                        <div class="cover-input">
-                                                            <label>Latitude, Longitude</label>
-                                                            <input libOnlyCharacterDefault disabled type="text" nbInput
-                                                                fullWidth
-                                                                [(ngModel)]="arrDistributor.distributor_addr_lat +', '+ arrDistributor.distributor_addr_lng" />
-                                                        </div>
+                                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                                        <project-input inputType="text" label="Latitude, Longitude :"
+                                                            [control]="Form.get('lat_long')">
+                                                        </project-input>
                                                     </div>
                                                 </div>
                                             </div>
@@ -215,67 +154,17 @@
                     </div>
                 </nb-card-body>
             </nb-card>
-            <!-- <nb-card class="box-shadow-unset" *ngIf="arrDistributorProduct.length !== 0">
-                <nb-card-body>
-                    <div class="body">
-                        <div class="row">>
-                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                <table class="table hover">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">
-                                                Image
-                                            </th>
-                                            <th class="left" scope="col">
-                                                Product Name
-                                            </th>
-                                            <th scope="col">
-                                                Product SKU
-                                            </th>
-                                            <th scope="col">
-                                                Product Price
-                                            </th>
-                                            <th scope="col">
-                                                <nb-icon icon="refresh-outline"></nb-icon>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let Product of arrDistributorProduct">
-                                            <td>
-                                                <img *ngIf="Product.product_image_url !== '-' && Product.product_image_url !== '' "
-                                                    src="{{Product.product_image_url}}" width="30">
-                                                <img *ngIf="Product.product_image_url === '-' || Product.product_image_url === '' "
-                                                    src="https://static.apiary.io/assets/1lqsC4I4.png" width="30">
-                                            </td>
-                                            <td class="left">
-                                                {{Product.product_name}}
-                                            </td>
-                                            <td>
-                                                {{Product.product_sku}}
-                                            </td>
-                                            <td>
-                                                {{arrDistributor.distributor_tel}}
-                                            </td>
-                                            <td colspan="2">
-                                                {{Product.product_price}}
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </nb-card-body>
-            </nb-card> -->
-            <nb-card class="box-shadow-unset" *ngIf="(arrDistributor.distributor_addr_lat != '' && arrDistributor.distributor_addr_lat != undefined) && 
-            (arrDistributor.distributor_addr_lng != ''  && arrDistributor.distributor_addr_lng != undefined)">
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card
+                *ngIf="!loading && this.arrDistributor.distributor_addr_lat != 0 && arrDistributor.distributor_addr_lng != 0">
                 <nb-card-body>
                     <div class="body">
                         <div class="row">
                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                <project-map [let]="arrDistributor.distributor_addr_lat"
-                                    [long]="arrDistributor.distributor_addr_lng"></project-map>
+                                <project-map-detail [let]="this.arrDistributor.distributor_addr_lat"
+                                    [long]="arrDistributor.distributor_addr_lng">
+                                </project-map-detail>
                             </div>
                         </div>
                     </div>

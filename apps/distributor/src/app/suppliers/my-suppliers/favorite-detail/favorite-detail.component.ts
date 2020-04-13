@@ -98,6 +98,7 @@ export class FavoriteDetailComponent implements OnInit {
       amphoe: [{value: '', disabled: true}, Validators.required],
       tambon: [{value: '', disabled: true}, Validators.required],
       zipcode: [{value: '', disabled: true}, Validators.required],
+      latlong: [{ value: '', disabled: true }, Validators.required],
     });
   }
 
@@ -119,6 +120,7 @@ export class FavoriteDetailComponent implements OnInit {
       amphoe: this.arrSupplier.supplier_addr_amphoe,
       tambon: this.arrSupplier.supplier_addr_tambon,
       zipcode: this.arrSupplier.supplier_addr_postcode,
+      latlong: this.arrSupplier.supplier_addr_location_lat + ',' + this.arrSupplier.supplier_addr_location_lng,
     });
     this.loading = false;
   }

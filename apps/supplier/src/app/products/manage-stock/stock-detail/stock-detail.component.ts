@@ -4,7 +4,7 @@ import { ProductAPIService, UploadAPIService } from "@project/services";
 import { ProductData } from "@project/interfaces";
 import { DialogsImageComponent } from "../../../dialogs/dialogs-image/dialogs-image.component";
 import { NbDialogService } from "@nebular/theme";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
 
 @Component({
   selector: "project-stock-detail",
@@ -36,6 +36,11 @@ export class StockDetailComponent implements OnInit {
     product_image_array_state: true
   };
 
+  get wholesale(): FormArray {
+    return this.Form.get('wholesale') as FormArray;
+  }
+
+
   constructor(
     private router: Router,
     private productAPIService: ProductAPIService,
@@ -63,6 +68,19 @@ export class StockDetailComponent implements OnInit {
             data.response_data.forEach(item => {
               this.arrProductDetail = item;
               console.log("getProductDetailSup : item : ", item);
+              if (
+                this.arrProductDetail.product_image_url !== undefined &&
+                this.arrProductDetail.product_image_url !== "-" &&
+                this.arrProductDetail.product_image_url !== ""
+              )
+                this.uploadAPIService
+                  .uploadImage()
+                  .getUrl(
+                    this.arrProductDetail.product_image_url,
+                    red_image => {
+                      this.product.main_image.get.push(red_image);
+                    }
+                  );
               if (this.arrProductDetail.product_image_array !== undefined)
                 this.uploadAPIService
                   .uploadImage()
@@ -133,9 +151,16 @@ export class StockDetailComponent implements OnInit {
       product_public_status_id: [
         { value: "", disabled: true },
         Validators.required
-      ]
+      ],
+      width: [{ value: "", disabled: true }, Validators.required],
+      weight: [{ value: "", disabled: true }, Validators.required],
+      height: [{ value: "", disabled: true }, Validators.required],
+      width_unit: [{ value: "", disabled: true }, Validators.required],
+      weight_unit: [{ value: "", disabled: true }, Validators.required],
+      height_unit: [{ value: "", disabled: true }, Validators.required],
+      wholesale: this.formBuilder.array([])
     });
-    this.loading = false;
+
   }
 
   detailForm() {
@@ -155,7 +180,7 @@ export class StockDetailComponent implements OnInit {
       product_unit: this.arrProductDetail.product_unit,
       category_custom_keyword: this.arrProductDetail.category_custom_keyword,
       product_currency_code: this.arrProductDetail.product_currency_code,
-      initial_stock: onhand % 1 !== 0 ? onhand : onhand + ".00",
+      initial_stock: onhand,
       product_barcode: this.arrProductDetail.product_barcode,
       product_country: this.arrProductDetail.product_country,
       product_channel: this.arrProductDetail.product_channel,
@@ -166,8 +191,26 @@ export class StockDetailComponent implements OnInit {
       product_public_status_id:
         this.arrProductDetail.product_public_status_id === 1
           ? "Active"
-          : "Inactive"
+          : "Inactive",
+      width: this.arrProductDetail.product_attribute.width,
+      weight: this.arrProductDetail.product_attribute.weight,
+      height: this.arrProductDetail.product_attribute.height,
+      width_unit: this.arrProductDetail.product_attribute.width_unit,
+      weight_unit: this.arrProductDetail.product_attribute.weight_unit,
+      height_unit: this.arrProductDetail.product_attribute.height_unit,
     });
+
+    // wholesale
+    this.arrProductDetail.product_wholesale_array.forEach(element => {
+      element.disabled = true;
+      this.wholesale.push(
+        this.formBuilder.group(element)
+      );
+    });
+
+    this.Form.disable();
+    this.wholesale.disable();
+
     this.loading = false;
   }
 

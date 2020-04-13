@@ -1,13 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import * as Uppy from '@uppy/core/lib';
-import * as RestoreFiles from '@uppy/golden-retriever';
 import * as Dashboard from '@uppy/dashboard';
-import * as GoogleDrive from '@uppy/google-drive';
-import * as Dropbox from '@uppy/dropbox';
-import * as Instagram from '@uppy/instagram';
-import * as Webcam from '@uppy/webcam';
-import * as Tus from '@uppy/tus';
 import * as AwsS3 from '@uppy/aws-s3';
 
 import { UploadAPIService } from '@project/services';

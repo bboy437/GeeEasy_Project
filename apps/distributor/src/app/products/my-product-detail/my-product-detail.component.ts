@@ -4,6 +4,7 @@ import { ProductAPIService, UploadAPIService } from '@project/services';
 import { ProductData } from '@project/interfaces';
 import { DialogsImageComponent } from '../../dialogs/dialogs-image/dialogs-image.component';
 import { NbDialogService } from '@nebular/theme';
+import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 
 @Component({
   selector: 'project-my-product-detail',
@@ -23,6 +24,7 @@ export class MyProductDetailComponent implements OnInit {
   status: string;
   loading = false;
   checkedAll: boolean;
+  productForm: FormGroup;
 
   id_local: string;
 
@@ -40,6 +42,7 @@ export class MyProductDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private dialogService: NbDialogService,
     private uploadAPIService: UploadAPIService,
+    private formBuilder: FormBuilder,
   ) {
     this.id_local = localStorage.getItem('id');
     console.log(' this.id_local', this.id_local);
@@ -47,6 +50,7 @@ export class MyProductDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.buildForm();
     const params = this.route.snapshot.paramMap;
     this.status = this.route.snapshot.queryParamMap.get('status')
     if (params.has("id")) {
@@ -58,8 +62,6 @@ export class MyProductDetailComponent implements OnInit {
           this.arrProducts = <ProductData>data.response_data;
 
           if (this.arrProducts.length > 0) {
-
-
             for (let i = 0; i < this.arrProducts.length; i++) {
               // tslint:disable-next-line: triple-equals
               if (this.arrProducts[i].product_id == this.RowID) {
@@ -99,9 +101,29 @@ export class MyProductDetailComponent implements OnInit {
 
       this.allProductIsActive(this.arrProductDetails, res => {
         this.checkedAll = res;
-        this.loading = false;
       });
+      this.editForm();
     })
+  }
+
+  buildForm() {
+    this.productForm = this.formBuilder.group({
+      product_title: [{ value: "", disabled: true }, , Validators.required],
+      product_sku: [{ value: "", disabled: true }, , Validators.required],
+      product_price: [{ value: "", disabled: true }, , Validators.required],
+      note: [{ value: "", disabled: true }, , Validators.required],
+    });
+  }
+
+  editForm() {
+    this.productForm.patchValue({
+      product_title: this.arrProductDetail.product_title,
+      product_sku: this.arrProductDetail.product_sku,
+      product_price: this.arrProductDetail.product_price,
+      note: this.arrProductDetail.note,
+    });
+
+    this.loading = false;
   }
 
   allProductIsActive(product, callbacl) {
@@ -215,12 +237,6 @@ export class MyProductDetailComponent implements OnInit {
     })
 
   }
-
-
-
-
-
-
 
 
 }

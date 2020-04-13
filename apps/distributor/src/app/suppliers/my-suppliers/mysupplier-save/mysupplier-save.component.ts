@@ -41,6 +41,7 @@ export class MysupplierSaveComponent implements OnInit {
     strCancel: string;
     strSave: string;
     product_category__name: string;
+    product_category_root_id: number;
 
     phone: any = {
         tel: {
@@ -86,8 +87,6 @@ export class MysupplierSaveComponent implements OnInit {
         console.log(' this.id_local', this.id_local);
         this.loading = true;
     }
-
-
 
 
     ngOnInit() {
@@ -137,8 +136,6 @@ export class MysupplierSaveComponent implements OnInit {
                 );
 
                 this.getCategory();
-                // this.editForm();
-                this.loading = false;
             })
         }
     }
@@ -198,8 +195,13 @@ export class MysupplierSaveComponent implements OnInit {
             supplier_addr_location_lng: this.arrobjRow.supplier_addr_location_lng,
         });
         this.product_category__name = this.arrobjRow.product_category_array[0].product_category_name;
+
+        if (this.arrobjRow.product_category_array.length > 0) {
+            this.product_category_root_id = +this.arrobjRow.product_category_array[0].product_category_root_id === 0 ? +this.arrobjRow.product_category_array[0].product_category_id : +this.arrobjRow.product_category_array[0].product_category_root_id;
+            //this.product_category_root_id = +this.arrobjRow.product_category_array[0].product_category_id;
+        }
         console.log(this.supplierForm);
-        
+        this.loading = false;
     }
 
     getCategoryNew() {
@@ -213,7 +215,7 @@ export class MysupplierSaveComponent implements OnInit {
         const valueCategory = 'cur_page=' + 1 + '&per_page=' + 10 + "&distributor_id=" + this.id_local;
         this.browseSupplierAPIService.getCategory(valueCategory).subscribe(data => {
             this.arrCategory = data.response_data;
-        
+
             setTimeout(() => {
                 this.supplierForm.get('productcategory').patchValue(Number(this.arrobjRow.product_category_id));
             }, 0);
@@ -431,7 +433,6 @@ export class MysupplierSaveComponent implements OnInit {
     }
 
 
-
     btnDialogMab() {
 
         const dialogRef = this.dialogService.open(DialogsMapComponent, {
@@ -466,39 +467,27 @@ export class MysupplierSaveComponent implements OnInit {
 
     categoryEvent(event) {
         if (event.product_category__id !== 0) {
-          if (event.product_category__name === "Other") {
-            this.supplierForm.get("productcategory").patchValue(event.product_category__id);
-            this.supplierForm.get('product_category_root_id').patchValue(event.product_category_root_id);
-            this.supplierForm.get("category_custom_keyword").patchValue("");
-          } else {
-            this.supplierForm .get("productcategory").patchValue(event.product_category__id);
-            this.supplierForm.get('product_category_root_id').patchValue(event.product_category_root_id);
-            this.supplierForm.get("category_custom_keyword").patchValue("-");
-          }
-          this.product_category__name = event.product_category__name;
+            if (event.product_category__name === "Other") {
+                this.supplierForm.get("productcategory").patchValue(event.product_category__id);
+                this.supplierForm.get('product_category_root_id').patchValue(event.product_category_root_id);
+                this.supplierForm.get("category_custom_keyword").patchValue("");
+            } else {
+                this.supplierForm.get("productcategory").patchValue(event.product_category__id);
+                this.supplierForm.get('product_category_root_id').patchValue(event.product_category_root_id);
+                this.supplierForm.get("category_custom_keyword").patchValue("-");
+            }
+            this.product_category__name = event.product_category__name;
         } else {
-          this.supplierForm.get("productcategory").patchValue("");
-          this.supplierForm.get('product_category_root_id').patchValue("");
-          this.supplierForm.get("category_custom_keyword").patchValue("-");
+            this.supplierForm.get("productcategory").patchValue("");
+            this.supplierForm.get('product_category_root_id').patchValue("");
+            this.supplierForm.get("category_custom_keyword").patchValue("-");
 
-          this.product_category__name = event.product_category__name;
+            this.product_category__name = event.product_category__name;
         }
         console.log("event", event);
         console.log("product_category__name", this.product_category__name);
-      }
-    
+    }
 
-    // categoryEvent(event) {
-    //     if (event.product_category__id !== 0) {
-    //         this.supplierForm.get('productcategory').patchValue(event.product_category__id);
-    //         this.supplierForm.get('product_category_root_id').patchValue(event.product_category_root_id);
-    //     } else {
-    //         this.supplierForm.get('productcategory').patchValue("");
-    //         this.supplierForm.get('product_category_root_id').patchValue("");
-    //     }
-    //     console.log('event', event);
-
-    // }
 
     btnSaveClick() {
 
@@ -549,7 +538,7 @@ export class MysupplierSaveComponent implements OnInit {
                 supplier_name: this.supplierForm.value.suppliername,
                 product_category_id: this.supplierForm.value.productcategory,
                 product_category_root_id: this.supplierForm.value.product_category_root_id,
-                product_category_keyword: this.supplierForm.value.catalogkeyword,
+                supplier_catalog_keyword: this.supplierForm.value.catalogkeyword,
                 supplier_keyword: this.supplierForm.value.supplierkeyword,
                 category_custom_keyword: this.supplierForm.value.category_custom_keyword,
                 supplier_name_first: this.supplierForm.value.firstName,
@@ -594,7 +583,7 @@ export class MysupplierSaveComponent implements OnInit {
                 supplier_name: this.supplierForm.value.suppliername,
                 product_category_id: this.supplierForm.value.productcategory,
                 product_category_root_id: this.supplierForm.value.product_category_root_id,
-                product_category_keyword: this.supplierForm.value.catalogkeyword,
+                supplier_catalog_keyword: this.supplierForm.value.catalogkeyword,
                 category_custom_keyword: this.supplierForm.value.category_custom_keyword,
                 supplier_keyword: this.supplierForm.value.supplierkeyword,
                 supplier_name_first: this.supplierForm.value.firstName,
@@ -673,7 +662,6 @@ export class MysupplierSaveComponent implements OnInit {
         console.log(event[0]);
         this.upload()
     }
-
 
     upload() {
         const dataJson = {

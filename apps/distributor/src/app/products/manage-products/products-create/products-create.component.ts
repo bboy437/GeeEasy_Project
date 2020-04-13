@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import {
   ProductAPIService,
@@ -191,7 +191,8 @@ export class ProductsCreateComponent implements OnInit {
       weight: ["", Validators.required],
       weight_unit: ["", Validators.required],
       sku: [],
-      warehouse_name: []
+      warehouse_name: [],
+      wholesale: this.formBuilder.array([])
     });
     // product_channel: ['', Validators.required],
     this.productForm.get("product_currency_code").patchValue("THB");
@@ -230,6 +231,14 @@ export class ProductsCreateComponent implements OnInit {
       weight_unit: this.arrobjRow.product_attribute.weight_unit,
       height_unit: this.arrobjRow.product_attribute.height_unit,
     });
+
+    // wholesale
+    this.arrobjRow.product_wholesale_array.forEach(element => {
+      this.wholesale.push(
+        this.formBuilder.group(element)
+      );
+    });
+
     // product_channel: this.arrobjRow.product_channel,
     this.productForm.get("initial_stock").disable();
     this.active = this.arrobjRow.product_is_active;
@@ -243,6 +252,20 @@ export class ProductsCreateComponent implements OnInit {
     console.log(this.product_category_root_id);
 
     this.loading = false;
+  }
+
+  get wholesale(): FormArray {
+    return this.productForm.get('wholesale') as FormArray;
+  }
+
+  get f() {
+    return this.productForm.controls;
+  }
+
+  onSubmit() {
+    if (this.productForm.invalid) {
+      return;
+    }
   }
 
   getCategory() {
@@ -314,31 +337,38 @@ export class ProductsCreateComponent implements OnInit {
   addWholesale() {
     const dialogRef = this.dialogService.open(ProductWholesaleComponent, {});
     dialogRef.onClose.subscribe(result => {
-      console.log("result", result);
       if (result !== undefined) {
-        this.arrWholesale.push(result);
-        this.arrWholesale.forEach(element => {
-          element.product_price =
-            element.product_price % 1 !== 0
-              ? element.product_price
-              : element.product_price + ".00";
-          element.retail_product_price =
-            element.retail_product_price % 1 !== 0
-              ? element.retail_product_price
-              : element.retail_product_price + ".00";
-        });
-        this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
-        console.log("this.arrWholesale", this.arrWholesale);
+
+        result.product_price = result.product_price % 1 !== 0 ? result.product_price : result.product_price + ".00";
+        result.retail_product_price = result.retail_product_price % 1 !== 0 ? result.retail_product_price : result.retail_product_price + ".00";
+        console.log("result", result);
+
+        this.wholesale.push(
+          this.formBuilder.group(result)
+        );
+
+        const array = this.productForm.controls.wholesale.value
+        array.sort((a, b) => a.qty_minimum - b.qty_minimum)
+        this.productForm.controls.wholesale.patchValue(array)
+
       }
     });
   }
 
   sortWholesale() {
     if (this.sort) {
-      this.arrWholesale.sort((a, b) => b.qty_minimum - a.qty_minimum);
+      const array = this.productForm.controls.wholesale.value;
+      array.sort((a, b) => b.qty_minimum - a.qty_minimum);
+      this.productForm.controls.wholesale.patchValue(array);
+
+      // this.arrWholesale.sort((a, b) => b.qty_minimum - a.qty_minimum);
       this.sort = false;
     } else {
-      this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
+      const array = this.productForm.controls.wholesale.value;
+      array.sort((a, b) => a.qty_minimum - b.qty_minimum);
+      this.productForm.controls.wholesale.patchValue(array);
+
+      // this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
       this.sort = true;
     }
   }
@@ -359,9 +389,10 @@ export class ProductsCreateComponent implements OnInit {
     }
   }
 
-  onKeyMinimum(searchValue, data: any): void {
+  onKeyMinimum(searchValue, data): void {
     console.log(data);
-    if (data.qty_minimum <= 0 || data.qty_minimum === "") {
+    if (data.value.qty_minimum <= 0 || data.value.qty_minimum === "") {
+      data.value.qty_minimum = 1;
       const dialogRef = this.dialogService.open(AleartComponent, {
         context: {
           status: "Quantity"
@@ -369,15 +400,16 @@ export class ProductsCreateComponent implements OnInit {
       });
       dialogRef.onClose.subscribe(result => {
         if (result === "ok") {
-          data.qty_minimum = 1;
+          data.value.qty_minimum = 1;
         }
       });
     }
   }
 
   onCheckWholesale(event) {
-    this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
-    console.log("this.arrWholesale", this.arrWholesale);
+    const array = this.productForm.controls.wholesale.value
+    array.sort((a, b) => a.qty_minimum - b.qty_minimum)
+    this.productForm.controls.wholesale.patchValue(array)
   }
 
   addWarehouse() {
@@ -392,7 +424,9 @@ export class ProductsCreateComponent implements OnInit {
   }
 
   deleteWholesale(i) {
-    this.arrWholesale.splice(i, 1);
+    const control = <FormArray>this.productForm.controls['wholesale'];
+    control.removeAt(i);
+    // this.arrWholesale.splice(i, 1);
   }
 
   categoryEvent(event) {
@@ -436,12 +470,8 @@ export class ProductsCreateComponent implements OnInit {
     }
   }
 
-  get f() {
-    return this.productForm.controls;
-  }
-
   checkQtyMinimum() {
-    console.log(this.productForm.value);
+
     this.productForm.get("productName").patchValue(this.productForm.value.productName.replace(/[^\u0E00-\u0E7Fa-zA-Z_0-9 \.\-\(\)\&]/g, ""));
     this.productForm.get("productSKU").patchValue(this.productForm.value.productSKU.replace(/[^a-zA-Z_0-9 \.\-]/g, ""));
     this.productForm.get("productUnit").patchValue(this.productForm.value.productUnit.replace(/[^\u0E00-\u0E7Fa-zA-Z \.\-]/g, ""));
@@ -460,12 +490,13 @@ export class ProductsCreateComponent implements OnInit {
     }
 
     //Check Qty Minimum
-    const lookup = this.arrWholesale.reduce((a, e) => {
+    const array = this.productForm.controls.wholesale.value
+    const lookup = array.reduce((a, e) => {
       a[e.qty_minimum] = ++a[e.qty_minimum] || 0;
       return a;
     }, {});
 
-    const value = this.arrWholesale.filter(e => lookup[e.qty_minimum]);
+    const value = array.filter(e => lookup[e.qty_minimum]);
 
     if (value.length > 0) {
       const dialogRef = this.dialogService.open(AleartComponent, {
@@ -480,20 +511,9 @@ export class ProductsCreateComponent implements OnInit {
         }
       });
     } else {
-      if (this.arrWholesale.length > 0) {
-        this.strWholesal = false;
-        this.btnSaveClick();
-      } else {
-        this.strWholesal = true;
-      }
-
+      this.btnSaveClick();
     }
 
-    // console.log(this.arrWholesale.filter(e => lookup[e.qty_minimum]));
-    console.log("lookup", lookup);
-    console.log("value", value);
-
-    console.log("arrWholesale", this.arrWholesale);
   }
 
   btnSaveClick() {
@@ -503,11 +523,13 @@ export class ProductsCreateComponent implements OnInit {
         this.product.product_image_array_state = state;
 
         //Check Whosale
-        this.arrWholesale.forEach(element => {
+        const array = this.productForm.controls.wholesale.value
+        array.forEach(element => {
           element.product_price = +element.product_price;
           element.retail_product_price = +element.retail_product_price;
         });
-        this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
+        array.sort((a, b) => a.qty_minimum - b.qty_minimum)
+
 
         let channel = {
           one: {
@@ -687,10 +709,10 @@ export class ProductsCreateComponent implements OnInit {
             : "-",
         product_title: this.productForm.value.productName,
         product_buy_price: +this.productForm.value.productPrice,
-        product_price: +this.arrWholesale[0].product_price,
+        product_price: +this.wholesale.value[0].product_price,
         product_sku: this.productForm.value.productSKU,
         product_unit: this.productForm.value.productUnit,
-        product_wholesale_array: this.arrWholesale,
+        product_wholesale_array: this.productForm.controls.wholesale.value,
         product_category_id: +this.productForm.value.productCategory,
         category_custom_keyword: this.productForm.value.category_custom_keyword,
         product_currency_code: this.productForm.value.product_currency_code,
@@ -737,10 +759,10 @@ export class ProductsCreateComponent implements OnInit {
             : "-",
         product_title: this.productForm.value.productName,
         product_buy_price: +this.productForm.value.productPrice,
-        product_price: +this.arrWholesale[0].product_price,
+        product_price: +this.wholesale.value[0].product_price,
         product_sku: this.productForm.value.productSKU,
         product_unit: this.productForm.value.productUnit,
-        product_wholesale_array: this.arrWholesale,
+        product_wholesale_array: this.productForm.controls.wholesale.value,
         product_category_id: +this.productForm.value.productCategory,
         product_id: this.arrobjRow.product_id,
         category_custom_keyword: this.productForm.value.category_custom_keyword,
@@ -772,7 +794,6 @@ export class ProductsCreateComponent implements OnInit {
         }
       };
       console.log(dataJson);
-      console.log(JSON.stringify(dataJson));
       this.productAPIService
         .updateProductsDistributor(JSON.stringify(dataJson))
         .subscribe(data => {

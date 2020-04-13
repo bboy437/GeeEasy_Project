@@ -1,3 +1,4 @@
+
 <div class="pages" [formGroup]="Form">
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
@@ -46,77 +47,68 @@
                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                 <div class="row">
                                     <div class="col-12 col-md-6 col-lg-6 col-xl-6" style="text-align: center">
-                                        <project-display-file-image theme="white"
-                                            [image_url_array]="image.main_image.get"></project-display-file-image>
-
-                                        <!-- <div class="cover-input" style="text-align: left;">
-                                            <label>Location Lat</label>
-                                            <input nbInput status="primary" type="text" class="btnDisabled" disabled
-                                                nbInput fullWidth [(ngModel)]="arrobjRow.warehouse_lat" />
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <project-display-file-image theme="white"
+                                                    [image_url_array]="image.main_image.get">
+                                                </project-display-file-image>
+                                            </div>
                                         </div>
-                                        <div class="cover-input" style="text-align: left;">
-                                            <label>Location Lng</label>
-                                            <input nbInput status="primary" type="text" class="btnDisabled" disabled
-                                                nbInput fullWidth [(ngModel)]="arrobjRow.warehouse_lng" />
-                                        </div> -->
                                     </div>
                                     <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                                        <div class="cover-input">
-                                            <label>Warehouse Name</label>
-                                            <input nbInput status="primary" type="text" class="btnDisabled" fullWidth
-                                                formControlName="warehouse_name" />
-                                        </div>
-                                        <div class="cover-input">
-                                            <label>Telephone Number</label>
-                                            <input nbInput status="primary" type="text" libOnlyCharacterphonnumber
-                                                class="btnDisabled" fullWidth formControlName="warehouse_tel" />
-                                        </div>
-                                        <div class="cover-input">
-                                            <label>Mobile Phone Number</label>
-                                            <input nbInput status="primary" type="text" class="btnDisabled" fullWidth
-                                                formControlName="warehouse_mobile" />
-                                        </div>
-                                        <div class="cover-textarea">
-                                            <label> Address</label>
-                                            <textarea status="primary" type="text" class="btnDisabled" nbInput fullWidth
-                                                formControlName="warehouse_addr_address_full"></textarea>
-                                        </div>
-                                        <div class="cover-input">
-                                            <label> Address Number</label>
-                                            <input nbInput status="primary" type="text" class="btnDisabled" fullWidth
-                                                formControlName="warehouse_addr_number" />
-                                        </div>
-                                        <div class="cover-input">
-                                            <label>Tambon</label>
-                                            <input nbInput status="primary" type="text" class="btnDisabled" fullWidth
-                                                formControlName="warehouse_addr_tambon" />
-                                        </div>
-                                        <div class="cover-input">
-                                            <label>Amphoe</label>
-                                            <input nbInput status="primary" type="text" class="btnDisabled" fullWidth
-                                                formControlName="warehouse_addr_amphoe" />
-                                        </div>
-                                        <div class="cover-input">
-                                            <label>Province</label>
-                                            <input nbInput status="primary" type="text" class="btnDisabled" fullWidth
-                                                formControlName="warehouse_addr_province" />
-                                        </div>
-
-
                                         <div class="row">
-                                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                                                <div class="cover-input">
-                                                    <label>Zipcode</label>
-                                                    <input nbInput status="primary" type="text" class="btnDisabled"
-                                                        fullWidth formControlName="warehouse_addr_post" />
-                                                </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="Warehouse Name :"
+                                                    [control]="Form.get('warehouse_name')">
+                                                </project-input>
                                             </div>
-                                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                                                <div class="cover-input">
-                                                    <label> Latitude Longitude</label>
-                                                    <input nbInput status="primary" type="text" class="btnDisabled"
-                                                        fullWidth formControlName="warehouse_lat_log" />
-
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="Telephone Number :"
+                                                    [control]="Form.get('warehouse_tel')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="Mobile Phone Number :"
+                                                    [control]="Form.get('warehouse_mobile')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-textarea rows="3" label="Address :"
+                                                    [control]="Form.get('warehouse_addr_address_full')">
+                                                </project-textarea>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="Address Number :"
+                                                    [control]="Form.get('warehouse_addr_number')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="Province :"
+                                                    [control]="Form.get('warehouse_addr_province')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="Amphoe :"
+                                                    [control]="Form.get('warehouse_addr_amphoe')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="Tambon :"
+                                                    [control]="Form.get('warehouse_addr_tambon')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="row">
+                                                    <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                                        <project-input inputType="text" label="Zipcode :"
+                                                            [control]="Form.get('warehouse_addr_post')">
+                                                        </project-input>
+                                                    </div>
+                                                    <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                                        <project-input inputType="text" label="Latitude Longitude :"
+                                                            [control]="Form.get('warehouse_lat_log')">
+                                                        </project-input>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

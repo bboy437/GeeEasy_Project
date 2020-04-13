@@ -128,6 +128,7 @@ export class MysupplierDetailComponent implements OnInit {
       amphoe: [{ value: '', disabled: true }, Validators.required],
       tambon: [{ value: '', disabled: true }, Validators.required],
       zipcode: [{ value: '', disabled: true }, Validators.required],
+      latlong: [{ value: '', disabled: true }, Validators.required],
     });
   }
 
@@ -135,7 +136,7 @@ export class MysupplierDetailComponent implements OnInit {
     this.Form.patchValue({
       suppliername: this.arrSupplier.supplier_name,
       productcategory: this.arrSupplier.product_category_array[0].product_category_name,
-      catalogkeyword: this.arrSupplier.product_category_keyword,
+      catalogkeyword: this.arrSupplier.supplier_catalog_keyword,
       category_custom_keyword: this.arrSupplier.category_custom_keyword,
       supplierkeyword: this.arrSupplier.supplier_keyword,
       firstName: this.arrSupplier.supplier_name_first,
@@ -150,6 +151,7 @@ export class MysupplierDetailComponent implements OnInit {
       amphoe: this.arrSupplier.supplier_addr_amphoe,
       tambon: this.arrSupplier.supplier_addr_tambon,
       zipcode: this.arrSupplier.supplier_addr_postcode,
+      latlong: this.arrSupplier.supplier_addr_location_lat  + ',' + this.arrSupplier.supplier_addr_location_lng,
     });
     this.loading = false;
   }

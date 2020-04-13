@@ -1,88 +1,88 @@
 <div class="pages">
-    <nb-card *ngIf="status =='checkin'" style="width: 400px;">
-        <nb-card-header>
-            <div class="header">
-                <nb-icon icon="checkmark-square-2-outline"></nb-icon>
-                <label>Confirm Check-In</label>
-            </div>
-        </nb-card-header>
-        <nb-card-body>
-
-            <div class="row" style="text-align: center;">
-
-                <div class="col-md-12" style="padding-bottom: 1rem; text-align: center;">
-                    <label style="font-size: 16px;">Are you sure you want to Confirm ?</label>
-                </div>
-                <div class="col-md-12">
-                    <button nbButton style="width: 100px" status="danger"
-                        (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
-                    <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success" nbButton
-                        style="width: 100px" status="success" (click)="btnSaveClick()">Confirm</button>
-                </div>
-            </div><br>
-        </nb-card-body>
-    </nb-card>
-    <nb-card *ngIf="status =='add-img'" style="width: 1000px; height: 600px;">
-        <nb-card-header>
-            <div class="header">
-                <nb-icon icon="checkmark-square-2-outline"></nb-icon>
-                <label>Add Image</label>
-            </div>
-        </nb-card-header>
-        <nb-card-body>
-            <div class="header">
-                <div class="row">
-                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                        <project-file-upload-note theme="white" [image_url_array]="product.product_image_array.get">
-                        </project-file-upload-note>
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card *ngIf="status =='checkin'" style="width: 400px;">
+                <nb-card-header>
+                    <div class="header">
+                        <nb-icon icon="checkmark-square-2-outline"></nb-icon>
+                        <label>Confirm Check-In</label>
                     </div>
-                </div>
-            </div>
-        </nb-card-body>
-        <nb-card-footer>
-            <div class="row">
-                <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="text-align: center;padding-top: 1rem;">
-                    <button nbButton style="width: 100px" status="danger"
-                        (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
-                    <button [nbSpinner]="product.update" nbSpinnerStatus="success" nbButton style="width: 100px"
-                        status="success" (click)="btnAddImgeClick()">Save</button>
-                </div>
-            </div>
-        </nb-card-footer>
-    </nb-card>
-    <nb-card *ngIf="status =='add-note'" style="width: 400px;">
-        <nb-card-header>
-            <div class="header">
-                <nb-icon icon="checkmark-square-2-outline"></nb-icon>
-                <label>Add Note</label>
-            </div>
-        </nb-card-header>
-        <nb-card-body>
-            <div class="header" [formGroup]="Form">
-                <div class="row">
-                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                        <label>Note</label>
-                        <textarea rows="5" nbInput status="primary" type="text" nbInput fullWidth formControlName="note"
-                            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.note.errors }">
-                            </textarea>
-                        <div *ngIf="submitted && !!f.note.errors" class="invalid-feedback">
-                            <div style="text-align: left" *ngIf="!!f.note.errors.required">
-                                Note Name is required
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row" style="text-align: center;">
+                            <div class="col-md-12" style="padding-bottom: 1rem; text-align: center;">
+                                <label style="font-size: 16px;">Are you sure you want to Confirm ?</label>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button nbButton style="width: 100px" status="danger"
+                                (click)="btnCancelClick()">Cancel</button>
+                            <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success" nbButton
+                                style="width: 100px; margin-left: 0.7rem;" status="success"
+                                (click)="btnSaveClick()">Confirm</button>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card *ngIf="status =='add-img'" style="width: 1000px; height: 600px;">
+                <nb-card-header>
+                    <div class="header">
+                        <nb-icon icon="checkmark-square-2-outline"></nb-icon>
+                        <label>Add Image</label>
+                    </div>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <project-file-upload-note theme="white"
+                                    [image_url_array]="product.product_image_array.get">
+                                </project-file-upload-note>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </nb-card-body>
-        <nb-card-footer>
-            <div class="row">
-                <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="text-align: center;padding-top: 1rem;">
-                    <button nbButton style="width: 100px" status="danger"
-                        (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
-                    <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success" nbButton
-                        style="width: 100px" status="success" (click)="btnAddNote()">Save</button>
-                </div>
-            </div>
-        </nb-card-footer>
-    </nb-card>
+                </nb-card-body>
+                <nb-card-footer>
+                    <div class="d-flex justify-content-center">
+                        <button nbButton style="width: 100px" status="danger" (click)="btnCancelClick()">Cancel</button>
+                        <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success" nbButton
+                            style="width: 100px; margin-left: 0.7rem;" status="success"
+                            (click)="btnAddImgeClick()">OK</button>
+                    </div>
+                </nb-card-footer>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card *ngIf="status =='add-note'" style="width: 400px;" [formGroup]="Form">
+                <nb-card-header>
+                    <div class="header">
+                        <nb-icon icon="checkmark-square-2-outline"></nb-icon>
+                        <label>Add Note</label>
+                    </div>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <project-textarea rows="3" label="Note :" requiredName="Note"
+                                    [control]="Form.get('note')">
+                                </project-textarea>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+                <nb-card-footer>
+                    <div class="d-flex justify-content-center">
+                        <button nbButton style="width: 100px" status="danger" (click)="btnCancelClick()">Cancel</button>
+                        <button [disabled]="!Form.valid" [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny"
+                            nbSpinnerStatus="success" nbButton style="width: 100px; margin-left: 0.7rem;"
+                            status="success" (click)="btnAddNote()">OK</button>
+                    </div>
+                </nb-card-footer>
+            </nb-card>
+        </div>
+    </div>
 </div>

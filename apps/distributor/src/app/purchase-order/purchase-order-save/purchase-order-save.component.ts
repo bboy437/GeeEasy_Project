@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SupplierAPIService, PurchaseAPIService, ProductAPIService } from '@project/services';
 import { WarehouseAPIService } from '@project/services';
 import { TypeaheadMatch } from 'ngx-bootstrap';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { DialogsImageComponent } from '../../dialogs/dialogs-image/dialogs-image.component';
 import { NbDialogService } from '@nebular/theme';
 import { DialogsCancelComponent } from '../../dialogs/dialogs-cancel/dialogs-cancel.component';
@@ -30,8 +30,6 @@ export class PurchaseOrderSaveComponent implements OnInit {
   arrSupplier: any = [];
   arrProducts: any = [];
   arrProductsFilter: any = [];
-  arrobjRowProducts: any = [];
-  arrobjRowProduct: any = [];
   arrWarehouse: any = [];
   arrSupplierLists: any = [];
   arrWholesale: any = [];
@@ -83,6 +81,7 @@ export class PurchaseOrderSaveComponent implements OnInit {
       )
 
     )
+
   search1 = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
@@ -90,8 +89,8 @@ export class PurchaseOrderSaveComponent implements OnInit {
         : this.arrProductsName.filter(v => v.product_name.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
           v.product_sku.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)
       )
-
     )
+
   formatter = (x) => {
     if (x === '') {
     }
@@ -121,8 +120,6 @@ export class PurchaseOrderSaveComponent implements OnInit {
     }, 0);
   }
 
-
-
   constructor(
     private supplierAPIService: SupplierAPIService,
     private warehouseAPIService: WarehouseAPIService,
@@ -142,7 +139,6 @@ export class PurchaseOrderSaveComponent implements OnInit {
     this.maxDate.setMonth(this.maxDate.getMonth() + 1);
     console.log(this.minDate);
   }
-
 
   ngOnInit() {
     this.getSupplier();
@@ -176,7 +172,6 @@ export class PurchaseOrderSaveComponent implements OnInit {
 
   }
 
-
   IsSameDay(date1: Date, date2: Date) {
     if (date1.getFullYear() == date2.getFullYear() && date1.getMonth() == date2.getMonth() && date1.getDate() == date2.getDate()) {
       return true;
@@ -196,6 +191,7 @@ export class PurchaseOrderSaveComponent implements OnInit {
       BillingTerm: ['', Validators.required],
       WarehouseName: ['', Validators.required],
       Note: ['', Validators.required],
+      products: this.fb.array([])
 
     });
     this.Form.get('deliveryDate').patchValue(new Date());
@@ -204,6 +200,10 @@ export class PurchaseOrderSaveComponent implements OnInit {
 
   get f() { return this.Form.controls; }
 
+  get products(): FormArray {
+    return this.Form.get('products') as FormArray;
+  }
+
   getSupplier() {
     const value = "cur_page=" + 1 + "&per_page=" + 100 + "&search_text=" + "" + "&distributor_id=" + this.id_local + "&product_category_id=" + 0;
     this.supplierAPIService.getVerifiedSupplieList(value).subscribe(data => {
@@ -211,14 +211,13 @@ export class PurchaseOrderSaveComponent implements OnInit {
     })
   }
 
-
   btnIDClick(options: INgxSelectOption[]) {
     console.log(this.strTab);
     if (options.length > 0) {
       console.log(options[0].data);
 
       //Check เมื่อมีการเลือกซ้ำ
-      if (this.arrobjRowProduct.length > 0) {
+      if (this.products.value.length > 0) {
 
         //Check เมื่อเลือกแล้วมีการเปลื่อนแต่กด cancel
         if (this.Form.value.SupplierName1 !== options[0].data.supplier_id) {
@@ -234,7 +233,7 @@ export class PurchaseOrderSaveComponent implements OnInit {
               this.arrProducts = [];
               this.arrProductsName = [];
               this.arrProductsGroup = [];
-              this.arrobjRowProduct = [];
+              this.products.clear();
               this.selectedValue = "";
               this.selectedValue1 = "";
               this.strProductGroup = "";
@@ -261,7 +260,7 @@ export class PurchaseOrderSaveComponent implements OnInit {
         this.arrProducts = [];
         this.arrProductsName = [];
         this.arrProductsGroup = [];
-        this.arrobjRowProduct = [];
+        this.products.clear();
         this.selectedValue = "";
         this.selectedValue1 = "";
         this.strProductGroup = "";
@@ -288,45 +287,6 @@ export class PurchaseOrderSaveComponent implements OnInit {
     this.Form.get('SupplierName').patchValue(supplier_id);
   }
 
-  // btnIDClick(id: string) {
-  //   this.supplierID = id;
-
-  //   if (this.arrobjRowProduct.length > 0) {
-  //     const dialogRef = this.dialogService.open(AleartComponent, {
-  //       context: {
-  //         status: 'po',
-  //       },
-  //     });
-  //     dialogRef.onClose.subscribe(result => {
-  //       if (result === 'ok') {
-  //         this.arrProducts = [];
-  //         this.arrProductsName = [];
-  //         this.arrProductsGroup = [];
-  //         this.arrobjRowProduct = [];
-  //         this.selectedValue = "";
-  //         this.selectedValue1 = "";
-  //         this.strProductGroup = "";
-  //         this.strTab = "Product Name";
-  //       }
-  //     });
-  //   } else {
-  //     this.arrProducts = [];
-  //     this.arrProductsName = [];
-  //     this.arrProductsGroup = [];
-  //     this.arrobjRowProduct = [];
-  //     this.selectedValue = "";
-  //     this.selectedValue1 = "";
-  //     this.strProductGroup = "";
-  //     this.strTab = "Product Name";
-  //     this.supplierAPIService.getSupID(id).subscribe(data => {
-  //       this.arrSupplierLists = data.response_data;
-  //       this.getProduct(this.arrSupplierLists[0].supplier_product_array)
-  //     })
-  //     this.getProductGroup();
-  //     this.getSetting();
-  //   }
-  // }
-
   getProduct(data) {
     this.arrProducts = data;
     this.arrProductsFilter = data;
@@ -341,9 +301,9 @@ export class PurchaseOrderSaveComponent implements OnInit {
     })
   }
 
-
   btnProductGroup(inventory_group_array: any) {
     const data = inventory_group_array;
+    console.log(data);
     if (data.length > 0) {
       for (let index = 0; index < data.length; index++) {
         // tslint:disable-next-line: triple-equals
@@ -357,19 +317,16 @@ export class PurchaseOrderSaveComponent implements OnInit {
           dataProduct.supplier_product_id = data[index].product_id;
           dataProduct.product_sku = data[index].product_sku;
           dataProduct.create_time = data[index].create_time;
-          dataProduct.product_wholesale_array = [{
-            "product_price": data[index].product_price,
-            "qty_minimum": 1
-          }];
-
+          dataProduct.product_wholesale_array = data[index].product_wholesale_array;
+          dataProduct.product_currency_code = data[index].product_currency_code;
+          dataProduct.product_unit = data[index].product_unit;
+          dataProduct.product_attribute = data[index].product_attribute;
           this.arrProductsName.push(dataProduct)
-          console.log(this.arrProductsName);
+
         }
       }
     }
   }
-
-
 
   getSetting() {
     const value = this.id_local;
@@ -384,7 +341,6 @@ export class PurchaseOrderSaveComponent implements OnInit {
     })
 
   }
-
 
   getWarehouse() {
     const value = "distributor_id=" + this.id_local + "&warehouse_type_id=" + 2
@@ -405,45 +361,53 @@ export class PurchaseOrderSaveComponent implements OnInit {
     console.log('data', data);
 
     const product = data;
-    const arrobjProduct: any = {};
-    arrobjProduct.product_name = product.product_name;
-    arrobjProduct.product_sku = product.product_sku;
-    arrobjProduct.product_qty = 1;
-    arrobjProduct.product_unit = product.product_unit;
-    arrobjProduct.product_price = product.product_price;
-    arrobjProduct.product_image_url = product.product_image_url;
-    arrobjProduct.product_wholesale_array = product.product_wholesale_array;
-    arrobjProduct.product_totalplice = product.product_price;
-    arrobjProduct.supplier_product_id = product.supplier_product_id;
-    arrobjProduct.product_currency_code = product.product_currency_code;
-
-    console.log("btnAddProduct : arrobjProduct : ", arrobjProduct);
     this.currencyTotal = product.product_currency_code;
+    product.product_qty = 1;
+    product.isCheckPlice = true;
 
-    if (this.arrobjRowProduct.length === 0) {
-      this.arrobjRowProduct.push(arrobjProduct);
+    const wholesale_array = this.fb.array(data.product_wholesale_array)
+    const group = this.fb.group({
+      product_name: product.product_name,
+      product_sku: product.product_sku,
+      product_qty: product.product_qty,
+      product_unit: product.product_unit,
+      product_price: product.product_price,
+      product_image_url: product.product_image_url,
+      product_wholesale_array: wholesale_array,
+      product_totalplice: product.product_price,
+      supplier_product_id: product.supplier_product_id,
+      product_currency_code: product.product_currency_code,
+      product_attribute: product.product_attribute,
+      isCheckPlice: product.isCheckPlice,
+      numSales: product.product_price,
+
+    });
+
+
+    console.log("btnAddProduct : arrobjProduct : ", group);
+    console.log("btnAddProduct : group : ", group);
+
+    if (this.products.value.length === 0) {
+      this.products.push(group)
       this.sumTotal();
       this.checkCurrency();
     } else {
-      this.arrobjRowProduct.push(arrobjProduct);
-      if (this.arrobjRowProduct) {
-        const array = this.arrobjRowProduct
-        const arrayNew = new Map(array.map(obj => [obj.supplier_product_id, obj]));
-        const arrayNews = Array.from(arrayNew.values());
-        this.arrobjRowProduct = arrayNews;
+
+      //filter หา id ที่ซ้ำ
+      const groupID = this.products.value.filter((x) => x.supplier_product_id === group.value.supplier_product_id)
+      console.log('groupID', groupID);
+      if (groupID.length === 0) {
+        this.products.push(group)
         this.sumTotal();
         this.checkCurrency();
-
       }
-
     }
-    console.log('arrobjRowProduct', this.arrobjRowProduct);
-
+    console.log('products', this.products);
   }
 
   checkCurrency() {
     //Check Currency
-    if (this.arrobjRowProduct.length > 0) {
+    if (this.products.value.length > 0) {
       this.arrProducts = this.arrProductsFilter.filter((cur) => cur.product_currency_code === this.currencyTotal)
     } else {
       this.arrProducts = this.arrProductsFilter;
@@ -452,16 +416,17 @@ export class PurchaseOrderSaveComponent implements OnInit {
     console.log("arrProducts ", this.arrProducts);
   }
 
-
   btnSelectWholesale(data: any) {
     this.arrWholesale = data;
   }
 
   onSearchChange(searchValue, data: any): void {
-    // tslint:disable-next-line: triple-equals
-    console.log(data);
+    console.log(searchValue, data);
 
-    if (data.product_qty <= 0 || data.product_qty === "" || data.product_qty == "-") {
+    if (data.value.product_qty <= 0 || data.value.product_qty === "") {
+      data.value.product_qty = 1;
+      this.numQty = data.value.product_qty;
+      this.clickQty(data.value);
       const dialogRef = this.dialogService.open(AleartComponent, {
         context: {
           status: 'Quantity',
@@ -469,16 +434,20 @@ export class PurchaseOrderSaveComponent implements OnInit {
       });
       dialogRef.onClose.subscribe(result => {
         if (result === 'ok') {
-          data.product_qty = 1;
-          this.numQty = data.product_qty;
-          this.clickQty(data);
+          data.value.product_qty = 1;
+          this.numQty = data.value.product_qty;
+          this.clickQty(data.value);
         }
       });
 
     } else {
-      this.numQty = data.product_qty;
-      this.clickQty(data);
+      this.numQty = data.value.product_qty;
+      this.clickQty(data.value);
+
     }
+
+    const array = this.Form.controls.products.value
+    this.Form.controls.products.patchValue(array)
   }
 
   keyDown(e, value) {
@@ -491,7 +460,6 @@ export class PurchaseOrderSaveComponent implements OnInit {
 
   }
 
-
   clickQty(value) {
 
     const productID = value.supplier_product_id;
@@ -499,49 +467,54 @@ export class PurchaseOrderSaveComponent implements OnInit {
     console.log('dataminimum', dataminimum);
     console.log('numQty', this.numQty);
 
-    if (this.arrobjRowProduct.length > 0) {
-      for (let i = 0; i < this.arrobjRowProduct.length; i++) {
-        if (this.arrobjRowProduct[i].supplier_product_id === productID) {
+    if (this.products.value.length > 0) {
+      for (let i = 0; i < this.products.value.length; i++) {
+        if (this.products.value[i].supplier_product_id === productID) {
 
-          this.arrobjRowProduct[i].isCheckPlice = true;
-          this.arrobjRowProduct[i].numSales = this.arrobjRowProduct[i].product_price;
+          this.products.value[i].isCheckPlice = true;
+          this.products.value[i].numSales = this.products.value[i].product_price;
 
           if (dataminimum.length > 0) {
             //Check wholesale
             for (let index = 0; index < dataminimum.length; index++) {
               if (dataminimum[index].qty_minimum <= this.numQty) {
                 const dataminimums = dataminimum[index]
-                this.arrobjRowProduct[i].product_totalplice = (this.numQty * dataminimums.product_price)
-                this.arrobjRowProduct[i].numSales = dataminimums.product_price;
+                this.products.value[i].product_totalplice = (this.numQty * dataminimums.product_price)
+                this.products.value[i].numSales = dataminimums.product_price;
                 // tslint:disable-next-line: triple-equals
-                if (this.arrobjRowProduct[i].product_price == dataminimums.product_price) {
-                  this.arrobjRowProduct[i].isCheckPlice = true;
+                if (this.products.value[i].product_price == dataminimums.product_price) {
+                  this.products.value[i].isCheckPlice = true;
                 } else {
-                  this.arrobjRowProduct[i].isCheckPlice = false;
+                  this.products.value[i].isCheckPlice = false;
                 }
               }
             }
           } else {
-            this.arrobjRowProduct[i].product_totalplice = (this.numQty * this.arrobjRowProduct[i].product_price)
-            this.arrobjRowProduct[i].numSales = this.arrobjRowProduct[i].product_price;
+            this.products.value[i].product_totalplice = (this.numQty * this.products.value[i].product_price)
+            this.products.value[i].numSales = this.products.value[i].product_price;
           }
         }
       }
     }
+
     this.sumTotal();
   }
 
   sumTotal() {
-    this.sum = 0;
-    this.arrobjRowProduct.forEach(x => this.sum += x.product_totalplice);
-  }
+    console.log(this.products.value);
 
+    this.sum = 0;
+    this.products.value.forEach(x => this.sum += x.product_totalplice);
+  }
 
   btnDeleteProduct(i) {
     this.sum = 0;
-    this.arrobjRowProduct.splice(i, 1);
-    this.arrobjRowProduct.forEach(x => this.sum += x.product_totalplice);
-    if (this.arrobjRowProduct.length === 0) {
+    const control = <FormArray>this.Form.controls['products'];
+    control.removeAt(i);
+
+    this.products.value.forEach(x => this.sum += x.product_totalplice);
+
+    if (this.products.value.length === 0) {
       this.currencyTotal = "THB";
       this.arrProducts = this.arrProductsFilter;
     }
@@ -549,15 +522,14 @@ export class PurchaseOrderSaveComponent implements OnInit {
   }
 
   btnClearAll() {
-    this.arrobjRowProduct = [];
+    this.products.clear();
     this.currencyTotal = "THB";
     this.arrProducts = this.arrProductsFilter;
   }
 
-
   btnClear() {
     this.arrobjRow = [];
-    this.arrobjRowProduct = [];
+    this.products.clear();
     this.currencyTotal = "THB";
     this.Form.get('SupplierName').patchValue('');
     this.Form.get('BillingName').patchValue('');
@@ -572,8 +544,6 @@ export class PurchaseOrderSaveComponent implements OnInit {
     this.sum = 0;
   }
 
-
-
   btnSaveClick() {
     console.log(this.Form.value);
 
@@ -581,27 +551,25 @@ export class PurchaseOrderSaveComponent implements OnInit {
     if (this.Form.invalid) {
       return;
     }
-    if (this.arrobjRowProduct.length < 1) {
+    if (this.products.value.length < 1) {
       return;
     }
     this.isSaveLodding = true;
 
-     this.save();
+    this.save();
 
   }
 
   save() {
-    console.log('yes');
+    console.log(this.products.value);
 
-    // console.log(this.arrobjRowProduct);
-    // const param_product_json = JSON.stringify(this.arrobjRowProduct);
     const param_product_json = [];
-    for (let index = 0; index < this.arrobjRowProduct.length; index++) {
+    for (let index = 0; index < this.products.value.length; index++) {
       param_product_json.push({
-        product_price: this.arrobjRowProduct[index].numSales,
-        product_sku: this.arrobjRowProduct[index].product_sku,
-        product_qty: this.arrobjRowProduct[index].product_qty,
-        product_name: this.arrobjRowProduct[index].product_name,
+        product_price: this.products.value[index].numSales,
+        product_sku: this.products.value[index].product_sku,
+        product_qty: this.products.value[index].product_qty,
+        product_name: this.products.value[index].product_name,
       });
     }
 
@@ -625,7 +593,7 @@ export class PurchaseOrderSaveComponent implements OnInit {
       this.isSaveLodding = false;
       this.router.navigate([this.UrlRouter_Purchase]);
     })
-    // this.saveSetting()
+    this.saveSetting()
 
   }
 
@@ -649,7 +617,6 @@ export class PurchaseOrderSaveComponent implements OnInit {
     })
   }
 
-
   btnCancel() {
     const dialogRef = this.dialogService.open(DialogsCancelComponent, {
     });
@@ -663,7 +630,6 @@ export class PurchaseOrderSaveComponent implements OnInit {
     });
   }
 
-
   openImg(img: any) {
     this.dialogService.open(DialogsImageComponent, {
       context: {
@@ -675,7 +641,6 @@ export class PurchaseOrderSaveComponent implements OnInit {
   updateMyDate(newDate) {
     console.log(newDate);
   }
-
 
   createSupplier() {
     const dialogRef = this.dialogService.open(SupplierCreateComponent, {

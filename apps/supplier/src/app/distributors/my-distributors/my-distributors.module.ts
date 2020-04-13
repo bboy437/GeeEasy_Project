@@ -26,10 +26,13 @@ import { MapModule } from '../../map/map.module';
 import { IConfig, NgxMaskModule } from "ngx-mask";
 import { FavoriteComponent } from './favorite-list/favorite.component';
 import { RequestDetailComponent } from './request-detail/request-detail.component';
+import { MapDetailModule } from '../../map-detail/map-detail.module';
+
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 @NgModule({
   imports: [
+    MapDetailModule,
     MapModule,
     FormsModule,
     ThemeModule,
@@ -41,7 +44,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     SharedModule,
     NgxMaskModule.forRoot(options),
     NgxDatatableModule,
-    NgxSelectModule
+    NgxSelectModule,
   ],
   declarations: [
     FavoriteDetailComponent,

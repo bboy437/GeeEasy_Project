@@ -1,4 +1,4 @@
-<div class="pages">
+<div class="pages" [formGroup]="productForm">
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card style="padding: 0;">
@@ -54,60 +54,24 @@
                                     <div class="col-12 col-md-6 col-lg-6 col-xl-6">
                                         <div class="row">
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <div class="row">
-                                                        <label class="label col-sm-3 col-form-label"
-                                                            style="font-size: 14px; line-height:unset">Product Name
-                                                            :</label>
-                                                        <div class="col-sm-9">
-                                                            <input nbInput disabled status="primary" type="text"
-                                                                status="primary" nbInput fullWidth
-                                                                [(ngModel)]="arrProductDetail.product_title" />
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-input inputType="text" label="Product Name :"
+                                                    [control]="productForm.get('product_title')">
+                                                </project-input>
                                             </div>
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <div class="row">
-                                                        <label class="label col-sm-3 col-form-label"
-                                                            style="font-size: 14px; line-height:unset">Product
-                                                            Price :</label>
-                                                        <div class="col-sm-9">
-                                                            <input nbInput disabled status="primary" type="text"
-                                                                status="primary" nbInput fullWidth
-                                                                [(ngModel)]="arrProductDetail.product_price" />
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-input inputType="text" label="Product Price :"
+                                                    [control]="productForm.get('product_price')">
+                                                </project-input>
                                             </div>
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <div class="row">
-                                                        <label class="label col-sm-3 col-form-label"
-                                                            style="font-size: 14px; line-height:unset">Product SKU
-                                                            :</label>
-                                                        <div class="col-sm-9">
-                                                            <input nbInput disabled status="primary" type="text"
-                                                                status="primary" nbInput fullWidth
-                                                                [(ngModel)]="arrProductDetail.product_sku" />
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-input inputType="text" label="Product SKU :"
+                                                    [control]="productForm.get('product_sku')">
+                                                </project-input>
                                             </div>
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <div class="row">
-                                                        <label class="label col-sm-3 col-form-label"
-                                                            style="font-size: 14px; line-height:unset">Note
-                                                            :</label>
-                                                        <div class="col-sm-9">
-                                                            <input nbInput disabled status="primary" type="text"
-                                                                status="primary" nbInput fullWidth
-                                                                [(ngModel)]="arrProductDetail.note" />
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-textarea rows="3" label="Note :"
+                                                    [control]="productForm.get('note')">
+                                                </project-textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -140,17 +104,17 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- <ng-container *ngFor="let item of arrProductDetails"> -->
                                         <tr *ngFor="let item of arrProductDetails">
                                             <td *ngIf="status == 'list'">
                                                 <nb-checkbox status="primary"
                                                     [ngModel]="item.product_row_data.product_is_active == 1 ? true : item.product_row_data.product_is_active == 0 ? false : null"
-                                                    (checkedChange)="updateStatus($event, item)"></nb-checkbox>
+                                                    (checkedChange)="updateStatus($event, item)"
+                                                    [ngModelOptions]="{standalone: true}"></nb-checkbox>
                                             </td>
                                             <td style="text-align: left">
                                                 <div *ngFor="let purchase_data of item.purchase_data;">
                                                     <label>
-                                                        {{purchase_data.purchase_order_number}}
+                                                        {{purchase_data.purchase_order_number | number}}
                                                     </label>
                                                 </div>
                                             </td>
@@ -162,25 +126,26 @@
                                                 </div>
                                             </td>
                                             <td class="cover qty">
-                                                <input nbInput status="primary" class="disbletable" type="number"
-                                                    disabled nbInput
-                                                    [(ngModel)]="item.checkin_data.onhand - item.checkin_data.outgoing" />
+                                                <label>
+                                                    {{item.checkin_data.onhand - item.checkin_data.outgoing | number}}
+                                                </label>
                                             </td>
                                             <td class="cover qty">
-                                                <input nbInput status="primary" class="disbletable" type="number"
-                                                    nbInput disabled
-                                                    [(ngModel)]="item.checkin_data.onhand + item.checkin_data.onhand_manual" />
+                                                <label>
+                                                    {{item.checkin_data.onhand + item.checkin_data.onhand_manual | number}}
+                                                </label>
                                             </td>
                                             <td class="cover qty">
-                                                <input nbInput status="primary" class="disbletable" type="number"
-                                                    nbInput disabled [(ngModel)]="item.checkin_data.outgoing " />
+                                                <label>
+                                                    {{item.checkin_data.outgoing | number}}
+                                                </label>
                                             </td>
                                             <td class="cover qty">
-                                                <input nbInput status="primary" class="disbletable" type="number"
-                                                    nbInput disabled [(ngModel)]="item.checkin_data.incoming " />
+                                                <label>
+                                                    {{item.checkin_data.incoming| number}}
+                                                </label>
                                             </td>
                                         </tr>
-                                        <!-- </ng-container> -->
                                     </tbody>
                                 </table>
                             </div>

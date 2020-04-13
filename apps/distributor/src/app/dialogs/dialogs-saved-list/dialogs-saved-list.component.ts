@@ -13,55 +13,40 @@ export class DialogsSavedListComponent implements OnInit {
   @Input() data: any;
   @Input() isData: string;
   arrobjRow: any = {};
-  saveListForm: FormGroup;
+  formCreate: FormGroup;
   submitted = false;
   arrSaveList: any = [];
   evaIcons = [];
-  loading = false;
   isSaveLodding = false;
   id_local: string;
 
   constructor(
     private saveListSupplierAPIService: SaveListSupplierAPIService,
     private formBuilder: FormBuilder,
-    protected ref: NbDialogRef<DialogsSavedListComponent>,
-    iconsLibrary: NbIconLibraries) {
+    protected ref: NbDialogRef<DialogsSavedListComponent>) {
 
     this.id_local = localStorage.getItem('id');
     console.log(' this.id_local', this.id_local);
 
-    this.evaIcons = Array.from(iconsLibrary.getPack('eva').icons.keys())
-      .filter(icon => icon.indexOf('outline') === -1);
-
-    iconsLibrary.registerFontPack('fa', { packClass: 'fa', iconClassPrefix: 'fa' });
-    iconsLibrary.registerFontPack('far', { packClass: 'far', iconClassPrefix: 'fa' });
-    iconsLibrary.registerFontPack('ion', { iconClassPrefix: 'ion' });
   }
 
   ngOnInit() {
+    this.buildFormCreate();
     console.log('data', this.data);
     console.log('isData', this.isData);
 
-    // this.arrobjRow.name = '';
-    // this.arrobjRow.supplier_lists_id = '';
+    if (this.isData === 'Rename') {
+      this.formCreate.get("name").patchValue(this.data.supplier_lists_name);
+    }
     if (this.isData === 'new') {
-      this.buildForm();
       this.getSaveList();
     }
-    if (this.isData === 'create') {
-      this.buildForm();
-    }
-    if (this.isData === 'Rename') {
-      this.buildForm();
-      setTimeout(() => {
-        this.saveListForm.get('name').patchValue(this.data.supplier_lists_name);
-      }, 0);
-    }
+
   }
 
 
   getSaveList() {
-    const value = "cur_page=" + 1 + "&per_page=" + 10 + "&distributor_id=" + this.id_local;
+    const value = "cur_page=" + 1 + "&per_page=" + 100 + "&distributor_id=" + this.id_local;
     this.saveListSupplierAPIService.getSaveList(value).subscribe(data => {
       this.arrSaveList = data.response_data;
       console.log('this.arrSaveList', this.arrSaveList);
@@ -69,94 +54,77 @@ export class DialogsSavedListComponent implements OnInit {
     })
   }
 
-  buildForm() {
-    this.saveListForm = this.formBuilder.group({
+  buildFormCreate() {
+    this.formCreate = this.formBuilder.group({
       name: ['', Validators.required],
     });
   }
 
-  get f() { return this.saveListForm.controls; }
-  onSubmit() {
-    this.submitted = true;
-    if (this.saveListForm.invalid) {
-      return;
-    }
-  }
 
   btnCreate() {
-    this.loading = true;
-    setTimeout(() => {
-      this.saveListForm.get('name').patchValue('');
-    }, 0);
     this.isData = 'create';
-    this.loading = false;
+    this.buildFormCreate();
   }
 
-
   btnCreateClick() {
-    this.loading = true;
+    this.isSaveLodding = true;
     const dataJson = {
-      name: this.saveListForm.value.name,
+      name: this.formCreate.value.name,
       distributor_id: this.id_local,
     }
 
     this.saveListSupplierAPIService.createSaveListDist(JSON.stringify(dataJson)).subscribe(data => {
       console.log(data);
-      // this.getSaveList();
-      // this.arrobjRow.name = '';
-      // this.arrobjRow.supplier_lists_id = '';
-      this.loading = false;
+      this.isSaveLodding = false;
       this.ref.close('ok')
     })
   }
 
   btnOkClick() {
-    this.loading = true;
+    this.isSaveLodding = true;
     const dataJson = {
-      supplier_lists_id: this.saveListForm.value.name,
+      supplier_lists_id: this.formCreate.value.name,
       supplier_id: this.data.supplier_id,
       distributor_id: this.id_local
     }
     console.log(JSON.stringify(dataJson));
     this.saveListSupplierAPIService.addSaveListDist(JSON.stringify(dataJson)).subscribe(data => {
       console.log(data);
-      this.loading = false;
+      this.isSaveLodding = false;
       this.ref.close('ok')
     })
   }
 
   btnRenameClick() {
-    this.loading = true;
+    this.isSaveLodding = true;
     const dataJson = {
       supplier_lists_id: this.data.supplier_lists_id,
-      supplier_lists_name: this.saveListForm.value.name,
+      supplier_lists_name: this.formCreate.value.name,
 
     }
     console.log(JSON.stringify(dataJson));
     this.saveListSupplierAPIService.renameSaveListDist(JSON.stringify(dataJson)).subscribe(data => {
       console.log(data);
-      this.loading = false;
+      this.isSaveLodding = false;
       this.ref.close('ok')
     })
   }
 
   btnDeleteAllClick() {
-    this.loading = true;
+    this.isSaveLodding = true;
     const dataJson = {
       supplier_lists_id: this.data.supplier_lists_id,
     }
     console.log(JSON.stringify(dataJson));
     this.saveListSupplierAPIService.deleteAllDist(JSON.stringify(dataJson)).subscribe(data => {
       console.log(data);
-      this.loading = false;
+      this.isSaveLodding = false;
       this.ref.close('ok')
     })
   }
 
-
-
   btnDeleteClick() {
-    this.loading = true;
+    this.isSaveLodding = true;
     const dataJson = {
       supplier_lists_id: this.data.supplier_lists_id,
       supplier_id: this.data.supplier_id,
@@ -164,11 +132,10 @@ export class DialogsSavedListComponent implements OnInit {
     }
     console.log(JSON.stringify(dataJson));
     this.saveListSupplierAPIService.deleteSaveListDist(JSON.stringify(dataJson)).subscribe(res => {
-      this.loading = false;
+      this.isSaveLodding = false;
       this.ref.close('ok')
     })
   }
-
 
   btnCancelClick(): void {
     this.ref.close();

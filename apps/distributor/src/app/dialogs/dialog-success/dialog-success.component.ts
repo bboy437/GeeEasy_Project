@@ -48,7 +48,7 @@ export class DialogSuccessComponent implements OnInit {
       this.buildForm();
     }
     if (this.status === "add-img") {
-      if (this.data.image_array !== undefined)
+      if (this.data.image_array !== undefined && this.data.image_array !== "" && this.data.image_array !== null ) 
         this.uploadAPIService
           .uploadImage()
           .imageArray(

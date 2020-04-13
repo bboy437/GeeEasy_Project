@@ -43,10 +43,10 @@
                                             <col />
                                             <col />
                                             <col />
-                                            <col class="Outgoing" />
                                             <col class="Available" />
                                             <col class="OnHand" />
-                                            <col class="Incoming" />
+                                            <col class="Outgoing" />
+                                            <!-- <col class="Incoming" /> -->
                                             <col />
                                         </colgroup>
                                         <thead>
@@ -68,9 +68,9 @@
                                                 <th style="text-align: center; min-width: 120px;">
                                                     Outgoing
                                                 </th>
-                                                <th style="text-align: center; min-width: 120px;">
+                                                <!-- <th style="text-align: center; min-width: 120px;">
                                                     Incoming
-                                                </th>
+                                                </th> -->
                                                 <th class="left">
                                                     Status
                                                 </th>
@@ -137,11 +137,11 @@
                                                         [term]="service.searchTerm">
                                                     </ngb-highlight>
                                                 </td>
-                                                <td class="cover qty">
+                                                <!-- <td class="cover qty">
                                                     <ngb-highlight [result]="products.checkin_data.incoming | number  "
                                                         [term]="service.searchTerm">
                                                     </ngb-highlight>
-                                                </td>
+                                                </td> -->
                                                 <td tyle="text-align: left;">
                                                     <ngb-highlight
                                                         [ngClass]="products.product_is_active  == 1 ? 'active' : 'inactive' "
@@ -195,7 +195,7 @@
 
                                             <tr *ngIf="Products.length == 0"
                                                 style="height:300px; background-color: white;">
-                                                <td colspan="12" style="padding-top: 50px; text-align: center;">
+                                                <td colspan="11" style="padding-top: 50px; text-align: center;">
                                                     <img src="assets/images/loading.png" width="300"><br><br>
                                                     <label>No data.</label>
                                                 </td>
@@ -208,15 +208,17 @@
                                                 <col />
                                                 <col />
                                                 <col />
-                                                <col class="Outgoing" />
+                                                <col />
                                                 <col class="Available" />
                                                 <col class="OnHand" />
-                                                <col class="Incoming" />
+                                                <col class="Outgoing" />
+                                                <!-- <col class="Incoming" /> -->
                                                 <col />
                                             </colgroup>
                                             <thead>
                                                 <tr>
                                                     <th>Images</th>
+                                                    <th></th>
                                                     <th style="text-align: left; min-width: 200px;">
                                                         Item
                                                     </th>
@@ -232,9 +234,9 @@
                                                     <th style="text-align: center; min-width: 120px;">
                                                         Outgoing
                                                     </th>
-                                                    <th style="text-align: center; min-width: 120px;">
+                                                    <!-- <th style="text-align: center; min-width: 120px;">
                                                         Incoming
-                                                    </th>
+                                                    </th> -->
                                                     <th class="left">
                                                         Status
                                                     </th>
@@ -252,7 +254,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr style="height:300px; background-color: white;">
-                                                    <td colspan="12" style="padding-top: 50px;">
+                                                    <td colspan="11" style="padding-top: 50px;">
                                                         <div style="height: 100px;background-color: white;"
                                                             [nbSpinner]="loading" nbSpinnerStatus="primary">
                                                         </div>
@@ -269,15 +271,16 @@
                                             <col />
                                             <col />
                                             <col />
-                                            <col class="Outgoing" />
                                             <col class="Available" />
                                             <col class="OnHand" />
-                                            <col class="Incoming" />
+                                            <col class="Outgoing" />
+                                            <!-- <col class="Incoming" /> -->
                                             <col />
                                         </colgroup>
                                         <thead>
                                             <tr>
                                                 <th>Images</th>
+                                                <th></th>
                                                 <th style="text-align: left; min-width: 200px;">
                                                     Item
                                                 </th>
@@ -293,9 +296,9 @@
                                                 <th style="text-align: center; min-width: 120px;">
                                                     Outgoing
                                                 </th>
-                                                <th style="text-align: center; min-width: 120px;">
+                                                <!-- <th style="text-align: center; min-width: 120px;">
                                                     Incoming
-                                                </th>
+                                                </th> -->
                                                 <th class="left">
                                                     Status
                                                 </th>
@@ -312,7 +315,7 @@
                                         </thead>
                                         <tbody>
                                             <tr style="height:300px; background-color: white;">
-                                                <td colspan="12" style="padding-top: 50px;">
+                                                <td colspan="11" style="padding-top: 50px;">
                                                     <div style="height: 100px;background-color: white;"
                                                         [nbSpinner]="isReload" nbSpinnerStatus="primary">
                                                     </div>

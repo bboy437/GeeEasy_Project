@@ -68,9 +68,9 @@
                                     <table class="table">
                                         <colgroup>
                                             <col />
-                                            <col class="Outgoing" />
                                             <col class="Available" />
                                             <col class="OnHand" />
+                                            <col class="Outgoing" />
                                             <col class="Incoming" />
                                         </colgroup>
                                         <thead>
@@ -88,29 +88,33 @@
                                                     <label>
                                                         {{warehouse_name === undefined ? "No Warehouse" : warehouse_name}}</label>
                                                 </td>
-                                                <td>
-                                                    <input style="text-align: center; color: black;" fullWidth nbInput
+                                                <td class="cover qty">
+                                                    <label>{{Form.value.available_From}}</label>
+                                                    <!-- <input style="text-align: center; color: black;" fullWidth nbInput
                                                         status="primary" type="text" libOnlyCharacternumber
                                                         mask="separator.0" thousandSeparator="," status="primary"
-                                                        formControlName="available_From" (keydown)="keyDown($event)" />
+                                                        formControlName="available_From" (keydown)="keyDown($event)" /> -->
                                                 </td>
-                                                <td>
-                                                    <input style="text-align: center; color: black;" fullWidth nbInput
+                                                <td class="cover qty">
+                                                    <label>{{Form.value.onhand_From}}</label>
+                                                    <!-- <input style="text-align: center; color: black;" fullWidth nbInput
                                                         status="primary" type="text" libOnlyCharacternumber
                                                         mask="separator.0" thousandSeparator="," status="primary"
-                                                        formControlName="onhand_From" (keydown)="keyDown($event)" />
+                                                        formControlName="onhand_From" (keydown)="keyDown($event)" /> -->
                                                 </td>
-                                                <td>
-                                                    <input style="text-align: center; color: black;" fullWidth nbInput
+                                                <td class="cover qty">
+                                                    <label>{{Form.value.outgoing_From}}</label>
+                                                    <!-- <input style="text-align: center; color: black;" fullWidth nbInput
                                                         status="primary" type="text" libOnlyCharacternumber
                                                         mask="separator.0" thousandSeparator="," status="primary"
-                                                        formControlName="outgoing_From" (keydown)="keyDown($event)" />
+                                                        formControlName="outgoing_From" (keydown)="keyDown($event)" /> -->
                                                 </td>
-                                                <td>
-                                                    <input style="text-align: center; color: black;" fullWidth nbInput
+                                                <td class="cover qty">
+                                                    <label>{{Form.value.incoming_From}}</label>
+                                                    <!-- <input style="text-align: center; color: black;" fullWidth nbInput
                                                         status="primary" type="text" libOnlyCharacternumber
                                                         mask="separator.0" thousandSeparator="," status="primary"
-                                                        formControlName="incoming_From" (keydown)="keyDown($event)" />
+                                                        formControlName="incoming_From" (keydown)="keyDown($event)" /> -->
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -135,18 +139,18 @@
                                         <tbody>
                                             <tr>
                                                 <td style="width: 40%;">
-                                                    <ngx-select [allowClear]="true" [items]="arrWarehouse"
-                                                        optionValueField="warehouse_id" optionTextField="warehouse_name"
-                                                        formControlName="warehouse_id"
+                                                    <project-ngx-select 
+                                                        requiredName="Warehouse Name" optionValueField="warehouse_id"
+                                                        optionTextField="warehouse_name" [items]="arrWarehouse"
+                                                        [control]="Form.get('warehouse_id')"
                                                         placeholder="--------- Choose ---------">
-                                                    </ngx-select>
+                                                    </project-ngx-select>
                                                 </td>
                                                 <td>
-                                                    <input style="text-align: center" fullWidth nbInput status="primary"
-                                                        type="text" libOnlyCharacternumber mask="separator.0"
-                                                        thousandSeparator="," status="primary"
-                                                        formControlName="onhand_To"
-                                                        (keyup)="onKeyQTY($event.target.value)" />
+                                                    <project-input inputType="text" textAlign="qty"
+                                                        [control]="Form.get('onhand_To')"
+                                                        (keyup)="onKeyQTY($event.target.value)">
+                                                    </project-input>
                                                 </td>
                                                 <td>
                                                 </td>

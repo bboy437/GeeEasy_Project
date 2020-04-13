@@ -49,6 +49,7 @@ export class MyDistributorsCreateComponent implements OnInit {
     product_category_id: string;
     loading = false;
     isReload = false;
+    product_category_root_id: number;
 
     phone: any = {
         tel: {
@@ -103,7 +104,6 @@ export class MyDistributorsCreateComponent implements OnInit {
         } else {
             this.distributorAPIService.getDisDetail(this.RowID).subscribe(data => {
                 this.arrobjRow = data.response_data[0];
-
                 this.imgURL = data.response_data[0].distributor_image_url;
 
                 if (this.arrobjRow.distributor_image_url !== undefined && this.arrobjRow.distributor_image_url !== "-" && this.arrobjRow.distributor_image_url !== "")
@@ -121,7 +121,6 @@ export class MyDistributorsCreateComponent implements OnInit {
                 this.getCategory();
                 this.editForm();
                 console.log(this.arrobjRow);
-
                 console.log("ngOnInit : data : ", data);
 
                 this.phoneNumber().main(_self_ => {
@@ -137,8 +136,6 @@ export class MyDistributorsCreateComponent implements OnInit {
                     });
                 });
 
-
-                this.loading = false;
             });
         }
     }
@@ -159,6 +156,7 @@ export class MyDistributorsCreateComponent implements OnInit {
     get f() {
         return this.DistributorForm.controls;
     }
+
     onSubmit() {
         this.submitted = true;
         if (this.DistributorForm.invalid) {
@@ -203,6 +201,8 @@ export class MyDistributorsCreateComponent implements OnInit {
             distributor_addr_lat: this.arrobjRow.distributor_addr_lat,
             distributor_addr_lng: this.arrobjRow.distributor_addr_lng,
         });
+        this.product_category_root_id = +this.arrobjRow.product_category_array[0].product_category_id;
+        this.loading = false;
     }
 
     /*New Data Location ------------------------ */
@@ -453,6 +453,7 @@ export class MyDistributorsCreateComponent implements OnInit {
     }
 
     categoryEvent(event) {
+        console.log("event", event);
         if (event.product_category__id !== 0) {
             this.DistributorForm.get('product_category_id').patchValue(event.product_category__id);
             this.DistributorForm.get('product_category_root_id').patchValue(event.product_category_root_id);
@@ -463,7 +464,6 @@ export class MyDistributorsCreateComponent implements OnInit {
         console.log('event', event);
 
     }
-
 
     btnSaveClick() {
         let phone = {
@@ -641,7 +641,6 @@ export class MyDistributorsCreateComponent implements OnInit {
                 console.log(res1);
             });
     }
-
 
     phoneNumber() {
         let function_phone = {

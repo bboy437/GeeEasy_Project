@@ -43,8 +43,9 @@
                                     <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                         <div class="row">
                                             <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                                <div class="row show-grid" style="text-align: center">
-                                                    <div class="col-lg-12">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12"
+                                                        style="padding-bottom: 1rem;">
                                                         <project-display-file-image theme="white"
                                                             [image_url_array]="image.main_image.get">
                                                         </project-display-file-image>
@@ -52,33 +53,26 @@
                                                 </div>
                                             </div>
                                             <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                                <div class="row show-grid">
-                                                    <div class="col-lg-12">
-                                                        <label>Supplier Name :</label>
-                                                        <input nbInput status="primary" type="text" class="btnDisabled"
-                                                            nbInput fullWidth formControlName="suppliername" /><br>
+                                                <div class="row">
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <project-input inputType="text" label="Supplier Name :"
+                                                            [control]="Form.get('suppliername')">
+                                                        </project-input>
                                                     </div>
-                                                </div>
-                                                <div class="row show-grid">
-                                                    <div class="col-lg-12">
-                                                        <label>Product Category :</label>
-                                                        <input nbInput status="primary" type="text" class="btnDisabled"
-                                                            nbInput fullWidth formControlName="productcategory" /><br>
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <project-input inputType="text" label="Product Category :"
+                                                            [control]="Form.get('productcategory')">
+                                                        </project-input>
                                                     </div>
-                                                </div>
-
-                                                <div class="row show-grid">
-                                                    <div class="col-lg-12">
-                                                        <label>Catalog Keyword:</label>
-                                                        <input nbInput status="primary" type="text" class="btnDisabled"
-                                                            nbInput fullWidth formControlName="catalogkeyword" /><br>
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <project-input inputType="text" label="Catalog Keyword :"
+                                                            [control]="Form.get('catalogkeyword')">
+                                                        </project-input>
                                                     </div>
-                                                </div>
-                                                <div class="row show-grid">
-                                                    <div class="col-lg-12">
-                                                        <label>Supplier Keyword :</label>
-                                                        <input nbInput status="primary" type="text" class="btnDisabled"
-                                                            nbInput fullWidth formControlName="supplierkeyword" /><br>
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <project-input inputType="text" label="Supplier Keyword :"
+                                                            [control]="Form.get('supplierkeyword')">
+                                                        </project-input>
                                                     </div>
                                                 </div>
                                             </div>
@@ -87,96 +81,80 @@
                                     <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                         <div class="row">
                                             <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                                <div class="row show-grid">
-                                                    <div class="col-lg-12">
-                                                        <label>First Name :</label>
-                                                        <input nbInput status="primary" type="text" class="btnDisabled"
-                                                            nbInput fullWidth formControlName="firstName" /><br>
+                                                <div class="row">
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <project-input inputType="text" label="First Name :"
+                                                            [control]="Form.get('firstName')">
+                                                        </project-input>
                                                     </div>
-                                                    <div class="col-lg-12">
-                                                        <label>Last Name :</label>
-                                                        <input nbInput status="primary" type="text" class="btnDisabled"
-                                                            nbInput fullWidth formControlName="lastName" /><br>
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <project-input inputType="text" label="Last Name :"
+                                                            [control]="Form.get('lastName')">
+                                                        </project-input>
                                                     </div>
-                                                </div>
-                                                <div class="row show-grid">
-                                                    <div class="col-lg-12">
-                                                        <label>Company Name :</label>
-                                                        <input nbInput status="primary" type="text" class="btnDisabled"
-                                                            nbInput fullWidth formControlName="companyName" /><br>
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <project-input inputType="text" label="Company Name :"
+                                                            [control]="Form.get('companyName')">
+                                                        </project-input>
                                                     </div>
-                                                </div>
-                                                <div class="row show-grid">
-                                                    <div class="col-lg-12">
-                                                        <label>Email :</label>
-                                                        <input nbInput status="primary" type="text" class="btnDisabled"
-                                                            nbInput fullWidth formControlName="emailAddress" /><br>
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <project-input inputType="text" label="Email :"
+                                                            [control]="Form.get('emailAddress')">
+                                                        </project-input>
                                                     </div>
-                                                </div>
-                                                <div class="row show-grid">
-                                                    <div class="col-lg-12">
-                                                        <label>Telephone Number :</label>
-                                                        <input nbInput status="primary" type="text"
-                                                            libOnlyCharacterphonnumber class="btnDisabled" nbInput
-                                                            fullWidth formControlName="phoneNo" /><br>
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <project-input inputType="text" label="Telephone Number :"
+                                                            [control]="Form.get('phoneNo')">
+                                                        </project-input>
+                                                    </div>
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <project-input inputType="text" label="Mobile Phone Number :"
+                                                            [control]="Form.get('mobileNo')">
+                                                        </project-input>
                                                     </div>
                                                 </div>
-                                                <div class="row show-grid">
-                                                    <div class="col-lg-12">
-                                                        <label>Mobile Phone Number :</label>
-                                                        <input nbInput status="primary" type="text" mask='000-000-0000'
-                                                            placeholder="XXX-XXX-XXXX" class="btnDisabled" nbInput
-                                                            fullWidth formControlName="mobileNo" /><br>
-                                                    </div>
-                                                </div>
-
                                             </div>
                                             <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                                <div class="row show-grid">
-                                                    <div class="col-lg-12">
-                                                        <label>Address :</label>
-                                                        <textarea style="min-height: 90px;" nbInput status="primary"
-                                                            type="text" class="btnDisabled" nbInput fullWidth
-                                                            formControlName="AddressFull"> </textarea><br>
+                                                <div class="row">
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <project-textarea rows="3" label="Address :"
+                                                            [control]="Form.get('AddressFull')">
+                                                        </project-textarea>
                                                     </div>
-                                                </div>
-                                                <div class="row show-grid">
-                                                    <div class="col-lg-12">
-                                                        <label>Address Number :</label>
-                                                        <input nbInput status="primary" type="text" class="btnDisabled"
-                                                            nbInput fullWidth formControlName="AddressNo" /><br>
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <project-input inputType="text" label="Address Number :"
+                                                            [control]="Form.get('AddressNo')">
+                                                        </project-input>
                                                     </div>
-                                                    <div class="col-lg-12">
-                                                        <label>Tambon :</label>
-                                                        <input nbInput status="primary" type="text" class="btnDisabled"
-                                                            nbInput fullWidth formControlName="tambon" /><br>
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <project-input inputType="text" label="Province :"
+                                                            [control]="Form.get('province')">
+                                                        </project-input>
                                                     </div>
-                                                </div>
-                                                <div class="row show-grid">
-                                                    <div class="col-lg-12">
-                                                        <label>Amphoe :</label>
-                                                        <input nbInput status="primary" type="text" class="btnDisabled"
-                                                            nbInput fullWidth formControlName="amphoe" /><br>
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <project-input inputType="text" label="Amphoe :"
+                                                            [control]="Form.get('amphoe')">
+                                                        </project-input>
                                                     </div>
-                                                    <div class="col-lg-12">
-                                                        <label>Province :</label>
-                                                        <input nbInput status="primary" type="text" class="btnDisabled"
-                                                            nbInput fullWidth formControlName="province" /><br>
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <project-input inputType="text" label="Tambon :"
+                                                            [control]="Form.get('tambon')">
+                                                        </project-input>
                                                     </div>
-                                                </div>
-
-                                                <div class="row show-grid">
-                                                    <div class="col-12 col-sm-12 col-md-6 col-lg-6"
-                                                        style="text-align: left;">
-                                                        <label>Zipcode :</label>
-                                                        <input nbInput status="primary" type="text" class="btnDisabled"
-                                                            nbInput fullWidth formControlName="zipcode" />
-                                                    </div>
-                                                    <div class="col-12 col-sm-12 col-md-6 col-lg-6"
-                                                        style="text-align: left;">
-                                                        <label> Latitude Longitude</label>
-                                                        <input nbInput status="primary" type="text" class="btnDisabled"
-                                                            fullWidth formControlName="lat_long" />
+                                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <div class="row">
+                                                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                                                <project-input inputType="text" label="Zipcode :"
+                                                                    [control]="Form.get('zipcode')">
+                                                                </project-input>
+                                                            </div>
+                                                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                                                <project-input inputType="text"
+                                                                    label="Latitude Longitude :"
+                                                                    [control]="Form.get('latlong')">
+                                                                </project-input>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -195,25 +173,19 @@
                                     <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                         <div class="row">
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Massages :</label>
-                                                    <input libOnlyCharacterDefault type="text" nbInput fullWidth
-                                                        formControlName="request_information_message" />
-                                                </div>
+                                                <project-input inputType="text" label="Massages :"
+                                                    [control]="Form.get('request_information_message')">
+                                                </project-input>
                                             </div>
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Status :</label>
-                                                    <input libOnlyCharacterDefault type="text" nbInput fullWidth
-                                                        formControlName="request_information_status_id" />
-                                                </div>
+                                                <project-input inputType="text" label="Status :"
+                                                    [control]="Form.get('request_information_status_id')">
+                                                </project-input>
                                             </div>
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Answer :</label>
-                                                    <input libOnlyCharacterDefault type="text" nbInput fullWidth
-                                                        formControlName="request_information_is_answer" />
-                                                </div>
+                                                <project-input inputType="text" label="Answer :"
+                                                    [control]="Form.get('request_information_is_answer')">
+                                                </project-input>
                                             </div>
                                         </div>
                                     </div>

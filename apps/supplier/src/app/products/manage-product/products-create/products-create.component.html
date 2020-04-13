@@ -1,4 +1,4 @@
-<div class="pages" [formGroup]="productForm">
+<div class="pages" [formGroup]="productForm" (ngSubmit)="onSubmit()">
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card>
@@ -17,8 +17,9 @@
                                     nbButton size="medium" status="success" (click)="checkQtyMinimum()">
                                     Save
                                 </button>
-                                <button *ngIf="RowID != 'new'" [nbSpinner]="product.update" nbSpinnerStatus="success"
-                                    nbButton size="medium" status="success" (click)="checkQtyMinimum()">
+                                <button *ngIf="RowID != 'new'" [disabled]="productForm.invalid"
+                                    [nbSpinner]="product.update" nbSpinnerStatus="success" nbButton size="medium"
+                                    status="success" (click)="checkQtyMinimum()">
                                     Update
                                 </button>
                                 <button *ngIf="RowID == 'new'" nbButton size="medium" status="danger"
@@ -71,17 +72,10 @@
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                        <div class="cover-input">
-                                            <label>Product Name :</label>
-                                            <input libOnlyProductName status="primary" type="text" nbInput fullWidth
-                                                status="primary" formControlName="productName" class="form-control"
-                                                [ngClass]="{ 'is-invalid': submitted && f.productName.errors }" />
-                                            <div *ngIf="submitted && !!f.productName.errors">
-                                                <div class="required" *ngIf="!!f.productName.errors.required">
-                                                    Product Name is required
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <project-input libOnly="libOnlyProductName" inputType="text"
+                                            label="Product Name :" requiredName="Product Name"
+                                            [control]="productForm.get('productName')">
+                                        </project-input>
                                     </div>
                                     <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="!loading">
                                         <div
@@ -98,18 +92,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="cover-input" *ngIf="product_category__name == 'Other'">
-                                                <label>Custom Category :</label>
-                                                <input libOnlyCharacterDefault status="primary" type="text" nbInput
-                                                    fullWidth status="primary" formControlName="category_custom_keyword"
-                                                    class="form-control"
-                                                    [ngClass]="{ 'is-invalid': submitted && f.category_custom_keyword.errors }" />
-                                                <div *ngIf="submitted && !!f.category_custom_keyword.errors">
-                                                    <div class="required"
-                                                        *ngIf="!!f.category_custom_keyword.errors.required">
-                                                        Custom Category is required
-                                                    </div>
-                                                </div>
+                                            <div *ngIf="product_category__name == 'Other'">
+                                                <project-input libOnlyCharacterDefault inputType="text"
+                                                    label="Custom Category :" requiredName="Custom Category"
+                                                    [control]="productForm.get('category_custom_keyword')">
+                                                </project-input>
                                             </div>
                                         </div>
 
@@ -117,241 +104,113 @@
                                     <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                         <div class="row" style="padding-top: 1rem;">
                                             <div class="col-12  col-md-6 col-lg-6 col-xl-6">
-                                                <!-- <div class="cover-input">
-                                                    <label>Buy Price (Cost) :</label>
-                                                    <input libOnlyCharacterDefault status="primary" type="text"
-                                                        libOnlyCharacternumber mask="separator.2" thousandSeparator=","
-                                                        nbInput fullWidth formControlName="productPrice"
-                                                        class="form-control"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.productPrice.errors }" />
-                                                    <div *ngIf="submitted && !!f.productPrice.errors">
-                                                        <div class="required" *ngIf="!!f.productPrice.errors.required">
-                                                            Buy Price is required
-                                                        </div>
-                                                    </div>
-                                                </div> -->
-                                                <label>Buy Price (Cost) :</label>
-                                                <div class="cover-input price">
-                                                    <a>{{productForm.value.product_currency_code}}</a>
-                                                    <input style="text-align: right;" libOnlyCharacterDefault
-                                                        status="primary" type="text" libOnlyCharacternumber
-                                                        mask="separator.2" thousandSeparator="," nbInput fullWidth
-                                                        formControlName="productPrice" class="form-control"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.productPrice.errors }" />
-                                                    <div *ngIf="submitted && !!f.productPrice.errors">
-                                                        <div class="required" *ngIf="!!f.productPrice.errors.required">
-                                                            Buy Price is required
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-input libOnly="libOnlyCharacternumber" inputType="text"
+                                                    textAlign="right" mask="separator.2" thousandSeparator=","
+                                                    label="Buy Price (Cost) :" requiredName="Buy Price (Cost)"
+                                                    typeStyle="price"
+                                                    [nameStyle]="productForm.value.product_currency_code"
+                                                    [control]="productForm.get('productPrice')">
+                                                </project-input>
                                             </div>
                                             <div class="col-12  col-md-3 col-lg-3 col-xl-3">
-                                                <div class="cover-input">
-                                                    <label>Currency :</label>
-                                                    <ngx-select [allowClear]="true"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.product_currency_code.errors }"
-                                                        [items]="arrCurrency" optionValueField="currency_name"
-                                                        optionTextField="currency_name"
-                                                        formControlName="product_currency_code">
-                                                    </ngx-select>
-                                                    <div *ngIf="submitted && !!f.product_currency_code.errors">
-                                                        <div class="required"
-                                                            *ngIf="!!f.product_currency_code.errors.required">
-                                                            Currency is required
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-ngx-select label="Currency :" requiredName="Currency"
+                                                    optionValueField="currency_name" optionTextField="currency_name"
+                                                    [items]="arrCurrency"
+                                                    [control]="productForm.get('product_currency_code')">
+                                                </project-ngx-select>
                                             </div>
                                             <div class="col-12  col-md-3 col-lg-3 col-xl-3">
-                                                <div class="cover-input">
-                                                    <label>Initial Stock :</label>
-                                                    <input style="text-align: right;" libOnlyCharacterDefault
-                                                        status="primary" type="text" libOnlyCharacternumber
-                                                        mask="separator.0" thousandSeparator="," nbInput fullWidth
-                                                        formControlName="initial_stock" class="form-control"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.initial_stock.errors }"
-                                                        (keyup)="onKeyInitialStock($event.target.value)" />
-                                                    <div *ngIf="submitted && !!f.initial_stock.errors">
-                                                        <div class="required" *ngIf="!!f.initial_stock.errors.required">
-                                                            Initial Stock is required
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-input libOnly="libOnlyCharacternumber" inputType="text"
+                                                    textAlign="right" mask="separator.0" thousandSeparator=","
+                                                    label="Initial Stock :" requiredName="Initial Stock"
+                                                    [control]="productForm.get('initial_stock')"
+                                                    (keyup)="onKeyInitialStock($event.target.value)">
+                                                </project-input>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                         <div class="row">
                                             <div class="col-12 col-12 col-md-4 col-lg-4 col-xl-4">
-                                                <div class="cover-input">
-                                                    <label>Product SKU :</label>
-                                                    <input libOnlySKU status="primary" type="text" nbInput fullWidth
-                                                        status="primary" class="form-control"
-                                                        formControlName="productSKU"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.productSKU.errors }" />
-                                                    <div *ngIf="submitted && !!f.productSKU.errors">
-                                                        <div class="required" *ngIf="!!f.productSKU.errors.required">
-                                                            Product SKU is required
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-input libOnly="libOnlySKU" inputType="text"
+                                                    label="Product SKU :" requiredName="Product SKU"
+                                                    [control]="productForm.get('productSKU')">
+                                                </project-input>
                                             </div>
                                             <div class="col-12 col-md-2 col-lg-2 col-xl-2">
-                                                <div class="cover-input">
-                                                    <label>Unit :</label>
-                                                    <input libOnlyUnit status="primary" type="text" nbInput fullWidth
-                                                        status="primary" class="form-control"
-                                                        formControlName="productUnit"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.productUnit.errors }" />
-                                                    <div *ngIf="submitted && !!f.productUnit.errors">
-                                                        <div class="required" *ngIf="!!f.productUnit.errors.required">
-                                                            Unit is required
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-input libOnly="libOnlyUnit" inputType="text" label="Unit :"
+                                                    requiredName="Unit" [control]="productForm.get('productUnit')">
+                                                </project-input>
                                             </div>
                                             <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
-                                                <div class="cover-input">
-                                                    <label>Product Barcode :</label>
-                                                    <input libOnlyBarcode status="primary" type="text" nbInput fullWidth
-                                                        class="form-control" formControlName="product_barcode"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.product_barcode.errors }" />
-                                                    <div *ngIf="submitted && !!f.product_barcode.errors">
-                                                        <div class="required"
-                                                            *ngIf="!!f.product_barcode.errors.required">
-                                                            Product Barcode is required
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-input libOnly="libOnlyBarcode" inputType="text"
+                                                    label="Product Barcode :" requiredName="Product Barcode"
+                                                    [control]="productForm.get('product_barcode')">
+                                                </project-input>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                         <div class="row">
                                             <div class="col-12 col-12 col-md-4 col-lg-4 col-xl-4">
-                                                <div class="cover-input">
-                                                    <label>Product Width :</label>
-                                                    <input style="text-align: right;" libOnlyCharacternumber
-                                                        mask="separator.0" thousandSeparator="," status="primary"
-                                                        type="text" nbInput fullWidth status="primary"
-                                                        class="form-control" formControlName="width"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.width.errors }" />
-                                                    <div *ngIf="submitted && !!f.width.errors">
-                                                        <div class="required" *ngIf="!!f.width.errors.required">
-                                                            Product Width is required
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-input libOnly="libOnlyCharacternumber" mask="separator.0"
+                                                    textAlign="right" thousandSeparator="," inputType="text"
+                                                    label="Product Width :" requiredName="Product Width"
+                                                    [control]="productForm.get('width')">
+                                                </project-input>
                                             </div>
                                             <div class="col-12 col-md-2 col-lg-2 col-xl-2">
-                                                <div class="cover-input">
-                                                    <label>Unit :</label>
-                                                    <ngx-select [allowClear]="true"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.width_unit.errors }"
-                                                        [items]="arrUnitWH" optionValueField="unit_name"
-                                                        optionTextField="unit_name" formControlName="width_unit">
-                                                    </ngx-select>
-                                                    <div *ngIf="submitted && !!f.width_unit.errors">
-                                                        <div class="required" *ngIf="!!f.width_unit.errors.required">
-                                                            Unit is required
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-ngx-select label="Unit :" requiredName="Unit"
+                                                    optionValueField="unit_name" optionTextField="unit_name"
+                                                    [items]="arrUnitWH" [control]="productForm.get('width_unit')">
+                                                </project-ngx-select>
                                             </div>
                                             <div class="col-12 col-12 col-md-4 col-lg-4 col-xl-4">
-                                                <div class="cover-input">
-                                                    <label>Product Height :</label>
-                                                    <input style="text-align: right;" libOnlyCharacternumber
-                                                        mask="separator.0" thousandSeparator="," status="primary"
-                                                        type="text" nbInput fullWidth status="primary"
-                                                        class="form-control" formControlName="height"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.height.errors }" />
-                                                    <div *ngIf="submitted && !!f.height.errors">
-                                                        <div class="required" *ngIf="!!f.height.errors.required">
-                                                            Product Height is required
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-input libOnly="libOnlyCharacternumber" mask="separator.0"
+                                                    textAlign="right" thousandSeparator="," inputType="text"
+                                                    label="Product Height :" requiredName="Product Height"
+                                                    [control]="productForm.get('height')">
+                                                </project-input>
                                             </div>
                                             <div class="col-12 col-md-2 col-lg-2 col-xl-2">
-                                                <div class="cover-input">
-                                                    <label>Unit :</label>
-                                                    <ngx-select [allowClear]="true"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.height_unit.errors }"
-                                                        [items]="arrUnitWH" optionValueField="unit_name"
-                                                        optionTextField="unit_name" formControlName="height_unit">
-                                                    </ngx-select>
-                                                    <div *ngIf="submitted && !!f.height_unit.errors">
-                                                        <div class="required" *ngIf="!!f.height_unit.errors.required">
-                                                            Unit is required
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-ngx-select label="Unit :" requiredName="Unit"
+                                                    optionValueField="unit_name" optionTextField="unit_name"
+                                                    [items]="arrUnitWH" [control]="productForm.get('height_unit')">
+                                                </project-ngx-select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                         <div class="row">
                                             <div class="col-12 col-12 col-md-4 col-lg-4 col-xl-4">
-                                                <div class="cover-input">
-                                                    <label>Product Weight :</label>
-                                                    <input style="text-align: right;" libOnlyCharacternumber
-                                                        mask="separator.0" thousandSeparator="," status="primary"
-                                                        type="text" nbInput fullWidth status="primary"
-                                                        class="form-control" formControlName="weight"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.weight.errors }" />
-                                                    <div *ngIf="submitted && !!f.weight.errors">
-                                                        <div class="required" *ngIf="!!f.weight.errors.required">
-                                                            Product Weight is required
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-input libOnly="libOnlyCharacternumber" mask="separator.0"
+                                                    textAlign="right" thousandSeparator="," inputType="text"
+                                                    label="Product Weight :" requiredName="Product Weight"
+                                                    [control]="productForm.get('weight')">
+                                                </project-input>
                                             </div>
                                             <div class="col-12 col-md-2 col-lg-2 col-xl-2">
-                                                <div class="cover-input">
-                                                    <label>Unit :</label>
-                                                    <ngx-select [allowClear]="true"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.weight_unit.errors }"
-                                                        [items]="arrUnitWeight" optionValueField="unit_name"
-                                                        optionTextField="unit_name" formControlName="weight_unit">
-                                                    </ngx-select>
-                                                    <div *ngIf="submitted && !!f.weight_unit.errors">
-                                                        <div class="required" *ngIf="!!f.weight_unit.errors.required">
-                                                            Unit is required
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-ngx-select label="Unit :" requiredName="Unit"
+                                                    optionValueField="unit_name" optionTextField="unit_name"
+                                                    [items]="arrUnitWeight" [control]="productForm.get('weight_unit')">
+                                                </project-ngx-select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                         <div class="row">
                                             <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
-                                                <div class="cover-input">
-                                                    <label>Country :</label>
-                                                    <ngx-select [allowClear]="true"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.product_country.errors }"
-                                                        [items]="arrCountry" optionValueField="location_name"
-                                                        optionTextField="location_name"
-                                                        formControlName="product_country"
-                                                        placeholder="--------- Choose ---------">
-                                                    </ngx-select>
-                                                    <div *ngIf="submitted && !!f.product_country.errors">
-                                                        <div class="required"
-                                                            *ngIf="!!f.product_country.errors.required">
-                                                            Country is required
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-ngx-select label="Country :" requiredName="Country"
+                                                    optionValueField="location_name" optionTextField="location_name"
+                                                    [items]="arrCountry" [control]="productForm.get('product_country')">
+                                                </project-ngx-select>
                                             </div>
                                             <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
                                                 <div class="cover-channel">
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div class="cover-input">
-                                                                <label>Channel :
-                                                                    <!-- {{channel.one.input}} -->
-                                                                </label>
+                                                                <label>Channel : </label>
                                                                 <input libOnlyCharacterDefault nbInput fullWidth
                                                                     type="text" status="primary"
                                                                     (keyup)="channelArray().inArrayObjectInput($event,channel.one)"
@@ -375,53 +234,28 @@
                                                                     icon="close-outline"></nb-icon>
                                                             </span>
                                                         </div>
-                                                        <!-- <div class="col-12">
-                                                            <code>
-                                                                {{ channel.one | json}}
-                                                            </code>
-                                                        </div> -->
                                                     </div>
                                                 </div>
-                                                <!-- <div class="cover-input">
-                                                    <label>Channel :</label>
-                                                    <input status="primary" type="text" libOnlyCharacterDefault
-                                                        libOnlyCharacter nbInput fullWidth
-                                                        formControlName="product_channel" class="form-control"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.product_channel.errors }" />
-                                                    <div *ngIf="submitted && !!f.product_channel.errors">
-                                                        <div class="required"
-                                                            *ngIf="!!f.product_channel.errors.required">
-                                                            Channel is required
-                                                        </div>
-                                                    </div>
-                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                         <div class="row">
                                             <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
-                                                <div class="cover-input" *ngIf="RowID == 'new'">
-                                                    <label>Warehouse Name :</label>
-                                                    <ngx-select [allowClear]="true"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.warehouse_id.errors }"
-                                                        [items]="arrWarehouse" optionValueField="warehouse_id"
-                                                        optionTextField="warehouse_name" formControlName="warehouse_id"
-                                                        placeholder="--------- Choose ---------"
-                                                        (selectionChanges)="btnIDClick($event)">
-                                                    </ngx-select>
-                                                    <div *ngIf="submitted && !!f.warehouse_id.errors">
-                                                        <div class="required" *ngIf="!!f.warehouse_id.errors.required">
-                                                            Warehouse Name is required
-                                                        </div>
-                                                    </div>
+                                                <div *ngIf="RowID == 'new'">
+                                                    <project-ngx-select label="Warehouse Name :"
+                                                        requiredName="Warehouse Name" optionValueField="warehouse_id"
+                                                        optionTextField="warehouse_name" [items]="arrWarehouse"
+                                                        [control]="productForm.get('warehouse_id')"
+                                                        (selectionChanges)='btnIDClick($event)'
+                                                        placeholder="--------- Choose ---------">
+                                                    </project-ngx-select>
                                                 </div>
-                                                <div class="cover-input" *ngIf="RowID != 'new'">
-                                                    <label>Warehouse Name :</label>
-                                                    <input libOnlyCharacterDefault status="primary" type="text" nbInput
-                                                        fullWidth status="primary" class="form-control"
-                                                        formControlName="warehouse_name"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.warehouse_name.errors }" />
+                                                <div *ngIf="RowID != 'new'">
+                                                    <project-input libOnlyCharacterDefault inputType="text"
+                                                        label="Warehouse Name :" requiredName="Warehouse Name"
+                                                        [control]="productForm.get('warehouse_name')">
+                                                    </project-input>
                                                 </div>
                                             </div>
                                             <div class="col">
@@ -469,48 +303,44 @@
                                         </th>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let item of arrWholesale; let i=index;">
-                                            <td>
-                                                <div class="cover-input">
-                                                    <input class="cover qty" libOnlyCharacterDefault status="primary"
-                                                        type="text" libOnlyCharacternumber mask="separator.0"
-                                                        thousandSeparator="," nbInput fullWidth status="primary"
-                                                        [(ngModel)]="item.qty_minimum"
-                                                        [ngModelOptions]="{standalone: true}"
-                                                        (change)="onCheckWholesale($event)"
-                                                        (keyup)="onKeyMinimum($event, item)">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="cover-input price">
-                                                    <a>{{productForm.value.product_currency_code}}</a>
-                                                    <input class="cover price" libOnlyCharacterDefault status="primary"
-                                                        type="text" libOnlyCharacternumber mask="separator.2"
-                                                        thousandSeparator="," nbInput fullWidth status="primary"
-                                                        [(ngModel)]="item.product_price"
-                                                        [ngModelOptions]="{standalone: true}">
-
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="cover-input price">
-                                                    <a>{{productForm.value.product_currency_code}}</a>
-                                                    <input class="cover price" libOnlyCharacterDefault status="primary"
-                                                        type="text" libOnlyCharacternumber mask="separator.2"
-                                                        thousandSeparator="," nbInput fullWidth status="primary"
-                                                        [(ngModel)]="item.retail_product_price"
-                                                        [ngModelOptions]="{standalone: true}">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <nb-icon (click)="deleteWholesale(i)" icon="close-outline"
-                                                    style="float: right;margin-top: 10px;">
-                                                </nb-icon>
-                                            </td>
-                                        </tr>
+                                        <ng-container formArrayName="wholesale">
+                                            <tr *ngFor="let item of wholesale.controls; let i = index;">
+                                                <ng-container [formGroupName]="i">
+                                                    <td>
+                                                        <project-input libOnly="libOnlyCharacternumber"
+                                                            mask="separator.0" thousandSeparator="," inputType="text"
+                                                            textAlign="qty" [control]="item.get('qty_minimum')"
+                                                            (change)="onCheckWholesale($event)"
+                                                            (keyup)="onKeyMinimum($event, item)">
+                                                        </project-input>
+                                                    </td>
+                                                    <td>
+                                                        <project-input libOnly="libOnlyCharacternumber"
+                                                            mask="separator.2" thousandSeparator="," inputType="text"
+                                                            textAlign="price" typeStyle="price"
+                                                            [nameStyle]="productForm.value.product_currency_code"
+                                                            [control]="item.get('product_price')">
+                                                        </project-input>
+                                                    </td>
+                                                    <td>
+                                                        <project-input libOnly="libOnlyCharacternumber"
+                                                            mask="separator.2" thousandSeparator="," inputType="text"
+                                                            textAlign="price" typeStyle="price"
+                                                            [nameStyle]="productForm.value.product_currency_code"
+                                                            [control]="item.get('retail_product_price')">
+                                                        </project-input>
+                                                    </td>
+                                                    <td>
+                                                        <nb-icon (click)="deleteWholesale(i)" icon="close-outline"
+                                                            style="float: right;margin-top: 10px;">
+                                                        </nb-icon>
+                                                    </td>
+                                                </ng-container>
+                                            </tr>
+                                        </ng-container>
                                     </tbody>
                                 </table>
-                                <div *ngIf="arrWholesale.length == 0" class="list">
+                                <div *ngIf="wholesale.value.length == 0" class="list">
                                     <div class="row">
                                         <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="text-align: center;">
                                             <img src="assets/images/loading.png" width="300">

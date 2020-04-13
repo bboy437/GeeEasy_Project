@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DialogsImageComponent } from '../../dialogs/dialogs-image/dialogs-image.component';
 import { NbDialogService } from '@nebular/theme';
 import { DatePipe } from '@angular/common'
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from "@angular/forms";
 
 @Component({
   selector: 'project-bills-detail',
@@ -28,8 +29,10 @@ export class BillsDetailComponent implements OnInit {
   payment_total: number;
   over: number;
 
+  Form: FormGroup;
+
   constructor(
-    private billingAPIService: BillingAPIService,
+    private formBuilder: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private dialogService: NbDialogService,
@@ -40,6 +43,7 @@ export class BillsDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.buildForm();
     const params = this.route.snapshot.paramMap;
     this.RowID = params.get("id");
     if (this.RowID) {
@@ -48,7 +52,6 @@ export class BillsDetailComponent implements OnInit {
   }
 
   getBillsDetail() {
-
     this.purchaseAPIService.getPurchaseDetail(this.RowID).subscribe(data => {
       this.arrBills = data.response_data[0];
       console.log(this.arrBills);
@@ -82,9 +85,32 @@ export class BillsDetailComponent implements OnInit {
       this.differenceDate();
       this.checkPayment()
       this.getDoc();
+      this.detailForm();
 
     })
 
+  }
+
+  buildForm() {
+    this.Form = this.formBuilder.group({
+      purchase_order_number: [{ value: "", disabled: true }, Validators.required],
+      delivery_location: [{ value: "", disabled: true }, Validators.required],
+      billing_name: [{ value: "", disabled: true }, Validators.required],
+      billing_address: [{ value: "", disabled: true }, Validators.required],
+      billing_payment_term: [{ value: "", disabled: true }, Validators.required],
+      purchase_order_reply_msg: [{ value: "", disabled: true }, Validators.required],
+    });
+  }
+
+  detailForm() {
+    this.Form.patchValue({
+      purchase_order_number: this.arrBills.purchase_order_number,
+      delivery_location: this.arrBills.delivery_location,
+      billing_name: this.arrBills.billing_name,
+      billing_address: this.arrBills.billing_address,
+      billing_payment_term: this.arrBills.billing_payment_term,
+      purchase_order_reply_msg: this.arrBills.purchase_order_reply_msg,
+    });
   }
 
   getDoc() {

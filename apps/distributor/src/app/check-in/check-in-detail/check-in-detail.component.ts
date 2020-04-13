@@ -11,7 +11,7 @@ import { DialogSuccessComponent } from '../../dialogs/dialog-success/dialog-succ
 import { DialogsImageComponent } from '../../dialogs/dialogs-image/dialogs-image.component';
 import { DialogsCancelComponent } from '../../dialogs/dialogs-cancel/dialogs-cancel.component';
 import { AleartComponent } from '../../dialogs/aleart/aleart.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 import JSON_PROVINCE from "../../../../../../libs/shared/src/lib/json/province.json";
 import JSON_LOCATION from "../../../../../../libs/shared/src/lib/json/location.json";
@@ -30,10 +30,7 @@ export class CheckInDetailComponent implements OnInit {
   arrCheckIns$: Observable<IcheckinProduct[]>;
   total$: Observable<number>;
   private UrlRouter_CheckInCancel = "check-in/list";
-  private UrlRouter_Note = "check-in/note";
-  private UrlRouter_Image = "check-in/image";
   arrobjRow: any = [];
-  arrCheckIn: any = [];
   arrCheckInFilter: any = [];
   arrWhereHouse: any = [];
   arrWhereHouseFilter: any = [];
@@ -56,7 +53,7 @@ export class CheckInDetailComponent implements OnInit {
   isSaveProduct = false;
   submitted = false;
   id_local: string;
-
+  arrCheckIn: any = [];
   product_manual_json: any = [];
   arrCountry: any[];
   arrLocation: any[] = JSON_LOCATION;
@@ -78,6 +75,7 @@ export class CheckInDetailComponent implements OnInit {
   };
 
   productForm: FormGroup;
+  checkinForm: FormGroup;
 
   constructor(
     public service: CheckInTableDetailService,
@@ -96,6 +94,7 @@ export class CheckInDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.buildFormCheckIn();
     const params = this.route.snapshot.paramMap;
     this.RowID = params.get("id");
     this.status = params.get("status");
@@ -107,6 +106,16 @@ export class CheckInDetailComponent implements OnInit {
     // this.buildForm();
   }
 
+  buildFormCheckIn() {
+    this.checkinForm = this.formBuilder.group({
+      checkin: this.formBuilder.array([])
+    });
+  }
+
+  get checkin(): FormArray {
+    return this.checkinForm.get('checkin') as FormArray;
+  }
+
   getData() {
     this.checkinAPIService.getCheckdetail(this.RowID).subscribe(data => {
       console.log(data.response_data[0]);
@@ -115,23 +124,40 @@ export class CheckInDetailComponent implements OnInit {
       this.arrWhereHouse = data.response_data[0].warehouse_data;
       this.arrCheckIn.forEach(element => {
         if (this.arrWhereHouse.length > 0) {
-          this.setData(this.arrWhereHouse[0].warehouse_name);
-          element.warehouse_id = "";
-        } else {
-          element.warehouse_id = "";
+          element.warehouse_name = this.arrWhereHouse[0].warehouse_name;
+          element.warehouse_id = this.arrWhereHouse[0].warehouse_id;
         }
         element.checkin_qty = 0;
         element.incomingSum = (element.checkin_data.incoming - element.checkin_data_exist.onhand) < 0 ? 0 : element.checkin_data.incoming - element.checkin_data_exist.onhand;
         // element.onhandSum = element.checkin_data.onhand + element.checkin_data.onhand_manual + element.checkin_data_exist.onhand + element.checkin_data_exist.onhand_manual;
         element.onhandSum = element.checkin_data_exist.onhand;
         element.availableSum = element.checkin_data_exist.onhand - element.checkin_data.outgoing;
+        element.note = "";
+        element.image_array = "";
+        element.product_manual_json = [];
+
+
       });
       this.getWarehouse();
       this.arrCheckInFilter = this.arrCheckIn;
       this.filterValue = this.arrCheckIn;
+
       console.log(this.arrCheckIn);
-      this.loading = false;
+      console.log(this.arrCheckInFilter);
+
+      this.setCheckin();
+
     })
+  }
+
+  setCheckin() {
+    this.arrCheckIn.forEach(element => {
+      this.checkin.push(
+        this.formBuilder.group(element)
+      );
+    });
+    console.log('checkin', this.checkin);
+    this.loading = false;
   }
 
   getWarehouse() {
@@ -156,13 +182,14 @@ export class CheckInDetailComponent implements OnInit {
     this.arrCheckInFilter.forEach(element => {
       element.warehouse_name = warehouseName;
     });
+
   }
 
   checkQty(value, data: any) {
     console.log('value', value);
     console.log('data', data);
     // tslint:disable-next-line: triple-equals
-    if (data.checkin_qty > data.incomingSum || data.checkin_qty <= 0 || value == "-" || value == "") {
+    if (data.value.checkin_qty > data.value.incomingSum || data.value.checkin_qty <= 0 || value == "-" || value == "") {
       const dialogRef = this.dialogService.open(AleartComponent, {
         context: {
           status: 'checkin',
@@ -170,7 +197,9 @@ export class CheckInDetailComponent implements OnInit {
       });
       dialogRef.onClose.subscribe(result => {
         if (result === 'ok') {
-          data.checkin_qty = "0";
+          data.value.checkin_qty = 0;
+          const array = this.checkinForm.controls.checkin.value
+          this.checkinForm.controls.checkin.patchValue(array)
         }
       });
     }
@@ -227,21 +256,21 @@ export class CheckInDetailComponent implements OnInit {
     console.log(this.test);
   }
 
-  btnSaveClick() {
+  btncheckAll() {
     const dataCheckIn: any = [];
     const data: any = [];
-    for (let index = 0; index < this.arrCheckIn.length; index++) {
+    for (let index = 0; index < this.checkin.value.length; index++) {
 
       dataCheckIn.push({
-        product_id: this.arrCheckIn[index].confirm_product_id,
-        available: this.arrCheckIn[index].checkin_data.available,
-        change: this.arrCheckIn[index].checkin_data.change,
-        onhand: this.arrCheckIn[index].checkin_data.onhand,
-        outgoing: this.arrCheckIn[index].checkin_data.outgoing,
-        incoming: this.arrCheckIn[index].checkin_data.incoming,
-        warehouse_id: this.arrCheckIn[index].warehouse_id,
-        note: this.arrCheckIn[index].note === undefined ? "-" : this.arrCheckIn[index].note,
-        image_array: this.arrCheckIn[index].image_array === undefined ? [] : this.arrCheckIn[index].image_array
+        product_id: this.checkin.value[index].confirm_product_id,
+        available: this.checkin.value[index].checkin_data.available,
+        change: this.checkin.value[index].checkin_data.change,
+        onhand: this.checkin.value[index].checkin_data.onhand,
+        outgoing: this.checkin.value[index].checkin_data.outgoing,
+        incoming: this.checkin.value[index].checkin_data.incoming,
+        warehouse_id: this.checkin.value[index].warehouse_id,
+        note: this.checkin.value[index].note === undefined || "" ? "-" : this.checkin.value[index].note,
+        image_array: this.checkin.value[index].image_array === undefined || "" ? [] : this.checkin.value[index].image_array
       })
     }
     data.purchase_order_id = this.arrobjRow.purchase_order_id;
@@ -273,8 +302,8 @@ export class CheckInDetailComponent implements OnInit {
         product_id: data.confirm_product_id,
         checkin_qty: data.checkin_qty,
         warehouse_id: data.warehouse_id,
-        note: data.note === undefined ? "-" : data.note,
-        image_array: data.image_array === undefined ? [] : data.image_array,
+        note: data.note === undefined || "" ? "-" : data.note,
+        image_array: data.image_array === undefined || "" ? [] : data.image_array,
         product_manual_json: this.product_manual_json,
       }
       this.btnCheckInClick(data, dataJson);
@@ -300,8 +329,8 @@ export class CheckInDetailComponent implements OnInit {
           data.onhandSum = (data.onhandSum + data.checkin_qty);
           data.availableSum = (data.onhandSum - data.checkin_data.outgoing);
           data.checkin_qty = 0;
-          data.note = undefined;
-          data.image_array = undefined;
+          data.note = "";
+          data.image_array = "";
           // this.getData();
           console.log(data, dataJson);
         }
@@ -325,31 +354,37 @@ export class CheckInDetailComponent implements OnInit {
   btnNoteClick(data) {
     const dialogRef = this.dialogService.open(DialogSuccessComponent, {
       context: {
-        data: data,
+        data: data.value,
         status: "add-note"
       },
     });
     dialogRef.onClose.subscribe(result => {
       console.log('result', result);
       if (result !== "") {
-        data.note = result;
-        console.log('arrCheckIn', this.arrCheckIn);
+        data.value.note = result;
+        console.log('checkin', this.checkin);
+        const array = this.checkinForm.controls.checkin.value
+        this.checkinForm.controls.checkin.patchValue(array)
       }
     });
+
   }
 
   btnImageClick(data) {
+    console.log('data', data);
     const dialogRef = this.dialogService.open(DialogSuccessComponent, {
       context: {
-        data: data,
+        data: data.value,
         status: "add-img"
       },
     });
     dialogRef.onClose.subscribe(result => {
       console.log('result', result);
       if (result !== "") {
-        data.image_array = result;
-        console.log('arrCheckIn', this.arrCheckIn);
+        data.value.image_array = result;
+        console.log('checkin', this.checkin);
+        const array = this.checkinForm.controls.checkin.value
+        this.checkinForm.controls.checkin.patchValue(array)
       }
 
     });

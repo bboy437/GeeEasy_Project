@@ -149,7 +149,7 @@ export class RequestDetailComponent implements OnInit {
       amphoe: [{ value: '', disabled: true }, Validators.required],
       tambon: [{ value: '', disabled: true }, Validators.required],
       zipcode: [{ value: '', disabled: true }, Validators.required],
-      lat_long: [{ value: '', disabled: true }, Validators.required],
+      latlong: [{ value: '', disabled: true }, Validators.required],
     });
   }
 
@@ -174,7 +174,7 @@ export class RequestDetailComponent implements OnInit {
       amphoe: this.arrobjRow.supplier_addr_amphoe,
       tambon: this.arrobjRow.supplier_addr_tambon,
       zipcode: this.arrobjRow.supplier_addr_postcode,
-      lat_long: this.arrobjRow.supplier_addr_location_lat + ',' + this.arrobjRow.supplier_addr_location_lng
+      latlong: this.arrobjRow.supplier_addr_location_lat + ',' + this.arrobjRow.supplier_addr_location_lng
     });
     this.loading = false;
   }

@@ -31,6 +31,7 @@ export class ChatListComponent implements OnInit {
   public message = "No File chosen";
   arrputData: any = [];
   idCheck: any = [];
+  arrData: any = {};
   strStatus = false;
   loading = false;
   strFilter: string;
@@ -48,6 +49,15 @@ export class ChatListComponent implements OnInit {
   ) {
     this.id_local = localStorage.getItem('id');
     console.log(' this.id_local', this.id_local);
+
+    this.messagesAPIService.dataChat$.subscribe(res => {
+      this.arrData = res;
+      console.log('res', res);
+      if (this.arrData)
+        this.getSupplier();
+
+    })
+
   }
 
   ngOnInit() {
@@ -55,30 +65,23 @@ export class ChatListComponent implements OnInit {
     const value = this.id_local;
     this.supplierAPIService.getSupID(value).subscribe(res => {
       this.arrSupply = res.response_data[0];
-
-      if (this.arrSupply) {
-        const params = this.route.snapshot.paramMap;
-        this.id = +params.get("id");
-        this.name = params.get("name");
-        if (this.name) {
-          const data = {
-            distributor_name: this.name,
-            distributor_id:  this.id
-          }
-          
-          this.loading = true;
-          this.getMessagesList();
-          document.getElementById("myForm").style.display = "block";
-          document.getElementById("myButton").style.display = "none";
-          this.btnMessagesSubmitClick(data)
-        }
-      }
-
     })
+  }
 
-
-
-
+  getSupplier() {
+    const value = this.id_local;
+    this.supplierAPIService.getSupID(value).subscribe(data => {
+      this.arrSupply = data.response_data[0];
+      console.log('arrSupply', this.arrSupply);
+      if (this.arrSupply) {
+        console.log('this.arrData', this.arrData);
+        this.loading = true;
+        this.getMessagesList();
+        // document.getElementById("myForm").style.display = "block";
+        // document.getElementById("myButton").style.display = "none";
+        this.btnMessagesSubmitClick(this.arrData)
+      }
+    })
   }
 
   filterName(value: any) {
@@ -213,7 +216,7 @@ export class ChatListComponent implements OnInit {
     const arrayNews = Array.from(arrayNew.values());
     this.arrputData = arrayNews;
     console.log("push", this.arrputData);
-    if (this.name) {
+    if (this.arrData) {
       this.sentSubmitMessages("Hello", this.arrputData[0])
     }
   }
@@ -250,7 +253,7 @@ export class ChatListComponent implements OnInit {
         console.log(this.contact_id);
         this.getMessagesList();
         // if (this.name) {
-          // this.router.navigate([this.UrlRouter_Message]);
+        // this.router.navigate([this.UrlRouter_Message]);
         // }
       })
     }

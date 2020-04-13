@@ -53,7 +53,18 @@
                                                         <div class="header">
                                                             <div class="d-flex justify-content-center"
                                                                 style="padding-top: 1rem;">
-                                                                <div class="cover-input">
+                                                                <div class="cover-input" style="width: 250px;">
+                                                                    <project-ngx-select label="Supplier Name :"
+                                                                        requiredName="Supplier Name"
+                                                                        optionValueField="supplier_id"
+                                                                        optionTextField="supplier_name"
+                                                                        [items]="arrSupplier"
+                                                                        [control]="supplierNameForm.get('supplierNameCtrl')"
+                                                                        placeholder="Search for name"
+                                                                        (selectionChanges)="btnIDClick($event)">
+                                                                    </project-ngx-select>
+                                                                </div>
+                                                                <!-- <div class="cover-input">
                                                                     <label class="left">Supplier Name</label>
                                                                     <div class="example-block">
                                                                         <div class="example-block__item">
@@ -81,7 +92,7 @@
                                                                             Ex. TTY SUPPLIER INTERNATIONAL
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                </div> -->
 
                                                                 <div style=" padding-left: 1rem; padding-top: 1.8rem;">
                                                                     <button nbButton type="button" size="medium"
@@ -107,41 +118,29 @@
                                                                             <div class="row">
                                                                                 <div
                                                                                     class="col-12 col-md-12 col-lg-6 col-xl-6">
-                                                                                    <div class="cover-input">
-                                                                                        <label>Supplier Name
-                                                                                            :</label>
-                                                                                        <input nbInput status="primary"
-                                                                                            type="text"
-                                                                                            formControlName="supplier_name"
-                                                                                            fullWidth />
-                                                                                    </div>
+                                                                                    <project-input inputType="text"
+                                                                                        label="Supplier Name :"
+                                                                                        [control]="supplierNameForm.get('supplier_name')">
+                                                                                    </project-input>
                                                                                 </div>
                                                                                 <div
                                                                                     class="col-12 col-md-12 col-lg-6 col-xl-6">
                                                                                     <div class="row">
                                                                                         <div
                                                                                             class="col-12 col-md-12 col-lg-6 col-xl-6">
-                                                                                            <div class="cover-input">
-                                                                                                <label>First Name
-                                                                                                    :</label>
-                                                                                                <input nbInput
-                                                                                                    status="primary"
-                                                                                                    type="text"
-                                                                                                    fullWidth
-                                                                                                    formControlName="supplier_name_first" />
-                                                                                            </div>
+                                                                                            <project-input
+                                                                                                inputType="text"
+                                                                                                label="First Name :"
+                                                                                                [control]="supplierNameForm.get('supplier_name_first')">
+                                                                                            </project-input>
                                                                                         </div>
                                                                                         <div
                                                                                             class="col-12 col-md-12 col-lg-6 col-xl-6">
-                                                                                            <div class="cover-input">
-                                                                                                <label>Last Name
-                                                                                                    :</label>
-                                                                                                <input nbInput
-                                                                                                    status="primary"
-                                                                                                    type="text"
-                                                                                                    fullWidth
-                                                                                                    formControlName="supplier_name_last" />
-                                                                                            </div>
+                                                                                            <project-input
+                                                                                                inputType="text"
+                                                                                                label="Last Name :"
+                                                                                                [control]="supplierNameForm.get('supplier_name_last')">
+                                                                                            </project-input>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -152,35 +151,24 @@
                                                                             <div class="row">
                                                                                 <div
                                                                                     class="col-12 col-md-12 col-lg-6 col-xl-6">
-                                                                                    <div class="cover-input">
-                                                                                        <label>Email :</label>
-                                                                                        <input nbInput status="primary"
-                                                                                            type="text" fullWidth
-                                                                                            formControlName="supplier_company_contact" />
-                                                                                    </div>
+                                                                                    <project-input inputType="text"
+                                                                                        label="Email :"
+                                                                                        [control]="supplierNameForm.get('supplier_company_contact')">
+                                                                                    </project-input>
                                                                                 </div>
                                                                                 <div
                                                                                     class="col-12 col-md-12 col-lg-3 col-xl-3">
-                                                                                    <div class="cover-input">
-                                                                                        <label>Telephone Number
-                                                                                            :</label>
-                                                                                        <input nbInput status="primary"
-                                                                                            type="text"
-                                                                                            libOnlyCharacterphonnumber
-                                                                                            fullWidth
-                                                                                            formControlName="supplier_addr_phone" />
-                                                                                    </div>
+                                                                                    <project-input inputType="text"
+                                                                                        label="Telephone Number :"
+                                                                                        [control]="supplierNameForm.get('supplier_addr_phone')">
+                                                                                    </project-input>
                                                                                 </div>
                                                                                 <div
                                                                                     class="col-12 col-md-12 col-lg-3 col-xl-3">
-                                                                                    <div class="cover-input">
-                                                                                        <label>Mobile Phone Number
-                                                                                            :</label>
-                                                                                        <input nbInput status="primary"
-                                                                                            type="text" fullWidth
-                                                                                            formControlName="supplier_tel" />
-
-                                                                                    </div>
+                                                                                    <project-input inputType="text"
+                                                                                        label="Mobile Phone Number :"
+                                                                                        [control]="supplierNameForm.get('supplier_tel')">
+                                                                                    </project-input>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -189,24 +177,17 @@
                                                                             <div class="row">
                                                                                 <div
                                                                                     class="col-12 col-md-12 col-lg-6 col-xl-6">
-                                                                                    <div class="cover-input">
-                                                                                        <label>Address :</label>
-                                                                                        <textarea nbInput
-                                                                                            status="primary" type="text"
-                                                                                            style="min-height: 90px;"
-                                                                                            fullWidth
-                                                                                            formControlName="supplier_addr_full"></textarea>
-                                                                                    </div>
+                                                                                    <project-textarea rows="3"
+                                                                                        label="Address :"
+                                                                                        [control]="supplierNameForm.get('supplier_addr_full')">
+                                                                                    </project-textarea>
                                                                                 </div>
                                                                                 <div
                                                                                     class="col-12 col-md-12 col-lg-6 col-xl-6">
-                                                                                    <div class="cover-input">
-                                                                                        <label> Address Number
-                                                                                            :</label>
-                                                                                        <input nbInput status="primary"
-                                                                                            type="text" fullWidth
-                                                                                            formControlName="supplier_addr_number" />
-                                                                                    </div>
+                                                                                    <project-input inputType="text"
+                                                                                        label="Address Number :"
+                                                                                        [control]="supplierNameForm.get('supplier_addr_number')">
+                                                                                    </project-input>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -215,21 +196,17 @@
                                                                             <div class="row">
                                                                                 <div
                                                                                     class="col-12 col-md-12 col-lg-6 col-xl-6">
-                                                                                    <div class="cover-input">
-                                                                                        <label>Tambon :</label>
-                                                                                        <input nbInput status="primary"
-                                                                                            type="text" fullWidth
-                                                                                            formControlName="supplier_addr_tambon" />
-                                                                                    </div>
+                                                                                    <project-input inputType="text"
+                                                                                        label="Tambon :"
+                                                                                        [control]="supplierNameForm.get('supplier_addr_tambon')">
+                                                                                    </project-input>
                                                                                 </div>
                                                                                 <div
                                                                                     class="col-12 col-md-12 col-lg-6 col-xl-6">
-                                                                                    <div class="cover-input">
-                                                                                        <label>Amphoe :</label>
-                                                                                        <input nbInput status="primary"
-                                                                                            type="text" fullWidth
-                                                                                            formControlName="supplier_addr_amphoe" />
-                                                                                    </div>
+                                                                                    <project-input inputType="text"
+                                                                                        label="Amphoe :"
+                                                                                        [control]="supplierNameForm.get('supplier_addr_amphoe')">
+                                                                                    </project-input>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -238,23 +215,17 @@
                                                                             <div class="row">
                                                                                 <div
                                                                                     class="col-12 col-md-12 col-lg-6 col-xl-6">
-                                                                                    <div class="cover-input">
-                                                                                        <label>Province
-                                                                                            :</label>
-                                                                                        <input nbInput status="primary"
-                                                                                            type="text" fullWidth
-                                                                                            formControlName="supplier_addr_province" />
-                                                                                    </div>
+                                                                                    <project-input inputType="text"
+                                                                                        label="Province :"
+                                                                                        [control]="supplierNameForm.get('supplier_addr_province')">
+                                                                                    </project-input>
                                                                                 </div>
                                                                                 <div
                                                                                     class="col-12 col-md-12 col-lg-6 col-xl-6">
-                                                                                    <div class="cover-input">
-                                                                                        <label>Zipcode
-                                                                                            :</label>
-                                                                                        <input nbInput status="primary"
-                                                                                            type="text" fullWidth
-                                                                                            formControlName="supplier_addr_postcode" />
-                                                                                    </div>
+                                                                                    <project-input inputType="text"
+                                                                                        label="Zipcode :"
+                                                                                        [control]="supplierNameForm.get('supplier_addr_postcode')">
+                                                                                    </project-input>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -266,7 +237,8 @@
                                                     <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                                         <div class="body" style="margin-top: 1rem;">
                                                             <div class="cover center">
-                                                                <button nbButton style="width: 100px"
+                                                                <button [disabled]="!supplierNameForm.valid" nbButton
+                                                                    style="width: 100px"
                                                                     (click)="btnClickSupplierName()" nbStepperNext>
                                                                     Next
                                                                 </button>
@@ -300,83 +272,6 @@
                                                 </nb-select>
                                             </div>
                                         </div><br>
-                                        <!-- <table class="table hover" >
-                                            <thead>
-                                                <tr>
-                                                    <th class="left">Image</th>
-                                                    <th style="width: 40%;" class="left">Product Name</th>
-                                                    <th style="text-align: right;">Quantity</th>
-                                                    <th></th>
-                                                    <th style="text-align: right; width: 10%;">Unit Price</th>
-                                                    <th style="text-align: right; width: 10%;">Total Price</th>
-                                                    <th></th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr *ngFor="let products of arrobjRowProduct; let i=index">
-                                                    <td class="left">
-                                                        <div class="cover-background-image"
-                                                            (click)="openImg(products.product_image_url)">
-                                                            <div class="background-image padding-width-100px-height-100px"
-                                                                [ngClass]="{'active' : products.product_image_url === '-' || products.product_image_url === ''}"
-                                                                [ngStyle]="{'background-image': 'url('+products.product_image_url+')'}">
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="left">
-                                                        <label>{{products.product_name}}</label><br>
-                                                        <label class="sku">{{products.product_sku}}</label>
-                                                    </td>
-                                                    <td style="text-align: right;">
-                                                        <input style="text-align: right;" type="text"
-                                                            libOnlyCharacternumber mask="separator.0"
-                                                            thousandSeparator=","
-                                                            onKeyPress="if(this.value.length==7) return false;" nbInput
-                                                            fullWidth status="basic" [(ngModel)]="products.product_qty"
-                                                            [ngModelOptions]="{standalone: true}"
-                                                            (keyup)="onSearchChange($event.target.value, products)">
-                                                    </td>
-                                                    <td style="text-align: right;">
-                                                        <div style="padding-top: 0.5rem;">
-                                                            <label>{{products.product_unit}}</label>
-                                                        </div>
-                                                    </td>
-                                                    <td style="text-align: right;">
-                                                        <div style="padding-top: 0.5rem;">
-                                                            <label
-                                                                *ngIf="products.isCheckPlice == true">{{products.product_price | number : '1.2-2'}}</label>
-                                                            <s
-                                                                *ngIf="products.isCheckPlice == false">{{products.product_price | number : '1.2-2'}}</s>
-                                                            <label style="padding-left: 1rem;"
-                                                                *ngIf="products.isCheckPlice == false">{{products.numSales | number : '1.2-2' }}</label>
-                                                        </div>
-                                                    </td>
-                                                    <td style="text-align: right;">
-                                                        <div style="padding-top: 0.5rem;">
-                                                            <label>{{products.product_totalplice | number : '1.2-2'}}</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div style="padding-top: 0.5rem; cursor: pointer;"
-                                                            [nbPopover]="tabs">
-                                                            <div
-                                                                (click)="btnSelectWholesale(products.product_wholesale_array)">
-                                                                <nb-icon icon="list-outline"></nb-icon>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div style="padding-top: 0.5rem; cursor: pointer;">
-                                                            <div (click)="btnDeleteProduct(i)">
-                                                                <nb-icon icon="close-outline">
-                                                                </nb-icon>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table> -->
                                         <table class="table no-hover" style="width: 100%;">
                                             <thead>
                                                 <tr>
@@ -422,229 +317,176 @@
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
-                                                            <!-- <div class="col" style="width: 165px; text-align: center;">
-                                                                <label>Quantity</label>
-                                                            </div>
-                                                            <div class="col" style="width: 50px;">
-                                                                <label></label>
-                                                            </div>
-                                                            <div class="col" style="width: 300px;">
-                                                                <label>Unit Price</label>
-                                                            </div>
-                                                            <div class="col" style="width: 300px;">
-                                                                <label>Total Price</label>
-                                                            </div>
-                                                            <div class="col" style="width: 50px;">
-                                                                <div (click)="btnClearAll()" style="cursor: pointer;">
-                                                                    <nb-icon icon="close-outline">
-                                                                    </nb-icon>
-                                                                </div>
-                                                            </div> -->
                                                         </div>
                                                     </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr *ngFor="let products of arrobjRowProduct; let i=index">
-                                                    <td class="left" style="min-width: 100px;">
-                                                        <div class="cover-background-image"
-                                                            (click)="openImg(products.product_image_url)">
-                                                            <div class="background-image padding-width-100px-height-100px"
-                                                                [ngClass]="{'active' : products.product_image_url === '-' || products.product_image_url === ''}"
-                                                                [ngStyle]="{'background-image': 'url('+products.product_image_url+')'}">
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="left" style="min-width: 600px;">
-                                                        <label>{{products.product_name}}</label><br>
-                                                        <label class="sku">{{products.product_sku}}</label>
-                                                    </td>
-                                                    <td style="text-align: left;" style="min-width: 600px;">
-                                                        <div class="row">
-                                                            <table style="width: 100%; padding:0rem">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td
-                                                                            style="width: 165px;border: 1px solid #ffffff;  padding:0rem">
-                                                                            <input class="cover qty"
-                                                                                style="width: 165px;" type="text"
-                                                                                libOnlyCharacternumber
-                                                                                mask="separator.0" thousandSeparator=","
-                                                                                onKeyPress="if(this.value.length==7) return false;"
-                                                                                nbInput fullWidth status="basic"
-                                                                                [(ngModel)]="products.product_qty"
-                                                                                [ngModelOptions]="{standalone: true}"
-                                                                                (keyup)="onSearchChange($event.target.value, products)">
-                                                                        </td>
-                                                                        <td
-                                                                            style="width: 100px; border: 1px solid #ffffff;  padding:0rem">
-                                                                            <div
-                                                                                style="padding-top: 0.5rem; padding-left: 0.5rem;">
-                                                                                <label>{{products.product_unit}}</label>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td
-                                                                            style="width: 300px; text-align: right; border: 1px solid #ffffff;  padding:0rem">
-                                                                            <div style="padding-top: 0.5rem; "
-                                                                                *ngIf="products.isCheckPlice == true">
-                                                                                <label class="cover price">
-                                                                                    {{products.product_price | number : '1.2-2'}}
-                                                                                </label>
-                                                                                <a
-                                                                                    class="cover thb">{{products.product_currency_code}}</a>
-                                                                            </div>
-                                                                            <div style="padding-top: 0.5rem;"
-                                                                                *ngIf="products.isCheckPlice == false">
-                                                                                <s class="cover price"
-                                                                                    style="color: #ccc;">
-                                                                                    {{products.product_price | number : '1.2-2'}}
-                                                                                </s>
-                                                                                <a style="color: #ccc;"
-                                                                                    class="cover thb">
-                                                                                    {{products.product_currency_code}}
-                                                                                </a>
-                                                                            </div>
-                                                                            <div style="padding-top: 0.5rem;">
-                                                                                <label class="cover price"
-                                                                                    style="padding-left: 1rem;"
-                                                                                    *ngIf="products.isCheckPlice == false">
-                                                                                    {{products.numSales | number : '1.2-2' }}
-                                                                                </label>
-                                                                                <a *ngIf="products.isCheckPlice == false"
-                                                                                    class="cover thb">
-                                                                                    {{products.product_currency_code}}
-                                                                                </a>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td
-                                                                            style="width: 300px; text-align: right; border: 1px solid #ffffff;  padding:0rem">
-                                                                            <div style="padding-top: 0.5rem;">
-                                                                                <label class="cover price">
-                                                                                    {{products.product_totalplice | number : '1.2-2'}}
-                                                                                </label>
-                                                                                <a class="cover thb">
-                                                                                    {{products.product_currency_code}}
-                                                                                </a>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td
-                                                                            style="width: 50px; text-align: right; border: 1px solid #ffffff;  padding:0rem">
-                                                                            <div
-                                                                                style="padding-top: 0.5rem; cursor: pointer;">
-                                                                                <div (click)="btnDeleteProduct(i)">
-                                                                                    <nb-icon icon="close-outline">
-                                                                                    </nb-icon>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                            <!-- <div class="col" style="width: 165px;">
-                                                                <input class="cover qty" style="width: 165px;" type="text"
-                                                                    libOnlyCharacternumber mask="separator.0"
-                                                                    thousandSeparator=","
-                                                                    onKeyPress="if(this.value.length==7) return false;" nbInput
-                                                                    fullWidth status="basic" [(ngModel)]="products.product_qty"
-                                                                    [ngModelOptions]="{standalone: true}"
-                                                                    (keyup)="onSearchChange($event.target.value, products)">
-                                                            </div>
-                                                            <div class="col" style="width: 50px;">
-                                                                <div style="padding-top: 0.5rem; padding-left: 0.5rem;">
-                                                                    <label>{{products.product_unit}}</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col" style="width: 300px; text-align: right;">
-                                                                <div style="padding-top: 0.5rem; "
-                                                                    *ngIf="products.isCheckPlice == true">
-                                                                    <label class="cover price">
-                                                                        {{products.product_price | number : '1.2-2'}}
-                                                                    </label>
-                                                                    <a class="cover thb">{{products.product_currency_code}}</a>
-                                                                </div>
-                                                                <div style="padding-top: 0.5rem;"
-                                                                    *ngIf="products.isCheckPlice == false">
-                                                                    <s class="cover price" style="color: #ccc;">
-                                                                        {{products.product_price | number : '1.2-2'}}
-                                                                    </s>
-                                                                    <a style="color: #ccc;" class="cover thb">
-                                                                        {{products.product_currency_code}}
-                                                                    </a>
-                                                                </div>
-                                                                <div style="padding-top: 0.5rem;">
-                                                                    <label class="cover price" style="padding-left: 1rem;"
-                                                                        *ngIf="products.isCheckPlice == false">
-                                                                        {{products.numSales | number : '1.2-2' }}
-                                                                    </label>
-                                                                    <a *ngIf="products.isCheckPlice == false" class="cover thb">
-                                                                        {{products.product_currency_code}}
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col" style="width: 300px; text-align: right;">
-                                                                <div style="padding-top: 0.5rem;">
-                                                                    <label class="cover price">
-                                                                        {{products.product_totalplice | number : '1.2-2'}}
-                                                                    </label>
-                                                                    <a class="cover thb">
-                                                                        {{products.product_currency_code}}
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col" style="width: 50px; text-align: right;">
-                                                                <div style="padding-top: 0.5rem; cursor: pointer;">
-                                                                    <div (click)="btnDeleteProduct(i)">
-                                                                        <nb-icon icon="close-outline">
-                                                                        </nb-icon>
+                                                <ng-container formArrayName="products">
+                                                    <tr *ngFor="let item of products.controls; let i = index;">
+                                                        <ng-container [formGroupName]="i">
+                                                            <td class="left" style="min-width: 100px;">
+                                                                <div class="cover-background-image"
+                                                                    (click)="openImg(item.value.product_image_url)">
+                                                                    <div class="background-image padding-width-100px-height-100px"
+                                                                        [ngClass]="{'active' : item.value.product_image_url === '-' || item.value.product_image_url === ''}"
+                                                                        [ngStyle]="{'background-image': 'url('+item.value.product_image_url+')'}">
                                                                     </div>
                                                                 </div>
-                                                            </div> -->
-                                                        </div>
-                                                        <div class="row" style="padding-top: 1rem;">
-                                                            <div class="col" style="padding: 0.5rem; ">
-                                                            </div>
-                                                            <div class="col-7" style="padding: 0.5rem; ">
-                                                                <table class="table no-hover"
-                                                                    style="border: 1px solid #dee2e6">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th
-                                                                                style="text-align: center; width: 40%; border-right: 1px solid #dee2e6;">
-                                                                                Qty Minimum
-                                                                            </th>
-                                                                            <th style="text-align: right">
-                                                                                Wholesale Price
-                                                                            </th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr
-                                                                            *ngFor="let wholesale_array of products.product_wholesale_array">
-                                                                            <td
-                                                                                style="border-right: 1px solid #dee2e6; text-align: center">
-                                                                                <a class="cover qty">
-                                                                                    {{wholesale_array.qty_minimum | number}}
-                                                                                </a>
-                                                                            </td>
-                                                                            <td style="text-align: right">
-                                                                                <a class="cover price">
-                                                                                    {{wholesale_array.product_price  | number : '1.2-2'}}
-                                                                                </a>
-                                                                                <a class="cover thb">
-                                                                                    {{products.product_currency_code}}
-                                                                                </a>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
+                                                            </td>
+                                                            <td class="left" style="min-width: 600px;">
+                                                                <div>
+                                                                    <label>{{item.value.product_name}}</label>
+                                                                </div>
+                                                                <div>
+                                                                    <label
+                                                                        class="sku">{{item.value.product_sku}}</label>
+                                                                </div>
+                                                                <div>
+                                                                    <label>{{item.value.product_attribute.weight | number}}</label>
+                                                                    <label
+                                                                        style="padding-left: 0.2rem;">{{item.value.product_attribute.weight_unit}}</label>
+                                                                </div>
+                                                            </td>
+                                                            <td style="text-align: left;" style="min-width: 600px;">
+                                                                <div class="row">
+                                                                    <table style="width: 100%; padding:0rem">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td
+                                                                                    style="width: 165px;border: 1px solid #ffffff;  padding:0rem">
 
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                                                    <input class="cover qty"
+                                                                                        style="width: 165px;"
+                                                                                        type="text"
+                                                                                        libOnlyCharacternumber
+                                                                                        mask="separator.0"
+                                                                                        thousandSeparator=","
+                                                                                        onKeyPress="if(this.value.length==7) return false;"
+                                                                                        nbInput fullWidth status="basic"
+                                                                                        formControlName="product_qty"
+                                                                                        (keyup)="onSearchChange($event.target.value, item)">
+
+                                                                                    <!-- <project-input libOnly="libOnlyCharacternumber"
+                                                                                        mask="separator.0" thousandSeparator=","
+                                                                                        inputType="text" textAlign="qty"
+                                                                                        [control]="item.get('product_qty')"
+                                                                                        (keyup)="onSearchChange($event, item)">
+                                                                                    </project-input> -->
+                                                                                </td>
+                                                                                <td
+                                                                                    style="width: 100px; border: 1px solid #ffffff;  padding:0rem">
+                                                                                    <div
+                                                                                        style="padding-top: 0.5rem; padding-left: 0.5rem;">
+                                                                                        <label>{{item.value.product_unit}}</label>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td
+                                                                                    style="width: 300px; text-align: right; border: 1px solid #ffffff;  padding:0rem">
+                                                                                    <div style="padding-top: 0.5rem; "
+                                                                                        *ngIf="item.value.isCheckPlice == true">
+                                                                                        <label class="cover price">
+                                                                                            {{item.value.product_price | number : '1.2-2'}}
+                                                                                        </label>
+                                                                                        <a
+                                                                                            class="cover thb">{{item.value.product_currency_code}}</a>
+                                                                                    </div>
+                                                                                    <div style="padding-top: 0.5rem;"
+                                                                                        *ngIf="item.value.isCheckPlice == false">
+                                                                                        <s class="cover price"
+                                                                                            style="color: #ccc;">
+                                                                                            {{item.value.product_price | number : '1.2-2'}}
+                                                                                        </s>
+                                                                                        <a style="color: #ccc;"
+                                                                                            class="cover thb">
+                                                                                            {{item.value.product_currency_code}}
+                                                                                        </a>
+                                                                                    </div>
+                                                                                    <div style="padding-top: 0.5rem;">
+                                                                                        <label class="cover price"
+                                                                                            style="padding-left: 1rem;"
+                                                                                            *ngIf="item.value.isCheckPlice == false">
+                                                                                            {{item.value.numSales | number : '1.2-2' }}
+                                                                                        </label>
+                                                                                        <a *ngIf="item.value.isCheckPlice == false"
+                                                                                            class="cover thb">
+                                                                                            {{item.value.product_currency_code}}
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td
+                                                                                    style="width: 300px; text-align: right; border: 1px solid #ffffff;  padding:0rem">
+                                                                                    <div style="padding-top: 0.5rem;">
+                                                                                        <label class="cover price">
+                                                                                            {{item.value.product_totalplice | number : '1.2-2'}}
+                                                                                        </label>
+                                                                                        <a class="cover thb">
+                                                                                            {{item.value.product_currency_code}}
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td
+                                                                                    style="width: 50px; text-align: right; border: 1px solid #ffffff;  padding:0rem">
+                                                                                    <div
+                                                                                        style="padding-top: 0.5rem; cursor: pointer;">
+                                                                                        <div
+                                                                                            (click)="btnDeleteProduct(i)">
+                                                                                            <nb-icon
+                                                                                                icon="close-outline">
+                                                                                            </nb-icon>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="row" style="padding-top: 1rem;">
+                                                                    <div class="col" style="padding: 0.5rem; ">
+                                                                    </div>
+                                                                    <div class="col-7" style="padding: 0.5rem; ">
+                                                                        <table class="table no-hover"
+                                                                            style="border: 1px solid #dee2e6">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th
+                                                                                        style="text-align: center; width: 40%; border-right: 1px solid #dee2e6;">
+                                                                                        Qty Minimum
+                                                                                    </th>
+                                                                                    <th style="text-align: right">
+                                                                                        Wholesale Price
+                                                                                    </th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr
+                                                                                    *ngFor="let wholesale_array of item.value.product_wholesale_array">
+                                                                                    <td
+                                                                                        style="border-right: 1px solid #dee2e6; text-align: center">
+                                                                                        <a class="cover qty">
+                                                                                            {{wholesale_array.qty_minimum | number}}
+                                                                                        </a>
+                                                                                    </td>
+                                                                                    <td style="text-align: right">
+                                                                                        <a class="cover price">
+                                                                                            {{wholesale_array.product_price  | number : '1.2-2'}}
+                                                                                        </a>
+                                                                                        <a class="cover thb">
+                                                                                            {{item.value.product_currency_code}}
+                                                                                        </a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </ng-container>
+                                                    </tr>
+                                                </ng-container>
                                             </tbody>
                                         </table>
-                                        <div *ngIf="arrobjRowProduct.length == 0" class="divdata">
+                                        <div *ngIf="products.value.length == 0" class="divdata">
                                             <div class="row">
                                                 <div class="col-12 col-md-12 col-lg-12 col-xl-12"
                                                     style="text-align: center;">
@@ -696,8 +538,7 @@
                                             </div>
                                             <div class="col-sm-2">
                                                 <input style="background-color: #ffffff; color: white;
-                                                border: 0px solid white;" type="text" formControlName="productsCtrl"
-                                                    [(ngModel)]="isCheckProduct">
+                                                border: 0px solid white;" type="text" formControlName="productsCtrl">
                                             </div>
                                             <div class="col-12">
                                                 <div
@@ -747,8 +588,7 @@
                                             </div>
                                             <div class="col-sm-2">
                                                 <input style="background-color: #ffffff; color: white;
-                                                border: 0px solid white;" type="text" formControlName="productsCtrl"
-                                                    [(ngModel)]="isCheckProduct">
+                                                border: 0px solid white;" type="text" formControlName="productsCtrl">
                                             </div>
                                         </div>
                                         <div class="row show-grid">
@@ -798,10 +638,10 @@
                                             <div class="col-lg-12" style="padding-top: 2rem">
                                                 <button nbButton style="width: 100px" status="danger"
                                                     nbStepperPrevious>Back</button>&nbsp;&nbsp;
-                                                <button nbButton style="width: 100px" nbStepperNext
-                                                    (click)="btnClickProduct()">next</button>
+                                                <button [disabled]="!productsForm.valid" nbButton style="width: 100px"
+                                                    nbStepperNext (click)="btnClickProduct()">next</button>
                                             </div>
-                                        </div><br>
+                                        </div>
                                     </form>
                                 </nb-step>
                                 <nb-step [stepControl]="confirmForm" label="Confirm">
@@ -866,80 +706,41 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                <div class="cover-input">
-                                                    <label>Billing Name</label>
-                                                    <input nbInput status="primary" type="text" nbInput fullWidth
-                                                        status="primary" formControlName="BillingName"
-                                                        class="form-control"
-                                                        [ngClass]="{ 'is-invalid': submittedconfirm && c.BillingName.errors }" />
-                                                    <div *ngIf="submittedconfirm && !!c.BillingName.errors"
-                                                        class="invalid-feedback">
-                                                        <div style="text-align: left"
-                                                            *ngIf="!!c.BillingName.errors.required">
-                                                            Billing Name is required
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-input libOnly="libOnlyCharacterDefault" inputType="text"
+                                                    label="Billing Name :" requiredName="Billing Name"
+                                                    [control]="confirmForm.get('BillingName')">
+                                                </project-input>
                                             </div>
                                             <div class="col-lg-6">
-                                                <div class="cover-input">
-                                                    <label>Billing Address</label>
-                                                    <textarea rows="3" nbInput status="primary" type="text" nbInput
-                                                        fullWidth status="primary" formControlName="BillingAddress"
-                                                        class="form-control"
-                                                        [ngClass]="{ 'is-invalid': submittedconfirm && c.BillingAddress.errors }"></textarea>
-                                                    <div *ngIf="submittedconfirm && !!c.BillingAddress.errors"
-                                                        class="invalid-feedback">
-                                                        <div style="text-align: left"
-                                                            *ngIf="!!c.BillingAddress.errors.required">
-                                                            Billing Address required
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-input libOnly="libOnlyCharacterDefault" inputType="text"
+                                                    label="Billing Address :" requiredName="Billing Address"
+                                                    [control]="confirmForm.get('BillingAddress')">
+                                                </project-input>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-3">
-                                                <div class="cover-input">
-                                                    <label>Warehouse Name</label>
-                                                    <ngx-select [allowClear]="true" libOnlyCharacterDefault
-                                                        [ngClass]="{ 'is-invalid': submittedconfirm && c.WarehouseName.errors }"
-                                                        [items]="arrWarehouse" optionValueField="warehouse_id"
-                                                        optionTextField="warehouse_name" formControlName="WarehouseName"
-                                                        placeholder="-------------- Choose ---------------">
-                                                    </ngx-select>
-                                                    <div *ngIf="submittedconfirm && !!c.WarehouseName.errors">
-                                                        <div class="required" *ngIf="!!c.WarehouseName.errors.required">
-                                                            Warehouse Name required
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-ngx-select label="Warehouse Name :"
+                                                    requiredName="Warehouse Name" optionValueField="warehouse_id"
+                                                    optionTextField="warehouse_name" [items]="arrWarehouse"
+                                                    [control]="confirmForm.get('WarehouseName')"
+                                                    placeholder="--------- Choose ---------">
+                                                </project-ngx-select>
                                             </div>
                                             <div class="col-lg-3"></div>
                                             <div class="col-lg-6">
-                                                <div class="cover-input">
-                                                    <label>Note</label>
-                                                    <textarea style="min-height: 90px;" nbInput status="primary"
-                                                        type="text" nbInput status="primary" fullWidth
-                                                        class="form-control" formControlName="Note"
-                                                        [ngClass]="{ 'is-invalid': submittedconfirm && c.Note.errors }"></textarea>
-                                                    <div *ngIf="submittedconfirm && !!c.Note.errors"
-                                                        class="invalid-feedback">
-                                                        <div style="text-align: left" *ngIf="!!c.Note.errors.required">
-                                                            Note required
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-textarea rows="3" label="Note :" requiredName="Note"
+                                                    [control]="confirmForm.get('Note')">
+                                                </project-textarea>
                                             </div>
                                         </div>
-
                                         <div class="row show-grid" style="text-align: center;padding-top: 2rem">
                                             <div class="col-lg-12">
                                                 <button nbButton style="width: 100px" status="danger"
                                                     nbStepperPrevious>Back</button>&nbsp;&nbsp;
-                                                <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny"
-                                                    nbSpinnerStatus="success" nbButton style="width: 100px"
-                                                    status="success" nbStepperNext
+                                                <button [disabled]="!confirmForm.valid" [nbSpinner]="isSaveLodding"
+                                                    nbSpinnerSize="tiny" nbSpinnerStatus="success" nbButton
+                                                    style="width: 100px" status="success" nbStepperNext
                                                     (click)="btnClickonConfirmSubmit()">Confirm</button>
                                             </div>
                                         </div>
@@ -947,9 +748,6 @@
                                 </nb-step>
                             </nb-stepper>
                         </div>
-                        <!-- <label>{{confirmForm.touched}}</label>
-                        <label>{{confirmForm.dirty}}</label>
-                        <label>{{confirmForm.valid}}</label> -->
                     </div>
                 </nb-card-body>
             </nb-card>

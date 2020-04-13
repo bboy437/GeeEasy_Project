@@ -104,10 +104,14 @@ export class TransferListComponent implements OnInit {
   buildForms() {
     this.Form = this.formBuilder.group({
       warehouse_id: ["", Validators.required],
-      available_From: [{ value: "", disabled: true }],
-      onhand_From: [{ value: "", disabled: true }],
-      outgoing_From: [{ value: "", disabled: true }],
-      incoming_From: [{ value: "", disabled: true }],
+      // available_From: [{ value: "", disabled: true }],
+      // onhand_From: [{ value: "", disabled: true }],
+      // outgoing_From: [{ value: "", disabled: true }],
+      // incoming_From: [{ value: "", disabled: true }],
+      available_From: ["", Validators.required],
+      onhand_From: ["", Validators.required],
+      outgoing_From: ["", Validators.required],
+      incoming_From: ["", Validators.required],
       available_To: ["", Validators.required],
       onhand_To: ["", Validators.required],
       outgoing_To: ["", Validators.required],
@@ -115,6 +119,7 @@ export class TransferListComponent implements OnInit {
 
     });
   }
+
 
   detailForm() {
 
@@ -201,10 +206,6 @@ export class TransferListComponent implements OnInit {
       this.router.navigate([this.UrlRouter_ProductsStock]);
     })
   }
-
-  // btnCancelClick() {
-  //   this.router.navigate([this.UrlRouter_ProductsStock]);
-  // }
 
   btnCancelClick() {
     const dialogRef = this.dialogService.open(DialogsCancelComponent, {

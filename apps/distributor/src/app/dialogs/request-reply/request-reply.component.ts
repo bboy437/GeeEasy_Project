@@ -14,7 +14,7 @@ export class RequestReplyComponent implements OnInit {
   arrobjRow: any = {};
   Form: FormGroup;
   submitted = false;
-
+  isSaveLodding = false;
 
   constructor(
     private distributorAPIService: DistributorAPIService,
@@ -44,6 +44,7 @@ export class RequestReplyComponent implements OnInit {
 
 
   btnSaveClick() {
+    this.isSaveLodding = true;
     this.submitted = true;
     if (this.Form.invalid) {
       return;
@@ -67,6 +68,7 @@ export class RequestReplyComponent implements OnInit {
     const dataJson = JSON.stringify(dataSend)
     console.log(dataJson);
     this.distributorAPIService.addRequest(dataJson).subscribe(data => {
+      this.isSaveLodding = false;
       this.ref.close();
       console.log(data);
 

@@ -14,7 +14,7 @@ export class DialogsRequestComponent implements OnInit {
   arrobjRow: any = {};
   Form: FormGroup;
   submitted = false;
-
+  isSaveLodding = false;
 
   constructor(
     private distributorAPIService: DistributorAPIService,
@@ -44,6 +44,7 @@ export class DialogsRequestComponent implements OnInit {
 
 
   btnSaveClick() {
+    this.isSaveLodding = true;
     this.submitted = true;
     if (this.Form.invalid) {
       return;
@@ -52,10 +53,7 @@ export class DialogsRequestComponent implements OnInit {
   }
 
   save() {
-    // if ((this.data === '' || this.data === undefined) ||
-    //   (this.arrobjRow.action_id === '' || this.arrobjRow.action_id === undefined) ||
-    //   (this.arrobjRow.message === '' || this.arrobjRow.message === undefined))
-    //   return
+
     const dataSend = {
       "request_information_id": this.data,
       "action_id": this.Form.value.action_id,
@@ -67,6 +65,7 @@ export class DialogsRequestComponent implements OnInit {
     const dataJson = JSON.stringify(dataSend)
     console.log(dataJson);
     this.distributorAPIService.addRequest(dataJson).subscribe(data => {
+      this.isSaveLodding = false;
       this.ref.close();
       console.log(data);
 

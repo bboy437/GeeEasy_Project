@@ -4,7 +4,7 @@ import { ProductAPIService, UploadAPIService } from "@project/services";
 import { ProductData } from "@project/interfaces";
 import { DialogsImageComponent } from "../../../dialogs/dialogs-image/dialogs-image.component";
 import { NbDialogService } from "@nebular/theme";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from "@angular/forms";
 
 @Component({
   selector: "project-products-detail",
@@ -40,6 +40,11 @@ export class ProductsDetailComponent implements OnInit {
     },
     product_image_array_state: true
   };
+
+  get wholesale(): FormArray {
+    return this.Form.get('wholesale') as FormArray;
+  }
+
 
   constructor(
     private router: Router,
@@ -158,8 +163,9 @@ export class ProductsDetailComponent implements OnInit {
       width_unit: [{ value: "", disabled: true }, Validators.required],
       weight_unit: [{ value: "", disabled: true }, Validators.required],
       height_unit: [{ value: "", disabled: true }, Validators.required],
+      wholesale: this.formBuilder.array([])
     });
-    this.loading = false;
+
   }
 
   detailForm() {
@@ -198,6 +204,18 @@ export class ProductsDetailComponent implements OnInit {
       weight_unit: this.arrProductDetail.product_attribute.weight_unit,
       height_unit: this.arrProductDetail.product_attribute.height_unit,
     });
+
+    // wholesale
+    this.arrProductDetail.product_wholesale_array.forEach(element => {
+      element.disabled = true;
+      this.wholesale.push(
+        this.formBuilder.group(element)
+      );
+    });
+
+    this.Form.disable();
+    this.wholesale.disable();
+
     this.loading = false;
   }
 

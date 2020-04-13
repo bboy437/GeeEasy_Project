@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { DistributorAPIService, BrowseSupplierAPIService } from '@project/services';
+import { DistributorAPIService, BrowseSupplierAPIService, MessagesAPIService, UploadAPIService } from '@project/services';
 import { DialogsImageComponent } from '../../../dialogs/dialogs-image/dialogs-image.component';
 import { NbDialogService } from '@nebular/theme';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -29,12 +29,22 @@ export class BrowseDistributorsDetailComponent implements OnInit {
   id_local: string;
   Form: FormGroup;
 
+  image = {
+    update: false,
+    main_image: {
+      get: [],
+      port: []
+    }
+  }
+
   constructor(
     private router: Router,
     private browseSupplierAPIService: BrowseSupplierAPIService,
+    private messagesAPIService: MessagesAPIService,
     private route: ActivatedRoute,
     private dialogService: NbDialogService,
     private formBuilder: FormBuilder,
+    private uploadAPIService: UploadAPIService
 
   ) {
     this.id_local = localStorage.getItem('id');
@@ -55,7 +65,7 @@ export class BrowseDistributorsDetailComponent implements OnInit {
         this.arrDistributor = data.response_data[0];
         if (data.response_data.length > 0)
           this.dataProduct(this.arrDistributor.purchase_order_array);
-          this.detailForm();
+        this.detailForm();
       })
     }
     if (this.RowStatus === "name") {
@@ -65,7 +75,7 @@ export class BrowseDistributorsDetailComponent implements OnInit {
         this.arrDistributor = data.response_data[0];
         if (data.response_data.length > 0)
           this.dataProduct(this.arrDistributor.purchase_order_array);
-          this.detailForm();
+        this.detailForm();
       })
     }
 
@@ -76,7 +86,7 @@ export class BrowseDistributorsDetailComponent implements OnInit {
         this.arrDistributor = data.response_data[0];
         if (data.response_data.length > 0)
           this.dataProduct(this.arrDistributor.purchase_order_array);
-          this.detailForm();
+        this.detailForm();
       })
     }
     if (this.RowStatus === "map") {
@@ -86,9 +96,10 @@ export class BrowseDistributorsDetailComponent implements OnInit {
         this.arrDistributor = data.response_data[0];
         if (data.response_data.length > 0)
           this.dataProduct(this.arrDistributor.purchase_order_array);
-          this.detailForm();
+        this.detailForm();
       })
     }
+
 
   }
 
@@ -117,6 +128,18 @@ export class BrowseDistributorsDetailComponent implements OnInit {
   }
 
   detailForm() {
+    
+    if (
+      this.arrDistributor.distributor_image_url !== undefined &&
+      this.arrDistributor.distributor_image_url !== "-" &&
+      this.arrDistributor.distributor_image_url !== ""
+    )
+      this.uploadAPIService
+        .uploadImage()
+        .getUrl(this.arrDistributor.distributor_image_url, red_image => {
+          this.image.main_image.get.push(red_image);
+        });
+
     this.Form.patchValue({
       distributor_name: this.arrDistributor.distributor_name,
       product_category_name: this.arrDistributor.product_category_array[0].product_category_name,
@@ -137,9 +160,6 @@ export class BrowseDistributorsDetailComponent implements OnInit {
     this.loading = false;
   }
 
-
-
-
   btnCancelClick() {
     if (this.RowStatus === "product") {
       this.router.navigate([this.UrlRouter_Supplier], { queryParams: { filterByProduct: this.filterByProduct, status: this.RowStatus } });
@@ -157,9 +177,14 @@ export class BrowseDistributorsDetailComponent implements OnInit {
 
   }
 
-  btnMessage(){
-    
-    this.router.navigate([this.UrlRouter_Message, this.arrDistributor.distributor_id, this.arrDistributor.distributor_name]);
+  btnMessage() {
+    //this.router.navigate([{ outlets: { popup: null } }]);
+    const data = {
+      distributor_name: this.arrDistributor.distributor_name,
+      distributor_id: this.arrDistributor.distributor_id
+    }
+    this.messagesAPIService.dataChat(data);
+    // this.router.navigate([this.UrlRouter_Message, this.arrDistributor.distributor_id, this.arrDistributor.distributor_name]);
   }
 
   openImg(img: any) {

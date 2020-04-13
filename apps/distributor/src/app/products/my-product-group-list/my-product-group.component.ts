@@ -105,9 +105,7 @@ export class MyProductGroupComponent implements OnInit {
     });
 
     dialogRef.onClose.subscribe(result => {
-      console.log("a");
       if (result) {
-        console.log("a");
         this.btnReload();
       }
 

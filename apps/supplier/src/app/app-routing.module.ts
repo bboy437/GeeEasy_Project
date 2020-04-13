@@ -81,7 +81,7 @@ const routes: Routes = [
       import("./documents/documents.module").then(m => m.DocumentsModule)
   },
   { path: "**", redirectTo: "dashboard" }
-];
+]
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -54,7 +54,6 @@ export class VerifedSupplierDetailComponent implements OnInit {
           this.arrSupplier = data.response_data[0];
           this.dataProduct(this.arrSupplier.supplier_product_array);
           console.log(this.arrSupplier);
-          this.detailForm();
 
           if (
             this.arrSupplier.supplier_image_url !== undefined &&
@@ -67,7 +66,7 @@ export class VerifedSupplierDetailComponent implements OnInit {
                 this.image.main_image.get.push(red_image);
               });
 
-
+          this.detailForm();
         })
       }
     }
@@ -96,6 +95,7 @@ export class VerifedSupplierDetailComponent implements OnInit {
       amphoe: [{ value: '', disabled: true }, Validators.required],
       tambon: [{ value: '', disabled: true }, Validators.required],
       zipcode: [{ value: '', disabled: true }, Validators.required],
+      latlong: [{ value: '', disabled: true }, Validators.required],
     });
   }
 
@@ -117,7 +117,10 @@ export class VerifedSupplierDetailComponent implements OnInit {
       amphoe: this.arrSupplier.supplier_addr_amphoe,
       tambon: this.arrSupplier.supplier_addr_tambon,
       zipcode: this.arrSupplier.supplier_addr_postcode,
+      latlong: this.arrSupplier.supplier_addr_location_lat + ',' + this.arrSupplier.supplier_addr_location_lng,
     });
+    console.log(this.Form);
+    
     this.loading = false;
   }
 

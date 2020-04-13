@@ -19,10 +19,10 @@ export class DialogsConfirmPoComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.data);
-    
+
   }
 
-  btnCancelClick(){
+  btnCancelClick() {
     this.ref.close();
   }
 
@@ -45,8 +45,10 @@ export class DialogsConfirmPoComponent implements OnInit {
 
   }
 
-  update(){
+  update() {
+    this.isSaveLodding = true;
     this.purchaseAPIService.updatePO(this.data).subscribe(data => {
+      this.isSaveLodding = false;
       this.ref.close('ok');
     })
 

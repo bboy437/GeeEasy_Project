@@ -22,7 +22,8 @@ import {
   UploadAPIService,
   DashboardAPIService,
   SaleRepService,
-  DistributorAPIService
+  DistributorAPIService,
+  ReusableReactiveFormService
 } from "@project/services";
 import { DialogsModule } from "./dialogs/dialogs.module";
 import { NgbdSortableHeader } from "./sortableheader/sortable.directive";
@@ -61,7 +62,8 @@ import { MapModule } from './map/map.module';
     UploadAPIService,
     DashboardAPIService,
     SaleRepService,
-    DistributorAPIService
+    DistributorAPIService,
+    ReusableReactiveFormService
   ],
   bootstrap: [AppComponent]
 })

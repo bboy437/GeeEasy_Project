@@ -10,7 +10,6 @@ import { NgxSelectModule } from 'ngx-select-ex';
 /* shared */
 import { SharedModule } from "@project/shared";
 import { StockListComponent } from './stock-list/stock-list.component';
-import { StockCreateComponent } from './stock-create/stock-create.component';
 import { StockDetailComponent } from './stock-detail/stock-detail.component';
 import { IConfig, NgxMaskModule } from "ngx-mask";
 import { DialogsModule } from '../../dialogs/dialogs.module';
@@ -39,7 +38,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
   declarations: [
     ManageStockComponent,
     StockListComponent,
-    StockCreateComponent,
     StockDetailComponent
 
   ]

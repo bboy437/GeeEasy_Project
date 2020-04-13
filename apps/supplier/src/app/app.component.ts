@@ -8,6 +8,7 @@ import { MENU_ITEMS } from "./menu";
     <project-column-layout>
       <nb-menu [items]="menu"></nb-menu>
       <router-outlet></router-outlet>
+      <!-- <router-outlet name="popup"></router-outlet> -->
     </project-column-layout>
   `
 })

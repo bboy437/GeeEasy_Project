@@ -139,7 +139,6 @@ export class WarehouseCreateComponent implements OnInit {
         }
     }
 
-
     Builder() {
         this.stockForm = this.fb.group({
             warehouseName: ['', Validators.required],
@@ -173,7 +172,6 @@ export class WarehouseCreateComponent implements OnInit {
         });
     }
 
-
     get f() { return this.stockForm.controls; }
     onSubmit() {
         this.submitted = true;
@@ -183,6 +181,20 @@ export class WarehouseCreateComponent implements OnInit {
     }
 
     /*New Data Location ------------------------ */
+
+    changeLocation(data) {
+        console.log(data);
+        if (data.name === "Province") {
+            this.changeProvince(data.location_name)
+        }
+        if (data.name === "Amphoe") {
+            this.changeAmphoe(data.location_name)
+        }
+        if (data.name === "Tambon") {
+            this.changeTambon(data.location_name)
+        }
+
+    }
 
     changeProvince(location_name) {
         this.stockForm.get('amphoe').patchValue("");
@@ -201,7 +213,6 @@ export class WarehouseCreateComponent implements OnInit {
     }
 
     async get_Amphoe(location_id) {
-
         const get_detail_by_id = (id) => {
             return this.arrLocationDetail.filter(row => {
                 if (row.location_id === id) {
@@ -407,7 +418,6 @@ export class WarehouseCreateComponent implements OnInit {
 
     //--------------------------------------------
 
-
     btnDialogMab() {
 
         const dialogRef = this.dialogService.open(DialogsMapComponent, {
@@ -437,8 +447,9 @@ export class WarehouseCreateComponent implements OnInit {
     }
 
     btnSaveClick() {
-        this.RowID = this.RowID
+        console.log(this.stockForm.value)
 
+        this.RowID = this.RowID
         let phone = {
             tel: {
                 target: {
@@ -455,7 +466,7 @@ export class WarehouseCreateComponent implements OnInit {
         this.inArrayPhone(12, 12, phone.mobile, this.phone.mobile)
 
         this.submitted = true;
-        if (this.stockForm.invalid || this.image.update) {
+        if (this.stockForm.invalid || this.image.update || this.phone.tel.number === "" || this.phone.mobile.number === "") {
             return;
         }
         this.image.update = true;
@@ -548,6 +559,7 @@ export class WarehouseCreateComponent implements OnInit {
         });
 
     }
+
     btnBackClick() {
         const dialogRef = this.dialogService.open(DialogsCancelComponent, {
         });
@@ -560,8 +572,6 @@ export class WarehouseCreateComponent implements OnInit {
             }
         });
     }
-
-
 
     uploadFile(event) {
         if (event.length === 0)
@@ -583,7 +593,6 @@ export class WarehouseCreateComponent implements OnInit {
 
         this.upload()
     }
-
 
     upload() {
         const dataJson = {
@@ -613,8 +622,6 @@ export class WarehouseCreateComponent implements OnInit {
             console.log(res1);
         })
     }
-
-
 
     phoneNumber() {
         let function_phone = {
@@ -745,6 +752,7 @@ export class WarehouseCreateComponent implements OnInit {
     }
 
     removePhoneNumberIndex(index, _phone_) {
+        console.log(index, _phone_)
         this.phoneNumber().main(_self_ => {
             _self_.removeNumberIndex(index, _phone_.number_array, removeNumberIndex => {
                 _self_.getNumber(_phone_.number_array, getNumber => {
@@ -753,7 +761,6 @@ export class WarehouseCreateComponent implements OnInit {
             });
         });
     }
-
 
 
 }

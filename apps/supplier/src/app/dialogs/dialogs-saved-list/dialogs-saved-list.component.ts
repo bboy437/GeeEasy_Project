@@ -13,7 +13,7 @@ export class DialogsSavedListComponent implements OnInit {
     @Input() data: any;
     @Input() isData: string;
     arrobjRow: any = {};
-    saveListForm: FormGroup;
+    formCreate: FormGroup;
     submitted = false;
     arrSaveList: any = [];
     evaIcons = [];
@@ -41,18 +41,18 @@ export class DialogsSavedListComponent implements OnInit {
     ngOnInit() {
         console.log('data', this.data);
         console.log('isData', this.isData);
+        this.buildFormCreate();
 
-        this.buildForm();
-        this.arrobjRow.name = '';
-        this.arrobjRow.distributor_lists_id = '';
+        if (this.isData === 'Rename') {
+            this.formCreate.get("name").patchValue(this.data.distributor_lists_name);
+        }
         if (this.isData === 'new') {
             this.getSaveList();
         }
     }
 
-
     getSaveList() {
-        const value = "cur_page=" + 1 + "&per_page=" + 10 + "&supplier_id=" + this.id_local;
+        const value = "cur_page=" + 1 + "&per_page=" + 100 + "&supplier_id=" + this.id_local;
         this.saveListSupplierAPIService.getSavelistSup(value).subscribe(data => {
             this.arrSaveList = data.response_data;
             console.log('this.arrSaveList', this.arrSaveList);
@@ -60,33 +60,21 @@ export class DialogsSavedListComponent implements OnInit {
         })
     }
 
-    buildForm() {
-        this.saveListForm = this.formBuilder.group({
-            supplierlistname: ['', Validators.required],
+    buildFormCreate() {
+        this.formCreate = this.formBuilder.group({
+            name: ['', Validators.required],
         });
-    }
-
-    get f() { return this.saveListForm.controls; }
-    onSubmit() {
-        this.submitted = true;
-        if (this.saveListForm.invalid) {
-            return;
-        }
-    }
-
-    key(data) {
-        this.arrobjRow.supplier_lists_id = '';
     }
 
     btnCreate() {
         this.isData = 'create';
+        this.buildFormCreate();
     }
-
 
     btnCreateClick() {
         this.isSaveLodding = true;
         const dataJson = {
-            name: this.arrobjRow.name,
+            name: this.formCreate.value.name,
             supplier_id: Number(this.id_local),
         }
 
@@ -101,15 +89,13 @@ export class DialogsSavedListComponent implements OnInit {
 
     btnNewClick() {
         this.isSaveLodding = true;
-        console.log("btnNewClick : arrobjRow : ", this.arrobjRow);
-        console.log("btnNewClick : data : ", this.data);
-        if ((this.arrobjRow.distributor_lists_id === '' || this.arrobjRow.distributor_lists_id === undefined) || (this.data.distributor_id === '' || this.data.distributor_id === 0))
-            return
+
         const dataJson = {
-            distributor_lists_id: this.arrobjRow.distributor_lists_id,
+            distributor_lists_id: this.formCreate.value.name,
             distributor_id: this.data.distributor_id
         }
-        console.log(JSON.stringify(dataJson));
+        console.log(dataJson);
+
         this.saveListSupplierAPIService.addSaveListSup(JSON.stringify(dataJson)).subscribe(data => {
             console.log(data);
             this.isSaveLodding = false;
@@ -121,7 +107,7 @@ export class DialogsSavedListComponent implements OnInit {
         this.isSaveLodding = true;
         const dataJson = {
             distributor_lists_id: this.data.distributor_lists_id,
-            distributor_lists_name: this.data.distributor_lists_name,
+            distributor_lists_name: this.formCreate.value.name,
 
         }
         console.log(JSON.stringify(dataJson));
@@ -145,8 +131,6 @@ export class DialogsSavedListComponent implements OnInit {
         })
     }
 
-
-
     btnDeleteClick() {
         this.isSaveLodding = true;
         const dataJson = {
@@ -159,7 +143,6 @@ export class DialogsSavedListComponent implements OnInit {
             this.ref.close('ok');
         })
     }
-
 
     btnCancelClick(): void {
         this.ref.close();

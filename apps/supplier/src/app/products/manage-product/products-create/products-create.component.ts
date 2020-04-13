@@ -1,11 +1,12 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import {
   ProductAPIService,
   UploadAPIService,
   BrowseSupplierAPIService,
-  WarehouseAPIService
+  WarehouseAPIService,
+  ReusableReactiveFormService
 } from "@project/services";
 import { DialogsCancelComponent } from "../../../dialogs/dialogs-cancel/dialogs-cancel.component";
 import { NbDialogService } from "@nebular/theme";
@@ -80,6 +81,7 @@ export class ProductsCreateComponent implements OnInit {
   arrLocationDetail: any[] = JSON_LOCATION_DETAIL;
   arrCurrency: any[] = JSON_CURRENCY;
 
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -88,7 +90,8 @@ export class ProductsCreateComponent implements OnInit {
     private uploadAPIService: UploadAPIService,
     private browseSupplierAPIService: BrowseSupplierAPIService,
     private dialogService: NbDialogService,
-    private warehouseAPIService: WarehouseAPIService
+    private warehouseAPIService: WarehouseAPIService,
+    private validForm: ReusableReactiveFormService
   ) {
     this.id_local = localStorage.getItem("id");
     console.log(" this.id_local", this.id_local);
@@ -190,7 +193,9 @@ export class ProductsCreateComponent implements OnInit {
       weight: ["", Validators.required],
       weight_unit: ["", Validators.required],
       sku: [],
-      warehouse_name: [],
+      warehouse_name: [{ value: "", disabled: true }],
+      wholesale: this.formBuilder.array([])
+
     });
     // product_channel: ['', Validators.required],
     this.productForm.get("product_currency_code").patchValue("THB");
@@ -198,6 +203,7 @@ export class ProductsCreateComponent implements OnInit {
     this.productForm.get("height_unit").patchValue("cm");
     this.productForm.get("weight_unit").patchValue("kg");
     this.productForm.get("product_country").patchValue("Thailand");
+    console.log(this.productForm)
   }
 
   editForm() {
@@ -227,6 +233,14 @@ export class ProductsCreateComponent implements OnInit {
       weight_unit: this.arrobjRow.product_attribute.weight_unit,
       height_unit: this.arrobjRow.product_attribute.height_unit,
     });
+
+    // wholesale
+    this.arrobjRow.product_wholesale_array.forEach(element => {
+      this.wholesale.push(
+        this.formBuilder.group(element)
+      );
+    });
+
     // product_channel: this.arrobjRow.product_channel,
     this.productForm.get("initial_stock").disable();
     this.active = this.arrobjRow.product_public_status_id;
@@ -236,6 +250,23 @@ export class ProductsCreateComponent implements OnInit {
     this.product_category_root_id = +this.arrobjRow.product_category_array[0].product_category_id;
 
     this.loading = false;
+    console.log(this.productForm)
+    console.log(this.wholesale)
+  }
+
+  get wholesale(): FormArray {
+    return this.productForm.get('wholesale') as FormArray;
+  }
+
+  get f
+    () {
+    return this.productForm.controls;
+  }
+
+  onSubmit() {
+    if (this.productForm.invalid) {
+      return;
+    }
   }
 
   getCategory() {
@@ -306,31 +337,38 @@ export class ProductsCreateComponent implements OnInit {
   addWholesale() {
     const dialogRef = this.dialogService.open(ProductWholesaleComponent, {});
     dialogRef.onClose.subscribe(result => {
-      console.log("result", result);
       if (result !== undefined) {
-        this.arrWholesale.push(result);
-        this.arrWholesale.forEach(element => {
-          element.product_price =
-            element.product_price % 1 !== 0
-              ? element.product_price
-              : element.product_price + ".00";
-          element.retail_product_price =
-            element.retail_product_price % 1 !== 0
-              ? element.retail_product_price
-              : element.retail_product_price + ".00";
-        });
-        this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
-        console.log("this.arrWholesale", this.arrWholesale);
+
+        result.product_price = result.product_price % 1 !== 0 ? result.product_price : result.product_price + ".00";
+        result.retail_product_price = result.retail_product_price % 1 !== 0 ? result.retail_product_price : result.retail_product_price + ".00";
+        console.log("result", result);
+
+        this.wholesale.push(
+          this.formBuilder.group(result)
+        );
+
+        const array = this.productForm.controls.wholesale.value
+        array.sort((a, b) => a.qty_minimum - b.qty_minimum)
+        this.productForm.controls.wholesale.patchValue(array)
+
       }
     });
   }
 
   sortWholesale() {
     if (this.sort) {
-      this.arrWholesale.sort((a, b) => b.qty_minimum - a.qty_minimum);
+      const array = this.productForm.controls.wholesale.value;
+      array.sort((a, b) => b.qty_minimum - a.qty_minimum);
+      this.productForm.controls.wholesale.patchValue(array);
+
+      // this.arrWholesale.sort((a, b) => b.qty_minimum - a.qty_minimum);
       this.sort = false;
     } else {
-      this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
+      const array = this.productForm.controls.wholesale.value;
+      array.sort((a, b) => a.qty_minimum - b.qty_minimum);
+      this.productForm.controls.wholesale.patchValue(array);
+
+      // this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
       this.sort = true;
     }
   }
@@ -353,7 +391,8 @@ export class ProductsCreateComponent implements OnInit {
 
   onKeyMinimum(searchValue, data): void {
     console.log(data);
-    if (data.qty_minimum <= 0 || data.qty_minimum === "") {
+    if (data.value.qty_minimum <= 0 || data.value.qty_minimum === "") {
+      data.value.qty_minimum = 1;
       const dialogRef = this.dialogService.open(AleartComponent, {
         context: {
           status: "Quantity"
@@ -361,15 +400,16 @@ export class ProductsCreateComponent implements OnInit {
       });
       dialogRef.onClose.subscribe(result => {
         if (result === "ok") {
-          data.qty_minimum = 1;
+          data.value.qty_minimum = 1;
         }
       });
     }
   }
 
   onCheckWholesale(event) {
-    this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
-    console.log("this.arrWholesale", this.arrWholesale);
+    const array = this.productForm.controls.wholesale.value
+    array.sort((a, b) => a.qty_minimum - b.qty_minimum)
+    this.productForm.controls.wholesale.patchValue(array)
   }
 
   addWarehouse() {
@@ -384,7 +424,9 @@ export class ProductsCreateComponent implements OnInit {
   }
 
   deleteWholesale(i) {
-    this.arrWholesale.splice(i, 1);
+    const control = <FormArray>this.productForm.controls['wholesale'];
+    control.removeAt(i);
+    // this.arrWholesale.splice(i, 1);
   }
 
   categoryEvent(event) {
@@ -425,11 +467,29 @@ export class ProductsCreateComponent implements OnInit {
     }
   }
 
-  get f() {
-    return this.productForm.controls;
+  checkWholesale() {
+    const dialogRef = this.dialogService.open(AleartComponent, {
+      context: {
+        status: "wholesale"
+      }
+    });
+    dialogRef.onClose.subscribe(result => {
+      if (result === "ok") {
+        return;
+      }
+    });
   }
 
   checkQtyMinimum() {
+
+    // const { validateAllFormFields } = this.validForm;
+    // const formErrors = validateAllFormFields(this.productForm);
+    // console.log('formErrors', formErrors);
+    // if (formErrors.length > 0) {
+    //   // alert(`Please check your information to correct the right pattern...`);
+    //   return;
+    // }
+    // this.router.navigateByUrl("/storemanager/dashboard/customer/manager");
 
     this.productForm.get("productName").patchValue(this.productForm.value.productName.replace(/[^\u0E00-\u0E7Fa-zA-Z_0-9 \.\-\(\)\&]/g, ""));
     this.productForm.get("productSKU").patchValue(this.productForm.value.productSKU.replace(/[^a-zA-Z_0-9 \.\-]/g, ""));
@@ -438,23 +498,21 @@ export class ProductsCreateComponent implements OnInit {
     console.log(this.productForm.value);
 
     //Check Vailidate
-
     this.submitted = true;
     if (
-      this.productForm.invalid ||
-      this.product.update ||
-      !this.product.product_image_array_state
+      this.productForm.invalid || this.product.update || !this.product.product_image_array_state
     ) {
       return;
     }
 
     //Check Qty Minimum
-    const lookup = this.arrWholesale.reduce((a, e) => {
+    const array = this.productForm.controls.wholesale.value
+    const lookup = array.reduce((a, e) => {
       a[e.qty_minimum] = ++a[e.qty_minimum] || 0;
       return a;
     }, {});
 
-    const value = this.arrWholesale.filter(e => lookup[e.qty_minimum]);
+    const value = array.filter(e => lookup[e.qty_minimum]);
 
     if (value.length > 0) {
       const dialogRef = this.dialogService.open(AleartComponent, {
@@ -469,34 +527,16 @@ export class ProductsCreateComponent implements OnInit {
         }
       });
     } else {
-      if (this.arrWholesale.length > 0) {
-        this.strWholesal = false;
-        this.btnSaveClick();
-      } else {
-        this.checkWholesale();
-        this.strWholesal = true;
-      }
+      this.btnSaveClick();
+      // if (this.arrWholesale.length > 0) {
+      //   this.strWholesal = false;
+      //   this.btnSaveClick();
+      // } else {
+      //   this.checkWholesale();
+      //   this.strWholesal = true;
+      // }
     }
 
-    // console.log(this.arrWholesale.filter(e => lookup[e.qty_minimum]));
-    console.log("lookup", lookup);
-    console.log("value", value);
-
-    console.log("arrWholesale", this.arrWholesale);
-  }
-
-
-  checkWholesale() {
-    const dialogRef = this.dialogService.open(AleartComponent, {
-      context: {
-        status: "wholesale"
-      }
-    });
-    dialogRef.onClose.subscribe(result => {
-      if (result === "ok") {
-        return;
-      }
-    });
   }
 
   btnSaveClick() {
@@ -506,12 +546,13 @@ export class ProductsCreateComponent implements OnInit {
         this.product.product_image_array_state = state;
 
         //Check Whosale
-
-        this.arrWholesale.forEach(element => {
+        const array = this.productForm.controls.wholesale.value
+        array.forEach(element => {
           element.product_price = +element.product_price;
           element.retail_product_price = +element.retail_product_price;
         });
-        this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
+        array.sort((a, b) => a.qty_minimum - b.qty_minimum)
+
 
         let channel = {
           one: {
@@ -521,9 +562,6 @@ export class ProductsCreateComponent implements OnInit {
           }
         };
         this.channelArray().inArrayObjectInput(channel.one, this.channel.one);
-
-        console.log("productForm", this.productForm);
-
 
         //Check SKU
         const dataJson = {
@@ -654,11 +692,11 @@ export class ProductsCreateComponent implements OnInit {
             : "-",
         product_name: this.productForm.value.productName,
         product_buy_price: +this.productForm.value.productPrice,
-        product_price: +this.arrWholesale[0].product_price,
+        product_price: +this.wholesale.value[0].product_price,
         product_sku: this.productForm.value.productSKU,
         product_unit: this.productForm.value.productUnit,
         supplier_id: this.id_local,
-        product_wholesale_array: this.arrWholesale,
+        product_wholesale_array: this.productForm.controls.wholesale.value,
         product_category_id: this.productForm.value.productCategory,
         category_custom_keyword: this.productForm.value.category_custom_keyword,
         product_currency_code: this.productForm.value.product_currency_code,
@@ -702,10 +740,10 @@ export class ProductsCreateComponent implements OnInit {
             : "-",
         product_name: this.productForm.value.productName,
         product_buy_price: +this.productForm.value.productPrice,
-        product_price: +this.arrWholesale[0].product_price,
+        product_price: +this.wholesale.value[0].product_price,
         product_sku: this.productForm.value.productSKU,
         product_unit: this.productForm.value.productUnit,
-        product_wholesale_array: this.arrWholesale,
+        product_wholesale_array: this.productForm.controls.wholesale.value,
         product_category_id: this.productForm.value.productCategory,
         product_id: this.arrobjRow.supplier_product_id,
         category_custom_keyword: this.productForm.value.category_custom_keyword,

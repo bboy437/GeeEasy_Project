@@ -1,4 +1,4 @@
-<div class="pages">
+<div class="pages" [formGroup]="Form">
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card>
@@ -56,33 +56,18 @@
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                                 <div class="row">
                                                     <div class="col-12 col-md-4 col-lg-4 col-xl-4">
-                                                        <label> Supplier Name : </label>
-                                                    </div>
-                                                    <div class="col-12 col-md-8 col-lg-8 col-xl-8">
-                                                        <div class="cover-input">
-                                                            <input nbInput status="primary" type="text" status="basic"
-                                                                nbInput disabled fullWidth
-                                                                [(ngModel)]="strSupplierName" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="row">
-                                                    <div class="col-12 col-md-4 col-lg-4 col-xl-4">
                                                         <label> PO No. : </label>
                                                     </div>
                                                     <div class="col-12 col-md-8 col-lg-8 col-xl-8">
                                                         <div class="cover-input">
-                                                            <input nbInput status="primary" type="text" status="basic"
-                                                                nbInput disabled fullWidth
-                                                                [(ngModel)]="arrPurchase.purchase_order_number" />
+                                                            <input status="primary" type="text" nbInput fullWidth
+                                                                formControlName="purchase_order_number" />
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input-icon">
+                                                <div class="cover-input">
                                                     <div class="row">
                                                         <div class="col-12 col-md-4 col-lg-4 col-xl-4">
                                                             <label> Delivery Date : </label>
@@ -105,9 +90,9 @@
                                                             <label> Delivery Location : </label>
                                                         </div>
                                                         <div class="col-12 col-md-8 col-lg-8 col-xl-8">
-                                                            <textarea style="min-height: 90px;" type="text"
-                                                                status="basic" nbInput fullWidth disabled
-                                                                [(ngModel)]="arrPurchase.delivery_location"></textarea>
+                                                            <textarea rows="3" type="text" status="primary" nbInput
+                                                                fullWidth formControlName="delivery_location">
+                                                            </textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -119,9 +104,8 @@
                                                             <label> Billing Name : </label>
                                                         </div>
                                                         <div class="col-12 col-md-8 col-lg-8 col-xl-8">
-                                                            <input nbInput status="primary" type="text" status="basic"
-                                                                nbInput fullWidth disabled
-                                                                [(ngModel)]="arrPurchase.billing_name" />
+                                                            <input status="primary" type="text" nbInput fullWidth
+                                                                formControlName="billing_name" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -133,9 +117,8 @@
                                                             <label> Billing Address : </label>
                                                         </div>
                                                         <div class="col-12 col-md-8 col-lg-8 col-xl-8">
-                                                            <textarea style="min-height: 90px;" type="text"
-                                                                status="basic" nbInput fullWidth disabled
-                                                                [(ngModel)]="arrPurchase.billing_address"></textarea>
+                                                            <textarea rows="3" type="text" status="primary" nbInput
+                                                                fullWidth formControlName="billing_address"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -147,9 +130,8 @@
                                                             <label> Billing Payment Term : </label>
                                                         </div>
                                                         <div class="col-12 col-md-8 col-lg-8 col-xl-8">
-                                                            <input nbInput status="primary" type="text" status="basic"
-                                                                nbInput fullWidth disabled
-                                                                [(ngModel)]="arrPurchase.billing_payment_term" />
+                                                            <input status="primary" type="text" nbInput fullWidth
+                                                                formControlName="billing_payment_term" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -175,32 +157,15 @@
                                                 <div class="cover-input">
                                                     <div class="row">
                                                         <div class="col-12 col-md-4 col-lg-4 col-xl-4">
-                                                            <label> Purchase Order Note : </label>
-                                                        </div>
-                                                        <div class="col-12 col-md-8 col-lg-8 col-xl-8">
-                                                            <input nbInput status="primary" type="text" status="basic"
-                                                                nbInput fullWidth disabled
-                                                                [(ngModel)]="arrPurchase.purchase_order_note" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <div class="row">
-                                                        <div class="col-12 col-md-4 col-lg-4 col-xl-4">
                                                             <label> Status : </label>
                                                         </div>
                                                         <div class="col-12 col-md-8 col-lg-8 col-xl-8">
                                                             <label
                                                                 [ngClass]="[arrPurchase.purchase_order_reply_id === 0 ? 'status primary' : 
-                                                            (arrPurchase.purchase_order_reply_id === 1 ? 'status success' : 
-                                                            (arrPurchase.purchase_order_reply_id === 2 ? 'status waiting' : 
-                                                            (arrPurchase.purchase_order_reply_id === 3 ? 'status red' : '' )))]">{{arrPurchase.status}}
+                                                                (arrPurchase.purchase_order_reply_id === 1 ? 'status success' : 
+                                                                (arrPurchase.purchase_order_reply_id === 2 ? 'status orange' : 
+                                                                (arrPurchase.purchase_order_reply_id === 3 ? 'status red' : 'status red' )))]">{{arrPurchase.status}}
                                                             </label>
-                                                            <!-- <nb-badge text=" {{arrPurchase.status}}" status="warning">
-                                                                {{arrPurchase.status}}
-                                                            </nb-badge> -->
                                                         </div>
                                                     </div>
                                                 </div>
@@ -212,7 +177,8 @@
                                                             <label> Message : </label>
                                                         </div>
                                                         <div class="col-12 col-md-8 col-lg-8 col-xl-8">
-                                                            <label>{{arrPurchase.purchase_order_reply_msg}} </label>
+                                                            <input status="primary" type="text" nbInput fullWidth
+                                                                formControlName="purchase_order_reply_msg" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -272,22 +238,22 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="!loading">
-                    <nb-card>
-                        <nb-card-body>
-                            <project-comp-products *ngIf="arrPurchaseProduct" [arrProduct]="arrPurchaseProduct"
-                                [arrSummary]="arrPurchaseOrderSummary" [status]="'PO'">
-                            </project-comp-products>
-                        </nb-card-body>
-                    </nb-card>
-                </div>
-                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                    <div class="row">
-                        <div class="col-12 col-md-4 col-lg-4 col-xl-4" *ngIf="arrPurchase.purchase_order_id">
-                            <project-order-messages [purchaseID]="arrPurchase.purchase_order_id">
-                            </project-order-messages>
-                        </div>
-                    </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="!loading">
+            <nb-card>
+                <nb-card-body>
+                    <project-comp-products *ngIf="arrPurchaseProduct" [arrProduct]="arrPurchaseProduct"
+                        [arrSummary]="arrPurchaseOrderSummary" [status]="'PO'">
+                    </project-comp-products>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="row">
+                <div class="col-12 col-md-4 col-lg-4 col-xl-4" *ngIf="arrPurchase.purchase_order_id">
+                    <project-order-messages [purchaseID]="arrPurchase.purchase_order_id">
+                    </project-order-messages>
                 </div>
             </div>
         </div>

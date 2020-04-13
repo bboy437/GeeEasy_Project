@@ -7,6 +7,7 @@ import { DialogsImageComponent } from '../../dialogs/dialogs-image/dialogs-image
 import { DialogsConfirmPoComponent } from '../../dialogs/dialogs-confirm-po/dialogs-confirm-po.component';
 import { DatePipe } from '@angular/common'
 import { DialogsCheckinStatusComponent } from '../../dialogs/dialogs-checkin-status/dialogs-checkin-status.component';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from "@angular/forms";
 
 @Component({
   selector: 'project-purchase-order-detail',
@@ -40,7 +41,10 @@ export class PurchaseOrderDetailComponent implements OnInit {
   payment_total: number;
   over: number;
 
+  Form: FormGroup;
+
   constructor(
+    private formBuilder: FormBuilder,
     private dialogService: NbDialogService,
     private router: Router,
     private purchaseAPIService: PurchaseAPIService,
@@ -53,8 +57,8 @@ export class PurchaseOrderDetailComponent implements OnInit {
     this.loading = true;
   }
 
-
   ngOnInit() {
+    this.buildForm();
     const params = this.route.snapshot.paramMap;
     if (params.has("id")) {
       this.RowID = params.get("id");
@@ -124,9 +128,33 @@ export class PurchaseOrderDetailComponent implements OnInit {
       this.getDoc(this.arrPurchase.purchase_order_id)
       this.differenceDate();
       this.checkPayment()
+      this.detailForm();
 
     })
   }
+
+  buildForm() {
+    this.Form = this.formBuilder.group({
+      purchase_order_number: [{ value: "", disabled: true }, Validators.required],
+      delivery_location: [{ value: "", disabled: true }, Validators.required],
+      billing_name: [{ value: "", disabled: true }, Validators.required],
+      billing_address: [{ value: "", disabled: true }, Validators.required],
+      billing_payment_term: [{ value: "", disabled: true }, Validators.required],
+      purchase_order_reply_msg: [{ value: "", disabled: true }, Validators.required],
+    });
+  }
+
+  detailForm() {
+    this.Form.patchValue({
+      purchase_order_number: this.arrPurchase.purchase_order_number,
+      delivery_location: this.arrPurchase.delivery_location,
+      billing_name: this.arrPurchase.billing_name,
+      billing_address: this.arrPurchase.billing_address,
+      billing_payment_term: this.arrPurchase.billing_payment_term,
+      purchase_order_reply_msg: this.arrPurchase.purchase_order_reply_msg,
+    });
+  }
+
 
   differenceDate() {
     const dateTime = new Date(this.arrPurchase.purchase_order_create * 1000);
@@ -144,7 +172,6 @@ export class PurchaseOrderDetailComponent implements OnInit {
     const dt2 = new Date(date2);
     return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24));
   }
-
 
   checkPayment() {
     if (this.arrPurchase.purchase_order_paid_row !== undefined) {
@@ -225,9 +252,6 @@ export class PurchaseOrderDetailComponent implements OnInit {
     })
 
   }
-
-
-
 
   btnConfirm() {
     const dialogRef = this.dialogService.open(DialogsConfirmPoComponent, {

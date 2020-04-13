@@ -42,10 +42,10 @@
                                             <col />
                                             <col />
                                             <col />
-                                            <col class="Outgoing" />
                                             <col class="Available" />
                                             <col class="OnHand" />
-                                            <col class="Incoming" />
+                                            <col class="Outgoing" />
+                                            <!-- <col class="Incoming" /> -->
                                             <col />
                                         </colgroup>
                                         <thead>
@@ -66,9 +66,9 @@
                                                 <th style="text-align: center; min-width: 120px;">
                                                     Outgoing
                                                 </th>
-                                                <th style="text-align: center; min-width: 120px;">
+                                                <!-- <th style="text-align: center; min-width: 120px;">
                                                     Incoming
-                                                </th>
+                                                </th> -->
                                                 <th style="text-align: right; cursor: pointer;" (click)="btnReload()">
                                                     <nb-icon icon="refresh-outline"></nb-icon>
                                                 </th>
@@ -169,7 +169,7 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="cover qty">
+                                                <!-- <td class="cover qty">
                                                     <div *ngIf="products.type_key == 'NEW CHECKIN'">
                                                         <ngb-highlight
                                                             [result]="products.checkin_data.incoming | number"
@@ -190,12 +190,12 @@
                                                             </ngb-highlight>
                                                         </div>
                                                     </div>
-                                                </td>
+                                                </td> -->
                                                 <td></td>
                                             </tr>
                                             <tr *ngIf="Products.length == 0"
                                                 style="height:300px; background-color: white;">
-                                                <td colspan="8" style="padding-top: 50px;">
+                                                <td colspan="7" style="padding-top: 50px;">
                                                     <img src="assets/images/loading.png" width="300"><br><br>
                                                     <label>No data.</label>
                                                 </td>
@@ -278,10 +278,10 @@
                                                 <col />
                                                 <col />
                                                 <col />
-                                                <col class="Outgoing" />
                                                 <col class="Available" />
                                                 <col class="OnHand" />
-                                                <col class="Incoming" />
+                                                <col class="Outgoing" />
+                                                <!-- <col class="Incoming" /> -->
                                                 <col />
                                             </colgroup>
                                             <thead>
@@ -304,10 +304,10 @@
                                                         (sort)="onSort($event)">
                                                         Outgoing
                                                     </th>
-                                                    <th style="text-align: center;" sortable="DiliversOn"
+                                                    <!-- <th style="text-align: center;" sortable="DiliversOn"
                                                         (sort)="onSort($event)">
                                                         Incoming
-                                                    </th>
+                                                    </th> -->
                                                     <th style="text-align: right; cursor: pointer;"
                                                         (click)="btnRefresh()">
                                                         <nb-icon icon="refresh-outline"></nb-icon>
@@ -316,7 +316,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr style="height:300px; background-color: white;">
-                                                    <td colspan="8" style="padding-top: 50px;">
+                                                    <td colspan="7" style="padding-top: 50px;">
                                                         <div style="height: 100px;background-color: white;"
                                                             [nbSpinner]="loading" nbSpinnerStatus="primary">
                                                         </div>
@@ -333,10 +333,10 @@
                                             <col />
                                             <col />
                                             <col />
-                                            <col class="Outgoing" />
                                             <col class="Available" />
                                             <col class="OnHand" />
-                                            <col class="Incoming" />
+                                            <col class="Outgoing" />
+                                            <!-- <col class="Incoming" /> -->
                                             <col />
                                         </colgroup>
                                         <thead>
@@ -357,10 +357,10 @@
                                                     (sort)="onSort($event)">
                                                     Outgoing
                                                 </th>
-                                                <th style="text-align: center;" scope="col" sortable="DiliversOn"
+                                                <!-- <th style="text-align: center;" scope="col" sortable="DiliversOn"
                                                     (sort)="onSort($event)">
                                                     Incoming
-                                                </th>
+                                                </th> -->
                                                 <th style="text-align: right; cursor: pointer;" (click)="btnRefresh()">
                                                     <nb-icon icon="refresh-outline"></nb-icon>
                                                 </th>

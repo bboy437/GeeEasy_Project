@@ -10,7 +10,6 @@ import { MessagesRoutingModule } from './messages-routing.module';
 import { MessagesComponent } from './messages.component';
 import { DropFileModule } from '../drop-file/drop-file.module';
 
-
 @NgModule({
   imports: [
     FormsModule,
