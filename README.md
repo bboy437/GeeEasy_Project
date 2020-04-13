@@ -1,3 +1,9 @@
+ # Example
+ https://sup.gee-supply.com
+ https://dist.gee-supply.com
+ https://dealer.gee-supply.com/
+
+
 # Geeesy Supply Chain Platform
 
 ## geeesy's Front-End Monorepo
