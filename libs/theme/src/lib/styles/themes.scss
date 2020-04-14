@@ -46,6 +46,11 @@ nb-popover nb-overlay-container div.p-4 {
   border-bottom: 0.6875rem solid #c7c7c7 !important;
 }
 
+.nb-theme-default [nbInput]:disabled {
+  color: black !important;
+}
+
+
 .cover-form {
   input {
     border: 2px solid #c7c7c7 !important;
@@ -132,6 +137,7 @@ nb-checkbox {
     }
   }
 }
+
 ngx-select {
   input {
     line-height: 1.5rem !important;
@@ -277,14 +283,13 @@ span {
     font-size: 18px;
     font-weight: 600;
   }
-  &.thb{
+  &.thb {
     text-align: center;
     font-size: 14px;
     padding-left: 0.5rem;
     color: #666666;
     font-weight: 600;
   }
-  
 }
 
 .cover-phone-number {
@@ -352,18 +357,6 @@ html {
   width: 96%;
 }
 
-// table {
-//   tbody tr:hover {
-//     background-color: rgba(43, 62, 236, 0.041);
-//     cursor: pointer;
-//   }
-//   thead {
-//     nb-icon {
-//       float: right;
-//     }
-//   }
-// }
-
 table {
   &.hover {
     tbody {
@@ -421,6 +414,7 @@ table {
   padding-right: 0rem;
   text-align: center;
 }
+
 .labelList {
   text-align: center;
 }
@@ -790,7 +784,7 @@ table {
         .cover-select,
         .cover-textarea {
           margin-bottom: 1rem;
-          
+
           &.price {
             label,
             a,
@@ -1116,21 +1110,6 @@ nb-layout {
   }
 }
 
-// ngx-select {
-//   .btn {
-//     border: 2px solid #c7c7c7 !important;
-//   }
-//   &.is-invalid {
-//     .ngx-select {
-//       &.dropdown {
-//         .btn {
-//           border: 2px solid #dc3545!important;
-//         }
-//       }
-//     }
-//   }
-// }
-
 ngx-select {
   .ngx-select {
     &.dropdown {
@@ -1145,12 +1124,11 @@ ngx-select {
             &:hover {
               border: 2px solid #1a34b8 !important;
             }
-            
+
             .ngx-select__toggle-buttons {
               font-size: 0.7rem;
               color: #666666;
             }
-
           }
         }
       }
@@ -1236,6 +1214,22 @@ nb-dialog-container {
   }
 }
 
+.Incoming {
+  background-color: rgb(228, 253, 238);
+}
+
+.Available {
+  background-color: rgb(234, 234, 255);
+}
+
+.OnHand {
+  background-color: rgb(253, 255, 230);
+}
+
+.Outgoing {
+  background-color: rgb(255, 228, 228);
+}
+
 $nb-themes: nb-register-theme(
   (
     card-height-tiny: 13.5rem,
@@ -1268,7 +1262,7 @@ $nb-themes: nb-register-theme(
     header-background-color: #1a34b8,
     route-tabset-tab-text-transform: capitalize,
     user-initials-text-color: #ffffff,
-    spinner-background-color: #ffffff
+    spinner-background-color: #ffffff,
   ),
   default,
   default
@@ -1276,7 +1270,7 @@ $nb-themes: nb-register-theme(
 
 $nb-themes: nb-register-theme(
   (
-    layout-padding-top: 1rem
+    layout-padding-top: 1rem,
   ),
   cosmic,
   cosmic
@@ -1284,7 +1278,7 @@ $nb-themes: nb-register-theme(
 
 $nb-themes: nb-register-theme(
   (
-    layout-padding-top: 1rem
+    layout-padding-top: 1rem,
   ),
   corporate,
   corporate
@@ -1292,7 +1286,7 @@ $nb-themes: nb-register-theme(
 
 $nb-themes: nb-register-theme(
   (
-    layout-padding-top: 1rem
+    layout-padding-top: 1rem,
   ),
   dark,
   dark

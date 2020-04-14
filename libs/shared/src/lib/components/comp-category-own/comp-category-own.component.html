@@ -39,7 +39,7 @@
                             <table class="table {{active}}">
                                 <tbody>
                                     <tr *ngFor="let c  of thisArray"
-                                        [ngClass]="{'active': c.product_category_id == numID}"
+                                        [ngClass]="{'active': c.product_category_name == category__name}"
                                         (click)="get_category_view(c, c.product_category_name)">
                                         <td class="left">
                                             {{c.product_category_name}}

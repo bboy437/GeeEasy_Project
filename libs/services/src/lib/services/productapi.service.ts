@@ -7,6 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
 import { throwError, Subject, BehaviorSubject } from 'rxjs';
 import { IObjStock } from '@project/interfaces';
+import { Router } from '@angular/router';
 
 
 @Injectable()
@@ -25,9 +26,10 @@ export class ProductAPIService {
     protected ServerApiUrlProductDist = "https://api.gee-supply.com/v1-dist/";
     protected ServerApiUrlProducDealer = "https://api.gee-supply.com/v1-dealer/";
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient,    private router: Router,) {
         this.data$ = this.myMethodSubject.asObservable();
         this.dataTransfer$ = this.myMethodSubjectTransfer.asObservable();
+
     }
 
     httpOptions = {
@@ -43,6 +45,8 @@ export class ProductAPIService {
     clickDataTransfer(data) :any {
          this.myMethodSubjectTransfer.next(data);
     }
+
+
 
 
     getViewDefault(strUrl: string): Observable<any> {
@@ -305,6 +309,7 @@ export class ProductAPIService {
             errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
         }
         window.alert(errorMessage);
+        // this.router.navigate(["products/manage/list"]);
         return throwError(errorMessage);
     }
 

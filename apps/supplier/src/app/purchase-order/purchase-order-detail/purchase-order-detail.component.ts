@@ -118,43 +118,23 @@ export class PurchaseOrderDetailComponent implements OnInit {
   }
 
   getPurchaseDetail() {
+    this.products.clear();
+
     this.purchaseAPIService.getPurchaseDetail(this.RowID).subscribe(data => {
       this.arrPurchase = data.response_data[0];
       console.log(this.arrPurchase);
 
-      if (this.arrPurchase.purchase_order_reply_id === 0) {
-        this.arrPurchase.status = "Waiting"
-      }
-      if (this.arrPurchase.purchase_order_reply_id === 1) {
-        this.arrPurchase.status = "Confirmed"
-      }
-      if (this.arrPurchase.purchase_order_reply_id === 2) {
-        this.arrPurchase.status = "In Negotiation"
-      }
-      if (this.arrPurchase.purchase_order_reply_id === 3) {
-        this.arrPurchase.status = "Canceled"
-      }
+      this.openReply = this.arrPurchase.button_array.supplier.reply === 0 ? true : false;
+      this.openConfirm = this.arrPurchase.button_array.supplier.confirm_delivery === 0 ? true : false;
 
-      if (this.arrPurchase.button_array.supplier.reply === 0) {
-        this.openReply = true;
-      } else {
-        this.openReply = false;
-      }
 
-      if (this.arrPurchase.button_array.supplier.confirm_delivery === 0) {
-        this.openConfirm = true;
-      } else {
-        this.openConfirm = false;
-      }
-
-      if (this.arrPurchase.purchase_order_status_display.supplier_is_confirm === 1 || this.arrPurchase.purchase_order_status_display.po_is_delivery === 1) {
+      if (this.arrPurchase.purchase_order_status_display.supplier_is_confirm === 1 || this.arrPurchase.purchase_order_status_display.po_is_delivery === 1)
         this.isStatus = true;
-
-      }
 
       this.arrPurchaseProduct = data.response_data[0].purchase_order_product_array;
       this.arrPurchaseOrderSummary = data.response_data[0].purchase_order_summary;
       this.arrPurchaseOrderSummary.product_currency_code = this.arrPurchaseProduct[0].product_data.product_data.product_currency_code;
+
       if (this.arrPurchase.purchase_order_paid_row.length > 0) {
         this.purchase_order_paid_row = data.response_data[0].purchase_order_paid_row;
         this.purchase_order_paid_row.forEach(element => {
@@ -165,15 +145,14 @@ export class PurchaseOrderDetailComponent implements OnInit {
       this.checkin_receive_array = data.response_data[0].checkin_receive_array;
       this.checkin_manual_array = data.response_data[0].checkin_manual_array;
       this.getDoc(this.arrPurchase.purchase_order_id)
-      this.getProductData();
-
-      this.differenceDate();
-      this.checkPayment()
 
       if (this.checkin_receive_array.length > 0) {
         this.checkReceive_Arrayf(this.checkin_receive_array)
       }
 
+      this.differenceDate();
+      this.checkPayment()
+      this.getProductData();
       this.detailForm();
 
     })

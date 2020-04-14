@@ -5,14 +5,19 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
-import { throwError, Subject } from 'rxjs';
+import { throwError, Subject, BehaviorSubject } from 'rxjs';
 
 @Injectable()
 
 export class MessagesAPIService {
 
+    dataChat$: Observable<any>;
+    private myMethodSubjectChat = new BehaviorSubject<any>("");
+
     constructor(private http: HttpClient) {
+        this.dataChat$ = this.myMethodSubjectChat.asObservable();
     }
+
 
     //get
     // protected ServerApiUrlCheckIn = "https://private-anon-dd003e29ce-geeesyapiblueprint.apiary-mock.com/";
@@ -21,11 +26,16 @@ export class MessagesAPIService {
     protected ServerApiUrlDealer = "https://api.gee-supply.com/v1-dealer/";
 
     //add
+    
 
     httpOptions = {
         headers: new HttpHeaders({
             'Content-Type': 'application/json'
         })
+    }
+
+    dataChat(data) {
+        this.myMethodSubjectChat.next(data);
     }
 
     //Api ฝั่ง distributor

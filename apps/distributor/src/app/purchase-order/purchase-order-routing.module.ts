@@ -7,8 +7,6 @@ import { PurchaseOrderListComponent } from './purchase-order-list/purchase-order
 import { PurchaseOrderCreateComponent } from './purchase-order-create/purchase-order-create.component';
 import { PurchaseReorderComponent } from './purchase-reorder/purchase-reorder.component';
 
-
-
 const routes: Routes = [{
 
   path: '',

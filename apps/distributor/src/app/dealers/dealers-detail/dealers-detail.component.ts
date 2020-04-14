@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { DealerAPIService } from '@project/services';
+import { DealerAPIService, UploadAPIService } from '@project/services';
 import { DialogsImageComponent } from '../../dialogs/dialogs-image/dialogs-image.component';
 import { NbDialogService } from '@nebular/theme';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'project-dealers-detail',
@@ -15,50 +16,124 @@ export class DealersDetailComponent implements OnInit {
   arrDeler: any = [];
   rowID: string;
   loading = false;
+
+  dealersFrom: FormGroup;
+
+  image = {
+    update: false,
+    main_image: {
+      get: [],
+      port: []
+    }
+  }
+
+
   constructor(
     private router: Router,
     private dealerAPIService: DealerAPIService,
     private route: ActivatedRoute,
-    private dialogService: NbDialogService
-  ) { 
+    private dialogService: NbDialogService,
+    private uploadAPIService: UploadAPIService,
+    private formBuilder: FormBuilder,
+  ) {
     this.loading = true;
   }
 
   ngOnInit() {
+    this.buildForm();
     const params = this.route.snapshot.paramMap;
     this.rowID = params.get("id")
-    if(this.rowID){
+    if (this.rowID) {
       this.getDealerDetail();
     }
   }
 
-  getDealerDetail(){   
+  getDealerDetail() {
     this.dealerAPIService.getDealerDetail(this.rowID).subscribe(data => {
       this.arrDeler = data.response_data[0];
+
+      if (
+        this.arrDeler.dealer_image_url !== undefined &&
+        this.arrDeler.dealer_image_url !== "-" &&
+        this.arrDeler.dealer_image_url !== ""
+      )
+        this.uploadAPIService
+          .uploadImage()
+          .getUrl(this.arrDeler.dealer_image_url, red_image => {
+            this.image.main_image.get.push(red_image);
+          });
       console.log(this.arrDeler);
-      this.loading = false;
+      this.editForm();
+
     })
+
+  }
+
+
+  buildForm() {
+    this.dealersFrom = this.formBuilder.group({
+      dealer_name: [{ value: '', disabled: true }, Validators.required],
+      dealer_tag: [{ value: '', disabled: true }, Validators.required],
+      dealer_first_name: [{ value: '', disabled: true }, Validators.required],
+      dealer_last_name: [{ value: '', disabled: true }, Validators.required],
+      dealer_company: [{ value: '', disabled: true }, Validators.required],
+      dealer_email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
+      dealer_tel: [{ value: '', disabled: true }, Validators.required],
+      dealer_mobile: [{ value: '', disabled: true }, Validators.required],
+      dealer_addr_full: [{ value: '', disabled: true }, Validators.required],
+      dealer_addr_number: [{ value: '', disabled: true }, Validators.required],
+      dealer_addr_province: [{ value: '', disabled: true }, Validators.required],
+      dealer_addr_amphoe: [{ value: '', disabled: true }, Validators.required],
+      dealer_addr_tambon: [{ value: '', disabled: true }, Validators.required],
+      dealer_addr_post: [{ value: '', disabled: true }, Validators.required],
+      lat_long: [{ value: '', disabled: true }, Validators.required],
+    });
+
+  }
+
+  editForm() {
+    this.dealersFrom.patchValue({
+      dealer_name: this.arrDeler.dealer_name,
+      dealer_tag: this.arrDeler.dealer_tag,
+      dealer_first_name: this.arrDeler.dealer_first_name,
+      dealer_last_name: this.arrDeler.dealer_last_name,
+      dealer_company: this.arrDeler.dealer_company,
+      dealer_email: this.arrDeler.dealer_email,
+      dealer_tel: this.arrDeler.dealer_tel,
+      dealer_mobile: this.arrDeler.dealer_mobile,
+      dealer_addr_full: this.arrDeler.dealer_addr_full,
+      dealer_addr_number: this.arrDeler.dealer_addr_number,
+      dealer_addr_province: this.arrDeler.dealer_addr_province,
+      dealer_addr_amphoe: this.arrDeler.dealer_addr_amphoe,
+      dealer_addr_tambon: this.arrDeler.dealer_addr_tambon,
+      dealer_addr_post: this.arrDeler.dealer_addr_post,
+      lat_long: this.arrDeler.dealer_addr_lat + "," + this.arrDeler.dealer_addr_lng
+
+    });
+    this.loading = false;
+    console.log( this.dealersFrom);
     
   }
 
 
-  btnCancelClick(){
+
+  btnCancelClick() {
     this.router.navigate([this.UrlRouter_DealersList])
 
   }
 
-  btnEditClick(){
+  btnEditClick() {
     this.router.navigate([this.UrlRouter_DealersEdit, this.rowID])
   }
 
 
-  openImg(img : any) {  
+  openImg(img: any) {
     this.dialogService.open(DialogsImageComponent, {
       context: {
         imgURL: img,
       },
     });
   }
-  
+
 
 }

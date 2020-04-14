@@ -11,6 +11,7 @@ export class CompCategoryOwnComponent implements OnInit {
   @Output() categoryID = new EventEmitter<any>();
   @Input() status: string;
   @Input() active: string;
+  @Input() product_category__name: string;
 
   arrCategory: any = [];
   filter: any = [];
@@ -23,7 +24,7 @@ export class CompCategoryOwnComponent implements OnInit {
   strName: string;
   strFillter: string;
   strLoading: string;
-
+  category__name: string;
   loading = false;
 
   constructor(
@@ -48,13 +49,14 @@ export class CompCategoryOwnComponent implements OnInit {
     this.get_category_start(res => {
       this.lastName[this.lastCount] = "View All";
       this.numID = 0;
+      this.category__name = this.product_category__name;
       this.strName = "none";
-      const ID = {
-        product_category__id: 0,
-        product_category_root_id: 0,
-        product_category__name: ""
-      }
-      this.categoryID.emit(ID);
+      // const ID = {
+      //   product_category__id: 0,
+      //   product_category_root_id: 0,
+      //   product_category__name: ""
+      // }
+      // this.categoryID.emit(ID);
     })
   }
 
@@ -69,7 +71,7 @@ export class CompCategoryOwnComponent implements OnInit {
         this.filter = this.thisArray;
         if (this.thisArray.length !== 0) {
           this.thisArray.forEach(element => {
-            element.isActive = false;
+            element.isActive = element.product_category_name === this.product_category__name ? true : false;
           });
           callback(this.thisArray);
         } else {
@@ -86,7 +88,7 @@ export class CompCategoryOwnComponent implements OnInit {
         this.filter = this.thisArray;
         if (this.thisArray.length !== 0) {
           this.thisArray.forEach(element => {
-            element.isActive = false;
+            element.isActive = element.product_category_name === this.product_category__name ? true : false;
           });
           callback(this.thisArray);
         } else {
@@ -132,8 +134,8 @@ export class CompCategoryOwnComponent implements OnInit {
       this.strName = name;
       event.isActive = true;
     }
-
     this.numID = id;
+    this.category__name = name;
     console.log("this.lastCount", this.lastCount);
     if (this.lastCount === 0) {
       console.log('a');
@@ -165,7 +167,7 @@ export class CompCategoryOwnComponent implements OnInit {
   view_id(id, callback) {
     this.loading = true;
     if (this.status === 'Distributor') {
-      const valueCategory = 'cur_page=' + 1 + '&per_page=' + 100 + '&product_category_id=' + id +  + "&main=" + 1;
+      const valueCategory = 'cur_page=' + 1 + '&per_page=' + 100 + '&product_category_id=' + id + + "&main=" + 1;
       this.browseSupplierAPIService.getCategory(valueCategory).subscribe(data => {
         if (data.response_data.length !== 0) {
           data.response_data.forEach(element => {
@@ -179,7 +181,7 @@ export class CompCategoryOwnComponent implements OnInit {
       })
     }
     if (this.status === 'Supplier') {
-      const valueCategory = 'cur_page=' + 1 + '&per_page=' + 100 + '&product_category_id=' + id +  + "&main=" + 1;
+      const valueCategory = 'cur_page=' + 1 + '&per_page=' + 100 + '&product_category_id=' + id + + "&main=" + 1;
       this.browseSupplierAPIService.getCategoryDist(valueCategory).subscribe(data => {
         if (data.response_data.length !== 0) {
           data.response_data.forEach(element => {
@@ -209,7 +211,8 @@ export class CompCategoryOwnComponent implements OnInit {
           this.lastArray = [];
           this.lastName[this.lastCount] = "View All";
           this.numID = null;
-          
+          this.category__name = "";
+
           const ID = {
             product_category__id: 0,
             product_category_root_id: 0,
@@ -238,6 +241,7 @@ export class CompCategoryOwnComponent implements OnInit {
         // save last data
         // lastArray = thisArray;
         this.numID = _id;
+        this.category__name = this.lastName[this.lastCount];
         console.log("view ", _id);
         console.log("name ", this.lastName[this.lastCount]);
 
@@ -275,6 +279,7 @@ export class CompCategoryOwnComponent implements OnInit {
     this.get_category_start(res => {
       this.lastName[this.lastCount] = "View All";
       this.numID = 0;
+      this.category__name = "";
       this.strName = "none";
       const ID = {
         product_category__id: 0,

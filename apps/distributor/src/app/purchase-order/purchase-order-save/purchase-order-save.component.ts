@@ -593,7 +593,7 @@ export class PurchaseOrderSaveComponent implements OnInit {
       this.isSaveLodding = false;
       this.router.navigate([this.UrlRouter_Purchase]);
     })
-    this.saveSetting()
+    // this.saveSetting()
 
   }
 

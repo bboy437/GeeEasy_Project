@@ -1,31 +1,34 @@
-<nb-card [nbSpinner]="loading" nbSpinnerStatus="primary">
-  <nb-card-body>
-    <div class="container">
-      <div class="form-group">
-        <label>Address</label>
-        <input libOnlyCharacterDefault nbInput status="primary" type="text" class="form-control" (keyup)="onKey($event)"
-          placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text"
-          #search>
-      </div>
-      <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
-        <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
-          (dragEnd)="markerDragEnd($event)"></agm-marker>
-      </agm-map>
-      <img width="30" class="icon-map" src="assets/icon/icon-map.png" (dragEnd)="markerDragEnd($event)"
-        (click)="getCurrent(latitude, longitude)">
-      <label style="font-size: 16px">Address: {{address}}</label>
+<div class="pages">
+  <div class="row">
+    <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="primary">
+      <nb-card>
+        <nb-card-body>
+          <div class="container">
+            <div class="form-group">
+              <label>Address</label>
+              <input libOnlyCharacterDefault nbInput status="primary" type="text" class="form-control"
+                (keyup)="onKey($event)" placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off"
+                spellcheck="off" type="text" #search>
+            </div>
+
+            <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+              <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+                (dragEnd)="markerDragEnd($event)"></agm-marker>
+            </agm-map>
+            <img width="30" class="icon-map" src="assets/icon/icon-map.png" (click)="getCurrent(longitude, longitude)">
+            <label style="font-size: 16px">Address: {{address}}</label>
+          </div>
+        </nb-card-body>
+
+        <nb-card-footer>
+          <div class="d-flex justify-content-center">
+            <button nbButton style="width: 100px" status="danger" (click)="btnCancelClick()">Cancel</button>
+            <button nbButton style="width: 100px; margin-left: 0.7rem;" status="success"
+              (click)="btnSaveClick()">OK</button>
+          </div>
+        </nb-card-footer>
+
+      </nb-card>
     </div>
-
-
-    <div class="row show-grid" style="text-align: center">
-      <div class="col-md-12">
-        <button nbButton style="width: 100px" status="danger" (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
-        <button nbButton style="width: 100px" status="success" (click)="btnSaveClick()">Add Address</button>
-
-      </div>
-    </div>
-
-
-
-  </nb-card-body>
-</nb-card>
+  </div>
+</div>

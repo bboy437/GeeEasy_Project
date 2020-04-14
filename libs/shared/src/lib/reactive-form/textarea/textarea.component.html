@@ -1,1 +1,39 @@
-<p>textarea works!</p>
+<div class="field">
+    <label>{{ label }}</label>
+    <div class="cover-input">
+        <textarea [rows]="rows" type="text" nbInput fullWidth status="primary" [formControl]="control"
+            [ngClass]="{ 'is-invalid': showErrors() }">
+     </textarea>
+    </div>
+    <div *ngIf="showErrors()">
+        <p class="required" *ngIf="control.errors.required">
+            {{requiredName}} is required
+        </p>
+        <p class="required" *ngIf="control.errors.email">
+            {{emailName}} a valid email
+        </p>
+        <p class="required" *ngIf="control.errors.minlength">
+            Value you entered is
+            {{ control.errors.minlength.actualLength }}
+            characters long, but it must be at least
+            {{ control.errors.minlength.requiredLength }}
+            characters
+        </p>
+        <p class="required" *ngIf="control.errors.maxlength">
+            Value you entered is
+            {{ control.errors.maxlength.actualLength }}
+            characters long, but it cannot be longer than
+            {{ control.errors.maxlength.requiredLength }}
+            characters
+        </p>
+        <p class="required" *ngIf="control.errors.pattern">
+            Invalid format
+        </p>
+        <p class="required" *ngIf="control.errors.nonUniqueUsername">
+            Username is taken
+        </p>
+        <p class="required" *ngIf="control.errors.noConnection">
+            Can't tell if username is taken
+        </p>
+    </div>
+</div>

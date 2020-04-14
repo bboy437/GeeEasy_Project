@@ -44,38 +44,23 @@ import { OnlyProductName } from './directive-form/productname.directive';
 import { InputComponent } from './reactive-form/input/input.component';
 import { TextareaComponent } from './reactive-form/textarea/textarea.component';
 import { SelectComponent } from './reactive-form/select/select.component';
+import { IConfig, NgxMaskModule } from "ngx-mask";
+import { NgxSelectComponent } from './reactive-form/ngx-select/ngx-select.component';
+
+
+export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 @NgModule({
   declarations: [
-    NospacePipe,
-    PhoneMaskDirective,
-    PhoneNewMaskDirective,
-    OnlyCharacterDefault,
-    OnlyCharacterDirective,
-    OnlyCharacternumberDirective,
-    OnlyCharacterphonnumberDirective,
-    OnlySKU,
-    OnlyBarcode,
-    CompProductsComponent,
-    CompSummaryComponent,
-    DisplayFileImageComponent,
-    FileUploadComponent,
-    FileUploadNoteComponent,
-    ListFileUploadComponent,
-    DecimalMask,
-    CompLocationComponent,
-    MapsComponent,
-    FileImageComponent,
-    CompCategoryComponent,
-    CompCategoryBrowseComponent,
-    OnlyUnit,
-    CompPaymentComponent,
-    CompProductsSupplierDetailComponent,
-    CompCategoryOwnComponent,
-    OnlyProductName,
-    InputComponent,
-    TextareaComponent,
-    SelectComponent
+    NospacePipe, PhoneMaskDirective, PhoneNewMaskDirective, OnlyCharacterDefault,
+    OnlyCharacterDirective, OnlyCharacternumberDirective, OnlyCharacterphonnumberDirective,
+    OnlySKU, OnlyBarcode, CompProductsComponent, CompSummaryComponent,
+    DisplayFileImageComponent, FileUploadComponent, FileUploadNoteComponent,
+    ListFileUploadComponent, DecimalMask, CompLocationComponent,
+    MapsComponent, FileImageComponent, CompCategoryComponent,
+    CompCategoryBrowseComponent, OnlyUnit, CompPaymentComponent,
+    CompProductsSupplierDetailComponent, CompCategoryOwnComponent, OnlyProductName,
+    InputComponent, TextareaComponent, SelectComponent, NgxSelectComponent,
   ],
   imports: [
     CommonModule,
@@ -89,36 +74,18 @@ import { SelectComponent } from './reactive-form/select/select.component';
       apiKey: "AIzaSyB1OKRa5BEFf5rtLLwZ_pbtsfe5KJNIn5w",
       libraries: ["places"]
     }),
-    NbDialogModule.forChild()
+    NbDialogModule.forChild(),
+    NgxMaskModule.forRoot(options),
   ],
   exports: [
-    NospacePipe,
-    PhoneMaskDirective,
-    PhoneNewMaskDirective,
-    OnlyCharacterDefault,
-    OnlyCharacterDirective,
-    OnlyCharacternumberDirective,
-    OnlyCharacterphonnumberDirective,
-    OnlySKU,
-    OnlyBarcode,
-    CompProductsComponent,
-    CompSummaryComponent,
-    DisplayFileImageComponent,
-    FileImageComponent,
-    FileUploadComponent,
-    FileUploadNoteComponent,
-    ListFileUploadComponent,
-    DecimalMask,
-    CompLocationComponent,
-    MapsComponent,
-    CompCategoryComponent,
-    CompCategoryBrowseComponent,
-    OnlyUnit,
-    CompPaymentComponent,
-    CompProductsSupplierDetailComponent,
-    CompCategoryOwnComponent,
-    OnlyProductName
+    NospacePipe, PhoneMaskDirective, PhoneNewMaskDirective, OnlyCharacterDefault,
+    OnlyCharacterDirective, OnlyCharacternumberDirective, OnlyCharacterphonnumberDirective,
+    OnlySKU, OnlyBarcode, CompProductsComponent, CompSummaryComponent, DisplayFileImageComponent,
+    FileImageComponent, FileUploadComponent, FileUploadNoteComponent, ListFileUploadComponent,
+    DecimalMask, CompLocationComponent, MapsComponent, CompCategoryComponent, CompCategoryBrowseComponent,
+    OnlyUnit, CompPaymentComponent, CompProductsSupplierDetailComponent, CompCategoryOwnComponent,
+    OnlyProductName, InputComponent, NgxSelectComponent, TextareaComponent
   ],
   entryComponents: [MapsComponent]
 })
-export class SharedModule {}
+export class SharedModule { }

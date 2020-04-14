@@ -25,6 +25,11 @@ import axios from "axios";
 import { count } from 'rxjs/operators';
 import { INgxSelectOption } from 'ngx-select-ex';
 
+// file service & external data
+import JSON_PROVINCE from '../../../../../../libs/shared/src/lib/json/province.json';
+import JSON_LOCATION from '../../../../../../libs/shared/src/lib/json/location.json';
+import JSON_LOCATION_DETAIL from '../../../../../../libs/shared/src/lib/json/location_detail.json';
+
 @Component({
     selector: "project-sale-rep-create",
     templateUrl: "./sale-rep-create.component.html",
@@ -50,6 +55,12 @@ export class SaleRepCreateComponent implements OnInit {
     product_category_id: string;
     loading = false;
     isReload = false;
+
+    arrProvince: any[] = JSON_PROVINCE;
+    arrAmphoe: any[];
+    arrTambon: any[];
+    arrLocation: any[] = JSON_LOCATION;
+    arrLocationDetail: any[] = JSON_LOCATION_DETAIL;
 
 
     phone: any = {
@@ -82,10 +93,13 @@ export class SaleRepCreateComponent implements OnInit {
         private formBuilder: FormBuilder,
         private dialogService: NbDialogService,
         private uploadAPIService: UploadAPIService,
-        private browseSupplierAPIService: BrowseSupplierAPIService, private saleRepService: SaleRepService
+        private browseSupplierAPIService: BrowseSupplierAPIService,
+        private saleRepService: SaleRepService
     ) {
+
         this.id_local = localStorage.getItem('id');
         console.log(' this.id_local', this.id_local);
+
         this.loading = true;
     }
 
@@ -94,7 +108,6 @@ export class SaleRepCreateComponent implements OnInit {
         const params = this.route.snapshot.paramMap;
         this.RowID = params.get("id");
         if (this.RowID === "new") {
-            this.getCountryNew();
             this.getCategory();
             this.loading = false;
         } else {
@@ -109,7 +122,7 @@ export class SaleRepCreateComponent implements OnInit {
                     this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.sale_rep_image_url, red_image => {
                         this.image.main_image.get.push(red_image);
                     });
-                this.getStateEdit();
+
                 this.editForm();
                 this.phoneNumber().main(_self_ => {
                     res.response_data.forEach(item => {
@@ -123,7 +136,12 @@ export class SaleRepCreateComponent implements OnInit {
                         });
                     });
                 });
-                this.loading = false;
+                /*Get Province Edit */
+                this.changeProvinceEdit(
+                    this.arrobjRow.sale_rep_addr_province,
+                    this.arrobjRow.sale_rep_addr_amphoe,
+                    this.arrobjRow.sale_rep_addr_tambon
+                );
             })
         }
     }
@@ -166,15 +184,15 @@ export class SaleRepCreateComponent implements OnInit {
             sale_rep_last_name: ["", Validators.required],
             sale_rep_email: ["", [Validators.required, Validators.email]],
             telephoneNumber: [""],
-            sale_rep_addr_full: ["", Validators.required],
-            sale_rep_addr_number: ["", Validators.required],
-            province: ['', Validators.required],
-            amphoe: ['', Validators.required],
-            tambon: ['', Validators.required],
+            addressFull: ['', Validators.required],
+            addressNo: ['', Validators.required],
+            province: ["", Validators.required],
+            amphoe: ["", Validators.required],
+            tambon: ["", Validators.required],
             zipcode: ["", Validators.required],
-            latitudeAndLongitude: [{ value: '', disabled: true }, Validators.required],
-            sale_rep_addr_lat: [],
-            sale_rep_addr_lng: []
+            location_lat: [],
+            location_lng: [],
+            location_lat_location_lng: [{ value: "", disabled: true }, Validators.required],
         });
     }
 
@@ -186,142 +204,238 @@ export class SaleRepCreateComponent implements OnInit {
             sale_rep_first_name: this.arrobjRow.sale_rep_first_name,
             sale_rep_last_name: this.arrobjRow.sale_rep_last_name,
             sale_rep_email: this.arrobjRow.sale_rep_email,
-            sale_rep_addr_full: this.arrobjRow.sale_rep_addr_full,
-            sale_rep_addr_number: this.arrobjRow.sale_rep_addr_number,
-            latitudeAndLongitude: this.arrobjRow.sale_rep_addr_lat + ',' + this.arrobjRow.sale_rep_addr_lng,
-            sale_rep_addr_lat: this.arrobjRow.sale_rep_addr_lat,
-            sale_rep_addr_lng: this.arrobjRow.sale_rep_addr_lng,
+            addressFull: this.arrobjRow.sale_rep_addr_full,
+            addressNo: this.arrobjRow.sale_rep_addr_number,
+            location_lat_location_lng: this.arrobjRow.sale_rep_addr_lat + ',' + this.arrobjRow.sale_rep_addr_lng,
+            location_lat: this.arrobjRow.sale_rep_addr_lat,
+            location_lng: this.arrobjRow.sale_rep_addr_lng,
         });
+        this.loading = false;
     }
 
-    // New ----------------------------------------------------------
+    /*New Data Location ------------------------ */
 
-    getCountryNew() {
-        //getState
-        const dataState = 'txt_location_type_id=' + 2 + '&txt_parent_id=' + 231 + '&cur_page=' + 1 + '&per_page=' + 100
-        this.locationService.get(dataState).subscribe(data => {
-            this.arrobjState = data.data.dataList;
-        })
-    }
-    getStateNew(event: INgxSelectOption[]) {
-        console.log('event', event);
+    changeProvince(location_name) {
+        this.SaleForm.get('amphoe').patchValue("");
+        this.SaleForm.get('tambon').patchValue("");
+        this.SaleForm.get('zipcode').patchValue("");
+        this.SaleForm.get('location_lat').patchValue(0);
+        this.SaleForm.get('location_lng').patchValue(0);
+        this.SaleForm.get('location_lat_location_lng').patchValue(0 + ',' + 0);
+        this.arrAmphoe = null;
+        this.arrTambon = null;
 
-        setTimeout(() => {
-            this.SaleForm.get('amphoe').patchValue("");
-            this.SaleForm.get('tambon').patchValue("");
-            this.SaleForm.get('zipcode').patchValue("");
-            this.SaleForm.get('sale_rep_addr_lat').patchValue(0);
-            this.SaleForm.get('sale_rep_addr_lng').patchValue(0);
-            this.SaleForm.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
-        }, 0);
-        this.arrobjCity = null
-        this.arrobjTown = null;
-        if (this.arrobjState.length > 0) {
-            for (let i = 0; i < this.arrobjState.length; i++) {
-                if (this.arrobjState[i].location_name === event) {
-                    const parentID = this.arrobjState[i].location_id;
-                    //getCity
-                    const dataCity = 'txt_location_type_id=' + 3 + '&txt_parent_id=' + parentID + '&cur_page=' + 1 + '&per_page=' + 100
-                    this.locationService.get(dataCity).subscribe(data => {
-                        this.arrobjCity = data.data.dataList;
-                    })
-                }
-            }
+        if (this.arrProvince.length > 0) {
+            const arrProvince = this.arrProvince.filter((x) => x.location_name === location_name)
+            this.get_Amphoe(+arrProvince[0].location_id);
         }
     }
 
-
-    getCityNew(event: any) {
-        setTimeout(() => {
-            this.SaleForm.get('tambon').patchValue("");
-            this.SaleForm.get('zipcode').patchValue("");
-        }, 0);
-        this.arrobjTown = null;
-        if (this.arrobjCity.length > 0) {
-            for (let i = 0; i < this.arrobjCity.length; i++) {
-                if (this.arrobjCity[i].location_name === event) {
-                    const parentID = this.arrobjCity[i].location_id;
-                    //getCity
-                    const dataTown = 'txt_location_type_id=' + 4 + '&txt_parent_id=' + parentID + '&cur_page=' + 1 + '&per_page=' + 100
-                    this.locationService.get(dataTown).subscribe(data => {
-                        this.arrobjTown = data.data.dataList;
-                    })
+    async get_Amphoe(location_id) {
+        const get_detail_by_id = (id) => {
+            return this.arrLocationDetail.filter(row => {
+                if (row.location_id === id) {
+                    return true;
                 }
+                return false;
+            });
+        };
+
+        const newArray = [];
+        await this.arrLocation.forEach(row => {
+            if (row.parent_id == location_id) {
+                const detail_data_array = get_detail_by_id(row.location_id);
+                row.location_name = detail_data_array[0].name;
+                row.location_postcode = Number(row.postcode);
+
+                newArray.push({
+                    location_id: row.location_id,
+                    location_name: detail_data_array[0].name,
+                    location_postcode: Number(row.postcode)
+                });
+
+                return true;
             }
+            return false;
+        });
+
+        this.arrAmphoe = newArray;
+
+        console.log("get_Amphoe : arrAmphoe", this.arrAmphoe);
+    }
+
+    changeAmphoe(location_name) {
+        this.SaleForm.get('tambon').patchValue("");
+        this.SaleForm.get('zipcode').patchValue("");
+        this.SaleForm.get('location_lat').patchValue(0);
+        this.SaleForm.get('location_lng').patchValue(0);
+        this.SaleForm.get('location_lat_location_lng').patchValue(0 + ',' + 0);
+        this.arrTambon = null;
+        if (this.arrAmphoe.length > 0) {
+            const arrAmphoe = this.arrAmphoe.filter((x) => x.location_name === location_name)
+            this.get_Tambon(+arrAmphoe[0].location_id);
         }
     }
 
-    getTownNew(event: any) {
-        if (this.arrobjTown.length > 0) {
-            for (let i = 0; i < this.arrobjTown.length; i++) {
-                if (this.arrobjTown[i].location_name === event) {
-                    setTimeout(() => {
-                        this.SaleForm.get('tambon').patchValue(this.arrobjTown[i].location_name);
-                        this.SaleForm.get('zipcode').patchValue(this.arrobjTown[i].location_postcode);
-                    }, 0);
+    async get_Tambon(location_id) {
+
+        const get_detail_by_id = (id) => {
+            return this.arrLocationDetail.filter(row => {
+                if (row.location_id === id) {
+                    return true;
                 }
+                return false;
+            });
+        };
+
+        const newArray = [];
+        await this.arrLocation.forEach(row => {
+            if (row.parent_id == location_id) {
+                const detail_data_array = get_detail_by_id(row.location_id);
+                row.location_name = detail_data_array[0].name;
+                row.location_postcode = Number(row.postcode);
+
+                newArray.push({
+                    location_id: row.location_id,
+                    location_name: detail_data_array[0].name,
+                    location_postcode: Number(row.postcode)
+                });
+
+                return true;
             }
+            return false;
+        });
+
+        this.arrTambon = newArray;
+        console.log("arrTambon", this.arrTambon);
+    }
+
+    changeTambon(location_name) {
+        if (this.arrTambon.length > 0) {
+            const arrTambon = this.arrTambon.filter((x) => x.location_name === location_name)
+            this.SaleForm.get('tambon').patchValue(arrTambon[0].location_name);
+            this.SaleForm.get('zipcode').patchValue(arrTambon[0].location_postcode);
+            this.SaleForm.get('location_lat').patchValue(0);
+            this.SaleForm.get('location_lng').patchValue(0);
+            this.SaleForm.get('location_lat_location_lng').patchValue(0 + ',' + 0);
+            console.log("SaleForm", this.SaleForm.value);
+        }
+    }
+
+    /*Edit Data Location ------------------------ */
+
+    /*Change Province Edit */
+    async changeProvinceEdit(strProvince, strAmphoe, strTambon) {
+        const thisLocation = await this.arrProvince.filter(row => {
+            if (row.location_name.indexOf(strProvince) !== -1) {
+                return true;
+            }
+            return false;
+        });
+        if (thisLocation.length > 0) {
+            this.SaleForm.get('province').patchValue(strProvince);
+            this.get_Amphoe_Edit(thisLocation[0].location_id, strAmphoe, strTambon);
         }
 
     }
 
-    //edit --------------------------------------------
+    /*Get Amphoe Edit */
+    async get_Amphoe_Edit(location_id, strAmphoe, strTambon) {
 
-    getStateEdit() {
+        const get_detail_by_id = (id) => {
+            return this.arrLocationDetail.filter(row => {
+                if (row.location_id == id) {
+                    return true;
+                }
+                return false;
+            });
+        };
+        const newArray = [];
+        await this.arrLocation.forEach(row => {
+            if (row.parent_id == location_id) {
+                const detail_data_array = get_detail_by_id(row.location_id);
+                row.location_name = detail_data_array[0].name;
+                row.location_postcode = Number(row.postcode);
 
-        const dataState = 'txt_location_type_id=' + 2 + '&txt_parent_id=' + 231 + '&cur_page=' + 1 + '&per_page=' + 100
-        this.locationService.get(dataState).subscribe(data => {
-            this.arrobjState = data.data.dataList;
-            setTimeout(() => {
-                this.SaleForm.get('province').patchValue(this.arrobjRow.sale_rep_addr_province);
-            }, 0);
-            this.getCityEdit(this.arrobjRow.sale_rep_addr_province, this.arrobjState);
-        })
+                newArray.push({
+                    location_id: row.location_id,
+                    location_name: detail_data_array[0].name,
+                    location_postcode: Number(row.postcode)
+                });
+
+                return true;
+            }
+            return false;
+        });
+
+        this.arrAmphoe = newArray;
+        this.changeAmphoeEdit(strAmphoe, strTambon);
 
     }
-    getCityEdit(str: string, arrstate: any) {
-        const strs = str;
-        const arrstates = arrstate;
-        if (arrstates.length > 0) {
-            for (let i = 0; i < arrstates.length; i++) {
-                if (arrstates[i].location_name === strs) {
-                    const parentID = arrstates[i].location_id;
-                    //getCity
-                    const dataCity = 'txt_location_type_id=' + 3 + '&txt_parent_id=' + parentID + '&cur_page=' + 1 + '&per_page=' + 100
-                    this.locationService.get(dataCity).subscribe(data => {
-                        this.arrobjCity = data.data.dataList;
-                        setTimeout(() => {
-                            this.SaleForm.get('amphoe').patchValue(this.arrobjRow.sale_rep_addr_amphoe);
-                        }, 0);
-                        this.getTownEdit(this.arrobjRow.sale_rep_addr_amphoe, this.arrobjCity);
-                    })
-                }
+
+    /*Change Amphoe Edit */
+    async changeAmphoeEdit(strAmphoe, strTambon) {
+
+        const thisLocation = await this.arrAmphoe.filter(row => {
+            if (row.location_name.indexOf(strAmphoe) !== -1) {
+                return true;
             }
+            return false;
+        });
+        if (thisLocation.length > 0) {
+            this.SaleForm.get('amphoe').patchValue(strAmphoe);
+            this.get_Tambon_Edit(thisLocation[0].location_id, strTambon)
+        }
+
+
+    }
+
+    /*Get Tambon Edit */
+    async get_Tambon_Edit(location_id, strTambon) {
+
+        const get_detail_by_id = (id) => {
+            return this.arrLocationDetail.filter(row => {
+                if (row.location_id == id) {
+                    return true;
+                }
+                return false;
+            });
+        };
+
+        const newArray = [];
+        await this.arrLocation.forEach(row => {
+            if (row.parent_id == location_id) {
+                const detail_data_array = get_detail_by_id(row.location_id);
+                row.location_name = detail_data_array[0].name;
+                row.location_postcode = Number(row.postcode);
+
+                newArray.push({
+                    location_id: row.location_id,
+                    location_name: detail_data_array[0].name,
+                    location_postcode: Number(row.postcode)
+                });
+
+                return true;
+            }
+            return false;
+        });
+
+        this.arrTambon = newArray;
+        this.changeTambonEdit(strTambon);
+
+    }
+
+    /*Change Tambon Edit */
+    changeTambonEdit(strTambon) {
+        if (this.arrTambon.length > 0) {
+            const arrTambon = this.arrTambon.filter((x) => x.location_name === strTambon)
+            this.SaleForm.get('tambon').patchValue(arrTambon[0].location_name);
+            this.SaleForm.get('zipcode').patchValue(arrTambon[0].location_postcode);
+            console.log("SaleForm", this.SaleForm.value);
         }
     }
 
-    getTownEdit(str: string, arrcity: any) {
-        const strs = str;
-        const arrcitys = arrcity;
-        if (arrcitys.length > 0) {
-            for (let i = 0; i < arrcitys.length; i++) {
-                if (arrcitys[i].location_name === strs) {
-                    const parentID = arrcitys[i].location_id;
-                    //getTown
-                    const dataTown = 'txt_location_type_id=' + 4 + '&txt_parent_id=' + parentID + '&cur_page=' + 1 + '&per_page=' + 100
-                    this.locationService.get(dataTown).subscribe(data => {
-                        this.arrobjTown = data.data.dataList;
-                        setTimeout(() => {
-                            this.SaleForm.get('tambon').patchValue(this.arrobjRow.sale_rep_addr_tambon);
-                            this.SaleForm.get('zipcode').patchValue(this.arrobjRow.sale_rep_addr_post);
-                        }, 0);
-                    })
-                }
-            }
-        }
-    }
     //--------------------------------------------
-
 
     btnDialogMab() {
 
@@ -331,34 +445,21 @@ export class SaleRepCreateComponent implements OnInit {
         dialogRef.onClose.subscribe(result => {
             if (result) {
                 console.log(result);
-
-                setTimeout(() => {
-                    this.SaleForm.get('sale_rep_addr_full').patchValue(result.address);
-                    this.SaleForm.get('sale_rep_addr_number').patchValue(result.num);
-                    this.SaleForm.get('province').patchValue('');
-                    this.SaleForm.get('amphoe').patchValue('');
-                    this.SaleForm.get('tambon').patchValue('');
-                    this.SaleForm.get('zipcode').patchValue('');
-                    this.SaleForm.get('sale_rep_addr_lat').patchValue(result.supplier_addr_location_lat);
-                    this.SaleForm.get('sale_rep_addr_lng').patchValue(result.supplier_addr_location_lng);
-                    this.SaleForm.get('latitudeAndLongitude').patchValue(result.supplier_addr_location_lat + ',' + result.supplier_addr_location_lng);
-                }, 0);
-
-                this.arrobjRow.sale_rep_addr_address_full = result.address;
-                this.arrobjRow.sale_rep_addr_number = result.num;
-                this.arrobjRow.sale_rep_addr_tambon = result.town;
-                this.arrobjRow.sale_rep_addr_amphoe = result.city;
-                this.arrobjRow.sale_rep_addr_province = result.state;
-                this.arrobjRow.sale_rep_addr_post = result.zipcode;
-
-                this.getStateEdit();
+                this.SaleForm.get('addressFull').patchValue(result.address);
+                this.SaleForm.get('addressNo').patchValue(result.num);
+                this.SaleForm.get('province').patchValue(result.state);
+                this.SaleForm.get('amphoe').patchValue(result.city);
+                this.SaleForm.get('tambon').patchValue(result.town);
+                this.SaleForm.get('zipcode').patchValue(result.zipcode);
+                this.SaleForm.get('location_lat').patchValue(result.supplier_addr_location_lat);
+                this.SaleForm.get('location_lng').patchValue(result.supplier_addr_location_lng);
+                this.SaleForm.get('location_lat_location_lng').patchValue(result.supplier_addr_location_lat + ',' + result.supplier_addr_location_lng);
+                this.changeProvinceEdit(result.state, result.city, result.town);
 
             }
 
         });
     }
-
-
 
     btnSaveClick() {
         let phone = {
@@ -383,11 +484,10 @@ export class SaleRepCreateComponent implements OnInit {
         }
         this.image.update = true;
         const dataSend = {
-            type_id: 100,
+            type_id: 200,
             file_name: "",
             file_type: "",
-            supplier_id: this.id_local,
-            user_id: 0
+            distributor_id: this.id_local
         };
         this.uploadAPIService.uploadImage().getImageArray(dataSend, this.image.main_image.get, red_image_array => {
             console.log('btnSaveClick : red_image_array : ', red_image_array);
@@ -396,11 +496,11 @@ export class SaleRepCreateComponent implements OnInit {
         });
     }
 
-
     save() {
         if (this.RowID === "new") {
             const dataJsons = {
                 supplier_id: this.id_local,
+                dealer_id: 0,
                 sale_rep_id: 0,
                 sale_rep_image_url: (this.image.main_image.port.length > 0) ? this.image.main_image.port[0].image_url : "-",
                 sale_rep_name: this.SaleForm.value.sale_rep_company,
@@ -411,14 +511,14 @@ export class SaleRepCreateComponent implements OnInit {
                 sale_rep_email: this.SaleForm.value.sale_rep_email,
                 sale_rep_mobile: this.phone.mobile.number,
                 sale_rep_tel: this.phone.tel.number,
-                sale_rep_addr_full: this.SaleForm.value.sale_rep_addr_full,
-                sale_rep_addr_number: this.SaleForm.value.sale_rep_addr_number,
+                sale_rep_addr_full: this.SaleForm.value.addressFull,
+                sale_rep_addr_number: this.SaleForm.value.addressNo,
                 sale_rep_addr_province: this.SaleForm.value.province,
                 sale_rep_addr_amphoe: this.SaleForm.value.amphoe,
                 sale_rep_addr_tambon: this.SaleForm.value.tambon,
                 sale_rep_addr_post: this.SaleForm.value.zipcode,
-                sale_rep_addr_lat: this.SaleForm.value.sale_rep_addr_lat,
-                sale_rep_addr_lng: this.SaleForm.value.sale_rep_addr_lng
+                sale_rep_addr_lat: this.SaleForm.value.location_lat,
+                sale_rep_addr_lng: this.SaleForm.value.location_lng
             }
 
             const dataJson = JSON.stringify(dataJsons);
@@ -441,14 +541,14 @@ export class SaleRepCreateComponent implements OnInit {
                 sale_rep_email: this.SaleForm.value.sale_rep_email,
                 sale_rep_mobile: this.phone.mobile.number,
                 sale_rep_tel: this.phone.tel.number,
-                sale_rep_addr_full: this.SaleForm.value.sale_rep_addr_full,
-                sale_rep_addr_number: this.SaleForm.value.sale_rep_addr_number,
+                sale_rep_addr_full: this.SaleForm.value.addressFull,
+                sale_rep_addr_number: this.SaleForm.value.addressNo,
                 sale_rep_addr_province: this.SaleForm.value.province,
                 sale_rep_addr_amphoe: this.SaleForm.value.amphoe,
                 sale_rep_addr_tambon: this.SaleForm.value.tambon,
                 sale_rep_addr_post: this.SaleForm.value.zipcode,
-                sale_rep_addr_lat: this.SaleForm.value.sale_rep_addr_lat,
-                sale_rep_addr_lng: this.SaleForm.value.sale_rep_addr_lng
+                sale_rep_addr_lat: this.SaleForm.value.location_lat,
+                sale_rep_addr_lng: this.SaleForm.value.location_lng
             }
 
             const dataJson = JSON.stringify(dataJsons);
@@ -507,7 +607,7 @@ export class SaleRepCreateComponent implements OnInit {
             type_id: 100,
             file_name: this.imagePath.name,
             file_type: this.imagePath.type,
-            supplier_id: this.id_local,
+            distributor_id: this.id_local,
             sale_rep_id: 0
         };
 
@@ -529,7 +629,6 @@ export class SaleRepCreateComponent implements OnInit {
                 console.log(res1);
             });
     }
-
 
     phoneNumber() {
         let function_phone = {

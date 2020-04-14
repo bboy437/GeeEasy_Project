@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { WarehouseAPIService, LocationAPIService, UploadAPIService } from '@project/services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -17,6 +17,11 @@ import JSON_LOCATION_DETAIL from '../../../../../../../libs/shared/src/lib/json/
     styleUrls: ['./warehouse-create.component.scss']
 })
 export class WarehouseCreateComponent implements OnInit {
+
+    @Input() id: string;
+    @Output() closes = new EventEmitter<any>();
+    strCancel = '';
+    strSave = '';
 
     private UrlRouter_List = "products/warehouse/list";
     private UrlRouter_Detail = "products/warehouse/detail";
@@ -50,6 +55,8 @@ export class WarehouseCreateComponent implements OnInit {
     arrLocation: any[] = JSON_LOCATION;
     arrLocationDetail: any[] = JSON_LOCATION_DETAIL;
 
+    id_local: string;
+
     image = {
         update: false,
         main_image: {
@@ -58,7 +65,6 @@ export class WarehouseCreateComponent implements OnInit {
         }
     }
 
-    id_local: string;
 
     constructor(
         private warehouseAPIService: WarehouseAPIService,
@@ -71,59 +77,66 @@ export class WarehouseCreateComponent implements OnInit {
     ) {
         this.id_local = localStorage.getItem('id');
         console.log(' this.id_local', this.id_local);
+
         this.loading = true;
     }
 
     ngOnInit() {
 
-
         this.Builder();
         const params = this.route.snapshot.paramMap;
-        if (params.has("id")) {
+        console.log(params.get("id"));
+        console.log(this.id);
+        if (params.get("id")) {
             this.RowID = params.get("id");
-            if (this.RowID === "new") {
-                this.loading = false;
-            } else {
-                this.warehouseAPIService.getWarehouseDetail(this.RowID).subscribe(data => {
-                    this.arrobjRow = data.response_data[0];
-                    console.log(this.arrobjRow);
-                    this.imgURL = data.response_data[0].warehouse_image_url;
-
-                    if (this.arrobjRow.warehouse_image_url !== undefined && this.arrobjRow.warehouse_image_url !== "-" && this.arrobjRow.warehouse_image_url !== "")
-                        this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.warehouse_image_url, red_image => {
-                            this.image.main_image.get.push(red_image);
-                        });
-
-                    /* this.warehouse_image_url = data.response_data[0].warehouse_image_url; */
-
-                    this.phoneNumber().main(_self_ => {
-                        data.response_data.forEach(item => {
-                            _self_.getNumberArray(item.warehouse_tel, getNumberArray => {
-                                this.phone.tel.number = item.warehouse_tel;
-                                this.phone.tel.number_array = getNumberArray;
-                            });
-                            _self_.getNumberArray(item.warehouse_mobile, getNumberArray => {
-                                this.phone.mobile.number = item.warehouse_mobile;
-                                this.phone.mobile.number_array = getNumberArray;
-                            });
-                        });
-                    });
-
-                    /*Get Province Edit */
-                    this.changeProvinceEdit(
-                        this.arrobjRow.warehouse_addr_province,
-                        this.arrobjRow.warehouse_addr_amphoe,
-                        this.arrobjRow.warehouse_addr_tambon
-                    );
-
-                    /*Value Data Form */
-                    this.editForm();
-                    this.loading = false;
-
-                })
-            }
+        } else {
+            this.RowID = this.id;
+            this.strSave = "dialog";
+            this.strCancel = "dialog";
         }
 
+        console.log('strSave', this.strSave);
+
+        if (this.RowID === "new") {
+            this.loading = false;
+        } else {
+            this.warehouseAPIService.getWarehouseDetail(this.RowID).subscribe(data => {
+                this.arrobjRow = data.response_data[0];
+                console.log(this.arrobjRow);
+                this.imgURL = data.response_data[0].warehouse_image_url;
+                this.warehouse_image_url = data.response_data[0].warehouse_image_url;
+
+                if (this.arrobjRow.warehouse_image_url !== undefined && this.arrobjRow.warehouse_image_url !== "-" && this.arrobjRow.warehouse_image_url !== "")
+                    this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.warehouse_image_url, red_image => {
+                        this.image.main_image.get.push(red_image);
+                    });
+
+                this.phoneNumber().main(_self_ => {
+                    data.response_data.forEach(item => {
+                        _self_.getNumberArray(item.warehouse_tel, getNumberArray => {
+                            this.phone.tel.number = item.warehouse_tel;
+                            this.phone.tel.number_array = getNumberArray;
+                        });
+                        _self_.getNumberArray(item.warehouse_mobile, getNumberArray => {
+                            this.phone.mobile.number = item.warehouse_mobile;
+                            this.phone.mobile.number_array = getNumberArray;
+                        });
+                    });
+                });
+
+                /*Get Province Edit */
+                this.changeProvinceEdit(
+                    this.arrobjRow.warehouse_addr_province,
+                    this.arrobjRow.warehouse_addr_amphoe,
+                    this.arrobjRow.warehouse_addr_tambon
+                );
+
+                /*Value Data Form */
+                this.editForm();
+                this.loading = false;
+
+            })
+        }
     }
 
     Builder() {
@@ -159,7 +172,6 @@ export class WarehouseCreateComponent implements OnInit {
         });
     }
 
-
     get f() { return this.stockForm.controls; }
     onSubmit() {
         this.submitted = true;
@@ -170,30 +182,37 @@ export class WarehouseCreateComponent implements OnInit {
 
     /*New Data Location ------------------------ */
 
-    changeProvince(location_name) {
+    changeLocation(data) {
+        console.log(data);
+        if (data.name === "Province") {
+            this.changeProvince(data.location_name)
+        }
+        if (data.name === "Amphoe") {
+            this.changeAmphoe(data.location_name)
+        }
+        if (data.name === "Tambon") {
+            this.changeTambon(data.location_name)
+        }
 
-        setTimeout(() => {
-            this.stockForm.get('amphoe').patchValue("");
-            this.stockForm.get('tambon').patchValue("");
-            this.stockForm.get('zipcode').patchValue("");
-            this.stockForm.get('location_lat').patchValue(0);
-            this.stockForm.get('location_lng').patchValue(0);
-            this.stockForm.get('location_lat_location_lng').patchValue(0 + ',' + 0);
-        }, 0);
+    }
+
+    changeProvince(location_name) {
+        this.stockForm.get('amphoe').patchValue("");
+        this.stockForm.get('tambon').patchValue("");
+        this.stockForm.get('zipcode').patchValue("");
+        this.stockForm.get('location_lat').patchValue(0);
+        this.stockForm.get('location_lng').patchValue(0);
+        this.stockForm.get('location_lat_location_lng').patchValue(0 + ',' + 0);
         this.arrAmphoe = null;
         this.arrTambon = null;
+
         if (this.arrProvince.length > 0) {
-            for (let i = 0; i < this.arrProvince.length; i++) {
-                if (this.arrProvince[i].location_name === location_name) {
-                    const location_id = Number(this.arrProvince[i].location_id);
-                    this.get_Amphoe(location_id);
-                }
-            }
+            const arrProvince = this.arrProvince.filter((x) => x.location_name === location_name)
+            this.get_Amphoe(+arrProvince[0].location_id);
         }
     }
 
     async get_Amphoe(location_id) {
-
         const get_detail_by_id = (id) => {
             return this.arrLocationDetail.filter(row => {
                 if (row.location_id === id) {
@@ -227,21 +246,15 @@ export class WarehouseCreateComponent implements OnInit {
     }
 
     changeAmphoe(location_name) {
-        setTimeout(() => {
-            this.stockForm.get('tambon').patchValue("");
-            this.stockForm.get('zipcode').patchValue("");
-            this.stockForm.get('location_lat').patchValue(0);
-            this.stockForm.get('location_lng').patchValue(0);
-            this.stockForm.get('location_lat_location_lng').patchValue(0 + ',' + 0);
-        }, 0);
+        this.stockForm.get('tambon').patchValue("");
+        this.stockForm.get('zipcode').patchValue("");
+        this.stockForm.get('location_lat').patchValue(0);
+        this.stockForm.get('location_lng').patchValue(0);
+        this.stockForm.get('location_lat_location_lng').patchValue(0 + ',' + 0);
         this.arrTambon = null;
         if (this.arrAmphoe.length > 0) {
-            for (let i = 0; i < this.arrAmphoe.length; i++) {
-                if (this.arrAmphoe[i].location_name === location_name) {
-                    const location_id = Number(this.arrAmphoe[i].location_id);
-                    this.get_Tambon(location_id);
-                }
-            }
+            const arrAmphoe = this.arrAmphoe.filter((x) => x.location_name === location_name)
+            this.get_Tambon(+arrAmphoe[0].location_id);
         }
     }
 
@@ -280,17 +293,13 @@ export class WarehouseCreateComponent implements OnInit {
 
     changeTambon(location_name) {
         if (this.arrTambon.length > 0) {
-            for (let i = 0; i < this.arrTambon.length; i++) {
-                if (this.arrTambon[i].location_name === location_name) {
-                    setTimeout(() => {
-                        this.stockForm.get('tambon').patchValue(this.arrTambon[i].location_name);
-                        this.stockForm.get('zipcode').patchValue(this.arrTambon[i].location_postcode);
-                        this.stockForm.get('location_lat').patchValue(0);
-                        this.stockForm.get('location_lng').patchValue(0);
-                        this.stockForm.get('location_lat_location_lng').patchValue(0 + ',' + 0);
-                    }, 0);
-                }
-            }
+            const arrTambon = this.arrTambon.filter((x) => x.location_name === location_name)
+            this.stockForm.get('tambon').patchValue(arrTambon[0].location_name);
+            this.stockForm.get('zipcode').patchValue(arrTambon[0].location_postcode);
+            this.stockForm.get('location_lat').patchValue(0);
+            this.stockForm.get('location_lng').patchValue(0);
+            this.stockForm.get('location_lat_location_lng').patchValue(0 + ',' + 0);
+            console.log("stockForm", this.stockForm.value);
         }
     }
 
@@ -305,6 +314,7 @@ export class WarehouseCreateComponent implements OnInit {
             return false;
         });
         if (thisLocation.length > 0) {
+            this.stockForm.get('province').patchValue(strProvince);
             this.get_Amphoe_Edit(thisLocation[0].location_id, strAmphoe, strTambon);
         }
 
@@ -354,6 +364,7 @@ export class WarehouseCreateComponent implements OnInit {
             return false;
         });
         if (thisLocation.length > 0) {
+            this.stockForm.get('amphoe').patchValue(strAmphoe);
             this.get_Tambon_Edit(thisLocation[0].location_id, strTambon)
         }
 
@@ -398,19 +409,14 @@ export class WarehouseCreateComponent implements OnInit {
     /*Change Tambon Edit */
     changeTambonEdit(strTambon) {
         if (this.arrTambon.length > 0) {
-            for (let i = 0; i < this.arrTambon.length; i++) {
-                if (this.arrTambon[i].location_name === strTambon) {
-                    setTimeout(() => {
-                        this.stockForm.get('tambon').patchValue(this.arrTambon[i].location_name);
-                        this.stockForm.get('zipcode').patchValue(this.arrTambon[i].location_postcode);
-                    }, 0);
-                }
-            }
+            const arrTambon = this.arrTambon.filter((x) => x.location_name === strTambon)
+            this.stockForm.get('tambon').patchValue(arrTambon[0].location_name);
+            this.stockForm.get('zipcode').patchValue(arrTambon[0].location_postcode);
+            console.log("stockForm", this.stockForm.value);
         }
     }
 
     //--------------------------------------------
-
 
     btnDialogMab() {
 
@@ -420,19 +426,15 @@ export class WarehouseCreateComponent implements OnInit {
         dialogRef.onClose.subscribe(result => {
             if (result) {
                 console.log(result);
-
-                setTimeout(() => {
-                    this.stockForm.get('addressFull').patchValue(result.address);
-                    this.stockForm.get('addressNo').patchValue(result.num);
-                    this.stockForm.get('province').patchValue(result.state);
-                    this.stockForm.get('amphoe').patchValue(result.city);
-                    this.stockForm.get('tambon').patchValue(result.town);
-                    this.stockForm.get('zipcode').patchValue(result.zipcode);
-                    this.stockForm.get('location_lat').patchValue(result.supplier_addr_location_lat);
-                    this.stockForm.get('location_lng').patchValue(result.supplier_addr_location_lng);
-                    this.stockForm.get('location_lat_location_lng').patchValue(result.supplier_addr_location_lat + ',' + result.supplier_addr_location_lng);
-                }, 0);
-
+                this.stockForm.get('addressFull').patchValue(result.address);
+                this.stockForm.get('addressNo').patchValue(result.num);
+                this.stockForm.get('province').patchValue(result.state);
+                this.stockForm.get('amphoe').patchValue(result.city);
+                this.stockForm.get('tambon').patchValue(result.town);
+                this.stockForm.get('zipcode').patchValue(result.zipcode);
+                this.stockForm.get('location_lat').patchValue(result.supplier_addr_location_lat);
+                this.stockForm.get('location_lng').patchValue(result.supplier_addr_location_lng);
+                this.stockForm.get('location_lat_location_lng').patchValue(result.supplier_addr_location_lat + ',' + result.supplier_addr_location_lng);
                 this.changeProvinceEdit(result.state, result.city, result.town);
 
             }
@@ -463,15 +465,16 @@ export class WarehouseCreateComponent implements OnInit {
         this.inArrayPhone(12, 12, phone.mobile, this.phone.mobile)
 
         this.submitted = true;
-        if (this.stockForm.invalid || this.image.update)
+        if (this.stockForm.invalid || this.image.update) {
             return;
-
+        }
         this.image.update = true;
         const dataSend = {
             type_id: 200,
             file_name: "",
             file_type: "",
-            dealer_id: this.id_local
+            distributor_id: this.id_local,
+            user_id: 0
         };
         this.uploadAPIService.uploadImage().getImageArray(dataSend, this.image.main_image.get, red_image_array => {
             console.log('btnSaveClick : red_image_array : ', red_image_array);
@@ -503,7 +506,12 @@ export class WarehouseCreateComponent implements OnInit {
             console.log('dataJson', dataJson);
             this.warehouseAPIService.addWarehouse(JSON.stringify(dataJson)).subscribe(data => {
                 console.log(data);
-                this.router.navigate([this.UrlRouter_List]);
+                // tslint:disable-next-line: triple-equals
+                if (this.strSave == "dialog") {
+                    this.closes.emit('ok')
+                } else {
+                    this.router.navigate([this.UrlRouter_List]);
+                }
             })
         } else {
             const dataJson = {
@@ -541,11 +549,16 @@ export class WarehouseCreateComponent implements OnInit {
             if (result === 'cancel') {
             }
             if (result === 'ok') {
-                this.router.navigate([this.UrlRouter_List]);
+                if (this.strCancel == "dialog") {
+                    this.closes.emit('ok')
+                } else {
+                    this.router.navigate([this.UrlRouter_List]);
+                }
             }
         });
 
     }
+
     btnBackClick() {
         const dialogRef = this.dialogService.open(DialogsCancelComponent, {
         });
@@ -559,7 +572,55 @@ export class WarehouseCreateComponent implements OnInit {
         });
     }
 
+    uploadFile(event) {
+        if (event.length === 0)
+            return;
 
+        const mimeType = event[0].type;
+        if (mimeType.match(/image\/*/) == null) {
+            this.message = "Only images are supported.";
+            return;
+        }
+        const reader = new FileReader();
+        this.message = event[0].name;
+        this.imagePath = event[0];
+        reader.readAsDataURL(event[0]);
+        reader.onload = (_event) => {
+            this.imgURL = reader.result;
+        }
+        console.log('imgURL', this.imgURL);
+
+        this.upload()
+    }
+
+    upload() {
+        const dataJson = {
+            type_id: 200,
+            file_name: this.imagePath.name,
+            file_type: this.imagePath.type,
+            supplier_id: this.id_local,
+            distributor_id: 0
+        }
+
+        this.uploadAPIService.uploadImg(JSON.stringify(dataJson)).subscribe(res => {
+            console.log(res);
+            this.uploadData = res.response_data[0];
+            this.warehouse_image_url = this.uploadData.file_url;
+
+            this.uploadAPIService.uploadPut(this.uploadData.file_upload_url, this.imagePath).subscribe(res1 => {
+                this.warehouse_image_url = this.uploadData.file_url;
+                console.log(this.warehouse_image_url);
+            })
+
+        })
+
+    }
+
+    btnUpload() {
+        this.uploadAPIService.uploadPut(this.uploadData.file_upload_url, this.imagePath).subscribe(res1 => {
+            console.log(res1);
+        })
+    }
 
     phoneNumber() {
         let function_phone = {
@@ -699,59 +760,5 @@ export class WarehouseCreateComponent implements OnInit {
         });
     }
 
-    uploadImage() {
-        let self = this;
-        const _function = {
-            consoleLog(_function, _title, _data) {
-                let _self = this;
-                console.log(_function, " : ", _title, " : ", _data);
-            },
-            postImage(_image, callback: (res) => any) {
-                let _self = this;
-                const dataSend = {
-                    type_id: 620,
-                    file_name: _image.name,
-                    file_type: _image.type,
-                    dealer_id: self.id_local
-                };
-                _self.consoleLog("postImage", "dataSend", dataSend);
-                self.uploadAPIService.uploadImg(JSON.stringify(dataSend)).subscribe(res => {
-                    res.response_data.forEach(item => {
-                        self.uploadAPIService.uploadPut(item.file_upload_url, _image.event).subscribe(uploadPut => {
-                            callback(res);
-                        });
-                    });
-                });
-            },
-            getProductImageArray(image_url_array, callback: (res) => any) {
-                let _self = this;
-                _self.consoleLog("getProductImageArray", "image_url_array", image_url_array);
-                let product_image_array = [];
-                if (image_url_array.length === 0)
-                    callback(product_image_array);
-                image_url_array.forEach(item => {
-                    let product_image = {
-                        product_image_url: item.result
-                    };
-                    if (item.name !== "") {
-                        _self.postImage(item, res => {
-                            _self.consoleLog("getProductImageArray", "res", res);
-                            res.response_data.forEach(item => {
-                                product_image.product_image_url = item.file_url;
-                                product_image_array.push(product_image);
-                                if (image_url_array.length === product_image_array.length)
-                                    callback(product_image_array);
-                            });
-                        });
-                    } else {
-                        product_image_array.push(product_image);
-                        if (image_url_array.length === product_image_array.length)
-                            callback(product_image_array);
-                    }
-                });
-            }
-        };
-        return _function;
-    };
 
 }

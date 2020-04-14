@@ -15,7 +15,7 @@ export class DashboardComponent implements OnInit {
 
   data2 = [
     { name: "My Bills", icon: "pie-chart-outline", url: "bills/list" },
-    { name: "Manage Products", icon: "cube-outline", url: "products/list" },
+    { name: "Manage Products", icon: "cube-outline", url: "products/manage/list" },
     { name: "My Order", icon: "shuffle-2-outline", url: "orders/list" }
   ];
 

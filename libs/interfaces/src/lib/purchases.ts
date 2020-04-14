@@ -12,7 +12,7 @@ export interface IPurchaseList {
     purchase_order_number: string;
     supplier_id: number;
     supplier_data_array: SupplierDataArray[];
-    supplier_name: string;
+    supplier_name: any[];
     distributor_id: number;
     purchase_order_reply_id: number;
     purchase_order_reply_msg: string;
@@ -28,7 +28,6 @@ export interface IPurchaseList {
     purchase_order_status_display: PurchaseOrderStatusDisplay;
     purchase_order_create: number;
     purchase_order_update: number;
-    supplier_name_1: any;
     distributor_name: any[];
     order_status_btn: OrderStatus;
     po_status: number;

@@ -6,12 +6,10 @@
 .cover-phone-number {
   span {
     &.phone {
-      color: black;
       padding: 0.5rem;
       font-weight: bold;
       display: inline-table;
       margin: 0 0.5rem 0.5rem 0;
-      background-color: #f7f9fc;
       nb-icon {
         top: -8px;
         right: -8px;
@@ -22,6 +20,7 @@
     }
   }
 }
+
 
 @include nb-install-component() {
 }

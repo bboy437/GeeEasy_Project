@@ -62,12 +62,13 @@ export class FileImageComponent implements OnInit {
                 this.update_time = ~~(Date.now() / 1000);
                 this.update_time_string = new Date(Date.now()).toLocaleDateString();
               }
-              self.image_url_array[0] =
-                item_files.type == "image/png" ||
-                item_files.type == "image/jpeg" ||
-                item_files.type == "image/jpeg"
-                  ? new Object()
-                  : self.image_url_array[0];
+              if(item_files.type == "image/png" || item_files.type == "image/jpeg" || item_files.type == "image/jpeg")
+                self.image_url_array[0] =
+                  item_files.type == "image/png" ||
+                  item_files.type == "image/jpeg" ||
+                  item_files.type == "image/jpeg"
+                    ? new Object()
+                    : self.image_url_array[0];
               _self.consoleLog(
                 "uploadFile",
                 "self.image_url_array[0]",

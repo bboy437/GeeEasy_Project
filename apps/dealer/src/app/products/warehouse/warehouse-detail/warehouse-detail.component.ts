@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WarehouseAPIService } from '@project/services';
+import { WarehouseAPIService, UploadAPIService } from '@project/services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -17,11 +17,21 @@ export class WarehouseDetailComponent implements OnInit {
   arrobjRow: any = [];
   Form: FormGroup;
   loading = false; 
+
+  image = {
+    update: false,
+    main_image: {
+      get: [],
+      port: []
+    }
+  }
+
   constructor(
     private warehouseAPIService: WarehouseAPIService,
     private router: Router,
     private route: ActivatedRoute,
     private fb: FormBuilder,
+    private uploadAPIService: UploadAPIService,
   ) { }
 
   ngOnInit() {   
@@ -36,6 +46,17 @@ export class WarehouseDetailComponent implements OnInit {
           this.arrobjRow = data.response_data[0];
           console.log(this.arrobjRow );
           this.DetailForm();
+
+          if (
+            this.arrobjRow.warehouse_image_url !== undefined &&
+            this.arrobjRow.warehouse_image_url !== "-" &&
+            this.arrobjRow.warehouse_image_url !== ""
+          )
+            this.uploadAPIService
+              .uploadImage()
+              .getUrl(this.arrobjRow.warehouse_image_url, red_image => {
+                this.image.main_image.get.push(red_image);
+              });
         })
       }
     }

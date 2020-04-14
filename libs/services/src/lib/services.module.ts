@@ -22,6 +22,7 @@ import { DashboardAPIService } from './services/dashboardapi.service';
 import { TeamAPIService } from './services/team.service';
 import { RetailAccountService } from "./services/retailAccount.service";
 import { RetailProductService } from "./services/retailProduct.service";
+import { ReusableReactiveFormService } from './services/reusable-reactive-form.service';
 
 @NgModule({
     imports: [
@@ -51,7 +52,8 @@ import { RetailProductService } from "./services/retailProduct.service";
         DashboardAPIService,
         TeamAPIService,
         RetailAccountService,
-        RetailProductService
+        RetailProductService,
+        ReusableReactiveFormService
     ],
 })
 export class ServicesModule {

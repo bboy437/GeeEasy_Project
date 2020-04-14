@@ -11,7 +11,7 @@ export class DashboardComponent implements OnInit {
     {
       name: "My Distributor",
       icon: "people-outline",
-      url: "distributors/my-distributor/request/list",
+      url: "distributors/my-distributor/list",
       value: 1
     },
     {
@@ -29,7 +29,7 @@ export class DashboardComponent implements OnInit {
     {
       name: "Manage Product",
       icon: "cube-outline",
-      url: "products/list",
+      url: "products/manage/list",
       value: 4
     },
     {

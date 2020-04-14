@@ -1,4 +1,4 @@
-<div class="cover-pages">
+<div class="cover-pages" [formGroup]="dealersFrom">
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card style="padding: 0;">
@@ -36,138 +36,113 @@
             </nb-card>
         </div>
         <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="primary">
-            <nb-card style="padding: 0 0.5rem;">
+            <nb-card>
                 <nb-card-body>
-                    <div class="row">
-                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                            <div class="row">
-                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                    <div class="row show-grid" style="text-align: center">
-                                        <div class="col-lg-12">
-                                            <div class="cover-background-image" style="padding: 0;">
-                                                <div class="background-image padding-top-60"
-                                                    [ngClass]="{'active' : arrDeler.dealer_image_url === '-' || arrDeler.dealer_image_url === ''}"
-                                                    [ngStyle]="{'background-image': 'url('+arrDeler.dealer_image_url+')'}">
-                                                </div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <project-display-file-image theme="white"
+                                                    [image_url_array]="image.main_image.get">
+                                                </project-display-file-image>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <project-input inputType="text" label="Dealer Name :"
+                                                    [control]="dealersFrom.get('dealer_name')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <project-input inputType="text" label="Dealer Keyword :"
+                                                    [control]="dealersFrom.get('dealer_tag')">
+                                                </project-input>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                    <div class="row show-grid">
-                                        <div class="col-lg-12">
-                                            <label>Dealer Name :</label>
-                                            <input nbInput status="primary" class="btnDisabled" disabled type="text"
-                                                nbInput fullWidth [(ngModel)]="arrDeler.dealer_name" /><br>
-                                        </div>
-                                    </div>
-                                    <div class="row show-grid">
-                                        <div class="col-lg-12">
-                                            <label>Dealer Keyword :</label>
-                                            <input nbInput status="primary" class="btnDisabled" disabled type="text"
-                                                nbInput fullWidth [(ngModel)]="arrDeler.dealer_tag" /><br>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-                        </div>
-                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                            <div class="row">
-                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                    <div class="row show-grid">
-                                        <div class="col-lg-12">
-                                            <label>First Name :</label>
-                                            <input nbInput status="primary" class="btnDisabled" disabled type="text"
-                                                nbInput fullWidth [(ngModel)]="arrDeler.dealer_first_name" /><br>
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <project-input inputType="text" label="First Name :"
+                                                    [control]="dealersFrom.get('dealer_first_name')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <project-input inputType="text" label="Last Name :"
+                                                    [control]="dealersFrom.get('dealer_last_name')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <project-input inputType="text" label="Last Name :"
+                                                    [control]="dealersFrom.get('dealer_company')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <project-input inputType="text" label="Email :"
+                                                    [control]="dealersFrom.get('dealer_email')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <project-input inputType="text" label="Telephone Number :"
+                                                    [control]="dealersFrom.get('dealer_tel')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <project-input inputType="text" label="Mobile Phone Number :"
+                                                    [control]="dealersFrom.get('dealer_mobile')">
+                                                </project-input>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row show-grid">
-                                        <div class="col-lg-12">
-                                            <label>Last Name :</label>
-                                            <input nbInput status="primary" class="btnDisabled" disabled type="text"
-                                                nbInput fullWidth [(ngModel)]="arrDeler.dealer_last_name" /><br>
-                                        </div>
-                                    </div>
-                                    <div class="row show-grid">
-                                        <div class="col-lg-12">
-                                            <label>Company Name :</label>
-                                            <input nbInput status="primary" class="btnDisabled" disabled type="text"
-                                                nbInput fullWidth [(ngModel)]="arrDeler.dealer_company" /><br>
+                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <project-textarea rows="3" label="Address :"
+                                                    [control]="dealersFrom.get('dealer_addr_full')">
+                                                </project-textarea>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <project-input inputType="text" label="Number :"
+                                                    [control]="dealersFrom.get('dealer_addr_number')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <project-input inputType="text" label="Province :"
+                                                    [control]="dealersFrom.get('dealer_addr_province')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <project-input inputType="text" label="Amphoe :"
+                                                    [control]="dealersFrom.get('dealer_addr_amphoe')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <project-input inputType="text" label="Tambon :"
+                                                    [control]="dealersFrom.get('dealer_addr_tambon')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                                <project-input inputType="text" label="Zipcode :"
+                                                    [control]="dealersFrom.get('dealer_addr_post')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                                <project-input inputType="text" label="Latitude Longitude :"
+                                                    [control]="dealersFrom.get('lat_long')">
+                                                </project-input>
+                                            </div>
                                         </div>
 
                                     </div>
-                                    <div class="row show-grid">
-                                        <div class="col-lg-12">
-                                            <label>Email :</label>
-                                            <input nbInput status="primary" class="btnDisabled" disabled type="text"
-                                                nbInput fullWidth [(ngModel)]="arrDeler.dealer_email" /><br>
-                                        </div>
-                                    </div>
-                                    <div class="row show-grid">
-                                        <div class="col-lg-12">
-                                            <label>Telephone Number :</label>
-                                            <input nbInput status="primary" class="btnDisabled" disabled type="text"
-                                                libOnlyCharacterphonnumber nbInput fullWidth
-                                                [(ngModel)]="arrDeler.dealer_tel" /><br>
-                                        </div>
-                                    </div>
-                                    <div class="row show-grid">
-                                        <div class="col-lg-12">
-                                            <label>Mobile Phone Number :</label>
-                                            <input nbInput status="primary" class="btnDisabled" disabled type="text"
-                                                mask='000-000-0000' placeholder="XXX-XXX-XXXX" nbInput fullWidth
-                                                [(ngModel)]="arrDeler.dealer_mobile" /><br>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                    <div class="row show-grid">
-                                        <div class="col-lg-12">
-                                            <label>Address :</label>
-                                            <textarea style="min-height: 90px;" nbInput status="primary"
-                                                class="btnDisabled" disabled type="text" nbInput fullWidth
-                                                [(ngModel)]="arrDeler.dealer_addr_full"> </textarea><br>
-                                        </div>
-                                    </div>
-                                    <div class="row show-grid">
-                                        <div class="col-lg-12">
-                                            <label>Number :</label>
-                                            <input nbInput status="primary" class="btnDisabled" disabled type="text"
-                                                nbInput fullWidth [(ngModel)]="arrDeler.dealer_addr_number" /><br>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <label>Tambon :</label>
-                                            <input nbInput status="primary" class="btnDisabled" disabled type="text"
-                                                nbInput fullWidth [(ngModel)]="arrDeler.dealer_addr_tambon" /><br>
-                                        </div>
-                                    </div>
-                                    <div class="row show-grid">
-                                        <div class="col-lg-12">
-                                            <label>Amphoe :</label>
-                                            <input nbInput status="primary" class="btnDisabled" disabled type="text"
-                                                nbInput fullWidth [(ngModel)]="arrDeler.dealer_addr_amphoe" /><br>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <label>Province :</label>
-                                            <input nbInput status="primary" class="btnDisabled" disabled type="text"
-                                                nbInput fullWidth [(ngModel)]="arrDeler.dealer_addr_province" /><br>
-                                        </div>
-                                    </div>
-                                    <div class="row show-grid">
-                                        <div class="col-12 col-sm-12 col-md-6 col-lg-6" style="text-align: left;">
-                                            <label>Zipcode</label>
-                                            <input nbInput status="primary" type="text" class="btnDisabled" disabled
-                                                fullWidth [(ngModel)]="arrDeler.dealer_addr_post" />
-                                        </div>
-                                        <div class="col-12 col-sm-12 col-md-6 col-lg-6" style="text-align: left;">
-                                            <label> Latitude Longitude</label>
-                                            <input nbInput status="primary" type="text" class="btnDisabled" disabled
-                                                fullWidth
-                                                [(ngModel)]="arrDeler.dealer_addr_lat + ',' + arrDeler.dealer_addr_lng"
-                                                [ngModelOptions]="{standalone: true}" />
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
@@ -180,125 +155,3 @@
         </div>
     </div>
 </div>
-
-<!-- <nb-card>
-    <nb-card-header>
-        <div class="row">
-            <div class="col-auto mr-auto">
-                <label>My Dealers<span class="p-0-12">/</span>Detail</label>
-            </div>
-            <div class="col-auto">
-                <button nbButton style="width: 100px" status="danger" (click)="btnCancelClick()">Back</button>
-                &nbsp;
-                <button nbButton style="width: 100px" status="success" (click)="btnEditClick()">Edit</button>
-            </div>
-        </div>
-    </nb-card-header>
-
-    <nb-card-body>
-        <div class="row">
-            <div class="col-lg-6">
-                <nb-card>
-                    <nb-card-body>
-                        <div class="row show-grid" style="text-align: center">
-                            <div class="col-lg-12">
-                                <img style="cursor: pointer;" src="{{arrDeler.dealer_image_url}}"
-                                    (click)="openImg(arrDeler.dealer_image_url)" width="320" height="320">
-                            </div>
-                        </div>
-                        <div class="row show-grid">
-                            <div class="col-lg-12">
-                                <label>Dealer Name :</label>
-                                <input nbInput status="primary" type="text" nbInput fullWidth
-                                    [(ngModel)]="arrDeler.dealer_name" /><br>
-                            </div>
-                        </div>
-                        <div class="row show-grid">
-                            <div class="col-lg-6">
-                                <label>First Name :</label>
-                                <input nbInput status="primary" type="text" nbInput fullWidth
-                                    [(ngModel)]="arrDeler.dealer_first_name" /><br>
-                            </div>
-                            <div class="col-lg-6">
-                                <label>Last Name :</label>
-                                <input nbInput status="primary" type="text" nbInput fullWidth
-                                    [(ngModel)]="arrDeler.dealer_last_name" /><br>
-                            </div>
-                        </div>
-                        <div class="row show-grid">
-                            <div class="col-lg-12">
-                                <label>Company Name :</label>
-                                <input nbInput status="primary" type="text" nbInput fullWidth
-                                    [(ngModel)]="arrDeler.dealer_company" /><br>
-                            </div>
-
-                        </div>
-
-                    </nb-card-body>
-                </nb-card>
-            </div>
-            <div class="col-lg-6">
-                <nb-card>
-                    <nb-card-body>
-                        <div class="row show-grid">
-                            <div class="col-lg-6">
-                                <label>Email :</label>
-                                <input nbInput status="primary" type="text" nbInput fullWidth
-                                    [(ngModel)]="arrDeler.dealer_email" /><br>
-                            </div>
-                            <div class="col-lg-6">
-                                <label>Telephone Number :</label>
-                                <input nbInput status="primary" type="text" nbInput fullWidth
-                                    [(ngModel)]="arrDeler.dealer_mobile" /><br>
-                            </div>
-                        </div>
-                        <div class="row show-grid">
-                            <div class="col-lg-12">
-                                <label>Address :</label>
-                                <input nbInput status="primary" type="text" nbInput fullWidth
-                                    [(ngModel)]="arrDeler.dealer_addr_full" /><br>
-                            </div>
-                        </div>
-                        <div class="row show-grid">
-                            <div class="col-lg-12">
-                                <label>Number :</label>
-                                <input nbInput status="primary" type="text" nbInput fullWidth
-                                    [(ngModel)]="arrDeler.dealer_addr_number" /><br>
-                            </div>
-                            <div class="col-lg-12">
-                                <label>Tambon  :</label>
-                                <input nbInput status="primary" type="text" nbInput fullWidth
-                                    [(ngModel)]="arrDeler.dealer_addr_tambon" /><br>
-                            </div>
-                        </div>
-                        <div class="row show-grid">
-                            <div class="col-lg-12">
-                                <label>Amphoe  :</label>
-                                <input nbInput status="primary" type="text" nbInput fullWidth
-                                    [(ngModel)]="arrDeler.dealer_addr_amphoe" /><br>
-                            </div>
-                            <div class="col-lg-12">
-                                <label>Province  :</label>
-                                <input nbInput status="primary" type="text" nbInput fullWidth
-                                    [(ngModel)]="arrDeler.dealer_addr_province" /><br>
-                            </div>
-                        </div>
-
-                        <div class="row show-grid">
-                            <div class="col-lg-12">
-                                <label>Zipcode :</label>
-                                <input nbInput status="primary" type="text" nbInput fullWidth
-                                    [(ngModel)]="arrDeler.dealer_addr_post" /><br>
-                            </div>
-                        </div>
-                    </nb-card-body>
-                </nb-card>
-            </div>
-        </div>
-    </nb-card-body>
-</nb-card>
-<div class="row">
-    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-        <project-footercomponent> </project-footercomponent>
-    </div>
-</div> -->

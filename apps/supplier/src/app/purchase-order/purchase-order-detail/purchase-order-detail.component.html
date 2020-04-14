@@ -161,7 +161,11 @@
                                                                 [ngClass]="[arrPurchase.purchase_order_reply_id === 0 ? 'status primary' : 
                                                                 (arrPurchase.purchase_order_reply_id === 1 ? 'status success' : 
                                                                 (arrPurchase.purchase_order_reply_id === 2 ? 'status orange' : 
-                                                                (arrPurchase.purchase_order_reply_id === 3 ? 'status red' : 'status red' )))]">{{arrPurchase.status}}
+                                                                (arrPurchase.purchase_order_reply_id === 3 ? 'status red' : 'status red' )))]">
+                                                                {{arrPurchase.purchase_order_reply_id === 0 ? 'Waiting' : 
+                                                                (arrPurchase.purchase_order_reply_id === 1 ? 'Confirmed' : 
+                                                                (arrPurchase.purchase_order_reply_id === 2 ? 'In Negotiation' : 
+                                                                (arrPurchase.purchase_order_reply_id === 3 ? 'Canceled' : '' )))}}
                                                             </label>
                                                         </div>
                                                     </div>

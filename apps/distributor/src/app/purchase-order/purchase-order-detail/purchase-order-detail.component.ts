@@ -76,43 +76,20 @@ export class PurchaseOrderDetailComponent implements OnInit {
 
   getPurchaseDetail() {
     this.purchaseAPIService.getPurchaseDetail(this.RowID).subscribe(data => {
-      console.log(data);
-
       this.arrPurchase = data.response_data[0];
       this.button_delivered = this.arrPurchase.order_status_btn.button_delivered;
-
       console.log(this.arrPurchase);
       this.strSupplierName = this.arrPurchase.supplier_data_array[0].supplier_name;
       // const date = new Date(this.arrPurchase.delivery_date * 1000)
       // this.delivery_date = this.datepipe.transform(date, 'dd/MM/yyyy');
 
-      if (this.arrPurchase.purchase_order_reply_id === 0) {
-        this.arrPurchase.status = "Waiting"
-      }
-      if (this.arrPurchase.purchase_order_reply_id === 1) {
-        this.arrPurchase.status = "Confirmed"
-      }
-      if (this.arrPurchase.purchase_order_reply_id === 2) {
-        this.arrPurchase.status = "In Negotiation"
-      }
-      if (this.arrPurchase.purchase_order_reply_id === 3) {
-        this.arrPurchase.status = "Canceled"
-      }
-
-      if (this.arrPurchase.button_array.distributor.confirm === 0) {
-        this.openConfirm = true;
-      } else {
-        this.openConfirm = false;
-      }
+      this.openConfirm = this.arrPurchase.button_array.distributor.confirm === 0 ? true : false;
 
       if (this.arrPurchase.purchase_order_status_display.supplier_is_confirm === 1 && this.arrPurchase.purchase_order_status_display.po_is_delivery === 1 && this.arrPurchase.purchase_order_status_display.po_is_invoice === 0) {
         this.isStatus = true;
       }
-      if (this.arrPurchase.order_status_btn.button_paid === 1) {
-        this.isReorder = true;
-      }
 
-      console.log('isStatus', this.isStatus);
+      this.isReorder = this.arrPurchase.order_status_btn.button_paid === 1 ? true : false;
 
       this.arrPurchaseProduct = data.response_data[0].purchase_order_product_array;
       this.arrPurchaseOrderSummary = data.response_data[0].purchase_order_summary;

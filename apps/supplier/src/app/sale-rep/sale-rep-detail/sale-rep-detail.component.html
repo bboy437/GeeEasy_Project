@@ -1,6 +1,6 @@
-<div class="pages">
+<div class="pages" [formGroup]="SaleForm">
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card>
                 <nb-card-header>
                     <div class="header">
@@ -24,7 +24,7 @@
                 </nb-card-header>
             </nb-card>
         </div>
-        <div class="col-12">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card style="padding: 0;margin-bottom: 0.1rem;">
                 <nb-card-header>
                     <div class="header">
@@ -45,221 +45,163 @@
                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                 <div class="row">
                                     <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <project-display-file-image theme="dark" [image_url_array]="image.main_image.get"></project-display-file-image>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="row">
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Sale Name :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                        [(ngModel)]="arrSale.sale_rep_name" />
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input"
-                                                    *ngFor="let p of arrSale.product_category_array">
-                                                    <label>Product Category :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                        [(ngModel)]="p.product_category_name" />
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Sale Company :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                        [(ngModel)]="arrSale.sale_rep_company" />
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Sale Tag :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                        [(ngModel)]="arrSale.sale_rep_tag" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                        <div class="row">
-                                            
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>First Name :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                        [(ngModel)]="arrSale.sale_rep_first_name" />
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Last Name :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                        [(ngModel)]="arrSale.sale_rep_last_name" />
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Email :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                        [(ngModel)]="arrSale.sale_rep_email" />
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Telephone Number :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" libOnlyCharacterphonnumber nbInput fullWidth
-                                                        [(ngModel)]="arrSale.sale_rep_tel" />
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Mobile Phone Number :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" mask='000-000-0000' placeholder="XXX-XXX-XXXX" nbInput fullWidth
-                                                        [(ngModel)]="arrSale.sale_rep_mobile" />
-                                                </div>
-                                            </div>
-                                            <!-- <div class="col-12" *ngIf="(arrSale.sale_rep_addr_lat != '' && arrSale.sale_rep_addr_lat != undefined) && 
-                                            (arrSale.sale_rep_addr_lng != ''  && arrSale.sale_rep_addr_lng != undefined)">
-                                                <div class="cover-input">
-                                                    <label>Location Lat :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                        [(ngModel)]="arrSale.sale_rep_addr_lat" />
-                                                </div>
-                                            </div>
-                                            <div class="col-12" *ngIf="(arrSale.sale_rep_addr_lat != '' && arrSale.sale_rep_addr_lat != undefined) && 
-                                            (arrSale.sale_rep_addr_lng != ''  && arrSale.sale_rep_addr_lng != undefined)">
-                                                <div class="cover-input">
-                                                    <label>Location Lng :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                        [(ngModel)]="arrSale.sale_rep_addr_lng" />
-                                                </div>
-                                            </div> -->
-                                        </div>
+                                        <project-display-file-image theme="white"
+                                            [image_url_array]="image.main_image.get">
+                                        </project-display-file-image>
                                     </div>
                                     <div class="col-12 col-md-6 col-lg-6 col-xl-6">
                                         <div class="row">
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Address :</label>
-                                                    <textarea rows="3"disabled type="text" nbInput
-                                                        fullWidth [(ngModel)]="arrSale.sale_rep_addr_full">
-                                                        </textarea>
-                                                </div>
+                                                <project-input inputType="text" label="Sale Name :"
+                                                    [control]="SaleForm.get('sale_rep_name')">
+                                                </project-input>
                                             </div>
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Address Number :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                        [(ngModel)]="arrSale.sale_rep_addr_number" />
-                                                </div>
+                                                <project-input inputType="text" label="Sale Company :"
+                                                    [control]="SaleForm.get('sale_rep_company')">
+                                                </project-input>
                                             </div>
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Province  :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                        [(ngModel)]="arrSale.sale_rep_addr_province" />
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Amphoe  :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                        [(ngModel)]="arrSale.sale_rep_addr_amphoe" />
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Tambon  :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                        [(ngModel)]="arrSale.sale_rep_addr_tambon" />
-                                                </div>
-                                            </div>
-                                            <!-- <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Zipcode :</label>
-                                                    <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                        [(ngModel)]="arrSale.sale_rep_addr_post" />
-                                                </div>
-                                            </div> -->
-                                            <div class="col-12">
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="cover-input">
-                                                            <label>Zipcode :</label>
-                                                            <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                                [(ngModel)]="arrSale.sale_rep_addr_post" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                   
-                                                            <div class="cover-input">
-                                                                <label>Latitude, Longitude</label>
-                                                                <input libOnlyCharacterDefault disabled type="text" nbInput fullWidth
-                                                                    [(ngModel)]="arrSale.sale_rep_addr_lat +', '+ arrSale.sale_rep_addr_lng" />
-                                                            </div>
-                                                  
-                                                    </div>
-                                                </div>
+                                                <project-input inputType="text" label="Sale Tag :"
+                                                    [control]="SaleForm.get('sale_rep_tag')">
+                                                </project-input>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-12" *ngIf="(arrSale.sale_rep_addr_lat != '' && arrSale.sale_rep_addr_lat != undefined) && 
-                                    (arrSale.sale_rep_addr_lng != ''  && arrSale.sale_rep_addr_lng != undefined)">
-                                        <project-map [let]="arrSale.sale_rep_addr_lat" [long]="arrSale.sale_rep_addr_lng"></project-map>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-12 col-lg-12 col-xl-12"
-                                *ngIf="arrSaleProduct.length !== 0">
-                                <table class="table hover" >
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">
-                                                Image
-                                            </th>
-                                            <th class="left" scope="col">
-                                                Product Name
-                                            </th>
-                                            <th scope="col">
-                                                Product SKU
-                                            </th>
-                                            <th scope="col">
-                                                Product Price
-                                            </th>
-                                            <th scope="col">
-                                                <nb-icon icon="refresh-outline"></nb-icon>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let Product of arrSaleProduct">
-                                            <td>
-                                                <img *ngIf="Product.product_image_url !== '-' && Product.product_image_url !== '' "
-                                                    src="{{Product.product_image_url}}" width="30">
-                                                <img *ngIf="Product.product_image_url === '-' || Product.product_image_url === '' "
-                                                    src="https://static.apiary.io/assets/1lqsC4I4.png" width="30">
-                                            </td>
-                                            <td class="left">
-                                                {{Product.product_name}}
-                                            </td>
-                                            <td>
-                                                {{Product.product_sku}}
-                                            </td>
-                                            <td>
-                                                {{arrSale.sale_rep_tel}}
-                                            </td>
-                                            <td colspan="2">
-                                                {{Product.product_price}}
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="First Name :"
+                                                [control]="SaleForm.get('sale_rep_first_name')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Last Name :"
+                                                [control]="SaleForm.get('sale_rep_last_name')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Email :"
+                                                [control]="SaleForm.get('sale_rep_email')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Telephone Number :"
+                                                [control]="SaleForm.get('sale_rep_tel')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Mobile Phone Number  :"
+                                                [control]="SaleForm.get('sale_rep_mobile')">
+                                            </project-input>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                        <div class="row">
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-textarea rows="3" label="Address :"
+                                                    [control]="SaleForm.get('addressFull')">
+                                                </project-textarea>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="Address Number :"
+                                                    [control]="SaleForm.get('addressNo')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="Province :"
+                                                    [control]="SaleForm.get('province')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="Amphoe :"
+                                                    [control]="SaleForm.get('amphoe')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="Tambon :"
+                                                    [control]="SaleForm.get('tambon')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                                <project-input inputType="text" label="Zipcode :"
+                                                    [control]="SaleForm.get('zipcode')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                                <project-input inputType="text" label="Latitude Longitude :"
+                                                    [control]="SaleForm.get('location_lat_location_lng')">
+                                                </project-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body>
+                    <div class="col-12" *ngIf="(arrSale.sale_rep_addr_lat != '' && arrSale.sale_rep_addr_lat != undefined) && 
+                    (arrSale.sale_rep_addr_lng != ''  && arrSale.sale_rep_addr_lng != undefined)">
+                        <project-map [let]="arrSale.sale_rep_addr_lat" [long]="arrSale.sale_rep_addr_lng"></project-map>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body>
+                    <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="arrSaleProduct.length !== 0">
+                        <table class="table hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        Image
+                                    </th>
+                                    <th class="left" scope="col">
+                                        Product Name
+                                    </th>
+                                    <th scope="col">
+                                        Product SKU
+                                    </th>
+                                    <th scope="col">
+                                        Product Price
+                                    </th>
+                                    <th scope="col">
+                                        <nb-icon icon="refresh-outline"></nb-icon>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let Product of arrSaleProduct">
+                                    <td>
+                                        <img *ngIf="Product.product_image_url !== '-' && Product.product_image_url !== '' "
+                                            src="{{Product.product_image_url}}" width="30">
+                                        <img *ngIf="Product.product_image_url === '-' || Product.product_image_url === '' "
+                                            src="https://static.apiary.io/assets/1lqsC4I4.png" width="30">
+                                    </td>
+                                    <td class="left">
+                                        {{Product.product_name}}
+                                    </td>
+                                    <td>
+                                        {{Product.product_sku}}
+                                    </td>
+                                    <td>
+                                        {{arrSale.sale_rep_tel}}
+                                    </td>
+                                    <td colspan="2">
+                                        {{Product.product_price}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </nb-card-body>
             </nb-card>

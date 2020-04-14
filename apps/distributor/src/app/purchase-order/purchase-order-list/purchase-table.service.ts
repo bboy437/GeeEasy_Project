@@ -44,7 +44,7 @@ function sort(countries: IPurchaseList[], column: string, direction: string): IP
 function matches(country: IPurchaseList, term: string, term1: any, status1: string, status2: string, status3: string, status4: string,  startDate: number, endDate: number, pipe: PipeTransform) {
 
   return country.purchase_order_number.toString().toLowerCase().includes(term.toString().toLowerCase())
-    && country.supplier_name_1.every(el => term1 === '' ? country.supplier_name_1 : term1.indexOf(el) > -1)
+    && country.supplier_name.every(el => term1 === '' ? country.supplier_name : term1.indexOf(el) > -1)
     && (country.purchase_order_reply_id.toString().toLowerCase().includes(status1.toString().toLowerCase()) 
     && country.purchase_order_status_display.po_is_delivery.toString().toLowerCase().includes(status2.toString().toLowerCase())
     && country.order_status_btn.button_paid.toString().toLowerCase().includes(status3.toString().toLowerCase()) 
@@ -129,15 +129,19 @@ export class PurchaseTableService {
           element.po_status = 0;
         }
 
-        if (element.supplier_data_array === undefined) {
-          element.supplier_name_1 = "";
-          element.supplier_name = "";
-        } else {
-          element.supplier_data_array.forEach(res => {
-            element.supplier_name_1 = res.supplier_name.split(",")
-            element.supplier_name = res.supplier_name;
-          });
-        }
+        element.supplier_data_array.forEach(s => {
+          element.supplier_name = s.supplier_name.split(",")
+        });
+
+        // if (element.supplier_data_array === undefined) {
+        //   element.supplier_name_1 = "";
+        //   element.supplier_name = "";
+        // } else {
+        //   element.supplier_data_array.forEach(res => {
+        //     element.supplier_name_1 = res.supplier_name.split(",")
+        //     element.supplier_name = res.supplier_name;
+        //   });
+        // }
 
       });
 

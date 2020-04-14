@@ -24,3 +24,4 @@ export { SaleRepService } from './lib/services/saleRep.service';
 export { SellerService } from './lib/services/seller.service';
 export { RetailAccountService } from './lib/services/retailAccount.service';
 export { RetailProductService } from './lib/services/retailProduct.service';
+export { ReusableReactiveFormService } from './lib/services/reusable-reactive-form.service';

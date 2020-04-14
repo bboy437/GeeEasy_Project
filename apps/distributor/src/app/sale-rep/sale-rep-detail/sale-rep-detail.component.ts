@@ -1,14 +1,15 @@
-import { Observable } from "rxjs";
 import { Router, ActivatedRoute } from '@angular/router';
-import { DecimalPipe } from "@angular/common";
-import { ProductData } from "@project/interfaces";
-import { ColumnMode } from '@swimlane/ngx-datatable';
-import { NgbdSortableHeader, SortEvent } from "@project/services";
 import { Component, OnInit, QueryList, ViewChildren } from "@angular/core";
 import { DialogsImageComponent } from '../../dialogs/dialogs-image/dialogs-image.component';
 import { NbDialogService } from '@nebular/theme';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl
+} from "@angular/forms";
 
-import { SaleRepService } from "@project/services";
+import { SaleRepService, UploadAPIService } from "@project/services";
 
 @Component({
   selector: "sale-rep-detail",
@@ -24,12 +25,44 @@ export class SaleRepDetailComponent implements OnInit {
   loading = false;
   isReload = false;
 
-  constructor(private router: Router, private route: ActivatedRoute, private saleRepService: SaleRepService, private dialogService: NbDialogService) { }
+  SaleForm: FormGroup;
+
+
+  image = {
+    update: false,
+    main_image: {
+        get: [],
+        port: []
+    }
+}
+
+  constructor(
+    private router: Router, 
+    private route: ActivatedRoute, 
+    private saleRepService: SaleRepService, 
+    private dialogService: NbDialogService,
+    private formBuilder: FormBuilder,
+    private uploadAPIService: UploadAPIService
+    ) { }
 
   ngOnInit() {
+    this.buildForm();
     this.getSalerepAccountDetail(res => {
       console.log("ngOnInit : getSalerepAccountDetail : res : ", res);
       this.arrSale = res.response_data[0];
+
+      if (
+        this.arrSale.sale_rep_image_url !== undefined &&
+        this.arrSale.sale_rep_image_url !== "-" &&
+        this.arrSale.sale_rep_image_url !== ""
+      )
+        this.uploadAPIService
+          .uploadImage()
+          .getUrl(this.arrSale.sale_rep_image_url, red_image => {
+            this.image.main_image.get.push(red_image);
+          });
+
+      this.editForm();
     })
   }
 
@@ -45,6 +78,48 @@ export class SaleRepDetailComponent implements OnInit {
   dataProduct(data) {
     this.arrSaleProduct = data;
   }
+
+  buildForm() {
+    this.SaleForm = this.formBuilder.group({
+        sale_rep_name: [{ value: "", disabled: true }, Validators.required],
+        sale_rep_company: [{ value: "", disabled: true }, Validators.required],
+        sale_rep_tag: [{ value: "", disabled: true }, Validators.required],
+        sale_rep_first_name: [{ value: "", disabled: true }, Validators.required],
+        sale_rep_last_name: [{ value: "", disabled: true }, Validators.required],
+        sale_rep_email: [{ value: "", disabled: true }, [Validators.required, Validators.email]],
+        sale_rep_tel: [{ value: "", disabled: true }, [Validators.required]],
+        sale_rep_mobile: [{ value: "", disabled: true }, [Validators.required]],
+        addressFull: [{ value: "", disabled: true }, [Validators.required]],
+        addressNo: [{ value: "", disabled: true }, [Validators.required]],
+        province: [{ value: "", disabled: true }, Validators.required],
+        amphoe: [{ value: "", disabled: true }, Validators.required],
+        tambon: [{ value: "", disabled: true }, Validators.required],
+        zipcode: [{ value: "", disabled: true }, Validators.required],
+        location_lat_location_lng: [{ value: "", disabled: true }, Validators.required],
+    });
+}
+
+editForm() {
+  this.SaleForm.patchValue({
+      sale_rep_name: this.arrSale.sale_rep_name,
+      sale_rep_company: this.arrSale.sale_rep_company,
+      sale_rep_tag: this.arrSale.sale_rep_tag,
+      sale_rep_first_name: this.arrSale.sale_rep_first_name,
+      sale_rep_last_name: this.arrSale.sale_rep_last_name,
+      sale_rep_email: this.arrSale.sale_rep_email,
+      sale_rep_tel: this.arrSale.sale_rep_tel,
+      sale_rep_mobile: this.arrSale.sale_rep_mobile,
+      addressFull: this.arrSale.sale_rep_addr_full,
+      addressNo: this.arrSale.sale_rep_addr_number,
+      province: this.arrSale.sale_rep_addr_province,
+      amphoe: this.arrSale.sale_rep_addr_amphoe,
+      tambon: this.arrSale.sale_rep_addr_tambon,
+      zipcode: this.arrSale.sale_rep_addr_post,
+      location_lat_location_lng: this.arrSale.sale_rep_addr_lat + ',' + this.arrSale.sale_rep_addr_lng,
+  });
+  this.loading = false;
+}
+
 
   btnEditClick() {
     this.router.navigate([
