@@ -8,7 +8,9 @@ import { retry, catchError } from 'rxjs/operators';
 import { throwError, Subject } from 'rxjs';
 import { IDashbord } from '@project/interfaces';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 
 export class DashboardAPIService {
 

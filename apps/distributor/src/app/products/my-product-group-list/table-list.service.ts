@@ -71,9 +71,9 @@ export class ProductGroupTableService {
 
 
   getData(callback) {
-    const value = "cur_page=" + 1 + "&per_page=" + 10 + "&distributor_id=" + this.id_local;
-    this.productAPIService.getProductGroup(value).subscribe(data => {
-      this.arrProducts = <IProductGroup>data.response_data;
+
+    this.productAPIService.ProductGroupList$.subscribe(res => {
+      this.arrProducts = res;
 
       this._search$.pipe(
         tap(() => this._loading$.next(true)),

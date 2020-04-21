@@ -5,10 +5,11 @@ import { VerifedTableService } from './table-list.service';
 import { DecimalPipe } from '@angular/common';
 import { ICategory } from '@project/interfaces';
 import { NgbdSortableHeader, SortEvent } from '@project/services';
-import { Observable } from 'rxjs';
+import { Observable, EMPTY, Subject } from 'rxjs';
 import { DialogsSavedListComponent } from '../../../dialogs/dialogs-saved-list/dialogs-saved-list.component';
 import { NbDialogService } from '@nebular/theme';
 import { ColumnMode } from '@swimlane/ngx-datatable';
+import { tap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'project-verifed-supplier',
@@ -18,9 +19,6 @@ import { ColumnMode } from '@swimlane/ngx-datatable';
 })
 export class VerifedSupplierComponent implements OnInit {
   private UrlRouter_VerifedSupplierInformation = "suppliers/verifed/detail";
-  arrSupplier: any = [];
-  arrSuppliers: any = [];
-  arrCategory: any = [];
   loading = false;
   isReload = false;
   myverifed$: Observable<ICategory[]>;
@@ -28,7 +26,7 @@ export class VerifedSupplierComponent implements OnInit {
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   isCheckData: string;
   strFilter: string;
-  id: string;
+  id: number;
   strName: string;
   ColumnMode = ColumnMode;
   messages = {
@@ -44,6 +42,8 @@ export class VerifedSupplierComponent implements OnInit {
   }
 
   id_local: string;
+  private errorMessageSubject = new Subject<string>();
+  errorMessage$ = this.errorMessageSubject.asObservable();
 
   constructor(
     private supplierAPIService: SupplierAPIService,
@@ -55,6 +55,16 @@ export class VerifedSupplierComponent implements OnInit {
     console.log(' this.id_local', this.id_local);
     this.loading = true;
   }
+
+
+  verifiedSupplierList$ = this.supplierAPIService.verifiedSupplierList$
+    .pipe(
+      tap((data) => this.loading = false),
+      catchError(err => {
+        this.errorMessageSubject.next(err);
+        return EMPTY;
+      })
+    );
 
   onSort({ column, direction }: SortEvent) {
     console.log({ column, direction });
@@ -69,11 +79,13 @@ export class VerifedSupplierComponent implements OnInit {
   }
 
 
-
   ngOnInit() {
     // this.getProductGroup();
     this.callApi(e => {
-      // completed
+      this.supplierAPIService.veririedCategorySelectedAction$.subscribe(res => {
+        console.log(res)
+        this.id = res;
+      })
     });
   }
 
@@ -88,6 +100,7 @@ export class VerifedSupplierComponent implements OnInit {
 
   btnReload() {
 
+    this.supplierAPIService.selectedCategoryVerifiesSupplier(null);
     this.isReload = true;
     this.service.getData(e => {
       this.myverifed$ = this.service.countries$;
@@ -100,22 +113,8 @@ export class VerifedSupplierComponent implements OnInit {
     this.loading = true;
     this.id = id;
     this.strName = name;
-    const value = "cur_page=" + 1 + "&per_page=" + 10 + "&search_text=" + "" + "&distributor_id=" + this.id_local + "&product_category_id=" + id;
-    this.supplierAPIService.getVerifiedSupplieList(value).subscribe(data => {
-      this.arrSuppliers = data.response_data;
-      console.log('Suppliers', this.arrSuppliers);
-      // this.btnClickItem(this.arrSupplier[0])
-      this.loading = false;
-    })
+    this.supplierAPIService.selectedCategoryVerifiesSupplier(id);
   }
-
-
-  // btnClickItem(data: any) {
-  //   this.isCheckData = "data";
-  //   this.arrSuppliers = data;
-
-  // }
-
 
   btnRow(e) {
     if (e.type == "click") {

@@ -1,7 +1,7 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
-import { ProductData } from '@project/interfaces';
+import { ProductDataArray } from '@project/interfaces';
 import { Observable } from 'rxjs';
 import { NgbdSortableHeader, SortEvent } from '@project/services';
 import { ProductAPIService } from '@project/services';
@@ -20,7 +20,7 @@ export class StockListComponent implements OnInit {
   arrStock: any = [];
   private UrlRouter_StockDetail = "products/stock/detail";
   private UrlRouter_StockCreate = "products/stock/create";
-  products$: Observable<ProductData[]>;
+  products$: Observable<ProductDataArray[]>;
   total$: Observable<number>;
   arrProducts: any = [];
   arrClickProducts: any = [];

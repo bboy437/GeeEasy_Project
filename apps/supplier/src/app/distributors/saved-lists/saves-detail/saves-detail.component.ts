@@ -49,7 +49,7 @@ export class SavesDetailComponent implements OnInit {
     this.RowID = params.get("id");
     if (this.RowID) {
       this.distributorAPIService.getDisDetail(this.RowID).subscribe(data => {
-        console.log("ngOnInit : data : ", data);
+        console.log("ngOnInit : data : ", JSON.stringify(data));
         console.log(data);
         this.arrDistributor = data.response_data[0];
         if (this.arrDistributor.length > 0) {

@@ -55,7 +55,13 @@ export class MyProductGroupComponent implements OnInit {
   ngOnInit() {
     // this.getProductGroup();
     this.callApi(e => {
-      // completed
+      this.productAPIService.productGroupSelectedAction$.subscribe(res => {
+        console.log(res);
+        if (res) {
+          this.arrProductGroup = res
+          this.arrProductGroupDetail = res.inventory_group_array;
+        }
+      })
     });
   }
 
@@ -77,22 +83,14 @@ export class MyProductGroupComponent implements OnInit {
     });
   }
 
-  // getProductGroup() {
-  //   const value = "cur_page=" + 1 + "&per_page=" + 10 + "&distributor_id=" + 110;
-  //   this.productAPIService.getProductGroup(value).subscribe(data => {
-  //     this.arrProductGroup = data.response_data;
-  //     this.productAPIService.clickDataGroud(this.arrProductGroup[0].inventory_group_array);
-
-  //   })
-  // }
 
 
-  btnClickItem(data: any, name) {
+  btnClickItem(data: any) {
     this.isReload = true;
     // console.log(data);
-    // console.log(name);
-    this.arrProductGroup = name
-    this.arrProductGroupDetail = data;
+    this.productAPIService.selectedProductGroup(data);
+    this.arrProductGroup = data
+    this.arrProductGroupDetail = data.inventory_group_array;
     console.log(this.arrProductGroupDetail);
     this.isReload = false;
   }
@@ -117,14 +115,13 @@ export class MyProductGroupComponent implements OnInit {
     this.service.searchTerm = value;
   }
 
-  btnRefresh(){
+  btnRefresh() {
     this.service.searchTerm = "";
   }
 
   btnRowClick(row: any): void {
     this.router.navigate([this.UrlRouter_ProductDetail, row], { queryParams: { status: "group" } });
   }
-
 
   btnRow(e) {
     if (e.type == "click") {

@@ -7,7 +7,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
 import { throwError, Subject, BehaviorSubject } from 'rxjs';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 
 export class MessagesAPIService {
 
@@ -26,7 +28,7 @@ export class MessagesAPIService {
     protected ServerApiUrlDealer = "https://api.gee-supply.com/v1-dealer/";
 
     //add
-    
+
 
     httpOptions = {
         headers: new HttpHeaders({

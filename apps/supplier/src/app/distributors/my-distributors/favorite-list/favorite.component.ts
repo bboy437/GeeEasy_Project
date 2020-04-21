@@ -5,7 +5,7 @@ import { WishlistTableService } from './table-list.service';
 import { NgbdSortableHeader, SortEvent } from '@project/services';
 import { DecimalPipe } from '@angular/common';
 import { Observable } from 'rxjs';
-import { IwishlistDetail } from '@project/interfaces';
+import { IFavoriteList } from '@project/interfaces';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 
 @Component({
@@ -16,7 +16,7 @@ import { ColumnMode } from '@swimlane/ngx-datatable';
 })
 export class FavoriteComponent implements OnInit {
   private UrlRouter_FavoriteDetail = "distributors/wishlist/detail";
-  wishlist$: Observable<IwishlistDetail[]>;
+  wishlist$: Observable<IFavoriteList[]>;
   tatallist$: Observable<number>;
   arrWishlist: any = [];
   isCheckData: string;
@@ -85,15 +85,6 @@ export class FavoriteComponent implements OnInit {
     });
   }
 
-
-  getWishlist() {
-    const value = "cur_page=" + 1 + "&per_page=" + 10 + "&distributor_id=" + 110
-    this.distributorAPIService.getWishlist(value).subscribe(data => {
-      const arrWishlists: any = <IwishlistDetail>data.response_data;
-      this.btnClickItem(arrWishlists[0].supplier_array);
-    })
-
-  }
 
 
 

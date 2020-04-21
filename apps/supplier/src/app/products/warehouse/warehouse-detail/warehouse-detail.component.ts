@@ -30,7 +30,7 @@ export class WarehouseDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private uploadAPIService: UploadAPIService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.Builder();
@@ -38,26 +38,21 @@ export class WarehouseDetailComponent implements OnInit {
     const params = this.route.snapshot.paramMap;
     if (params.has("id")) {
       this.RowID = params.get("id");
-      if (this.RowID === "new") {
-      } else {
-        this.warehouseAPIService
-          .getWarehouseDetail(this.RowID)
-          .subscribe(data => {
-            this.arrobjRow = data.response_data[0];
-            console.log(this.arrobjRow);
-            if (
-              this.arrobjRow.warehouse_image_url !== undefined &&
-              this.arrobjRow.warehouse_image_url !== "-" &&
-              this.arrobjRow.warehouse_image_url !== ""
-            )
-              this.uploadAPIService
-                .uploadImage()
-                .getUrl(this.arrobjRow.warehouse_image_url, red_image => {
-                  this.image.main_image.get.push(red_image);
-                });
-            this.DetailForm();
+
+      this.warehouseAPIService.getWarehouseDetail(this.RowID).subscribe(data => {
+        this.arrobjRow = data.response_data[0];
+        console.log(this.arrobjRow);
+        if (
+          this.arrobjRow.warehouse_image_url !== undefined &&
+          this.arrobjRow.warehouse_image_url !== "-" &&
+          this.arrobjRow.warehouse_image_url !== ""
+        )
+          this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.warehouse_image_url, red_image => {     
+            this.image.main_image.get.push(red_image);
           });
-      }
+        this.DetailForm();
+      });
+
     }
   }
 

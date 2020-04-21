@@ -73,10 +73,10 @@ export class StockTableService {
   }
 
   getData(callback) {
-    const value = "distributor_id=" + this.id_local + "&cur_page=" + 1 + "&per_page=" + 200;
-    this.productAPIService.getStockList(value).subscribe(data => {
-      this.arrProducts = data.response_data === undefined ? [] : data.response_data;
-      console.log(data.response_data);
+
+    this.productAPIService.stockDistributor$.subscribe(res => {
+      this.arrProducts = res;
+      console.log(res);
 
       this._search$.pipe(
         tap(() => this._loading$.next(true)),

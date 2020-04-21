@@ -1,7 +1,7 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
-import { ProductData } from '@project/interfaces';
+import { IStock } from '@project/interfaces';
 import { Observable } from 'rxjs';
 import { NgbdSortableHeader, SortEvent } from '@project/services';
 import { ProductAPIService } from '@project/services';
@@ -18,7 +18,7 @@ import { ColumnMode } from '@swimlane/ngx-datatable';
 export class InventoryLogListComponent implements OnInit {
 
   private UrlRouter_ProductDetail = "products/detail";
-  products$: Observable<ProductData[]>;
+  products$: Observable<IStock[]>;
   total$: Observable<number>;
   arrProducts: any = [];
   arrClickProducts: any = [];

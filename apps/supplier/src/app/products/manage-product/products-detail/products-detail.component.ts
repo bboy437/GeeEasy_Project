@@ -65,55 +65,35 @@ export class ProductsDetailComponent implements OnInit {
 
       if (this.RowID === "new") {
       } else {
-        this.productAPIService
-          .getProductDetailSup(this.RowID)
-          .subscribe(data => {
-            console.log("getProductDetailSup : data : ", data);
+        this.productAPIService.getProductDetailSup(this.RowID).subscribe(data => {
+          this.arrProductDetail = data.response_data[0];
+          console.log("arrProductDetail : data : ", this.arrProductDetail);
+          if (
+            this.arrProductDetail.product_image_url !== undefined &&
+            this.arrProductDetail.product_image_url !== "-" &&
+            this.arrProductDetail.product_image_url !== ""
+          )
+            this.uploadAPIService.uploadImage().getUrl(this.arrProductDetail.product_image_url, red_image => {
+              this.product.main_image.get.push(red_image);
+            }
+            );
+          if (this.arrProductDetail.product_image_array !== undefined)
+            this.uploadAPIService.uploadImage().imageArray(this.arrProductDetail.product_image_array, imageArray => {
+              this.product.product_image_array.get = imageArray;
+            }
+            );
 
-            data.response_data.forEach(item => {
-              this.arrProductDetail = item;
-              console.log("getProductDetailSup : item : ", item);
-              if (
-                this.arrProductDetail.product_image_url !== undefined &&
-                this.arrProductDetail.product_image_url !== "-" &&
-                this.arrProductDetail.product_image_url !== ""
-              )
-                this.uploadAPIService
-                  .uploadImage()
-                  .getUrl(
-                    this.arrProductDetail.product_image_url,
-                    red_image => {
-                      this.product.main_image.get.push(red_image);
-                    }
-                  );
-              if (this.arrProductDetail.product_image_array !== undefined)
-                this.uploadAPIService
-                  .uploadImage()
-                  .imageArray(
-                    this.arrProductDetail.product_image_array,
-                    imageArray => {
-                      this.product.product_image_array.get = imageArray;
-                    }
-                  );
-            });
+          this.arrWholesale = this.arrProductDetail.product_wholesale_array;
 
-            this.arrWholesale = this.arrProductDetail.product_wholesale_array;
-
-            this.arrWholesale.forEach(element => {
-              element.product_price =
-                element.product_price % 1 !== 0
-                  ? element.product_price
-                  : element.product_price + ".00";
-              element.retail_product_price =
-                element.retail_product_price % 1 !== 0
-                  ? element.retail_product_price
-                  : element.retail_product_price + ".00";
-            });
-            this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
-
-            this.getProductDetail(this.arrProductDetail);
-            this.detailForm();
+          this.arrWholesale.forEach(element => {
+            element.product_price = element.product_price % 1 !== 0 ? element.product_price : element.product_price + ".00";
+            element.retail_product_price = element.retail_product_price % 1 !== 0 ? element.retail_product_price : element.retail_product_price + ".00";
           });
+          this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
+
+          this.getProductDetail(this.arrProductDetail);
+          this.detailForm();
+        });
       }
     }
   }

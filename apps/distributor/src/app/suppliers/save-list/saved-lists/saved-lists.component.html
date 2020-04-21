@@ -81,7 +81,7 @@
                                             </td>
                                         </tr>
                                         <tr *ngFor="let savelist of savelists"
-                                            (click)="btnClickItem(savelist.supplier_array, savelist.supplier_lists_id, savelist.supplier_lists_name,savelist.supplier_lists_id)">
+                                            (click)="btnClickItem(savelist)">
                                             <td colspan="2" style="text-align: left;"
                                                 [ngClass]="{'active': savelist.supplier_lists_id==id}">
                                                 <a>{{savelist.supplier_lists_name}} </a>
@@ -274,6 +274,7 @@
                                 </tbody>
                             </table>
                         </div>
+
                     </div>
                 </nb-card-body>
             </nb-card>

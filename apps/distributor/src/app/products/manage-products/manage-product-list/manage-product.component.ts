@@ -1,26 +1,26 @@
 import { Component, OnInit, QueryList, ViewChildren, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
-import { ProductData } from '@project/interfaces';
+import { ProductDataArray } from '@project/interfaces';
 import { Observable } from 'rxjs';
 import { NgbdSortableHeader, SortEvent } from '@project/services';
 import { ProductAPIService } from '@project/services';
-import { ProductTableService } from './my-product-table.service';
+import { ProductTableService } from './manage-product-table.service';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 import { DialogsProductGroupComponent } from '../../../dialogs/dialogs-product-group/dialogs-product-group.component';
 import { NbDialogService } from '@nebular/theme';
 
 @Component({
   selector: 'project-my-product',
-  templateUrl: './my-product.component.html',
-  styleUrls: ['./my-product.component.scss'],
+  templateUrl: './manage-product.component.html',
+  styleUrls: ['./manage-product.component.scss'],
   providers: [ProductTableService, DecimalPipe]
 })
 export class MyProductComponent implements OnInit {
   private UrlRouter_ProductCreate = "products/manage/create";
   private UrlRouter_ProductDetail = "products/detail";
   private UrlRouter_ProductDistributorDetail = "products/manage/detail-product-distributor";
-  products$: Observable<ProductData[]>;
+  products$: Observable<ProductDataArray[]>;
   total$: Observable<number>;
   arrProducts: any = [];
   arrClickProducts: any = [];
@@ -60,8 +60,8 @@ export class MyProductComponent implements OnInit {
 
 
   ngOnInit() {
-    // this.callApi(e => {
-    // });
+    this.callApi(e => {
+    });
   }
 
   callApi(callback) {

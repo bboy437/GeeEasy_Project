@@ -1,3 +1,4 @@
+import { from } from 'rxjs';
 
 export * from './lib/services.module';
 export * from './lib/components/sortableheader/sortable.directive';
@@ -25,3 +26,6 @@ export { SellerService } from './lib/services/seller.service';
 export { RetailAccountService } from './lib/services/retailAccount.service';
 export { RetailProductService } from './lib/services/retailProduct.service';
 export { ReusableReactiveFormService } from './lib/services/reusable-reactive-form.service';
+export { VerifiedService } from './lib/services/verified.service';
+export { RequestService } from './lib/services/request.service'
+export { FavoriteService } from './lib/services/favorite.service'

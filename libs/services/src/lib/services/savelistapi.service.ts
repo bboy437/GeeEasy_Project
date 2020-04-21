@@ -5,10 +5,13 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { throwError, Subject } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { throwError, Subject, BehaviorSubject } from 'rxjs';
+import { catchError, retry, map, tap } from 'rxjs/operators';
+import { IobjectSavelist } from '@project/interfaces';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 
 export class SaveListSupplierAPIService {
 
@@ -19,18 +22,47 @@ export class SaveListSupplierAPIService {
     data$: Observable<any>;
     private myMethodSubject = new Subject<any>();
 
+    private savelistDistSelectedSubject = new BehaviorSubject<any>(null);
+    savelistDistSelectedAction$ = this.savelistDistSelectedSubject.asObservable();
+
+    private savelistSupplierSelectedSubject = new BehaviorSubject<any>(null);
+    savelistSupplierSelectedAction$ = this.savelistSupplierSelectedSubject.asObservable();
+
     constructor(private http: HttpClient) {
         this.data$ = this.myMethodSubject.asObservable();
     }
 
-    httpOptions = {
-        headers: new HttpHeaders({
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
+    //All List supplier
+    value = "cur_page=" + 1 + "&per_page=" + 100 + "&supplier_id=" + localStorage.getItem('id');
+    savelistSupplier$ = this.http.get<IobjectSavelist>(`${this.ServerApiUrlDist}${'distributor/saved_list/lists?'}${this.value}`)
+        .pipe(
+            map(savelist => savelist.response_data),
+            tap(data => console.log('savelistSupplier', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
 
-        })
+    //All List Distributor
+    valueDist = "cur_page=" + 1 + "&per_page=" + 100 + "&distributor_id=" + localStorage.getItem('id');
+    savelistDistributor$ = this.http.get<IobjectSavelist>(`${this.ServerApiUrlSup}${'supplier/save_lists/lists?'}${this.valueDist}`)
+        .pipe(
+            map(savelist => savelist.response_data),
+            tap(data => console.log('savelistDistributor', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
 
+
+    // Distributor savelist the selected List name
+    selectedListDistriburor(data: any): void {
+        this.savelistDistSelectedSubject.next(data);
     }
+
+    // Supplier savelist the selected List name
+    selectedListSupplier(data: any): void {
+        this.savelistSupplierSelectedSubject.next(data);
+    }
+
 
 
     clickData(data) {

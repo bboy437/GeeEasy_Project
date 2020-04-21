@@ -45,6 +45,11 @@
                                         </nb-select>
                                     </div>
                                     <div class="cover-form">
+                                        <!-- <project-select placeholder="--------- Choose ---------" label="Status"
+                                            (selectedChange)="filterStatus($event)" [control]="Form.get('strStatus')"
+                                            [arrSelect]="arrSelect" name="name" value="value">
+                                        </project-select> -->
+
                                         <label>Status</label>
                                         <nb-select placeholder="--------- Choose ---------" fullWidth outline
                                             status="basic" (selectedChange)="filterStatus($event)"

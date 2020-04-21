@@ -2,14 +2,14 @@ import { Injectable, PipeTransform } from '@angular/core';
 
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 
-import { Ifarvorite } from '@project/interfaces';
+import { IFavoriteList } from '@project/interfaces';
 import { DecimalPipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { SortDirection } from '@project/services';
 import { ProductAPIService } from '@project/services';
 
 interface SearchResult {
-  countries: Ifarvorite[];
+  countries: IFavoriteList[];
   total: number;
 }
 
@@ -25,7 +25,7 @@ function compare(v1, v2) {
   return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 }
 
-function sort(countries: Ifarvorite[], column: string, direction: string): Ifarvorite[] {
+function sort(countries: IFavoriteList[], column: string, direction: string): IFavoriteList[] {
   if (direction === '') {
     return countries;
   } else {
@@ -36,7 +36,7 @@ function sort(countries: Ifarvorite[], column: string, direction: string): Ifarv
   }
 }
 
-function matches(country: Ifarvorite, term: string, pipe: PipeTransform) {
+function matches(country: IFavoriteList, term: string, pipe: PipeTransform) {
   return country.product_title.toString().toLowerCase().includes(term.toString().toLowerCase()) ||
     country.product_sku.toString().toLowerCase().includes(term.toString().toLowerCase()) ||
     country.product_price.toString().toLowerCase().includes(term.toString().toLowerCase())
@@ -48,7 +48,7 @@ function matches(country: Ifarvorite, term: string, pipe: PipeTransform) {
 export class FarvoriteTableService {
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _countries$ = new BehaviorSubject<Ifarvorite[]>([]);
+  private _countries$ = new BehaviorSubject<IFavoriteList[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
 
   private _state: State = {
@@ -72,23 +72,10 @@ export class FarvoriteTableService {
 
 
   getData(callback) {
-    const value = "cur_page=" + 1 + "&per_page=" + 10 + "&distributor_id=" + this.id_local;
-    this.productAPIService.getFarvoriteList(value).subscribe(data => {
-      this.arrFarvorite = <Ifarvorite>data.response_data;
-      console.log(this.arrFarvorite);
-
-      if (this.arrFarvorite !== undefined) {
-        this.arrFarvorite.forEach(element => {
-          element.product_title = element.product_data[0].product_title;
-          element.product_image_url = element.product_data[0].product_image_url;
-          element.product_sku = element.product_data[0].product_sku;
-          element.product_price = element.product_data[0].product_price;
-        });
-      } else {
-        this.arrFarvorite = [];
-      }
-
-      // console.log('arrFarvorite',this.arrFarvorite);
+ 
+    this.productAPIService.productFavorite$.subscribe(res => {
+      this.arrFarvorite = res;
+      console.log(res);
 
       this._search$.pipe(
         tap(() => this._loading$.next(true)),

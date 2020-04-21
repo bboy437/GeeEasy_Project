@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { DistributorAPIService, UploadAPIService } from "@project/services";
+import { DistributorAPIService, UploadAPIService, RequestService } from "@project/services";
 import { Router, ActivatedRoute } from "@angular/router";
 import { DialogsImageComponent } from "../../../dialogs/dialogs-image/dialogs-image.component";
 import { NbDialogService } from "@nebular/theme";
@@ -36,11 +36,11 @@ export class RequestDetailComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private distributorAPIService: DistributorAPIService,
     private route: ActivatedRoute,
     private dialogService: NbDialogService,
     private formBuilder: FormBuilder,
     private uploadAPIService: UploadAPIService,
+    private requestService: RequestService
   ) {
     this.id_local = localStorage.getItem('id');
     console.log(' this.id_local', this.id_local);
@@ -50,30 +50,16 @@ export class RequestDetailComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
-    const params = this.route.snapshot.paramMap;
-    this.RowID = params.get("id");
 
-    console.log('this.RowID', this.RowID);
-
-    if (this.RowID) {
-
-      const value = "cur_page=" + 1 + "&per_page=" + 100 + "&supplier_id=" + this.id_local;
-      this.distributorAPIService.getRequestList(value).subscribe(data => {
-        this.arrReques = data.response_data;
-        console.log('arrReques', this.arrReques);
-        if (this.arrReques.length > 0) {
-          this.arrRequestList = this.arrReques.filter((x) => x.request_information_id == Number(this.RowID));
-          //  this.distributor_data_array =  this.arrRequestList[0].distributor_data_array[0];
-          console.log('arrRequestList', this.arrRequestList);
-          // this.detailForm();
-          if (this.arrRequestList.length > 0) {
-            this.distributor();
-          }
-        }
-
+    this.route.paramMap.subscribe(params => {
+      this.RowID = params.get("id")
+      this.requestService.requestList$.subscribe(res => {
+        console.log(res);
+        this.arrRequestList = res.filter((x) => x.request_information_id === +this.RowID);
+        this.distributor();
       })
-    }
-    // this.loading = false;
+
+    })
 
   }
 
@@ -162,8 +148,6 @@ export class RequestDetailComponent implements OnInit {
     });
     this.loading = false;
   }
-
-
 
   btnCancelClick() {
     this.router.navigate([this.UrlRouter_List]);

@@ -4,7 +4,7 @@ import { MysupplierTableService } from '../table-list.service';
 import { NgbdSortableHeader } from '@project/services';
 import { Observable } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
-import { IVerifed } from '@project/interfaces';
+import { ISupplier } from '@project/interfaces';
 import { SupplierAPIService } from '@project/services';
 
 
@@ -16,16 +16,16 @@ import { SupplierAPIService } from '@project/services';
 })
 export class ListComponent implements OnInit {
   @Input() strStatus: string;
-  @Input() strID: string;
   @Output() supplier = new EventEmitter<any>();
   loading = false;
   isReload = false;
   arrSupplier: any = [];
   arrSuppliers: any = [];
   isCheckData: string;
-  mySuplierList$: Observable<IVerifed[]>;
+  mySuplierList$: Observable<ISupplier[]>;
   totalList$: Observable<number>;
   strFilter: string;
+  strID: number;
 
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
@@ -41,7 +41,12 @@ export class ListComponent implements OnInit {
   ngOnInit() {
     // this.getProductGroup();
     this.callApi(e => {
-      // completed
+      this.supplierAPIService.categoryIDSelectedAction$.subscribe(res => {
+        if (res) {
+          this.strID = res;
+          // this.supplierAPIService.selectedCategorySupplier(res);
+        }
+      })
     });
   }
 
@@ -55,7 +60,7 @@ export class ListComponent implements OnInit {
   }
 
   btnReload() {
-
+    this.supplierAPIService.selectedCategorySupplier(null);
     this.isReload = true;
     this.service.getData(e => {
       this.mySuplierList$ = this.service.countries$;
@@ -65,20 +70,11 @@ export class ListComponent implements OnInit {
   }
 
 
-  // getSupplier() {
-  //   const value = "cur_page=" + 1 + "&per_page=" + 100 + "&distributor_id=" + 110
-  //   this.supplierAPIService.getSupListCreate(value).subscribe(data => {
-  //     this.arrSupplier = <IVerifed>data.response_data;
-  //     this.btnClickItem(this.arrSupplier[0])
-  //     console.log(this.arrSupplier);
-  //   })
-  // }
-
 
   btnClickItem(id, name) {
     const data = {
       id: id,
-      name:name
+      name: name
     }
     this.supplier.emit(data)
     this.loading = false;
@@ -90,7 +86,7 @@ export class ListComponent implements OnInit {
     this.service.searchTerm = value;
   }
 
-  btnRefresh(){
+  btnRefresh() {
     this.service.searchTerm = '';
     this.strFilter = '';
   }

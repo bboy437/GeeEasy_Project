@@ -10,7 +10,7 @@ import { MyDistributorTableService } from "./table-list.service";
 import { NgbdSortableHeader, SortEvent } from "@project/services";
 import { Observable } from "rxjs";
 import { DecimalPipe } from "@angular/common";
-import { IDisCreate } from "@project/interfaces";
+import { IDistributor } from "@project/interfaces";
 import { NbDialogService } from "@nebular/theme";
 import { DialogsSavedListComponent } from "../../../dialogs/dialogs-saved-list/dialogs-saved-list.component";
 import { DistributorAPIService } from "@project/services";
@@ -29,7 +29,7 @@ export class MyDistributorsListComponent implements OnInit {
     arrDistributor: any = [];
     arrDistributorDetail: any = [];
     isCheckData: string;
-    myDistributorList$: Observable<IDisCreate[]>;
+    myDistributorList$: Observable<IDistributor[]>;
     totalList$: Observable<number>;
     date = new Date();
     @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
@@ -103,17 +103,6 @@ export class MyDistributorsListComponent implements OnInit {
     btnRefresh() {
         this.service.searchTerm = "";
         this.strname = ""
-    }
-
-
-    getDistributor() {
-        const value = "cur_page=" + 1 + "&per_page=" + 20 + "&supplier_id=" + this.id_local;
-        this.distributorAPIService.getdDstributorCreate(value).subscribe(data => {
-            this.arrDistributor = <IDisCreate>data.response_data;
-            console.log(this.arrDistributor);
-
-            this.btnClickItem(this.arrDistributor[0]);
-        });
     }
 
     btnClickItem(data: any, ) {

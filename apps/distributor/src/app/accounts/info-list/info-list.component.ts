@@ -104,40 +104,37 @@ export class InfoListComponent implements OnInit {
     getData() {
         const value = this.id_local;
         this.distributorAPIService.getDisDetail(value).subscribe(data => {
-            if (data.response_data.length > 0 || data.response_data === false) {
-                this.arrobjRow = data.response_data[0];
-                this.imgURL = data.response_data[0].distributor_image_url;
+            this.arrobjRow = data[0];
+            this.imgURL = data[0].distributor_image_url;
 
-                if (this.arrobjRow.distributor_image_url !== undefined && this.arrobjRow.distributor_image_url !== "-" && this.arrobjRow.distributor_image_url !== "")
-                    this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.distributor_image_url, red_image => {
-                        this.image.main_image.get.push(red_image);
+            if (this.arrobjRow.distributor_image_url !== undefined && this.arrobjRow.distributor_image_url !== "-" && this.arrobjRow.distributor_image_url !== "")
+                this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.distributor_image_url, red_image => {
+                    this.image.main_image.get.push(red_image);
+                });
+
+            /*Get Province Edit */
+            this.changeProvinceEdit(
+                this.arrobjRow.distributor_addr_province,
+                this.arrobjRow.distributor_addr_amphoe,
+                this.arrobjRow.distributor_addr_tambon
+            );
+
+            this.getCategory();
+            this.editForm();
+            console.log(this.arrobjRow);
+
+            this.phoneNumber().main(_self_ => {
+                data.response_data.forEach(item => {
+                    _self_.getNumberArray(item.distributor_tel, getNumberArray => {
+                        this.phone.tel.number = item.distributor_tel;
+                        this.phone.tel.number_array = getNumberArray;
                     });
-
-                /*Get Province Edit */
-                this.changeProvinceEdit(
-                    this.arrobjRow.distributor_addr_province,
-                    this.arrobjRow.distributor_addr_amphoe,
-                    this.arrobjRow.distributor_addr_tambon
-                );
-
-                this.getCategory();
-                this.editForm();
-                console.log(this.arrobjRow);
-
-                this.phoneNumber().main(_self_ => {
-                    data.response_data.forEach(item => {
-                        _self_.getNumberArray(item.distributor_tel, getNumberArray => {
-                            this.phone.tel.number = item.distributor_tel;
-                            this.phone.tel.number_array = getNumberArray;
-                        });
-                        _self_.getNumberArray(item.distributor_mobile, getNumberArray => {
-                            this.phone.mobile.number = item.distributor_mobile;
-                            this.phone.mobile.number_array = getNumberArray;
-                        });
+                    _self_.getNumberArray(item.distributor_mobile, getNumberArray => {
+                        this.phone.mobile.number = item.distributor_mobile;
+                        this.phone.mobile.number_array = getNumberArray;
                     });
                 });
-            }
-
+            });
 
             this.loading = false;
         })

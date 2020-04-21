@@ -8,7 +8,9 @@ import {
 } from 'rxjs/operators';
 import { ISetting, IObject } from '@project/interfaces';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 
 export class AccountAPIService {
 

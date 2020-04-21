@@ -4,10 +4,14 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError, map, tap } from 'rxjs/operators';
 import { throwError, Subject } from 'rxjs';
+import { IObjectWarehouse, Iwarehouse } from '@project/interfaces';
 
-@Injectable()
+
+@Injectable({
+    providedIn: 'root'
+})
 
 export class WarehouseAPIService {
 
@@ -17,6 +21,26 @@ export class WarehouseAPIService {
     constructor(private http: HttpClient) {
 
     }
+
+    // Warehouse List Supplier
+    paramSupplierList = "&supplier_id=" + localStorage.getItem('id') + "&warehouse_type_id=" + 1;
+    warehouseSupplierList$ = this.http.get<IObjectWarehouse>(`${this.ServerApiUrl}${'warehouse/lists?'}${this.paramSupplierList}`)
+        .pipe(
+            map(warehouses => warehouses.response_data),
+            tap(data => console.log('warehouses', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
+
+    // Warehouse List Distributor
+    paramDistributorList = "&distributor_id=" + localStorage.getItem('id') + "&warehouse_type_id=" + 2;
+    warehouseDistributorList$ = this.http.get<IObjectWarehouse>(`${this.ServerApiUrl}${'warehouse/lists?'}${this.paramDistributorList}`)
+        .pipe(
+            map(warehouses => warehouses.response_data),
+            tap(data => console.log('warehouses', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
 
 
     httpOptions = {
@@ -33,10 +57,10 @@ export class WarehouseAPIService {
             )
     }
 
-    getWarehouseDetail(strUrl: string): Observable<any> {
-        return this.http.get<any>(this.ServerApiUrl + "warehouse/id/" + strUrl)
+    getWarehouseDetail(strUrl: string): Observable<IObjectWarehouse> {
+        return this.http.get<IObjectWarehouse>(this.ServerApiUrl + "warehouse/id/" + strUrl)
             .pipe(
-                retry(1),
+                tap(data => console.log('getWarehouseDetail: ' + data)),
                 catchError(this.handleError)
             )
     }

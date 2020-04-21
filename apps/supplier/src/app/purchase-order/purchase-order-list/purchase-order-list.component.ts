@@ -136,8 +136,6 @@ export class PurchaseOrderListComponent implements OnInit {
     });
   }
 
-
-
   getSupplier() {
     const value = "cur_page=" + 1 + "&per_page=" + 10 + "&search_text=" + "" + "&distributor_id=" + 110 + "&product_category_id=" + 0;
     this.supplierAPIService.getVerifiedSupplieList(value).subscribe(data => {
@@ -166,6 +164,16 @@ export class PurchaseOrderListComponent implements OnInit {
     this.service.searchStatus4 = "";
     this.service.startDate = (new Date(this.voneMonthAgo)).getTime() / 1000;
     this.service.endDate = (new Date()).getTime() / 1000;
+
+    // this.service.page = 2;
+    // this.service.pageSize = 10;
+
+    // this.isReload = true;
+    // this.service.getData(e => {
+    //   this.arrPurchase$ = this.service.countries$;
+    //   this.total$ = this.service.total$;
+    //   this.isReload = false;
+    // });
   }
 
   filterPoNo(value) {
@@ -184,6 +192,7 @@ export class PurchaseOrderListComponent implements OnInit {
     }
 
   }
+
   filterDate(value: Date[]): void {
     if (value !== null) {
       this.service.startDate = (new Date(value[0])).getTime() / 1000;
@@ -220,7 +229,6 @@ export class PurchaseOrderListComponent implements OnInit {
       this.service.searchStatus4 = "";
     }
   }
-
 
 
   // btnFilter() {

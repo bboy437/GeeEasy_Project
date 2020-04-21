@@ -99,25 +99,11 @@ export class PurchaseTableService {
 
   getData(callback) {
 
-    const value = "cur_page=" + 1 + "&per_page=" + 50 + "&distributor_id=" + 0 + "&supplier_id=" + this.id_local;
-    this.purchaseAPIService.getPurchaseList(value).subscribe(datas => {
-      this.arrPurchase = datas.response_data;
+    // const value = "cur_page=" + this._state.page + "&per_page=" + this._state.pageSize + "&supplier_id=" + this.id_local;
+
+    this.purchaseAPIService.purchaseList$.subscribe(res => {
+      this.arrPurchase = res;
       console.log(this.arrPurchase);
-
-      this.arrPurchase.forEach(element => {
-
-        //Check po_status
-        if (element.order_status_btn.button_confirm === 1 && element.purchase_order_status_display.po_is_delivery === 1 && element.order_status_btn.button_paid === 1) {
-          element.po_status = 1;
-        } else {
-          element.po_status = 0;
-        }
-
-        element.distributor_data_array.forEach(s => {
-          element.distributor_name = s.distributor_name.split(",")
-        });
-
-      });
 
       this._search$.pipe(
         tap(() => this._loading$.next(true)),
@@ -129,6 +115,8 @@ export class PurchaseTableService {
         this._countries$.next(result.countries);
         this._total$.next(result.total);
         callback(true);
+        console.log(result);
+
       });
 
       this._search$.next();
@@ -165,6 +153,8 @@ export class PurchaseTableService {
   set sortDirection(sortDirection: SortDirection) { this._set({ sortDirection }); }
 
   private _set(patch: Partial<State>) {
+    console.log(patch);
+    console.log(this._state);
     Object.assign(this._state, patch);
     this._search$.next();
   }

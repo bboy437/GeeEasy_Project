@@ -1,37 +1,35 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { DistributorAPIService } from '@project/services';
+import { Component, OnInit, QueryList, ViewChildren, ChangeDetectionStrategy } from '@angular/core';
+import { DistributorAPIService, VerifiedService } from '@project/services';
 import { Router } from '@angular/router';
-import { VerifedTableService } from './verifed-table-list.service';
-import { DecimalPipe } from '@angular/common';
-import { IDistVerifed } from '@project/interfaces';
-import { NgbdSortableHeader, SortEvent } from '@project/services';
-import { Observable } from 'rxjs';
+import { Observable, Subject, EMPTY, BehaviorSubject, combineLatest } from 'rxjs';
 import { DialogsSavedListComponent } from '../../../dialogs/dialogs-saved-list/dialogs-saved-list.component';
 import { NbDialogService } from '@nebular/theme';
 import { ColumnMode } from '@swimlane/ngx-datatable';
+import { catchError, map, tap } from 'rxjs/operators';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'project-verifed-list',
   templateUrl: './verifed-list.component.html',
   styleUrls: ['./verifed-list.component.scss'],
-  providers: [VerifedTableService, DecimalPipe]
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
+
 export class VerifedListComponent implements OnInit {
 
   private UrlRouter_VerifedDetail = "distributors/veriferd/detail";
-  arrDistributor: any = [];
+  arrDistributors: any = [];
   arrDistributorDetail: any = [];
   arrDistributorCate: any = [];
   filters: any = [];
-  myverifed$: Observable<IDistVerifed[]>;
-  totalList$: Observable<number>;
-  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   isCheckData: string;
   id: string;
   loading = false;
   isReload = false;
   strname: string;
   ColumnMode = ColumnMode;
+  id_local: string;
   messages = {
     emptyMessage: `
         <div class="imglist">
@@ -43,99 +41,101 @@ export class VerifedListComponent implements OnInit {
         </div>
     `
   }
+  Form: FormGroup;
 
-  id_local: string;
+  private errorMessageSubject = new Subject<string>();
+  errorMessage$ = this.errorMessageSubject.asObservable();
+
+  // Action filter stream
+  private fillterNameSubject = new BehaviorSubject<string>("");
+  fillterNameAction$ = this.fillterNameSubject.asObservable();
+
+  verifieds$ = combineLatest([
+    this.verifiedService.verifieds$,
+    this.fillterNameAction$
+  ])
+    .pipe(
+      map(([verifieds, name]) =>
+        verifieds.filter(product =>
+          product.toString().indexOf(name.toLowerCase()) > -1)
+      ),
+      tap((data) => {
+        // this.isReload = false;
+      }),
+      catchError(err => {
+        window.alert(err);
+        this.errorMessageSubject.next(err);
+        return EMPTY;
+      })
+    );
+
+
+  selectedCategory$ = this.verifiedService.selectedCategory$
+    .pipe(
+      tap((data) => this.loading = false),
+      catchError(err => {
+        this.errorMessageSubject.next(err);
+        return EMPTY;
+      })
+    );
+
+  filterVerifieds(value) {
+    console.log(value);
+    this.fillterNameSubject.next(value);
+  }
 
   constructor(
     private distributorAPIService: DistributorAPIService,
+    private verifiedService: VerifiedService,
     private router: Router,
-    public service: VerifedTableService,
-    private dialogService: NbDialogService
+    private dialogService: NbDialogService,
+    private formBuilder: FormBuilder,
   ) {
     this.id_local = localStorage.getItem('id');
     console.log(' this.id_local', this.id_local);
     this.loading = true;
   }
 
-  onSort({ column, direction }: SortEvent) {
-    console.log({ column, direction });
-
-    this.headers.forEach(header => {
-      if (header.sortable !== column) {
-        header.direction = '';
-      }
-    });
-    this.service.sortColumn = column;
-    this.service.sortDirection = direction;
-  }
-
-
 
   ngOnInit() {
-    // this.getDistributor();
-    // this.getCategory();
-    this.callApi(e => {
-      // completed
+
+    this.Form = this.formBuilder.group({
+      filterName: ["", Validators.required],
     });
+
+    this.loading = false;
   }
 
-  callApi(callback) {
-    this.service.getData(e => {
-      this.myverifed$ = this.service.countries$;
-      this.totalList$ = this.service.total$;
-      this.loading = false;
-      callback(true);
-    });
-  }
 
   btnReload() {
-
     this.isReload = true;
-    this.service.getData(e => {
-      this.myverifed$ = this.service.countries$;
-      this.totalList$ = this.service.total$;
-      this.isReload = false;
-    });
+    this.id = "";
+    this.verifiedService.verifieds$.subscribe();
+    this.verifiedService.selectedCategoryChanged("");
+    this.isReload = false;
   }
 
   btnRefresh() {
-    this.service.searchTerm = "";
-  }
-
-  getCategory() {
-    const supplier_id = this.id_local;
-    this.distributorAPIService.getVerifiedCate(supplier_id).subscribe(data => {
-      this.arrDistributorCate = data.response_data;
-      this.filters = data.response_data;
-      console.log(this.arrDistributorCate);
-
-      // this.getDistributor(this.arrDistributorCate[0])
-    })
+    this.fillterNameSubject.next("");
   }
 
   btnClickItem(data) {
     this.loading = true;
-    const catalog = data
-    this.getDistributor(catalog);
-
+    this.id = data;
+    this.verifiedService.selectedCategoryChanged(data)
+    this.loading = false;
   }
 
   getDistributor(catalog) {
     this.id = catalog;
     const value = "cur_page=" + 1 + "&per_page=" + 10 + "&supplier_id=" + this.id_local + "&catalog=" + this.id;
     this.distributorAPIService.getVerifiedDistList(value).subscribe(data => {
-      console.log(data.response_data);
-
-      if (data.response_data.length > 0) {
-        this.arrDistributor = data.response_data;
-      } else {
-        this.arrDistributor = [];
-      }
+      this.arrDistributors = data.response_data;
+      console.log(this.arrDistributors);
       this.loading = false;
+
     })
   }
-
-
 
   btnDialogSavelists(data) {
     const dialogRef = this.dialogService.open(DialogsSavedListComponent, {
@@ -152,7 +152,7 @@ export class VerifedListComponent implements OnInit {
   }
 
   btnRowClick() {
-    this.router.navigate([this.UrlRouter_VerifedDetail, this.arrDistributor.distributor_id]);
+    this.router.navigate([this.UrlRouter_VerifedDetail, this.arrDistributors.distributor_id]);
   }
 
   btnRow(e) {
@@ -161,7 +161,6 @@ export class VerifedListComponent implements OnInit {
       this.router.navigate([this.UrlRouter_VerifedDetail, e.row.distributor_id]);
     }
   }
-
 
   filter(value: any) {
     this.arrDistributorCate = this.filters.filter(option =>

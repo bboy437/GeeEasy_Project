@@ -4,11 +4,11 @@ import { DecimalPipe, DatePipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { SortDirection } from '@project/services';
 import { DistributorAPIService } from '@project/services';
-import { IDisCreate } from '@project/interfaces';
+import { IDistributor } from '@project/interfaces';
 
 
 interface SearchResult {
-  countries: IDisCreate[];
+  countries: IDistributor[];
   total: number;
 }
 
@@ -26,7 +26,7 @@ function compare(v1, v2) {
   return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 }
 
-function sort(countries: IDisCreate[], column: string, direction: string): IDisCreate[] {
+function sort(countries: IDistributor[], column: string, direction: string): IDistributor[] {
   if (direction === '') {
     return countries;
   } else {
@@ -37,7 +37,7 @@ function sort(countries: IDisCreate[], column: string, direction: string): IDisC
   }
 }
 
-function matches(country: IDisCreate, term: string, pipe: PipeTransform) {
+function matches(country: IDistributor, term: string, pipe: PipeTransform) {
   return country.distributor_name.toString().toLowerCase().includes(term.toString().toLowerCase()) ||
     country.distributor_email.toString().toLowerCase().includes(term.toString().toLowerCase()) ||
     country.distributor_mobile.toString().toLowerCase().includes(term.toString().toLowerCase()) ||
@@ -51,7 +51,7 @@ function matches(country: IDisCreate, term: string, pipe: PipeTransform) {
 export class MyDistributorTableService {
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _countries$ = new BehaviorSubject<IDisCreate[]>([]);
+  private _countries$ = new BehaviorSubject<IDistributor[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
 
   private _state: State = {
@@ -77,8 +77,10 @@ export class MyDistributorTableService {
 
   getData(callback) {
     const value = "cur_page=" + 1 + "&per_page=" + 100 + "&supplier_id=" + this.id_local;
-    this.distributorAPIService.getdDstributorCreate(value).subscribe(data => {
-      this.arrMyDistributor = <IDisCreate>data.response_data;
+    this.distributorAPIService.myDistributorList$.subscribe(data => {
+      this.arrMyDistributor = data;
+      console.log(data);
+      
 
       this._search$.pipe(
         tap(() => this._loading$.next(true)),

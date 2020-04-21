@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProductAPIService, UploadAPIService } from '@project/services';
 import { ProductData } from '@project/interfaces';
-import { DialogsImageComponent } from '../../dialogs/dialogs-image/dialogs-image.component';
+import { DialogsImageComponent } from '../../../dialogs/dialogs-image/dialogs-image.component';
 import { NbDialogService } from '@nebular/theme';
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 
 @Component({
   selector: 'project-my-product-detail',
-  templateUrl: './my-product-detail.component.html',
-  styleUrls: ['./my-product-detail.component.scss']
+  templateUrl: './manage-product-detail.component.html',
+  styleUrls: ['./manage-product-detail.component.scss']
 })
 export class MyProductDetailComponent implements OnInit {
 
@@ -57,9 +57,9 @@ export class MyProductDetailComponent implements OnInit {
       this.RowID = params.get("id");
       if (this.RowID === "new") {
       } else {
-        const value = "cur_page=" + 1 + "&per_page=" + 10 + "&distributor_id=" + this.id_local;
-        this.productAPIService.getViewDefault(value).subscribe(data => {
-          this.arrProducts = <ProductData>data.response_data;
+
+        this.productAPIService.productDistributor$.subscribe(res => {
+          this.arrProducts = res;
 
           if (this.arrProducts.length > 0) {
             for (let i = 0; i < this.arrProducts.length; i++) {

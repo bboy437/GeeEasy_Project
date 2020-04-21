@@ -2,7 +2,7 @@ import { Injectable, PipeTransform } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { DecimalPipe, DatePipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
-import { SortDirection } from '@project/services';
+import { SortDirection, RequestService } from '@project/services';
 import { DistributorAPIService } from '@project/services';
 import { IRequest } from '@project/interfaces';
 
@@ -69,7 +69,7 @@ export class TableService {
 
   constructor(
     private pipe: DecimalPipe,
-
+    private requestService: RequestService,
     private distributorAPIService: DistributorAPIService, ) {
 
     this.id_local = localStorage.getItem('id');
@@ -77,30 +77,25 @@ export class TableService {
 
   }
 
+  requestList$ = this.requestService.requestList$.subscribe(res => {
+    console.log('res',res);
+    this.arrRequestList = res;
+    this._search$.pipe(
+      tap(() => this._loading$.next(true)),
+      debounceTime(100), // 200
+      switchMap(() => this._search()),
+      delay(100), // 200
+       tap(() => this._loading$.next(false))
+    ).subscribe(result => {
+      console.log('result', result);
+      this._countries$.next(result.countries);
+      this._total$.next(result.total);
+      this._loading$.next(false);
+    });
 
-  getData(callback) {
-    const value = "cur_page=" + 1 + "&per_page=" + 20 + "&supplier_id=" + this.id_local;
-    this.distributorAPIService.getRequestList(value).subscribe(data => {
-      this.arrRequestList = <IRequest>data.response_data;
-      console.log(this.arrRequestList);
+    this._search$.next();
+  })
 
-      this._search$.pipe(
-        tap(() => this._loading$.next(true)),
-        debounceTime(100), // 200
-        switchMap(() => this._search()),
-        delay(100), // 200
-        tap(() => this._loading$.next(false))
-      ).subscribe(result => {
-        this._countries$.next(result.countries);
-        this._total$.next(result.total);
-        callback(true);
-      });
-
-      this._search$.next();
-
-    })
-
-  }
 
   get countries$() { return this._countries$.asObservable(); }
   get total$() { return this._total$.asObservable(); }

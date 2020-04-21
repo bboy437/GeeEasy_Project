@@ -110,65 +110,53 @@ export class ProductsCreateComponent implements OnInit {
         this.getWarehouse();
         this.loading = false;
       } else {
-        this.productAPIService
-          .getProductDetailSup(this.RowID)
-          .subscribe(data => {
-            data.response_data.forEach(item => {
-              this.arrobjRow = item;
+        this.productAPIService.getProductDetailSup(this.RowID).subscribe(data => {
+          this.arrobjRow = data.response_data[0];
 
-              //Images
-              if (
-                this.arrobjRow.product_image_url !== undefined &&
-                this.arrobjRow.product_image_url !== "-" &&
-                this.arrobjRow.product_image_url !== ""
-              )
-                this.uploadAPIService
-                  .uploadImage()
-                  .getUrl(this.arrobjRow.product_image_url, red_image => {
-                    this.product.main_image.get.push(red_image);
-                  });
-              if (this.arrobjRow.product_image_array !== undefined)
-                this.uploadAPIService
-                  .uploadImage()
-                  .imageArray(
-                    this.arrobjRow.product_image_array,
-                    imageArray => {
-                      this.product.product_image_array.get = imageArray;
-                    }
-                  );
-
-              this.imgURL = this.arrobjRow.product_image_url;
-
-              //Wholesale
-              this.arrWholesale = this.arrobjRow.product_wholesale_array;
-
-              this.arrWholesale.forEach(element => {
-                element.product_price =
-                  element.product_price % 1 !== 0
-                    ? element.product_price
-                    : element.product_price + ".00";
-                element.retail_product_price =
-                  element.retail_product_price % 1 !== 0
-                    ? element.retail_product_price
-                    : element.retail_product_price + ".00";
+          //Images
+          if (
+            this.arrobjRow.product_image_url !== undefined &&
+            this.arrobjRow.product_image_url !== "-" &&
+            this.arrobjRow.product_image_url !== ""
+          )
+            this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.product_image_url,
+              red_image => {
+                this.product.main_image.get.push(red_image);
               });
-              this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
-              this.sort = true;
+          if (this.arrobjRow.product_image_array !== undefined)
+            this.uploadAPIService.uploadImage().imageArray(this.arrobjRow.product_image_array,
+              imageArray => {
+                this.product.product_image_array.get = imageArray;
+              }
+            );
 
-              //Channel
-              this.channelArray().getObjectArray(
-                item.product_channel,
-                getObjectArray => {
-                  this.channel.one.channel = item.product_channel;
-                  this.channel.one.channel_array = getObjectArray;
-                }
-              );
-            });
+          this.imgURL = this.arrobjRow.product_image_url;
 
+          //Wholesale
+          this.arrWholesale = this.arrobjRow.product_wholesale_array;
 
-            this.getCategory();
-            this.getWarehouse();
+          this.arrWholesale.forEach(element => {
+            element.product_price = element.product_price % 1 !== 0
+              ? element.product_price
+              : element.product_price + ".00";
+            element.retail_product_price = element.retail_product_price % 1 !== 0
+              ? element.retail_product_price
+              : element.retail_product_price + ".00";
           });
+          this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
+          this.sort = true;
+
+          //Channel
+          this.channelArray().getObjectArray(this.arrobjRow.product_channel,
+            getObjectArray => {
+              this.channel.one.channel = this.arrobjRow.product_channel;
+              this.channel.one.channel_array = getObjectArray;
+            }
+          );
+
+          this.getCategory();
+          this.getWarehouse();
+        });
       }
     }
   }

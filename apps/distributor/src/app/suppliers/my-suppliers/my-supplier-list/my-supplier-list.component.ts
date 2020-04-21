@@ -4,6 +4,8 @@ import { SupplierAPIService } from '@project/services';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 import { DialogsSavedListComponent } from '../../../dialogs/dialogs-saved-list/dialogs-saved-list.component';
 import { NbDialogService } from '@nebular/theme';
+import { tap, catchError } from 'rxjs/operators';
+import { EMPTY, Subject } from 'rxjs';
 
 @Component({
   selector: 'project-my-supplier-list',
@@ -34,43 +36,41 @@ export class MySupplierListComponent implements OnInit {
   }
 
   id_local: string;
+  private errorMessageSubject = new Subject<string>();
+  errorMessage$ = this.errorMessageSubject.asObservable();
+
 
   constructor(
     private router: Router,
     private supplierAPIService: SupplierAPIService,
     private dialogService: NbDialogService,
   ) {
-
+    this.loading = true;
     this.id_local = localStorage.getItem('id');
     console.log(' this.id_local', this.id_local);
   }
 
-
-
+  supplierList$ = this.supplierAPIService.supplierList$
+    .pipe(
+      tap((data) => this.loading = false),
+      catchError(err => {
+        this.errorMessageSubject.next(err);
+        return EMPTY;
+      })
+    );
 
   ngOnInit() {
     // this.getSupplier();
-    this.loading = true;
-    this.clickCate([])
+    this.supplierAPIService.categoryIDSelectedAction$.subscribe(res => this.strID = String(res))
+
   }
 
   clickCate(dataList) {
     console.log('dataList', dataList);
-    if (dataList.id !== undefined) {
-      this.loading = true;
-      this.strID = dataList.id;
-      this.strName = dataList.name;
-      const value = "cur_page=" + 1 + "&per_page=" + 10 + "&search_text=" + "" + "&distributor_id=" + this.id_local + "&product_category_id=" + dataList.id;
-      this.supplierAPIService.getVerifiedSupplieList(value).subscribe(res => {
-        this.arrSupplier = res.response_data;
-        console.log('Suppliers', this.arrSupplier);
-        // this.btnClickItem(this.arrSupplier[0])
-        this.loading = false;
-      })
-    } else {
-      this.loading = false;
-    }
-
+    this.loading = true;
+    this.strID = dataList.id;
+    this.strName = dataList.name;
+    this.supplierAPIService.selectedCategorySupplier(dataList.id);
   }
 
   btnRow(e) {

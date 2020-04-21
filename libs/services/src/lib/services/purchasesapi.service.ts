@@ -6,10 +6,12 @@ import 'rxjs/add/operator/delay';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { throwError, Subject } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
-import { IObjectPurchase, IPurchaseDetail, ISettingList } from '@project/interfaces';
+import { catchError, retry, map, tap } from 'rxjs/operators';
+import { IObjectPurchase, IPurchaseDetail, ISettingList, IPurchaseList } from '@project/interfaces';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 
 export class PurchaseAPIService {
 
@@ -24,12 +26,44 @@ export class PurchaseAPIService {
         this.filterList$ = this.filterListSubject.asObservable();
     }
 
-    // Http Options
-    httpOptions = {
-        headers: new HttpHeaders({
-            'Content-Type': 'application/json'
-        })
-    }
+    // Supplier
+    value = "cur_page=" + 1 + "&per_page=" + 100 + "&supplier_id=" + localStorage.getItem('id');
+    purchaseList$ = this.http.get<IObjectPurchase>(`${this.ServerApiUrl}${'purchase_order/short_lists?'}${this.value}`)
+        .pipe(
+            map(purchases =>
+                purchases.response_data.map(purchase => ({
+                    ...purchase,
+                    po_status: (purchase.order_status_btn.button_confirm === 1
+                        && purchase.purchase_order_status_display.po_is_delivery === 1
+                        && purchase.order_status_btn.button_paid === 1) ? 1 : 0,
+                    distributor_name: purchase.distributor_data_array[0].distributor_name.split(",")
+                }) as IPurchaseList)
+            ),
+            tap(data => console.log('requestList', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
+
+
+    // Distributor
+    valueDist = "cur_page=" + 1 + "&per_page=" + 100 + "&distributor_id=" + localStorage.getItem('id');
+    purchaseListDistributor$ = this.http.get<IObjectPurchase>(`${this.ServerApiUrl}${'purchase_order/short_lists?'}${this.valueDist}`)
+        .pipe(
+            map(purchases =>
+                purchases.response_data.map(purchase => ({
+                    ...purchase,
+                    po_status: (purchase.order_status_btn.button_confirm === 1
+                        && purchase.purchase_order_status_display.po_is_delivery === 1
+                        && purchase.order_status_btn.button_paid === 1) ? 1 : 0,
+                    supplier_name: purchase.supplier_data_array[0].supplier_name.split(",")
+                }) as IPurchaseList)
+            ),
+            tap(data => console.log('requestList', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
+
+
 
     dataFilterList(data) {
         this.filterListSubject.next(data);
@@ -39,14 +73,7 @@ export class PurchaseAPIService {
 
     //get PurchaseAPIService
 
-    getPurchaseList(strUrl: string): Observable<IObjectPurchase> {
-        return this.http.get<IObjectPurchase>(this.ServerApiUrl + "purchase_order/short_lists?" + strUrl)
-            .pipe(
-                retry(1),
-                catchError(this.handleError)
-            )
-    }
-    
+
     getPurchaseDetail(strUrl: string): Observable<IPurchaseDetail> {
         return this.http.get<IPurchaseDetail>(this.ServerApiUrl + "purchase_order/id/" + strUrl)
             .pipe(
@@ -69,7 +96,7 @@ export class PurchaseAPIService {
                 catchError(this.handleError)
             )
     }
-    
+
     getSettingDist(strUrl: string): Observable<ISettingList> {
         return this.http.get<ISettingList>(this.ServerApiUrlDist + "distributor/setting/purchase_order/" + strUrl)
             .pipe(

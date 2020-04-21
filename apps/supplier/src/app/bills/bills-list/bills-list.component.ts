@@ -14,6 +14,15 @@ import { IBillList } from '@project/interfaces';
   providers: [BillsableService, DecimalPipe]
 })
 export class BillsListComponent implements OnInit {
+
+  arrSelect = [
+    {name: 'All Status', value: 'All Status'},
+    {name: 'Unpaid', value: 'Unpaid'},
+    {name: 'Partially', value: 'Partially'},
+    {name: 'Paid', value: 'Paid'},
+
+  ]
+
   daterangepickerModel: Date[];
   DateSelected = new Date();
   private UrlRouter_PurchaseDetail = "bills/detail";

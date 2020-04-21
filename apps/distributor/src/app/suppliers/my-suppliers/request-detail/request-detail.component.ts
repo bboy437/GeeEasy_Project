@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { DistributorAPIService, SupplierAPIService, UploadAPIService } from "@project/services";
+import { RequestService, SupplierAPIService, UploadAPIService } from "@project/services";
 import { Router, ActivatedRoute } from "@angular/router";
 import { DialogsImageComponent } from "../../../dialogs/dialogs-image/dialogs-image.component";
 import { NbDialogService, NbIconLibraries } from "@nebular/theme";
@@ -36,7 +36,7 @@ export class RequestDetailComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private distributorAPIService: DistributorAPIService,
+    private requestService: RequestService,
     private route: ActivatedRoute,
     private dialogService: NbDialogService,
     private formBuilder: FormBuilder,
@@ -55,27 +55,11 @@ export class RequestDetailComponent implements OnInit {
     const params = this.route.snapshot.paramMap;
     this.RowID = params.get("id");
 
-    console.log('this.RowID', this.RowID);
+    this.requestService.requestListDistributor$.subscribe(res => {
+      this.arrRequestList = res.filter((x) => x.request_information_id === +this.RowID);
+      this.get_supplier();
 
-    if (this.RowID) {
-
-      const value = "cur_page=" + 1 + "&per_page=" + 100 + "&distributor_id=" + this.id_local;
-      this.distributorAPIService.getRequestList(value).subscribe(data => {
-        this.arrReques = data.response_data;
-        console.log('arrReques', this.arrReques);
-        if (this.arrReques.length > 0) {
-          this.arrRequestList = this.arrReques.filter((x) => x.request_information_id == Number(this.RowID));
-          //  this.distributor_data_array =  this.arrRequestList[0].distributor_data_array[0];
-          console.log('arrRequestList', this.arrRequestList);
-          // this.detailForm();
-          if (this.arrRequestList.length > 0) {
-            this.get_supplier();
-          }
-        }
-
-      })
-    }
-    // this.loading = false;
+    })
 
   }
 
@@ -178,8 +162,6 @@ export class RequestDetailComponent implements OnInit {
     });
     this.loading = false;
   }
-
-
 
   btnCancelClick() {
     this.router.navigate([this.UrlRouter_List]);

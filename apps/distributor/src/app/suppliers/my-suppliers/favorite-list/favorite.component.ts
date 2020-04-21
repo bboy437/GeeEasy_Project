@@ -5,7 +5,7 @@ import { WishlistTableService } from './table-list.service';
 import { NgbdSortableHeader, SortEvent } from '@project/services';
 import { DecimalPipe } from '@angular/common';
 import { Observable } from 'rxjs';
-import { IwishlistDetail } from '@project/interfaces';
+import { ISupplier } from '@project/interfaces';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 import { DeleteComponent } from '../../../dialogs/delete/delete.component';
 import { NbDialogService } from '@nebular/theme';
@@ -18,7 +18,7 @@ import { NbDialogService } from '@nebular/theme';
 })
 export class FavoriteComponent implements OnInit {
   private UrlRouter_FavoriteDetail = "suppliers/wishlist/detail";
-  wishlist$: Observable<IwishlistDetail[]>;
+  wishlist$: Observable<ISupplier[]>;
   tatallist$: Observable<number>;
   arrWishlist: any = [];
   isCheckData: string;
@@ -87,17 +87,6 @@ export class FavoriteComponent implements OnInit {
       this.isReload = false;
     });
   }
-
-
-  getWishlist() {
-    const value = "cur_page=" + 1 + "&per_page=" + 10 + "&distributor_id=" + this.id_local
-    this.supplierAPIService.getWishlist(value).subscribe(data => {
-      const arrWishlists: any = <IwishlistDetail>data.response_data;
-      this.btnClickItem(arrWishlists[0].supplier_array);
-    })
-
-  }
-
 
 
 

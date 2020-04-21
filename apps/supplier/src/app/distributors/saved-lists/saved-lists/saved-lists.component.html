@@ -95,7 +95,7 @@
                                                             </td>
                                                         </tr>
                                                         <tr *ngFor="let savelist of arrSaveList"
-                                                            (click)="btnClickItem(savelist.distributor_array, savelist.distributor_lists_id, savelist.distributor_lists_name,savelist.distributor_lists_id)">
+                                                            (click)="btnClickItem(savelist)">
                                                             <td class="left" colspan="2"
                                                                 [ngClass]="{'active': savelist.distributor_lists_id==id}"
                                                                 style="text-align: left;">

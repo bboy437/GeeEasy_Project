@@ -1,7 +1,7 @@
 import { Component, OnInit, QueryList, ViewChildren } from "@angular/core";
 import { Router } from "@angular/router";
 import { DecimalPipe } from "@angular/common";
-import { ProductData } from "@project/interfaces";
+import { ProductDataArray } from "@project/interfaces";
 import { Observable } from "rxjs";
 import { NgbdSortableHeader, SortEvent } from "@project/services";
 import { ProductAPIService } from "@project/services";
@@ -17,7 +17,7 @@ import { ColumnMode } from '@swimlane/ngx-datatable';
 export class ProductsListComponent implements OnInit {
     private UrlRouter_ProductDetail = "products/manage/detail";
     private UrlRouter_ProductCreate = "products/manage/create";
-    products$: Observable<ProductData[]>;
+    products$: Observable<ProductDataArray[]>;
     total$: Observable<number>;
     arrProducts: any = [];
     arrClickProducts: any = [];

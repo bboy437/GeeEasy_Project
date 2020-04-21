@@ -4,13 +4,13 @@ import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 
 import { DecimalPipe, DatePipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
-import { SortDirection } from '@project/services';
+import { SortDirection, FavoriteService } from '@project/services';
 import { SupplierAPIService } from '@project/services';
-import { IwishlistDetail } from '@project/interfaces';
+import { ISupplier } from '@project/interfaces';
 
 
 interface SearchResult {
-  countries: IwishlistDetail[];
+  countries: ISupplier[];
   total: number;
 }
 
@@ -26,7 +26,7 @@ function compare(v1, v2) {
   return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 }
 
-function sort(countries: IwishlistDetail[], column: string, direction: string): IwishlistDetail[] {
+function sort(countries: ISupplier[], column: string, direction: string): ISupplier[] {
   if (direction === '') {
     return countries;
   } else {
@@ -37,7 +37,7 @@ function sort(countries: IwishlistDetail[], column: string, direction: string): 
   }
 }
 
-function matches(country: IwishlistDetail, term: string, pipe: PipeTransform) {
+function matches(country: ISupplier, term: string, pipe: PipeTransform) {
   return country.supplier_company_name.toString().toLowerCase().includes(term.toString().toLowerCase())
     || country.supplier_name.toString().toLowerCase().includes(term.toString().toLowerCase())
     || country.supplier_addr_phone.toString().toLowerCase().includes(term.toString().toLowerCase())
@@ -51,7 +51,7 @@ function matches(country: IwishlistDetail, term: string, pipe: PipeTransform) {
 export class WishlistTableService {
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _countries$ = new BehaviorSubject<IwishlistDetail[]>([]);
+  private _countries$ = new BehaviorSubject<ISupplier[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
 
   private _state: State = {
@@ -70,7 +70,7 @@ export class WishlistTableService {
   constructor(
     private pipe: DecimalPipe,
 
-    private supplierAPIService: SupplierAPIService, ) {
+    private favoriteService: FavoriteService, ) {
     this.id_local = localStorage.getItem('id');
     console.log(' this.id_local', this.id_local);
 
@@ -78,10 +78,9 @@ export class WishlistTableService {
 
 
   getData(callback) {
-    const value = "cur_page=" + 1 + "&per_page=" + 10 + "&distributor_id=" + this.id_local;
 
-    this.supplierAPIService.getWishlist(value).subscribe(data => {
-      this.arrWishlist = <IwishlistDetail>data.response_data;
+    this.favoriteService.farvoriteListSupplier$.subscribe(data => {
+      this.arrWishlist = data;
       console.log(this.arrWishlist);
 
       this._search$.pipe(

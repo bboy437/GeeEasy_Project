@@ -1,9 +1,8 @@
 import { RouterModule, Routes } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { ManageProductsComponent } from './manage-products.component';
-import { MyProductComponent } from './my-product-list/my-product.component';
-import { ProductsCreateComponent } from './products-create/products-create.component';
-import { ProductsDetailComponent } from './products-detail/products-detail.component';
+import { MyProductComponent } from './manage-product-list/manage-product.component';
+import { FarvoriteComponent } from './farvorite/farvorite.component';
 
 
 const routes: Routes = [
@@ -12,8 +11,7 @@ const routes: Routes = [
     component: ManageProductsComponent,
     children: [
       { path: "list", component: MyProductComponent },
-      { path: "create/:id", component: ProductsCreateComponent },
-      { path: "detail-product-distributor/:id/:status", component: ProductsDetailComponent },
+      { path: "favorite", component: FarvoriteComponent },
     ]
   }
 ];

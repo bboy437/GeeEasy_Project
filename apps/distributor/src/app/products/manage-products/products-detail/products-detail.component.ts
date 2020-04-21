@@ -78,7 +78,7 @@ export class ProductsDetailComponent implements OnInit {
           "product_id=" + this.RowID + "&distributor_id=" + this.id_local;
         this.productAPIService.getInventoryLogId(parameters).subscribe(data => {
           console.log("getProductDetailSup : data : ", data);
-
+          this.arrProductDetail = data.response_data[0];
           data.response_data.forEach(item => {
             this.arrProductDetail = item;
             console.log("arrProductDetail", this.arrProductDetail);

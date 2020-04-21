@@ -69,13 +69,9 @@ export class ProductTableService {
   }
 
   getData(callback) {
-    const value = "&supplier_id=" + this.id_local + "&warehouse_type_id=" + 1;
-    this.warehouseAPIService.getWarehouseList(value).subscribe(data => {
-      this.arrWarehouse = data.response_data;
 
-
-      console.log(this.arrWarehouse);
-
+    this.warehouseAPIService.warehouseSupplierList$.subscribe(res => {
+      this.arrWarehouse = res;
       this._search$.pipe(
         tap(() => this._loading$.next(true)),
         debounceTime(100), // 200

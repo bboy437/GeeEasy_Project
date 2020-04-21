@@ -41,14 +41,14 @@ function sort(countries: IPurchaseList[], column: string, direction: string): IP
   }
 }
 
-function matches(country: IPurchaseList, term: string, term1: any, status1: string, status2: string, status3: string, status4: string,  startDate: number, endDate: number, pipe: PipeTransform) {
+function matches(country: IPurchaseList, term: string, term1: any, status1: string, status2: string, status3: string, status4: string, startDate: number, endDate: number, pipe: PipeTransform) {
 
   return country.purchase_order_number.toString().toLowerCase().includes(term.toString().toLowerCase())
     && country.supplier_name.every(el => term1 === '' ? country.supplier_name : term1.indexOf(el) > -1)
-    && (country.purchase_order_reply_id.toString().toLowerCase().includes(status1.toString().toLowerCase()) 
-    && country.purchase_order_status_display.po_is_delivery.toString().toLowerCase().includes(status2.toString().toLowerCase())
-    && country.order_status_btn.button_paid.toString().toLowerCase().includes(status3.toString().toLowerCase()) 
-    && country.purchase_order_status_display.po_is_invoice.toString().toLowerCase().includes(status4.toString().toLowerCase()) )
+    && (country.purchase_order_reply_id.toString().toLowerCase().includes(status1.toString().toLowerCase())
+      && country.purchase_order_status_display.po_is_delivery.toString().toLowerCase().includes(status2.toString().toLowerCase())
+      && country.order_status_btn.button_paid.toString().toLowerCase().includes(status3.toString().toLowerCase())
+      && country.purchase_order_status_display.po_is_invoice.toString().toLowerCase().includes(status4.toString().toLowerCase()))
     && (country.purchase_order_create >= startDate && country.purchase_order_create <= endDate)
 
 }
@@ -99,51 +99,8 @@ export class PurchaseTableService {
 
   data(callback) {
 
-    const value = "cur_page=" + 1 + "&per_page=" + 20 + "&distributor_id=" + this.id_local;
-    this.purchaseAPIService.getPurchaseList(value).subscribe(datas => {
-      this.arrPurchase = datas.response_data;
-      console.log(this.arrPurchase);
-
-      this.arrPurchase.forEach(element => {
-        // //confirm
-        // if (element.purchase_order_status_display.supplier_is_confirm === 1 && element.purchase_order_status_display.po_is_delivery === 0 && element.order_status_btn.button_paid === 0) {
-        //   element.purchase_order_reply_id = 1;
-        // }
-        // //Delivered
-        // if (element.purchase_order_status_display.supplier_is_confirm === 1 && element.purchase_order_status_display.po_is_delivery === 1 && element.order_status_btn.button_paid === 0) {
-        //   element.purchase_order_reply_id = 4;
-        // }
-        // //Paid
-        // if (element.order_status_btn.button_paid === 1 && element.purchase_order_status_display.po_is_invoice === 1) {
-        //   element.purchase_order_reply_id = 5;
-        // }
-        // //Check-In
-        // if (element.order_status_btn.button_paid === 0 && element.purchase_order_status_display.po_is_invoice === 1) {
-        //   element.purchase_order_reply_id = 6;
-        // }
-
-        //Check po_status
-        if (element.order_status_btn.button_confirm === 1 && element.purchase_order_status_display.po_is_delivery === 1 && element.order_status_btn.button_paid === 1) {
-          element.po_status = 1;
-        } else {
-          element.po_status = 0;
-        }
-
-        element.supplier_data_array.forEach(s => {
-          element.supplier_name = s.supplier_name.split(",")
-        });
-
-        // if (element.supplier_data_array === undefined) {
-        //   element.supplier_name_1 = "";
-        //   element.supplier_name = "";
-        // } else {
-        //   element.supplier_data_array.forEach(res => {
-        //     element.supplier_name_1 = res.supplier_name.split(",")
-        //     element.supplier_name = res.supplier_name;
-        //   });
-        // }
-
-      });
+    this.purchaseAPIService.purchaseListDistributor$.subscribe(res => {
+      this.arrPurchase = res;
 
       this._search$.pipe(
         tap(() => this._loading$.next(true)),

@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChildren, QueryList } from "@angular/core";
 import {
   DistributorAPIService,
   NgbdSortableHeader,
-  SortEvent
+  SortEvent,
+  RequestService
 } from "@project/services";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NbDialogService } from "@nebular/theme";
@@ -11,6 +12,7 @@ import { IRequest } from "@project/interfaces";
 import { Observable } from "rxjs";
 import { TableService } from "./table-list.service";
 import { DecimalPipe } from '@angular/common';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: "project-request-list",
@@ -20,26 +22,31 @@ import { DecimalPipe } from '@angular/common';
 })
 export class RequestListComponent implements OnInit {
   private UrlRouter_Detail = "distributors/request/detail";
-  arrRequest: any = [];
-  strname: string;
-  strStatus: string;
   arrRequestList$: Observable<IRequest[]>;
   totalList$: Observable<number>;
-  loading = false;
   isReload = false;
   id_local: string;
-
+  Form: FormGroup;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
   constructor(
     private distributorAPIService: DistributorAPIService,
+    private requestService: RequestService,
     private dialogService: NbDialogService,
     public service: TableService,
     private router: Router,
+    private formBuilder: FormBuilder,
   ) {
     this.id_local = localStorage.getItem('id');
     console.log(' this.id_local', this.id_local);
-    this.loading = true;
+
+    this.arrRequestList$ = this.service.countries$;
+    this.totalList$ = this.service.total$;
+    this.service.loading$.subscribe(res => {
+      this.isReload = res
+      console.log(res)
+    })
+
   }
 
   onSort({ column, direction }: SortEvent) {
@@ -55,50 +62,32 @@ export class RequestListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getRequestList();
-    this.callApi(e => {
-      // completed
+    this.Form = this.formBuilder.group({
+      strname: [],
+      strStatus: [],
     });
   }
 
-  callApi(callback) {
-    this.service.getData(e => {
-      this.arrRequestList$ = this.service.countries$;
-      this.totalList$ = this.service.total$;
-      this.loading = false;
-      callback(true);
-    });
-  }
 
   btnReload() {
+    this.service.searchTerm1 = "";
+    this.service.searchTerm = "";
+    this.Form.value.strStatus = "";
+    this.Form.value.strname = "";
 
-    this.isReload = true;
-    this.service.getData(e => {
-      this.arrRequestList$ = this.service.countries$;
-      this.totalList$ = this.service.total$;
-      this.isReload = false;
-    });
+    // this.requestService.requestList$.subscribe(res => {
+    //   console.log(res)
+    // })
+
   }
 
   btnRefresh() {
     this.service.searchTerm = "";
-    this.strname = ""
+    this.Form.value.strname = ""
   }
 
-  getRequestList() {
-    const value =
-      "cur_page=" + 1 + "&per_page=" + 20 + "&supplier_id=" + this.id_local;
-    this.distributorAPIService.getRequestList(value).subscribe(data => {
-      this.arrRequest = <IRequest>data.response_data;
-      console.log(data);
-      this.arrRequest.forEach(element => {
-        element.distributor_name =
-          element.distributor_data_array[0].distributor_name;
-      });
-    });
-  }
 
-  btnRequest(data) {
+  btnReply(data) {
     this.dialogService.open(DialogsRequestComponent, {
       context: {
         data: data
@@ -116,8 +105,8 @@ export class RequestListComponent implements OnInit {
   btnReset() {
     this.service.searchTerm1 = "";
     this.service.searchTerm = "";
-    this.strStatus = "";
-    this.strname = "";
+    this.Form.value.strStatus = "";
+    this.Form.value.strname = "";
   }
 
   filterPoNo(value) {
@@ -125,32 +114,12 @@ export class RequestListComponent implements OnInit {
   }
 
   filterStatus(event: any) {
-    this.service.searchTerm1 = this.strStatus;
+    this.service.searchTerm1 = this.Form.value.strStatus;
   }
 
-  btnFilter() {
-    if (
-      this.strStatus === undefined ||
-      this.strStatus === "" ||
-      this.strStatus === null
-    ) {
-      this.service.searchTerm1 = "";
-    } else {
-      this.service.searchTerm1 = this.strStatus;
-    }
-
-    if (
-      this.strname === undefined ||
-      this.strname === "" ||
-      this.strname === null
-    ) {
-      this.service.searchTerm = "";
-    } else {
-      this.service.searchTerm = this.strname;
-    }
-  }
 
   openUrl(url: string) {
     window.open(url, "_blank");
   }
+
 }

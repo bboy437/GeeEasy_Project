@@ -5,6 +5,8 @@ import { DialogsCancelComponent } from '../../../dialogs/dialogs-cancel/dialogs-
 import { NbDialogService } from '@nebular/theme';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AleartComponent } from '../../../dialogs/aleart/aleart.component';
+import { tap, catchError } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'project-transfer-list',
@@ -40,10 +42,18 @@ export class TransferListComponent implements OnInit {
     console.log(' this.id_local', this.id_local);
     this.loading = true;
     this.productAPIService.dataTransfer$.subscribe(res => {
-      this.arrData = res;
-      console.log('res', res);
+      console.log(res)
+      if (res) {
+        this.arrData = res;
+      } else {
+        this.router.navigate([this.UrlRouter_ProductsStock]);
+      }
+
     })
   }
+
+
+
 
   ngOnInit() {
     this.buildForms();

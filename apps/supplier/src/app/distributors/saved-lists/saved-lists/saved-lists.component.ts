@@ -22,7 +22,7 @@ export class SavedListsComponent implements OnInit {
   distributor_lists_id: number;
   arrRename: any = [];
   filter: any = [];
-  id: string;
+  id: number;
   strname: string;
 
   private UrlRouter_Saves_Detail = "distributors/saved-detail";
@@ -46,7 +46,7 @@ export class SavedListsComponent implements OnInit {
     private dialogService: NbDialogService,
     iconsLibrary: NbIconLibraries,
     private router: Router, ) {
-      
+
     this.id_local = localStorage.getItem('id');
     console.log(' this.id_local', this.id_local);
     iconsLibrary.registerFontPack('ion', { iconClassPrefix: 'ion' });
@@ -56,15 +56,23 @@ export class SavedListsComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
+    this.saveListSupplierAPIService.savelistSupplierSelectedAction$.subscribe(res => {
+      if(res) {
+        this.id = res.distributor_lists_id;
+        this.savedetail = res.distributor_array;
+        this.strTitle = res.distributor_lists_name;
+        this.distributor_lists_id = res.distributor_lists_id;
+        this.arrDelete.false = res.distributor_lists_id;
+      }
+    })
     this.getSaveList();
   }
 
   btnReload() {
     this.isReload = true;
-    const value = "cur_page=" + 1 + "&per_page=" + 10 + "&supplier_id=" + this.id_local;
-    this.saveListSupplierAPIService.getSavelistSup(value).subscribe(data => {
-      this.arrSaveList = data.response_data;
-      this.filter = data.response_data;
+    this.saveListSupplierAPIService.savelistSupplier$.subscribe(data => {
+      this.arrSaveList = data;
+      this.filter = data;
       console.log(this.arrSaveList);
       this.isReload = false;
     })
@@ -77,23 +85,23 @@ export class SavedListsComponent implements OnInit {
   }
 
   getSaveList() {
-    const value = "cur_page=" + 1 + "&per_page=" + 10 + "&supplier_id=" + this.id_local;
-    this.saveListSupplierAPIService.getSavelistSup(value).subscribe(data => {
-      this.arrSaveList = data.response_data;
-      this.filter = data.response_data;
-      console.log(this.arrSaveList);
+    this.saveListSupplierAPIService.savelistSupplier$.subscribe(data => {
+      this.arrSaveList = data;
+      this.filter = data;
+      console.log(data);
       this.loading = false;
     })
   }
 
-  btnClickItem(data: any, listID, title, distributor_lists_id) {
-    this.loading = true;
-    this.id = listID;
+  btnClickItem(data: any) {
     console.log(data);
-    this.strTitle = title;
-    this.distributor_lists_id = distributor_lists_id;
-    this.savedetail = data;
-    this.arrDelete.distributor_lists_id = listID;
+    this.loading = true;
+    this.id = data.distributor_lists_id;
+    this.saveListSupplierAPIService.selectedListSupplier(data)
+    this.strTitle = data.distributor_lists_name;
+    this.distributor_lists_id = data.distributor_lists_id;;
+    this.savedetail = data.distributor_array;
+    this.arrDelete.distributor_lists_id = data.distributor_lists_id;;
     this.loading = false;
   }
 

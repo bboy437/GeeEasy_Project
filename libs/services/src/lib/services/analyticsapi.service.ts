@@ -5,8 +5,9 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 import { HttpClient } from '@angular/common/http';
 
-@Injectable()
-
+@Injectable({
+    providedIn: 'root'
+})
 export class AnalyticsAPIService {
 
     protected ServerApiUrl = "http://localhost:3000/";

@@ -10,7 +10,7 @@ import { SaveListSupplierAPIService } from "@project/services";
 import { SaveListTableService } from "./table-list.service";
 import { NgbdSortableHeader, SortEvent } from "@project/services";
 import { Observable } from "rxjs";
-import { ISaveList, SupplierSavelist } from "@project/interfaces";
+import { IsavelistList } from "@project/interfaces";
 import { DecimalPipe } from "@angular/common";
 import { NbDialogService, NbIconLibraries } from "@nebular/theme";
 import { DialogsSavedListComponent } from "../../../dialogs/dialogs-saved-list/dialogs-saved-list.component";
@@ -25,7 +25,7 @@ import { ColumnMode } from '@swimlane/ngx-datatable';
 export class SavedListsComponent implements OnInit {
   arrSaveList: any = [];
   savedetail: any = [];
-  savelist$: Observable<ISaveList[]>;
+  savelist$: Observable<IsavelistList[]>;
   tatallist$: Observable<number>;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   arrDelete: any = [];
@@ -35,7 +35,7 @@ export class SavedListsComponent implements OnInit {
   filter: any = [];
   private UrlRouter_Saves_Detail = "suppliers/saved-detail";
   strFilter: string;
-  id: string;
+  id: number;
   loading = false;
   isReload = false;
 
@@ -71,7 +71,16 @@ export class SavedListsComponent implements OnInit {
   ngOnInit() {
     // this.getProductGroup();
     this.callApi(e => {
-      // completed
+      this.saveListSupplierAPIService.savelistDistSelectedAction$.subscribe(res => {
+        if (res) {
+          this.id = res.supplier_lists_id;
+          this.savedetail = res.supplier_array;
+          this.strTitle = res.supplier_lists_name;
+          this.supplier_lists_id = res.supplier_lists_id;
+          this.arrDelete.false = res.supplier_lists_id;
+        }
+
+      });
     });
   }
 
@@ -85,7 +94,10 @@ export class SavedListsComponent implements OnInit {
   }
 
   btnReload() {
-
+    this.saveListSupplierAPIService.selectedListDistriburor(null);
+    this.savedetail = [];
+    this.strTitle = "";
+    this.id = null;
     this.isReload = true;
     this.service.getData(e => {
       this.savelist$ = this.service.countries$;
@@ -94,23 +106,16 @@ export class SavedListsComponent implements OnInit {
     });
   }
 
-  getSaveList() {
-    const value =
-      "cur_page=" + 1 + "&per_page=" + 10 + "&distributor_id=" + this.id_local;
-    this.saveListSupplierAPIService.getSaveList(value).subscribe(data => {
-      this.arrSaveList = data.response_data;
-      this.filter = data.response_data;
-    });
-  }
 
-  btnClickItem(data: any, listID, title, supplier_lists_id) {
-    this.loading = true;
-    this.id = listID;
+  btnClickItem(data: any) {
     console.log(data);
-    this.strTitle = title;
-    this.supplier_lists_id = supplier_lists_id;
-    this.savedetail = data;
-    this.arrDelete.false = listID;
+    this.loading = true;
+    this.id = data.supplier_lists_id;
+    this.saveListSupplierAPIService.selectedListDistriburor(data);
+    this.strTitle = data.supplier_lists_name;
+    this.supplier_lists_id = data.supplier_lists_id;
+    this.savedetail = data.supplier_array;
+    this.arrDelete.false = data.supplier_lists_id;
     this.loading = false;
   }
 
@@ -137,11 +142,8 @@ export class SavedListsComponent implements OnInit {
 
     dialogRef.onClose.subscribe(result => {
       if (result === "ok") {
-        this.getSaveList();
         this.btnReload();
-        this.savedetail = [];
-        this.strTitle = "";
-        this.id = '';
+
       }
     });
   }
@@ -158,12 +160,8 @@ export class SavedListsComponent implements OnInit {
     });
 
     dialogRef.onClose.subscribe(result => {
-      if (result === "ok") {
-        this.getSaveList();
+      if (result) {
         this.btnReload();
-        this.savedetail = [];
-        this.strTitle = "";
-        this.id = '';
       }
     });
   }
@@ -181,11 +179,8 @@ export class SavedListsComponent implements OnInit {
 
     dialogRef.onClose.subscribe(result => {
       if (result === "ok") {
-        this.getSaveList();
         this.btnReload();
-        this.savedetail = [];
-        this.strTitle = "";
-        this.id = '';
+
       }
     });
   }
@@ -221,4 +216,5 @@ export class SavedListsComponent implements OnInit {
   refresh() {
     this.service.searchTerm = "";
   }
+
 }

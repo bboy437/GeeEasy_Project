@@ -4,38 +4,32 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError, map, tap } from 'rxjs/operators';
 import { throwError, Subject } from 'rxjs';
+import { IObjectCheckIn, ICheckInList } from '@project/interfaces';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 
 export class CheckinAPIService {
 
-    constructor(private http: HttpClient) {
-        this.dataCheckin$ = this.myMethodSubject.asObservable();
-    }
-
-    //get
-    // protected ServerApiUrlCheckIn = "https://private-anon-dd003e29ce-geeesyapiblueprint.apiary-mock.com/";
     protected ServerApiUrl = "https://api.gee-supply.com/v1/";
 
-    protected ServerApiUrlTest = "https://private-anon-dd003e29ce-geeesyapiblueprint.apiary-mock.com/";
-    //add
-
-
-    dataCheckin$: Observable<any>;
-    private myMethodSubject = new Subject<any>();
-
-
-    httpOptions = {
-        headers: new HttpHeaders({
-            'Content-Type': 'application/json'
-        })
+    constructor(private http: HttpClient) {
     }
 
-    clickDataCheckIn(data) {
-        this.myMethodSubject.next(data);
-    }
+
+    //   CheckIn
+    valueList = "cur_page=" + 1 + "&per_page=" + 100 + "&distributor_id=" + localStorage.getItem('id');
+    checkInList$ = this.http.get<IObjectCheckIn>(`${this.ServerApiUrl}${'supplier/purchase_order/checkin/lists?'}${this.valueList}`)
+        .pipe(
+            map(checkInList => checkInList.response_data),
+            tap(data => console.log('checkInList', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
+
 
 
     getCheckinList(strUrl: string): Observable<any> {
@@ -46,8 +40,8 @@ export class CheckinAPIService {
             )
     }
 
-    getCheckdetail(strUrl: string): Observable<any> {
-        return this.http.get<any>(this.ServerApiUrl + "supplier/purchase_order/checkin/id/" + strUrl)
+    getCheckdetail(strUrl: string): Observable<IObjectCheckIn> {
+        return this.http.get<IObjectCheckIn>(this.ServerApiUrl + "supplier/purchase_order/checkin/id/" + strUrl)
             .pipe(
                 retry(1),
                 catchError(this.handleError)

@@ -4,10 +4,13 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError, map, tap } from 'rxjs/operators';
 import { throwError, Subject } from 'rxjs';
+import { IObjectDistributor } from '@project/interfaces';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 
 export class DistributorAPIService {
 
@@ -16,7 +19,7 @@ export class DistributorAPIService {
     protected ServerApiUrlDist = "https://api.gee-supply.com/v1-dist/";
     //post
     protected ServerApiUrlAddWishList = "https://private-anon-7da3873a29-geeesyapiblueprint.apiary-mock.com/supplier/request_information/";
-    protected ServerApiUrlAddRequest =  "https://nwt0gw8wy8.execute-api.ap-southeast-1.amazonaws.com/Prod/supplier/request_information/submit";
+    protected ServerApiUrlAddRequest = "https://nwt0gw8wy8.execute-api.ap-southeast-1.amazonaws.com/Prod/supplier/request_information/submit";
 
     data$: Observable<any>;
     private myMethodSubject = new Subject<any>();
@@ -28,16 +31,29 @@ export class DistributorAPIService {
         this.dataCategory$ = this.myCategory.asObservable();
     }
 
+
+    //distributor
+
+    value = "cur_page=" + 1 + "&per_page=" + 100 + "&supplier_id=" + localStorage.getItem('id');
+    myDistributorList$ = this.http.get<IObjectDistributor>(`${this.ServerApiUrlSup}${'distributor/lists?'}${this.value}`)
+        .pipe(
+            map(savelist => savelist.response_data),
+            tap(data => console.log('savelistSupplier', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
+
+
     httpOptions = {
         headers: new HttpHeaders({
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
-            
+
         })
-        
+
     }
 
-    
+
     clickData(data) {
         this.myMethodSubject.next(data);
     }
@@ -50,10 +66,10 @@ export class DistributorAPIService {
 
 
     //get distributor
-    
 
-    getDisDetail(strUrl: string): Observable<any> {
-        return this.http.get<any>(this.ServerApiUrlDist + "distributor/info/" + strUrl)
+
+    getDisDetail(strUrl: string): Observable<IObjectDistributor> {
+        return this.http.get<IObjectDistributor>(this.ServerApiUrlDist + "distributor/info/" + strUrl)
             .pipe(
                 retry(1),
                 catchError(this.handleError)
@@ -61,7 +77,7 @@ export class DistributorAPIService {
     }
 
     getdDstributorCreate(strUrl: string): Observable<any> {
-        return this.http.get<any>(this.ServerApiUrlSup + "distributor/lists?"  + strUrl)
+        return this.http.get<any>(this.ServerApiUrlSup + "distributor/lists?" + strUrl)
             .pipe(
                 retry(1),
                 catchError(this.handleError)
@@ -77,13 +93,6 @@ export class DistributorAPIService {
             )
     }
 
-    getVerifiedCate(strUrl: string): Observable<any> {
-        return this.http.get<any>(this.ServerApiUrlSup + "distributor/list_catalog_verified/" + strUrl)
-            .pipe(
-                retry(1),
-                catchError(this.handleError)
-            )
-    }
 
     getFavoriteList(strUrl: string): Observable<any> {
         return this.http.get<any>(this.ServerApiUrlSup + "distributor/save_wishlists/lists?" + strUrl)
@@ -113,39 +122,15 @@ export class DistributorAPIService {
             )
     }
 
-   
-
-    getWishlist(strUrl: string): Observable<any> {
-        return this.http.get<any>(this.ServerApiUrlSup + "distributor/save_wishlists/lists?" + strUrl)
-            .pipe(
-                retry(1),
-                catchError(this.handleError)
-            )
-    }
-
-    getRequestList(strUrl: string): Observable<any> {
-        return this.http.get<any>(this.ServerApiUrlSup + "supplier/request_information/lists?" + strUrl)
-            .pipe(
-                retry(1),
-                catchError(this.handleError)
-            )
-    }
-  
-    getCatory(): Observable<any> {
-        return this.http.get<any>("https://api.gee-supply.com/v1-sup/distributor/list_catalog")
-            .pipe(
-                retry(1),
-                catchError(this.handleError)
-            )
-    }
 
 
+ 
 
 
     //Add Distributor
 
     addWishList(objbody: any): Observable<any> {
-        return this.http.post<any>(this.ServerApiUrlSup + "distributor/request_information/save_wishlist" , objbody,)
+        return this.http.post<any>(this.ServerApiUrlSup + "distributor/request_information/save_wishlist", objbody)
             .pipe(
                 retry(1),
                 catchError(this.handleError)
@@ -153,7 +138,7 @@ export class DistributorAPIService {
     }
 
     addRequest(objbody: any): Observable<any> {
-        return this.http.post<any>(this.ServerApiUrlSup + "supplier/request_information/reply" , objbody,)
+        return this.http.post<any>(this.ServerApiUrlSup + "supplier/request_information/reply", objbody)
             .pipe(
                 retry(1),
                 catchError(this.handleError)
@@ -161,7 +146,7 @@ export class DistributorAPIService {
     }
 
     addDistributor(objbody: any): Observable<any> {
-        return this.http.post<any>(this.ServerApiUrlDist + "distributor/create" , objbody,)
+        return this.http.post<any>(this.ServerApiUrlDist + "distributor/create", objbody)
             .pipe(
                 retry(1),
                 catchError(this.handleError)
@@ -169,7 +154,7 @@ export class DistributorAPIService {
     }
 
     updateDistributor(objbody: any): Observable<any> {
-        return this.http.post<any>(this.ServerApiUrlDist + "distributor/update" , objbody,)
+        return this.http.post<any>(this.ServerApiUrlDist + "distributor/update", objbody)
             .pipe(
                 retry(1),
                 catchError(this.handleError)

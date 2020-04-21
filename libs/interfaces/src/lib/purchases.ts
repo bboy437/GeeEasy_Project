@@ -12,6 +12,7 @@ export interface IPurchaseList {
     purchase_order_number: string;
     supplier_id: number;
     supplier_data_array: SupplierDataArray[];
+    distributor_data_array: DistributorDataArray[];
     supplier_name: any[];
     distributor_id: number;
     purchase_order_reply_id: number;

@@ -74,11 +74,10 @@ export class VerifedTableService {
 
 
   getData(callback) {
-    const value = this.id_local;
-    this.supplierAPIService.getVerifiedCate(value).subscribe(data => {
-      this.arrVerifed = <ICategory>data.response_data;
-      console.log('cate', this.arrVerifed);
 
+    this.supplierAPIService.supplierVerifiedCate$.subscribe(data => {
+      this.arrVerifed = data;
+      console.log('cate', this.arrVerifed);
 
       this._search$.pipe(
         tap(() => this._loading$.next(true)),

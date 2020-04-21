@@ -6,11 +6,11 @@ import { DecimalPipe, DatePipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { SortDirection } from '@project/services';
 import { SupplierAPIService } from '@project/services';
-import { IVerifed } from '@project/interfaces';
+import { ISupplier } from '@project/interfaces';
 
 
 interface SearchResult {
-  countries: IVerifed[];
+  countries: ISupplier[];
   total: number;
 }
 
@@ -28,7 +28,7 @@ function compare(v1, v2) {
   return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 }
 
-function sort(countries: IVerifed[], column: string, direction: string): IVerifed[] {
+function sort(countries: ISupplier[], column: string, direction: string): ISupplier[] {
   if (direction === '') {
     return countries;
   } else {
@@ -39,7 +39,7 @@ function sort(countries: IVerifed[], column: string, direction: string): IVerife
   }
 }
 
-function matches(country: IVerifed, term: string, pipe: PipeTransform) {
+function matches(country: ISupplier, term: string, pipe: PipeTransform) {
   return country.product_category_name.toString().toLowerCase().includes(term.toString().toLowerCase())
 
 }
@@ -51,7 +51,7 @@ function matches(country: IVerifed, term: string, pipe: PipeTransform) {
 export class MysupplierTableService {
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _countries$ = new BehaviorSubject<IVerifed[]>([]);
+  private _countries$ = new BehaviorSubject<ISupplier[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
 
   private _state: State = {
@@ -76,14 +76,9 @@ export class MysupplierTableService {
 
 
   getData(callback) {
-    const value = this.id_local
-    this.supplierAPIService.getSupCat(value).subscribe(data => {
-      if (data.response_data.length > 0) {
-        this.arrMySupplier = <IVerifed>data.response_data;
-      }
 
-      // console.log(this.arrMySupplier);
-      console.log(data);
+    this.supplierAPIService.supplierCate$.subscribe(res => {
+      this.arrMySupplier = res;
 
       this._search$.pipe(
         tap(() => this._loading$.next(true)),

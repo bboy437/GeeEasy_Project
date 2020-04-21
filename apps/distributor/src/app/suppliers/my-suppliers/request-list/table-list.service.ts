@@ -2,7 +2,7 @@ import { Injectable, PipeTransform } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { DecimalPipe, DatePipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
-import { SortDirection } from '@project/services';
+import { SortDirection, RequestService } from '@project/services';
 import { DistributorAPIService } from '@project/services';
 import { IRequest } from '@project/interfaces';
 
@@ -70,7 +70,7 @@ export class TableService {
   constructor(
     private pipe: DecimalPipe,
 
-    private distributorAPIService: DistributorAPIService, ) {
+    private requestService: RequestService, ) {
 
     this.id_local = localStorage.getItem('id');
     console.log(' this.id_local', this.id_local);
@@ -79,9 +79,9 @@ export class TableService {
 
 
   getData(callback) {
-    const value = "cur_page=" + 1 + "&per_page=" + 20 + "&distributor_id	=" + this.id_local;
-    this.distributorAPIService.getRequestList(value).subscribe(data => {
-      this.arrRequestList = <IRequest>data.response_data;
+
+    this.requestService.requestListDistributor$.subscribe(data => {
+      this.arrRequestList = data;
       console.log(this.arrRequestList);
 
       this._search$.pipe(

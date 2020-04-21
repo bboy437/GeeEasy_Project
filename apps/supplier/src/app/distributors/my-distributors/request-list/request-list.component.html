@@ -1,4 +1,4 @@
-<div class="pages">
+<div class="pages" [formGroup]="Form">
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card>
@@ -7,17 +7,16 @@
                         <div class="row">
                             <div class="cover-form icon" style="margin-bottom: 0.7rem;padding: 0 0.5rem 0 0;">
                                 <nb-icon icon="search-outline"></nb-icon>
-                                <nb-icon *ngIf="strname" (click)="btnRefresh()"
+                                <nb-icon *ngIf="Form.value.strname" (click)="btnRefresh()"
                                     style="float: right;left: 0; cursor: pointer;" icon="close-outline">
                                 </nb-icon>
                                 <input libOnlyCharacterDefault status="primary" type="text" nbInput fullWidth
-                                    status="primary" placeholder="Search for name" [(ngModel)]="strname"
+                                    status="primary" placeholder="Search for name" formControlName="strname"
                                     (keyup)="filterPoNo($event.target.value)" />
                             </div>
                             <div class="cover-form" style="margin-bottom: 0.7rem;">
-                                <nb-select (selectedChange)="filterStatus($event)"
-                                    placeholder="--------- Choose ---------" fullWidth outline status="primary"
-                                    [(ngModel)]="strStatus">
+                                <nb-select (selectedChange)="filterStatus($event)" formControlName="strStatus"
+                                    placeholder="--------- Choose ---------" fullWidth outline status="primary">
                                     <nb-option value="">All Status</nb-option>
                                     <nb-option value="0">Waiting</nb-option>
                                     <nb-option value="1">Verified</nb-option>
@@ -103,7 +102,7 @@
                                             </td> -->
                                             <td class="right">
                                                 <button nbButton size="small" status="success"
-                                                    (click)="btnRequest(Request.request_information_id);$event.stopPropagation()">
+                                                    (click)="btnReply(Request.request_information_id);$event.stopPropagation()">
                                                     Reply
                                                 </button>
                                             </td>
@@ -144,7 +143,7 @@
                                             <tr class="unset" style="height:300px; background-color: #222b45;">
                                                 <td colspan="5" style="padding-top: 50px;">
                                                     <div style="height: 100px;background-color: #222b45;"
-                                                        [nbSpinner]="loading" nbSpinnerStatus="warning">
+                                                        [nbSpinner]="isReload" nbSpinnerStatus="warning">
                                                     </div>
                                                 </td>
                                             </tr>
@@ -189,22 +188,10 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div *ngIf="!isReload && !loading" class="cover-body footer">
-                <div class="cover-pagination">
-                    <ngb-pagination [collectionSize]="totalList$ | async" [(page)]="service.page"
-                        [pageSize]="service.pageSize"></ngb-pagination>
-                    <select class="custom-select" name="pageSize" [(ngModel)]="service.pageSize"
-                        style="float: right;margin: 0;">
-                        <option [ngValue]="10">10 items per page</option>
-                        <option [ngValue]="20">20 items per page</option>
-                        <option [ngValue]="50">50 items per page</option>
-                    </select>
-                </div>
-            </div> -->
                 </nb-card-body>
                 <nb-card-footer>
                     <div class="row">
-                        <div *ngIf="!isReload && !loading"
+                        <div *ngIf="!isReload"
                             class="col-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-between p-2">
                             <ngb-pagination [collectionSize]="totalList$ | async" [(page)]="service.page"
                                 [pageSize]="service.pageSize"></ngb-pagination>

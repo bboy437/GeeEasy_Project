@@ -56,22 +56,6 @@ export class BillsDetailComponent implements OnInit {
       this.arrBills = data.response_data[0];
       console.log(this.arrBills);
 
-      // this.delivery_date = new Date(this.arrBills.delivery_date * 1000)
-      // this.delivery_date = this.datepipe.transform(date, 'dd/MM/yyyy');
-
-      if (this.arrBills.purchase_order_reply_id === 0) {
-        this.arrBills.status = "Waiting"
-      }
-      if (this.arrBills.purchase_order_reply_id === 1) {
-        this.arrBills.status = "Confirmed"
-      }
-      if (this.arrBills.purchase_order_reply_id === 2) {
-        this.arrBills.status = "In Negotiation"
-      }
-      if (this.arrBills.purchase_order_reply_id === 3) {
-        this.arrBills.status = "Canceled"
-      }
-
       this.arrBillsProduct = data.response_data[0].purchase_order_product_array;
       this.arrBillsSummary = data.response_data[0].purchase_order_summary;
       this.arrBillsSummary.product_currency_code = this.arrBillsProduct[0].product_data.product_data.product_currency_code;

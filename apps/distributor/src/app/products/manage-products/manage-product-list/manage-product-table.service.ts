@@ -1,15 +1,15 @@
 import { Injectable, PipeTransform } from '@angular/core';
 
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { DecimalPipe, DatePipe } from '@angular/common';
+
+import { ProductDataArray } from '@project/interfaces';
+import { DecimalPipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { SortDirection } from '@project/services';
-import { IcheckinProduct } from '@project/interfaces';
-import { CheckinAPIService } from '@project/services';
-import { Router } from '@angular/router';
+import { ProductAPIService } from '@project/services';
 
 interface SearchResult {
-  countries: IcheckinProduct[];
+  countries: ProductDataArray[];
   total: number;
 }
 
@@ -25,7 +25,7 @@ function compare(v1, v2) {
   return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 }
 
-function sort(countries: IcheckinProduct[], column: string, direction: string): IcheckinProduct[] {
+function sort(countries: ProductDataArray[], column: string, direction: string): ProductDataArray[] {
   if (direction === '') {
     return countries;
   } else {
@@ -36,18 +36,18 @@ function sort(countries: IcheckinProduct[], column: string, direction: string): 
   }
 }
 
-function matches(country: IcheckinProduct, term: string, pipe: PipeTransform) {
-  return country.request_product_name.toString().toLowerCase().includes(term.toString().toLowerCase()) 
-
+function matches(country: ProductDataArray, term: string, pipe: PipeTransform) {
+  return country.product_title.toString().toLowerCase().includes(term.toString().toLowerCase()) ||
+    country.product_sku.toString().toLowerCase().includes(term.toString().toLowerCase())
 }
 
 @Injectable({ providedIn: 'root' })
 
 
-export class CheckInTableDetailService {
+export class ProductTableService {
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _countries$ = new BehaviorSubject<IcheckinProduct[]>([]);
+  private _countries$ = new BehaviorSubject<ProductDataArray[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
 
   private _state: State = {
@@ -58,31 +58,37 @@ export class CheckInTableDetailService {
     sortDirection: ''
   };
 
+  arrProducts: any = [];
 
-  arrCheckIn: any = [];
+  id_local: string;
 
   constructor(
-    private pipe: DecimalPipe ,  
-    private checkinAPIService: CheckinAPIService,
-    private router: Router, ) {
+    private pipe: DecimalPipe,
+    private productAPIService: ProductAPIService, ) {
+    this.id_local = localStorage.getItem('id');
+    console.log(' this.id_local', this.id_local);
+  }
 
-    this.checkinAPIService.dataCheckin$.subscribe(data => {
-      this.arrCheckIn = <IcheckinProduct>data;
+  getData(callback) {
+    this.productAPIService.productDistributor$.subscribe(res => {
+      console.log("getData : data : ", res);
+      this.arrProducts = res;
 
-      
+
       this._search$.pipe(
-        tap(() => this._loading$.next(true)), 
-        debounceTime(200),
+        tap(() => this._loading$.next(true)),
+        debounceTime(100), // 200
         switchMap(() => this._search()),
-        delay(200),
+        delay(100), // 200
         tap(() => this._loading$.next(false))
       ).subscribe(result => {
         this._countries$.next(result.countries);
         this._total$.next(result.total);
+        callback(true);
       });
-  
+
       this._search$.next();
-      
+
     })
 
   }
@@ -109,7 +115,7 @@ export class CheckInTableDetailService {
     const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
     // 1. sort
-    let countries = sort(this.arrCheckIn, sortColumn, sortDirection);
+    let countries = sort(this.arrProducts, sortColumn, sortDirection);
 
     // 2. filter
     countries = countries.filter(country => matches(country, searchTerm, this.pipe));

@@ -6,10 +6,10 @@ import { DecimalPipe, DatePipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { SortDirection } from '@project/services';
 import { SaveListSupplierAPIService } from '@project/services';
-import { ISaveList } from '@project/interfaces';
+import { IsavelistList } from '@project/interfaces';
 
 interface SearchResult {
-  countries: ISaveList[];
+  countries: IsavelistList[];
   total: number;
 }
 
@@ -25,7 +25,7 @@ function compare(v1, v2) {
   return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 }
 
-function sort(countries: ISaveList[], column: string, direction: string): ISaveList[] {
+function sort(countries: IsavelistList[], column: string, direction: string): IsavelistList[] {
   if (direction === '') {
     return countries;
   } else {
@@ -36,7 +36,7 @@ function sort(countries: ISaveList[], column: string, direction: string): ISaveL
   }
 }
 
-function matches(country: ISaveList, term: string, pipe: PipeTransform) {
+function matches(country: IsavelistList, term: string, pipe: PipeTransform) {
   return country.supplier_lists_name.toString().toLowerCase().includes(term.toString().toLowerCase())
 
 }
@@ -47,7 +47,7 @@ function matches(country: ISaveList, term: string, pipe: PipeTransform) {
 export class SaveListTableService {
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _countries$ = new BehaviorSubject<ISaveList[]>([]);
+  private _countries$ = new BehaviorSubject<IsavelistList[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
 
   private _state: State = {
@@ -74,10 +74,10 @@ export class SaveListTableService {
 
 
   getData(callback) {
-    const value = "cur_page=" + 1 + "&per_page=" + 10 + "&distributor_id=" + this.id_local;
-    this.saveListSupplierAPIService.getSaveList(value).subscribe(data => {
-      this.arrSavelist = <ISaveList>data.response_data;
-      console.log('this.arrSavelist', this.arrSavelist);
+
+    this.saveListSupplierAPIService.savelistDistributor$.subscribe(res => {
+      this.arrSavelist = res;
+      console.log('this.arrSavelist', res);
 
       this._search$.pipe(
         tap(() => this._loading$.next(true)),

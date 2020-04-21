@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChildren, QueryList, Output, EventEmitter, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Ifarvorite } from '@project/interfaces';
+import { IFavoriteList } from '@project/interfaces';
 import { NgbdSortableHeader, SortEvent, ProductAPIService } from '@project/services';
 import { FarvoriteTableService } from './farvorite-table.service';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ export class FarvoriteComponent implements OnInit {
   // @Output() favorite = new EventEmitter<any>();
   // @Input() strTab: string
   private UrlRouter_ProductDetail = "products/manage/detail";
-  arrFarvorite$: Observable<Ifarvorite[]>;
+  arrFarvorite$: Observable<IFavoriteList[]>;
   total$: Observable<number>;
   arrFarvorite: any = [];
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;

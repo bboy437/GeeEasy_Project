@@ -55,7 +55,6 @@ export class RequestListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getRequestList();
     this.callApi(e => {
       // completed
     });
@@ -85,18 +84,6 @@ export class RequestListComponent implements OnInit {
     this.strname = ""
   }
 
-  getRequestList() {
-    const value =
-      "cur_page=" + 1 + "&per_page=" + 20 + "&supplier_id=" + this.id_local;
-    this.distributorAPIService.getRequestList(value).subscribe(data => {
-      this.arrRequest = <IRequest>data.response_data;
-      console.log(data);
-      this.arrRequest.forEach(element => {
-        element.distributor_name =
-          element.distributor_data_array[0].distributor_name;
-      });
-    });
-  }
 
   btnRequest(data) {
     this.dialogService.open(RequestReplyComponent, {

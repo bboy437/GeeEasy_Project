@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { NgbdSortableHeader, SortEvent } from '@project/services';
-import { Icheckin } from '@project/interfaces';
+import { ICheckInList } from '@project/interfaces';
 import { CheckInTableService } from './checkintable.service';
 import { CheckinAPIService } from '@project/services';
 import { NbDialogService } from '@nebular/theme';
@@ -18,7 +18,7 @@ import { DialogsCheckinStatusComponent } from '../../dialogs/dialogs-checkin-sta
 export class CheckInListComponent implements OnInit {
 
   DateSelected = new Date();
-  arrCheckIn$: Observable<Icheckin[]>;
+  arrCheckIn$: Observable<ICheckInList[]>;
   total$: Observable<number>;
   private UrlRouter_CheckInDetail = "check-in/detail";
   private UrlRouter_CheckInSave = "check-in/save";

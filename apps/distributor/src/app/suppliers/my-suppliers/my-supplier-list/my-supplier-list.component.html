@@ -42,80 +42,110 @@
                                 <div class="row">
                                     <div class="col-12 col-md-3 col-lg-3 col-xl-3">
                                         <nb-card class="box-shadow-unset">
-                                            <project-list [strID]="strID" (supplier)="clickCate($event)"></project-list>
+                                            <project-list (supplier)="clickCate($event)"></project-list>
                                         </nb-card>
                                     </div>
-                                    <div class="col-12 col-md-9 col-lg-9 col-xl-9" *ngIf="!loading">
-                                        <ngx-datatable [columnMode]="ColumnMode.force" [rows]="arrSupplier"
-                                            rowHeight="auto" [headerHeight]="46" (activate)="btnRow($event)"
-                                            [scrollbarH]="true" [messages]="messages">
-                                            <ngx-datatable-column name="Images" [width]="100">
-                                                <ng-template let-row="row" ngx-datatable-cell-template>
-                                                    <div class="cover-background-image">
-                                                        <div class="background-image padding-width-100px-height-100px"
-                                                            [ngClass]="{'active' : row.supplier_image_url === '-' || row.supplier_image_url=== ''}"
-                                                            [ngStyle]="{'background-image': 'url('+row.supplier_image_url+')'}">
-                                                        </div>
-                                                    </div>
-                                                </ng-template>
-                                            </ngx-datatable-column>
-                                            <ngx-datatable-column name="Supplier Name" [sortable]="true"
-                                                prop="supplier_name">
-                                                <ng-template let-row="row" ngx-datatable-cell-template>
-                                                    {{ row.supplier_name }}
-                                                </ng-template>
-                                            </ngx-datatable-column>
-                                            <ngx-datatable-column name="Company Name" [sortable]="true"
-                                                prop="supplier_company_name">
-                                                <ng-template let-row="row" ngx-datatable-cell-template>
-                                                    {{ row.supplier_company_name }}
-                                                </ng-template>
-                                            </ngx-datatable-column>
-                                            <ngx-datatable-column name="Contact Number " [sortable]="true"
-                                                prop="supplier_addr_phone">
-                                                <ng-template let-row="row" ngx-datatable-cell-template>
-                                                    {{ row.supplier_addr_phone }}
-                                                </ng-template>
-                                            </ngx-datatable-column>
-                                            <ngx-datatable-column name="Location" [sortable]="true"
-                                                prop="supplier_addr_province">
-                                                <ng-template let-row="row" ngx-datatable-cell-template>
-                                                    {{ row.supplier_addr_amphoe + "," + row.supplier_addr_province }}
-                                                </ng-template>
-                                            </ngx-datatable-column>
-                                            <ngx-datatable-column [width]="30">
-                                                <ng-template let-row="row" ngx-datatable-cell-template>
-                                                    <button type="button" class="buttonlist"
-                                                        (click)="btnDialogSavelists(row); $event.stopPropagation()">
-                                                        <nb-icon icon="list-outline"></nb-icon>
-                                                    </button>
-                                                </ng-template>
-                                            </ngx-datatable-column>
-                                        </ngx-datatable> 
-                                    </div>
-                                    <div class="col-12 col-md-9 col-lg-9 col-xl-9" *ngIf="loading">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="left">Image </th>
-                                                    <th class="left"> Supplier Name</th>
-                                                    <th class="left"> Company Name </th>
-                                                    <th class="left"> Contact Number </th>
-                                                    <th class="left"> Location </th>
-                                                    <th scope="col"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td colspan="5">
-                                                        <div style="height: 200px;" [nbSpinner]="loading"
-                                                            nbSpinnerStatus="primary">
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <div class="col-12 col-md-9 col-lg-9 col-xl-9">
+                                        <div class="row" *ngIf="supplierList$ | async as supplier ; else loadings">
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="!loading">
+                                                <ngx-datatable [columnMode]="ColumnMode.force" [rows]="supplier"
+                                                    rowHeight="auto" [headerHeight]="46" (activate)="btnRow($event)"
+                                                    [scrollbarH]="true" [messages]="messages">
+                                                    <ngx-datatable-column name="Images" [width]="100">
+                                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                                            <div class="cover-background-image">
+                                                                <div class="background-image padding-width-100px-height-100px"
+                                                                    [ngClass]="{'active' : row.supplier_image_url === '-' || row.supplier_image_url=== ''}"
+                                                                    [ngStyle]="{'background-image': 'url('+row.supplier_image_url+')'}">
+                                                                </div>
+                                                            </div>
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                    <ngx-datatable-column name="Supplier Name" [sortable]="true"
+                                                        prop="supplier_name">
+                                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                                            {{ row.supplier_name }}
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                    <ngx-datatable-column name="Company Name" [sortable]="true"
+                                                        prop="supplier_company_name">
+                                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                                            {{ row.supplier_company_name }}
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                    <ngx-datatable-column name="Contact Number " [sortable]="true"
+                                                        prop="supplier_addr_phone">
+                                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                                            {{ row.supplier_addr_phone }}
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                    <ngx-datatable-column name="Location" [sortable]="true"
+                                                        prop="supplier_addr_province">
+                                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                                            {{ row.supplier_addr_amphoe + "," + row.supplier_addr_province }}
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                    <ngx-datatable-column [width]="30">
+                                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                                            <button type="button" class="buttonlist"
+                                                                (click)="btnDialogSavelists(row); $event.stopPropagation()">
+                                                                <nb-icon icon="list-outline"></nb-icon>
+                                                            </button>
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                </ngx-datatable> 
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="loading">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="left">Image </th>
+                                                            <th class="left"> Supplier Name</th>
+                                                            <th class="left"> Company Name </th>
+                                                            <th class="left"> Contact Number </th>
+                                                            <th class="left"> Location </th>
+                                                            <th scope="col"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="5">
+                                                                <div style="height: 200px;" [nbSpinner]="loading"
+                                                                    nbSpinnerStatus="primary">
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <ng-template #loadings>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="left">Image </th>
+                                                            <th class="left"> Supplier Name</th>
+                                                            <th class="left"> Company Name </th>
+                                                            <th class="left"> Contact Number </th>
+                                                            <th class="left"> Location </th>
+                                                            <th scope="col"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr style="height:300px; background-color: white;">
+                                                            <td colspan="5" style="padding-top: 50px;">
+                                                                <img src="assets/images/loading.png"
+                                                                    width="250"><br><br>
+                                                                <label>No data.</label>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody> 
+                                                </table>
+                                            </ng-template>
+                                        </div>
+                                    </div> 
+
                                 </div>
                             </div>
                         </div>

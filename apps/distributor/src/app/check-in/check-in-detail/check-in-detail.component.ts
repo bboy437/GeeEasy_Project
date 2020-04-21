@@ -3,9 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { NgbdSortableHeader, SortEvent, WarehouseAPIService, UploadAPIService } from '@project/services';
-import { IcheckinProduct, Icheckin } from '@project/interfaces';
 import { CheckinAPIService } from '@project/services';
-import { CheckInTableDetailService } from './checkintabledetail.service';
 import { NbDialogService } from '@nebular/theme';
 import { DialogSuccessComponent } from '../../dialogs/dialog-success/dialog-success.component';
 import { DialogsImageComponent } from '../../dialogs/dialogs-image/dialogs-image.component';
@@ -22,13 +20,10 @@ import JSON_CURRENCY from "../../../../../../libs/shared/src/lib/json/currency.j
   selector: 'project-check-in-detail',
   templateUrl: './check-in-detail.component.html',
   styleUrls: ['./check-in-detail.component.scss'],
-  providers: [CheckInTableDetailService, DecimalPipe]
 })
 export class CheckInDetailComponent implements OnInit {
 
   DateSelected = new Date();
-  arrCheckIns$: Observable<IcheckinProduct[]>;
-  total$: Observable<number>;
   private UrlRouter_CheckInCancel = "check-in/list";
   arrobjRow: any = [];
   arrCheckInFilter: any = [];
@@ -38,7 +33,6 @@ export class CheckInDetailComponent implements OnInit {
   filterValue: any = [];
   arrUnitWH = [{ unit_name: "cm" }];
   arrUnitWeight = [{ unit_name: "kg" }];
-  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   RowID: string;
   status: string;
   checked = false;
@@ -78,7 +72,6 @@ export class CheckInDetailComponent implements OnInit {
   checkinForm: FormGroup;
 
   constructor(
-    public service: CheckInTableDetailService,
     private router: Router,
     private route: ActivatedRoute,
     private checkinAPIService: CheckinAPIService,
@@ -118,7 +111,7 @@ export class CheckInDetailComponent implements OnInit {
 
   getData() {
     this.checkinAPIService.getCheckdetail(this.RowID).subscribe(data => {
-      console.log(data.response_data[0]);
+      console.log(data);
       this.arrobjRow = data.response_data[0];
       this.arrCheckIn = data.response_data[0].purchase_order_product_array;
       this.arrWhereHouse = data.response_data[0].warehouse_data;

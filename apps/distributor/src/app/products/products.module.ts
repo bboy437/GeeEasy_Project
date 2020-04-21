@@ -3,7 +3,6 @@ import { ThemeModule } from "@project/theme";
 import { NebularModule } from "@project/nebular";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MyProductGroupComponent } from "./my-product-group-list/my-product-group.component";
-import { MyProductDetailComponent } from "./my-product-detail/my-product-detail.component";
 import { ProductsRoutingModule } from "./products-routing.module";
 import { ProductsComponent } from "./products.component";
 import { NbDateFnsDateModule } from "@nebular/date-fns";
@@ -18,6 +17,9 @@ import { SharedModule } from "@project/shared";
 
 import { IConfig, NgxMaskModule } from "ngx-mask";
 import { MapModule } from '../map/map.module';
+import { ProductsCreateComponent } from './manage-products/products-create/products-create.component';
+import { ProductsDetailComponent } from './manage-products/products-detail/products-detail.component';
+import { MyProductDetailComponent } from './manage-products/manage-product-detail/manage-product-detail.component';
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 @NgModule({
@@ -41,6 +43,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MyProductGroupComponent,
     MyProductDetailComponent,
     InventoryLogListComponent,
+    ProductsCreateComponent,
+    ProductsDetailComponent
   ]
 })
 export class ProductsModule {}

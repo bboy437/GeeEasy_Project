@@ -6,50 +6,55 @@ import 'rxjs/add/operator/delay';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, tap, map } from 'rxjs/operators';
+import { IObjectBillList, IBillList } from '@project/interfaces';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 
 export class BillingAPIService {
-  //  protected ServerApiUrl = "https://private-anon-3c36a00762-geeesyapiblueprint.apiary-mock.com/";
-    protected ServerApiUrl = "https://api.gee-supply.com/v1/";
+
+  protected ServerApiUrl = "https://api.gee-supply.com/v1/";
 
   constructor(private http: HttpClient) {
   }
 
-  // Http Options
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  }
+
+  //Supplier
+
+  value = "cur_page=" + 1 + "&per_page=" + 100 + "&supplier_id=" + localStorage.getItem('id');
+  billList$ = this.http.get<IObjectBillList>(`${this.ServerApiUrl}${'supplier/purchase_order/lists_bill_supplier?'}${this.value}`)
+    .pipe(
+      map(bills =>
+        bills.response_data.map(bill => ({
+          ...bill,
+          distributor_name: bill.distributor_data_array[0].distributor_name.split(",")
+        }) as IBillList)
+      ),
+      tap(data => console.log('billList', data)),
+      // shareReplay(1),
+      catchError(this.handleError)
+    );
 
 
-  //bill list Supplier
-  getBillsList(strUrl: string): Observable<any> {
-    return this.http.get<any>(this.ServerApiUrl + "supplier/purchase_order/lists_bill_supplier?" + strUrl)
-      .pipe(
-        retry(1),
-        catchError(this.handleError)
-      )
-  }
+  // Distributor
 
-  //bill list Distributor
-  getBillsListDist(strUrl: string): Observable<any> {
-    return this.http.get<any>(this.ServerApiUrl + "supplier/purchase_order/lists_bill_distributor?" + strUrl)
-      .pipe(
-        retry(1),
-        catchError(this.handleError)
-      )
-  }
+  valueDist = "cur_page=" + 1 + "&per_page=" + 100 + "&distributor_id=" + localStorage.getItem('id');
+  billListDistributor$ = this.http.get<IObjectBillList>(`${this.ServerApiUrl}${'supplier/purchase_order/lists_bill_distributor?'}${this.valueDist}`)
+    .pipe(
+      map(bills =>
+        bills.response_data.map(bill => ({
+          ...bill,
+          supplier_name: bill.supplier_data_array[0].supplier_name.split(",")
+        }) as IBillList)
+      ),
+      tap(data => console.log('billList', data)),
+      // shareReplay(1),
+      catchError(this.handleError)
+    );
 
-  getBillsDetail(strUrl: string): Observable<any> {
-    return this.http.get<any>(this.ServerApiUrl + "distributor/my_bill/id?purchase_order_id=" + strUrl)
-      .pipe(
-        retry(1),
-        catchError(this.handleError)
-      )
-  }
+
 
   getPaymentMethod(strUrl: string): Observable<any> {
     return this.http.get<any>(this.ServerApiUrl + "distributor/payment_method/lists?distributor_id=" + strUrl)

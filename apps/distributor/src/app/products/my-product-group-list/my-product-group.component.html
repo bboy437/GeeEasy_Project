@@ -76,8 +76,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr *ngFor="let products of Products"
-                                                (click)="btnClickItem(products.inventory_group_array, products)">
+                                            <tr *ngFor="let products of Products" (click)="btnClickItem(products)">
                                                 <td colspan="2" style="text-align: left"
                                                     [ngClass]="{'active': products.inventory_group_id == arrProductGroup.inventory_group_id}">
                                                     <ngb-highlight [result]="products.inventory_group_name "

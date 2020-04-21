@@ -84,7 +84,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     FileImageComponent, FileUploadComponent, FileUploadNoteComponent, ListFileUploadComponent,
     DecimalMask, CompLocationComponent, MapsComponent, CompCategoryComponent, CompCategoryBrowseComponent,
     OnlyUnit, CompPaymentComponent, CompProductsSupplierDetailComponent, CompCategoryOwnComponent,
-    OnlyProductName, InputComponent, NgxSelectComponent, TextareaComponent
+    OnlyProductName, InputComponent, NgxSelectComponent, TextareaComponent, SelectComponent
   ],
   entryComponents: [MapsComponent]
 })

@@ -7,7 +7,10 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { retry, catchError } from "rxjs/operators";
 import { throwError, Subject } from "rxjs";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
+
 export class UploadAPIService {
   constructor(private httpClient: HttpClient) {}
 

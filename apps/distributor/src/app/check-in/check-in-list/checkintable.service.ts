@@ -4,11 +4,11 @@ import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { DecimalPipe, DatePipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { SortDirection } from '@project/services';
-import { Icheckin } from '@project/interfaces';
+import { ICheckInList } from '@project/interfaces';
 import { CheckinAPIService } from '@project/services';
 
 interface SearchResult {
-  countries: Icheckin[];
+  countries: ICheckInList[];
   total: number;
 }
 
@@ -24,7 +24,7 @@ function compare(v1, v2) {
   return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 }
 
-function sort(countries: Icheckin[], column: string, direction: string): Icheckin[] {
+function sort(countries: ICheckInList[], column: string, direction: string): ICheckInList[] {
   if (direction === '') {
     return countries;
   } else {
@@ -35,7 +35,7 @@ function sort(countries: Icheckin[], column: string, direction: string): Ichecki
   }
 }
 
-function matches(country: Icheckin, term: string, pipe: PipeTransform) {
+function matches(country: ICheckInList, term: string, pipe: PipeTransform) {
   return country.purchase_order_number.toString().toLowerCase().includes(term.toString().toLowerCase())
     || country.supplier_data_array[0].supplier_name.toString().toLowerCase().includes(term.toString().toLowerCase())
     || country.purchase_order_summary.total_price.toString().toLowerCase().includes(term.toString().toLowerCase())
@@ -47,7 +47,7 @@ function matches(country: Icheckin, term: string, pipe: PipeTransform) {
 export class CheckInTableService {
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _countries$ = new BehaviorSubject<Icheckin[]>([]);
+  private _countries$ = new BehaviorSubject<ICheckInList[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
 
   private _state: State = {
@@ -72,11 +72,9 @@ export class CheckInTableService {
 
   refresh(callback) {
 
-    const value = "cur_page=" + 1 + "&per_page=" + 10 + "&distributor_id=" + this.id_local;
-    this.checkinAPIService.getCheckinList(value).subscribe(data => {
-      this.arrCheckIn = <Icheckin>data.response_data;
-      console.log(this.arrCheckIn);
-
+    this.checkinAPIService.checkInList$.subscribe(data => {
+      this.arrCheckIn = data;
+      console.log(data);
 
       this._search$.pipe(
         tap(() => this._loading$.next(true)),

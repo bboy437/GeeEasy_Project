@@ -7,7 +7,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
 import { throwError, Subject } from 'rxjs';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 
 export class SaleRepService {
     protected serverApiUrl = "https://api.gee-supply.com/v1-dealer/";
@@ -95,7 +97,7 @@ export class SaleRepService {
 
     postSalerepAccountUpdate(dataSend): Observable<any> {
         let res_api = this.serverApiUrl.concat("salerep/account/update");
-        return this.http.post<any>(res_api,dataSend)
+        return this.http.post<any>(res_api, dataSend)
             .pipe(
                 retry(1),
                 catchError(this.handleError)
@@ -104,7 +106,7 @@ export class SaleRepService {
 
     postSalerepAccountCreate(dataSend): Observable<any> {
         let res_api = this.serverApiUrl.concat("salerep/account/create");
-        return this.http.post<any>(res_api,dataSend)
+        return this.http.post<any>(res_api, dataSend)
             .pipe(
                 retry(1),
                 catchError(this.handleError)

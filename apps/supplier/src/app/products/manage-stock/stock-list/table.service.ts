@@ -1,13 +1,13 @@
 import { Injectable, PipeTransform } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { ProductData } from '@project/interfaces';
+import { ProductDataArray } from '@project/interfaces';
 import { DecimalPipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { SortDirection } from '@project/services';
 import { ProductAPIService } from '@project/services';
 
 interface SearchResult {
-  countries: ProductData[];
+  countries: ProductDataArray[];
   total: number;
 }
 
@@ -23,7 +23,7 @@ function compare(v1, v2) {
   return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 }
 
-function sort(countries: ProductData[], column: string, direction: string): ProductData[] {
+function sort(countries: ProductDataArray[], column: string, direction: string): ProductDataArray[] {
   if (direction === '') {
     return countries;
   } else {
@@ -34,7 +34,7 @@ function sort(countries: ProductData[], column: string, direction: string): Prod
   }
 }
 
-function matches(country: ProductData, term: string, pipe: PipeTransform) {
+function matches(country: ProductDataArray, term: string, pipe: PipeTransform) {
   return country.product_sku.toString().toLowerCase().includes(term.toString().toLowerCase())
     || country.product_name.toString().toLowerCase().includes(term.toString().toLowerCase())
     || country.product_price.toString().toLowerCase().includes(term.toString().toLowerCase())
@@ -47,7 +47,7 @@ function matches(country: ProductData, term: string, pipe: PipeTransform) {
 export class ProductTableService {
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _countries$ = new BehaviorSubject<ProductData[]>([]);
+  private _countries$ = new BehaviorSubject<ProductDataArray[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
 
   private _state: State = {
@@ -70,46 +70,10 @@ export class ProductTableService {
   }
 
   getData(callback) {
-    const value = "cur_page=" + 1 + "&per_page=" + 10 + "&supplier_id=" + this.id_local;
-    this.productAPIService.getProductListSup(value).subscribe(data => {
-      if (data.response_data !== undefined) {
-        this.arrProducts = data.response_data;
-        console.log(this.arrProducts);
 
-        this.arrProducts.forEach(product => {
-            product.checkin_available = 0;
-            product.checkin_onhand = 0;
-            product.checkin_outgoing = 0;
-            product.checkin_incoming = 0;
-            if (product.product_warehouse_array !== undefined) {
-                if (product.product_warehouse_array.length > 0) {
-                    product.product_warehouse_array.forEach(warehouse => {
-                        product.checkin_available += warehouse.available;
-                        product.checkin_onhand += warehouse.onhand;
-                        product.checkin_outgoing += warehouse.outgoing;
-                        product.checkin_incoming += warehouse.incoming;
-                        product.warehouse_name = warehouse.warehouse_name
-                        if (Number.isNaN(product.checkin_available)) {
-                            product.checkin_available = 0;
-                        }
-                        if (Number.isNaN(product.checkin_onhand)) {
-                            product.checkin_onhand = 0;
-                        }
-                        if (Number.isNaN(product.checkin_outgoing)) {
-                            product.checkin_outgoing = 0;
-                        }
-                        if (Number.isNaN(product.checkin_incoming)) {
-                            product.checkin_incoming = 0;
-                        }
-                    });
-                }
-            }
-
-
-        });
-    }
-
-      console.log('arrProducts', this.arrProducts);
+    this.productAPIService.productSupplierList$.subscribe(data => {
+      this.arrProducts = data;
+      console.log('data', data);
 
       this._search$.pipe(
         tap(() => this._loading$.next(true)),
@@ -128,6 +92,7 @@ export class ProductTableService {
     })
 
   }
+
 
   get countries$() { return this._countries$.asObservable(); }
   get total$() { return this._total$.asObservable(); }

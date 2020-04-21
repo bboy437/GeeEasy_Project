@@ -88,16 +88,9 @@ export class BillsableService {
 
   refresh(callback) {
 
-    const values = "cur_page=" + 1 + "&per_page=" + 100 + "&distributor_id=" + this.id_local;
-    this.billingAPIService.getBillsListDist(values).subscribe(data => {
-      this.arrbills = <IBillList>data.response_data;
+    this.billingAPIService.billListDistributor$.subscribe(res => {
+      this.arrbills = res;
       console.log(this.arrbills);
-      this.arrbills.forEach(element => {
-        element.supplier_data_array.forEach(s => {
-          element.supplier_name = s.supplier_name.split(",")
-        });
-      });
-
 
       this._search$.pipe(
         tap(() => this._loading$.next(true)),

@@ -6,7 +6,10 @@ import 'rxjs/add/operator/delay';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
 import { throwError, Subject } from 'rxjs';
-@Injectable()
+
+@Injectable({
+    providedIn: 'root'
+})
 
 export class LocationAPIService {
 

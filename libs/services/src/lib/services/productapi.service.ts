@@ -4,66 +4,134 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError, map, tap } from 'rxjs/operators';
 import { throwError, Subject, BehaviorSubject } from 'rxjs';
-import { IObjStock } from '@project/interfaces';
+import { IObjStock, ProductDataArray, IObjectProductList, IObjectFavorite, IFavoriteList, IStock, IObjectProductGroup } from '@project/interfaces';
 import { Router } from '@angular/router';
 
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 
 export class ProductAPIService {
-    data$: Observable<any>;
-    private myMethodSubject = new Subject<any>();
-    datatest: any;
 
-    dataTransfer$: Observable<any>;
     private myMethodSubjectTransfer = new BehaviorSubject<any>("");
+    dataTransfer$ = this.myMethodSubjectTransfer.asObservable();
 
+    private productGroupSelectedSubject = new BehaviorSubject<any>(null);
+    productGroupSelectedAction$ = this.productGroupSelectedSubject.asObservable();
 
     protected ServerApiUrls = "https://api.gee-supply.com/v1/";
     protected ServerApiUrlProductSup = "https://api.gee-supply.com/v1-sup/";
     protected ServerApiUrlProductDist = "https://api.gee-supply.com/v1-dist/";
     protected ServerApiUrlProducDealer = "https://api.gee-supply.com/v1-dealer/";
 
-    constructor(private http: HttpClient,    private router: Router,) {
-        this.data$ = this.myMethodSubject.asObservable();
-        this.dataTransfer$ = this.myMethodSubjectTransfer.asObservable();
+    constructor(private http: HttpClient, private router: Router, ) {
 
     }
 
-    httpOptions = {
-        headers: new HttpHeaders({
-            'Content-Type': 'application/json'
-        })
+    // Product List suppier  
+    paramProductSupplier = "cur_page=" + 1 + "&per_page=" + 100 + "&supplier_id=" + localStorage.getItem('id');
+    productSupplierList$ = this.http.get<IObjectProductList>(`${this.ServerApiUrlProductSup}${'supplier/product/list?'}${this.paramProductSupplier}`)
+        .pipe(
+            map(products =>
+                products.response_data.map(product => ({
+                    ...product,
+                    warehouse: product.product_warehouse_array.map(warehouse => {
+                        product.checkin_available = +warehouse.available;
+                        product.checkin_onhand = +warehouse.onhand;
+                        product.checkin_outgoing = +warehouse.outgoing;
+                        product.checkin_incoming = +warehouse.incoming;
+                        product.warehouse_name = warehouse.warehouse_name;
+                    })
+                }) as ProductDataArray)
+            ),
+            tap(data => console.log('productSupplierList', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
+
+
+    // Product List Distributor
+    paramProductList = "cur_page=" + 1 + "&per_page=" + 100 + "&distributor_id=" + localStorage.getItem('id');
+    productDistributor$ = this.http.get<IObjectProductList>(`${this.ServerApiUrlProductDist}${'distributor/inventory/default/lists?'}${this.paramProductList}`)
+        .pipe(
+            map(products => products.response_data),
+            tap(data => console.log('productDistributor', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
+
+
+    // Stock List Distributor
+    paramStockList = "cur_page=" + 1 + "&per_page=" + 100 + "&distributor_id=" + localStorage.getItem('id');
+    stockDistributor$ = this.http.get<IObjStock>(`${this.ServerApiUrlProductDist}${'distributor/inventory/default/lists_by_row?'}${this.paramStockList}`)
+        .pipe(
+            map(products => products.response_data),
+            tap(data => console.log('stockDistributor', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
+
+
+    // Product Favorite List
+    paramFavorite = "cur_page=" + 1 + "&per_page=" + 100 + "&distributor_id=" + localStorage.getItem('id');
+    productFavorite$ = this.http.get<IObjectFavorite>(`${this.ServerApiUrlProductDist}${'distributor/favorite_list/lists?'}${this.paramFavorite}`)
+        .pipe(
+            map(products =>
+                products.response_data.map(product => ({
+                    ...product,
+                    product_title: product.product_data[0].product_title,
+                    product_image_url: product.product_data[0].product_image_url,
+                    product_sku: product.product_data[0].product_sku,
+                    product_price: product.product_data[0].product_price,
+                }) as IFavoriteList)
+            ),
+            tap(data => console.log('productFavorite', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
+
+
+    // Product Inventory Log List
+    paramInventory = "cur_page=" + 1 + "&per_page=" + 100 + "&distributor_id=" + localStorage.getItem('id');
+    productInventory$ = this.http.get<IObjStock>(`${this.ServerApiUrlProductDist}${'distributor/inventory/product/log?'}${this.paramInventory}`)
+        .pipe(
+            map(products =>
+                products.response_data.map(product => ({
+                    ...product,
+                    type_key: product.type_key !== "NEW CHECKIN" ? "No" : product.type_key,
+                }) as IStock)
+            ),
+            tap(data => console.log('productFavorite', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
+
+    // Product Group List Distributor
+    paramProductGroupList = "cur_page=" + 1 + "&per_page=" + 100 + "&distributor_id=" + localStorage.getItem('id');
+    ProductGroupList$ = this.http.get<IObjectProductGroup>(`${this.ServerApiUrlProductDist}${'distributor/inventory/group/lists?'}${this.paramProductGroupList}`)
+        .pipe(
+            map(products => products.response_data),
+            tap(data => console.log('ProductGroupList', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
+
+
+    // product the selected Product Group
+    selectedProductGroup(data: any): void {
+        this.productGroupSelectedSubject.next(data);
     }
 
-    clickDataGroud(data) {
-        this.myMethodSubject.next(data);
+
+    // product the selected Transfer
+    clickDataTransfer(data): any {
+        this.myMethodSubjectTransfer.next(data);
     }
 
-    clickDataTransfer(data) :any {
-         this.myMethodSubjectTransfer.next(data);
-    }
 
-
-
-
-    getViewDefault(strUrl: string): Observable<any> {
-        return this.http.get<any>(this.ServerApiUrlProductDist + "distributor/inventory/default/lists?" + strUrl)
-            .pipe(
-                retry(1),
-                catchError(this.handleError)
-            )
-    }
-
-    getStockList(strUrl: string): Observable<IObjStock> {
-        return this.http.get<IObjStock>(this.ServerApiUrlProductDist + "distributor/inventory/default/lists_by_row?" + strUrl)
-            .pipe(
-                retry(1),
-                catchError(this.handleError)
-            )
-    }
 
     getViewDefaultID(strUrl: string): Observable<any> {
         return this.http.get<any>(this.ServerApiUrlProductDist + "distributor/inventory/key?" + strUrl)
@@ -89,16 +157,9 @@ export class ProductAPIService {
             )
     }
 
-    getInventoryLog(strUrl: string): Observable<any> {
-        return this.http.get<any>(this.ServerApiUrlProductDist + "distributor/inventory/product/log?" + strUrl)
-            .pipe(
-                retry(1),
-                catchError(this.handleError)
-            )
-    }
 
-    getInventoryLogId(strUrl: string): Observable<any> {
-        return this.http.get<any>(this.ServerApiUrlProductDist + "distributor/inventory/id?" + strUrl)
+    getInventoryLogId(strUrl: string): Observable<IObjStock> {
+        return this.http.get<IObjStock>(this.ServerApiUrlProductDist + "distributor/inventory/id?" + strUrl)
             .pipe(
                 retry(1),
                 catchError(this.handleError)
@@ -114,8 +175,8 @@ export class ProductAPIService {
             )
     }
 
-    getProductDetailSup(strUrl: string): Observable<any> {
-        return this.http.get<any>(this.ServerApiUrlProductSup + "supplier/product/id/" + strUrl)
+    getProductDetailSup(strUrl: string): Observable<IObjectProductList> {
+        return this.http.get<IObjectProductList>(this.ServerApiUrlProductSup + "supplier/product/id/" + strUrl)
             .pipe(
                 retry(1),
                 catchError(this.handleError)

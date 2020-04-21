@@ -15,10 +15,8 @@ import { DialogsModule } from '../../dialogs/dialogs.module';
 import { LayoutsModule } from '../../layouts/layouts.module';
 import { MapModule } from '../../map/map.module';
 import { ManageProductsComponent } from './manage-products.component';
-import { MyProductComponent } from './my-product-list/my-product.component';
+import { MyProductComponent } from './manage-product-list/manage-product.component';
 import { FarvoriteComponent } from './farvorite/farvorite.component';
-import { ProductsCreateComponent } from './products-create/products-create.component';
-import { ProductsDetailComponent } from './products-detail/products-detail.component';
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 @NgModule({
@@ -41,8 +39,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     ManageProductsComponent,
     MyProductComponent,
     FarvoriteComponent,
-    ProductsCreateComponent,
-    ProductsDetailComponent
 
   ]
 })

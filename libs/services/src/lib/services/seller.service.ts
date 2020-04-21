@@ -7,7 +7,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
 import { throwError, Subject } from 'rxjs';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
+
 
 export class SellerService {
     protected serverApiUrl = "https://api.gee-supply.com/v1-dealer/";
@@ -115,7 +118,7 @@ export class SellerService {
 
     postSalerepAccountUpdate(dataSend): Observable<any> {
         const res_api = this.serverApiUrl.concat("salerep/account/update");
-        return this.http.post<any>(res_api,dataSend)
+        return this.http.post<any>(res_api, dataSend)
             .pipe(
                 retry(1),
                 catchError(this.handleError)
@@ -124,7 +127,7 @@ export class SellerService {
 
     postSellerCreate(dataSend): Observable<any> {
         const res_api = this.serverApiUrl.concat("seller/create");
-        return this.http.post<any>(res_api,dataSend)
+        return this.http.post<any>(res_api, dataSend)
             .pipe(
                 retry(1),
                 catchError(this.handleError)
@@ -133,7 +136,7 @@ export class SellerService {
 
     postSellerUpdate(dataSend): Observable<any> {
         const res_api = this.serverApiUrl.concat("seller/update");
-        return this.http.post<any>(res_api,dataSend)
+        return this.http.post<any>(res_api, dataSend)
             .pipe(
                 retry(1),
                 catchError(this.handleError)
@@ -142,16 +145,16 @@ export class SellerService {
 
     postProductCreate(dataSend): Observable<any> {
         const res_api = this.serverApiUrl.concat("seller/product/save");
-        return this.http.post<any>(res_api,dataSend)
+        return this.http.post<any>(res_api, dataSend)
             .pipe(
                 retry(1),
                 catchError(this.handleError)
             )
     }
-    
+
     postUpdateProduct(dataSend): Observable<any> {
         const res_api = this.serverApiUrl.concat("seller/product/update/");
-        return this.http.post<any>(res_api,dataSend)
+        return this.http.post<any>(res_api, dataSend)
             .pipe(
                 retry(1),
                 catchError(this.handleError)
