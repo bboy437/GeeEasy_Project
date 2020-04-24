@@ -4,6 +4,7 @@ import { WarehouseListComponent } from './warehouse-list/warehouse-list.componen
 import { WarehouseCreateComponent } from './warehouse-create/warehouse-create.component';
 import { WarehouseDetailComponent } from './warehouse-detail/warehouse-detail.component';
 import { WarehouseComponent } from './warehouse.component';
+import { WarehouseCreateGuard } from './warehouse-create/warehouse-create-guard';
 
 
 const routes: Routes = [
@@ -12,7 +13,7 @@ const routes: Routes = [
     component: WarehouseComponent,
     children: [
       { path: "list", component: WarehouseListComponent },
-      { path: "create/:id", component: WarehouseCreateComponent },
+      { path: "create/:id", canDeactivate: [WarehouseCreateGuard], component: WarehouseCreateComponent },
       { path: "detail/:id", component: WarehouseDetailComponent }
     ]
   }

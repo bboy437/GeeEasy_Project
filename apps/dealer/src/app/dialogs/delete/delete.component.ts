@@ -9,6 +9,7 @@ import { NbDialogRef } from '@nebular/theme';
 export class DeleteComponent implements OnInit {
   @Input() icon: string;
   @Input() title: string;
+  @Input() txtName: string;
 
   constructor(
     protected ref: NbDialogRef<DeleteComponent>,

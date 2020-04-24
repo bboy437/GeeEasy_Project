@@ -1,0 +1,28 @@
+@import "../../../../../../../../../libs/theme/src/lib/styles/themes";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+.table {
+  tbody {
+    tr {
+      td {
+        &.active {
+          color: white;
+          background-color: #1a34b8;
+        }
+      }
+    }
+  }
+}
+
+thead {
+  font-size: 14px;
+  text-align: center;
+}
+
+@include nb-install-component() {}
+.list {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+

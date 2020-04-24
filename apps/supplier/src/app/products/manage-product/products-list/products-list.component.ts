@@ -62,31 +62,6 @@ export class ProductsListComponent implements OnInit {
         this.callApi(e => {
             // completed
         });
-
-
-
-        const user = {
-            id: 1,
-            name: 'BBOY',
-            age: 18,
-            arr1: {
-                id: 2, name: 'POPY', age: 18,
-                arr2: {
-                    id: 3, name: 'TT', age: 18,
-                    arr3: {
-                        id: 4, name: 'BB', age: 18,
-                    }
-                }
-            }
-        };
-
-        const { arr1: { arr2: { arr3: { name }, }, }, } = user;
-        console.log(name); //prints: BB
-
-
-
-
-
     }
 
     callApi(callback) {

@@ -1,7 +1,7 @@
-<div class="pages" [formGroup]="dealersFrom">
+<div class="pages" [formGroup]="Form">
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-            <nb-card style="padding: 0;">
+            <nb-card>
                 <nb-card-header>
                     <div class="cover-header header">
                         <div class="row">
@@ -12,10 +12,10 @@
                                 <label *ngIf="RowID != 'new'">Dealers <span class="p-0-12">/</span> Update</label>
                             </div>
                             <div class="col-auto">
-                                <button [disabled]="!dealersFrom.valid" *ngIf="RowID == 'new'" style="float: right;margin: 3px 0px 3px 1rem;"
+                                <button [disabled]="!Form.valid" *ngIf="RowID == 'new'" style="float: right;margin: 3px 0px 3px 1rem;"
                                     [nbSpinner]="image.update" nbSpinnerStatus="success" nbButton size="medium"
                                     status="success" (click)="btnSaveClick()">Save</button>
-                                <button [disabled]="!dealersFrom.valid" *ngIf="RowID != 'new'" style="float: right;margin: 3px 0px 3px 1rem;"
+                                <button [disabled]="!Form.valid" *ngIf="RowID != 'new'" style="float: right;margin: 3px 0px 3px 1rem;"
                                     [nbSpinner]="image.update" nbSpinnerStatus="success" nbButton size="medium"
                                     status="success" (click)="btnSaveClick()">Update</button>
                                 <button *ngIf="RowID == 'new'" nbButton style="float: right;margin: 3px 0px 3px 1rem;"
@@ -45,13 +45,13 @@
                                             <div class="col-12">
                                                 <project-input inputType="text" label="Dealer Keyword :"
                                                     requiredName="Dealer Keyword"
-                                                    [control]="dealersFrom.get('dealersName')">
+                                                    [control]="Form.get('dealersName')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
                                                 <project-input libOnly="libOnlyProductName" inputType="text"
                                                     label="Dealer Name :" requiredName="Dealer Name"
-                                                    [control]="dealersFrom.get('productcategory')">
+                                                    [control]="Form.get('productcategory')">
                                                 </project-input>
                                             </div>
                                         </div>
@@ -72,24 +72,24 @@
                                             <div class="col-12">
                                                 <project-input libOnly="libOnlyCharacter" inputType="text"
                                                     label="First Name :" requiredName="First Name"
-                                                    [control]="dealersFrom.get('firstName')">
+                                                    [control]="Form.get('firstName')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
                                                 <project-input libOnly="libOnlyCharacter" inputType="text"
                                                     label="Last Name :" requiredName="Last Name"
-                                                    [control]="dealersFrom.get('lastName')">
+                                                    [control]="Form.get('lastName')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
                                                 <project-input inputType="text" label="Company Name :"
                                                     requiredName="Company Name"
-                                                    [control]="dealersFrom.get('companyName')">
+                                                    [control]="Form.get('companyName')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
                                                 <project-input inputType="text" label="Email :" requiredName="Email"
-                                                    [control]="dealersFrom.get('emailAddress')">
+                                                    [control]="Form.get('emailAddress')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
@@ -171,19 +171,19 @@
                                             </div>
                                             <div class="col-12">
                                                 <project-textarea rows="3" label="Address :" requiredName="Address"
-                                                    [control]="dealersFrom.get('addressFull')">
+                                                    [control]="Form.get('addressFull')">
                                                 </project-textarea>
                                             </div>
                                             <div class="col-12">
                                                 <project-input inputType="text" label="Address Number :"
                                                     requiredName="Address Number"
-                                                    [control]="dealersFrom.get('addressNo')">
+                                                    [control]="Form.get('addressNo')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
                                                 <project-ngx-select label="Province :" requiredName="Province"
                                                     optionValueField="location_name" optionTextField="location_name"
-                                                    [items]="arrProvince" [control]="dealersFrom.get('province')"
+                                                    [items]="arrProvince" [control]="Form.get('province')"
                                                     placeholder="--------- Choose ---------"
                                                     (valueChange)='changeProvince($event)'>
                                                 </project-ngx-select>
@@ -191,7 +191,7 @@
                                             <div class="col-12">
                                                 <project-ngx-select label="Amphoe :" requiredName="Amphoe"
                                                     optionValueField="location_name" optionTextField="location_name"
-                                                    [items]="arrAmphoe" [control]="dealersFrom.get('amphoe')"
+                                                    [items]="arrAmphoe" [control]="Form.get('amphoe')"
                                                     placeholder="--------- Choose ---------"
                                                     (valueChange)='changeAmphoe($event)'>
                                                 </project-ngx-select>
@@ -199,20 +199,20 @@
                                             <div class="col-12">
                                                 <project-ngx-select label="Tambon :" requiredName="Tambon"
                                                     optionValueField="location_name" optionTextField="location_name"
-                                                    [items]="arrTambon" [control]="dealersFrom.get('tambon')"
+                                                    [items]="arrTambon" [control]="Form.get('tambon')"
                                                     placeholder="--------- Choose ---------"
                                                     (valueChange)='changeTambon($event)'>
                                                 </project-ngx-select>
                                             </div>
                                             <div class="col-6">
                                                 <project-input inputType="text" label="Zipcode :" requiredName="Zipcode"
-                                                    [control]="dealersFrom.get('zipcode')">
+                                                    [control]="Form.get('zipcode')">
                                                 </project-input>
                                             </div>
                                             <div class="col-6">
                                                 <project-input inputType="text" label="Latitude Longitude :"
                                                     requiredName="Latitude Longitude"
-                                                    [control]="dealersFrom.get('latitudeAndLongitude')">
+                                                    [control]="Form.get('latitudeAndLongitude')">
                                                 </project-input>
                                             </div>
                                         </div>  

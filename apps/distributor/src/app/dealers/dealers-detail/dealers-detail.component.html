@@ -1,4 +1,4 @@
-<div class="cover-pages" [formGroup]="dealersFrom">
+<div class="cover-pages" [formGroup]="dealersForm">
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card style="padding: 0;">
@@ -55,12 +55,12 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <project-input inputType="text" label="Dealer Name :"
-                                                    [control]="dealersFrom.get('dealer_name')">
+                                                    [control]="dealersForm.get('dealer_name')">
                                                 </project-input>
                                             </div>
                                             <div class="col-lg-12">
                                                 <project-input inputType="text" label="Dealer Keyword :"
-                                                    [control]="dealersFrom.get('dealer_tag')">
+                                                    [control]="dealersForm.get('dealer_tag')">
                                                 </project-input>
                                             </div>
                                         </div>
@@ -73,32 +73,32 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <project-input inputType="text" label="First Name :"
-                                                    [control]="dealersFrom.get('dealer_first_name')">
+                                                    [control]="dealersForm.get('dealer_first_name')">
                                                 </project-input>
                                             </div>
                                             <div class="col-lg-12">
                                                 <project-input inputType="text" label="Last Name :"
-                                                    [control]="dealersFrom.get('dealer_last_name')">
+                                                    [control]="dealersForm.get('dealer_last_name')">
                                                 </project-input>
                                             </div>
                                             <div class="col-lg-12">
                                                 <project-input inputType="text" label="Last Name :"
-                                                    [control]="dealersFrom.get('dealer_company')">
+                                                    [control]="dealersForm.get('dealer_company')">
                                                 </project-input>
                                             </div>
                                             <div class="col-lg-12">
                                                 <project-input inputType="text" label="Email :"
-                                                    [control]="dealersFrom.get('dealer_email')">
+                                                    [control]="dealersForm.get('dealer_email')">
                                                 </project-input>
                                             </div>
                                             <div class="col-lg-12">
                                                 <project-input inputType="text" label="Telephone Number :"
-                                                    [control]="dealersFrom.get('dealer_tel')">
+                                                    [control]="dealersForm.get('dealer_tel')">
                                                 </project-input>
                                             </div>
                                             <div class="col-lg-12">
                                                 <project-input inputType="text" label="Mobile Phone Number :"
-                                                    [control]="dealersFrom.get('dealer_mobile')">
+                                                    [control]="dealersForm.get('dealer_mobile')">
                                                 </project-input>
                                             </div>
                                         </div>
@@ -107,37 +107,37 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <project-textarea rows="3" label="Address :"
-                                                    [control]="dealersFrom.get('dealer_addr_full')">
+                                                    [control]="dealersForm.get('dealer_addr_full')">
                                                 </project-textarea>
                                             </div>
                                             <div class="col-lg-12">
                                                 <project-input inputType="text" label="Number :"
-                                                    [control]="dealersFrom.get('dealer_addr_number')">
+                                                    [control]="dealersForm.get('dealer_addr_number')">
                                                 </project-input>
                                             </div>
                                             <div class="col-lg-12">
                                                 <project-input inputType="text" label="Province :"
-                                                    [control]="dealersFrom.get('dealer_addr_province')">
+                                                    [control]="dealersForm.get('dealer_addr_province')">
                                                 </project-input>
                                             </div>
                                             <div class="col-lg-12">
                                                 <project-input inputType="text" label="Amphoe :"
-                                                    [control]="dealersFrom.get('dealer_addr_amphoe')">
+                                                    [control]="dealersForm.get('dealer_addr_amphoe')">
                                                 </project-input>
                                             </div>
                                             <div class="col-lg-12">
                                                 <project-input inputType="text" label="Tambon :"
-                                                    [control]="dealersFrom.get('dealer_addr_tambon')">
+                                                    [control]="dealersForm.get('dealer_addr_tambon')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                                                 <project-input inputType="text" label="Zipcode :"
-                                                    [control]="dealersFrom.get('dealer_addr_post')">
+                                                    [control]="dealersForm.get('dealer_addr_post')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                                                 <project-input inputType="text" label="Latitude Longitude :"
-                                                    [control]="dealersFrom.get('lat_long')">
+                                                    [control]="dealersForm.get('lat_long')">
                                                 </project-input>
                                             </div>
                                         </div>

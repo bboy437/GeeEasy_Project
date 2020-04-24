@@ -34,7 +34,7 @@ export class ProductsCreateComponent implements OnInit {
   arrWarehouse: any = [];
   arrUnitWH = [{ unit_name: "cm" }];
   arrUnitWeight = [{ unit_name: "kg" }];
-  productForm: FormGroup;
+  Form: FormGroup;
   submitted = false;
   strWholesal = false;
   imagePath: any = [];
@@ -172,7 +172,7 @@ export class ProductsCreateComponent implements OnInit {
   }
 
   buildForm() {
-    this.productForm = this.formBuilder.group({
+    this.Form = this.formBuilder.group({
       productCategory: ["", Validators.required],
       productName: ["", Validators.required],
       productPrice: ["", Validators.required],
@@ -195,11 +195,11 @@ export class ProductsCreateComponent implements OnInit {
       wholesale: this.formBuilder.array([])
     });
     // product_channel: ['', Validators.required],
-    this.productForm.get("product_currency_code").patchValue("THB");
-    this.productForm.get("width_unit").patchValue("cm");
-    this.productForm.get("height_unit").patchValue("cm");
-    this.productForm.get("weight_unit").patchValue("kg");
-    this.productForm.get("product_country").patchValue("Thailand");
+    this.Form.get("product_currency_code").patchValue("THB");
+    this.Form.get("width_unit").patchValue("cm");
+    this.Form.get("height_unit").patchValue("cm");
+    this.Form.get("weight_unit").patchValue("kg");
+    this.Form.get("product_country").patchValue("Thailand");
   }
 
   editForm() {
@@ -209,7 +209,7 @@ export class ProductsCreateComponent implements OnInit {
       this.arrobjRow.product_category_array
     );
 
-    this.productForm.patchValue({
+    this.Form.patchValue({
       productCategory: this.arrobjRow.product_category_array.length === 0 ? "" : this.arrobjRow.product_category_array[0].product_category_id,
       productName: this.arrobjRow.product_title,
       productPrice:
@@ -240,7 +240,7 @@ export class ProductsCreateComponent implements OnInit {
     });
 
     // product_channel: this.arrobjRow.product_channel,
-    this.productForm.get("initial_stock").disable();
+    this.Form.get("initial_stock").disable();
     this.active = this.arrobjRow.product_is_active;
 
     //check cate id 
@@ -255,15 +255,15 @@ export class ProductsCreateComponent implements OnInit {
   }
 
   get wholesale(): FormArray {
-    return this.productForm.get('wholesale') as FormArray;
+    return this.Form.get('wholesale') as FormArray;
   }
 
   get f() {
-    return this.productForm.controls;
+    return this.Form.controls;
   }
 
   onSubmit() {
-    if (this.productForm.invalid) {
+    if (this.Form.invalid) {
       return;
     }
   }
@@ -276,7 +276,7 @@ export class ProductsCreateComponent implements OnInit {
       if (this.RowID !== "new") {
         this.strUpdateName = this.arrobjRow.product_category_array.length === 0 ? "" : this.arrobjRow.product_category_array[0].product_category_name;
         setTimeout(() => {
-          this.productForm.get("productCategory").patchValue(this.arrobjRow.product_category_array.length === 0 ? "" : +this.arrobjRow.product_category_array[0].product_category_id);
+          this.Form.get("productCategory").patchValue(this.arrobjRow.product_category_array.length === 0 ? "" : +this.arrobjRow.product_category_array[0].product_category_id);
           this.product_category__name = this.arrobjRow.product_category_array.length === 0 ? "" : this.arrobjRow.product_category_array[0].product_category_name;
           console.log("this.product_category__name", this.product_category__name);
         }, 0);
@@ -292,9 +292,9 @@ export class ProductsCreateComponent implements OnInit {
       console.log("this.arrWarehouse : this.arrWarehouse", this.arrWarehouse);
       if (this.RowID !== "new") {
         setTimeout(() => {
-          this.productForm.get("warehouse_id").patchValue(+this.arrobjRow.product_warehouse_array[0].warehouse_id);
-          this.productForm.get("warehouse_name").patchValue(this.arrobjRow.product_warehouse_array[0].warehouse_name);
-          this.productForm.get("warehouse_name").disable();
+          this.Form.get("warehouse_id").patchValue(+this.arrobjRow.product_warehouse_array[0].warehouse_id);
+          this.Form.get("warehouse_name").patchValue(this.arrobjRow.product_warehouse_array[0].warehouse_name);
+          this.Form.get("warehouse_name").disable();
         }, 0);
       }
 
@@ -347,9 +347,9 @@ export class ProductsCreateComponent implements OnInit {
           this.formBuilder.group(result)
         );
 
-        const array = this.productForm.controls.wholesale.value
+        const array = this.Form.controls.wholesale.value
         array.sort((a, b) => a.qty_minimum - b.qty_minimum)
-        this.productForm.controls.wholesale.patchValue(array)
+        this.Form.controls.wholesale.patchValue(array)
 
       }
     });
@@ -357,16 +357,16 @@ export class ProductsCreateComponent implements OnInit {
 
   sortWholesale() {
     if (this.sort) {
-      const array = this.productForm.controls.wholesale.value;
+      const array = this.Form.controls.wholesale.value;
       array.sort((a, b) => b.qty_minimum - a.qty_minimum);
-      this.productForm.controls.wholesale.patchValue(array);
+      this.Form.controls.wholesale.patchValue(array);
 
       // this.arrWholesale.sort((a, b) => b.qty_minimum - a.qty_minimum);
       this.sort = false;
     } else {
-      const array = this.productForm.controls.wholesale.value;
+      const array = this.Form.controls.wholesale.value;
       array.sort((a, b) => a.qty_minimum - b.qty_minimum);
-      this.productForm.controls.wholesale.patchValue(array);
+      this.Form.controls.wholesale.patchValue(array);
 
       // this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
       this.sort = true;
@@ -383,7 +383,7 @@ export class ProductsCreateComponent implements OnInit {
       });
       dialogRef.onClose.subscribe(result => {
         if (result === "ok") {
-          this.productForm.get("initial_stock").patchValue(1);
+          this.Form.get("initial_stock").patchValue(1);
         }
       });
     }
@@ -407,9 +407,9 @@ export class ProductsCreateComponent implements OnInit {
   }
 
   onCheckWholesale(event) {
-    const array = this.productForm.controls.wholesale.value
+    const array = this.Form.controls.wholesale.value
     array.sort((a, b) => a.qty_minimum - b.qty_minimum)
-    this.productForm.controls.wholesale.patchValue(array)
+    this.Form.controls.wholesale.patchValue(array)
   }
 
   addWarehouse() {
@@ -424,7 +424,7 @@ export class ProductsCreateComponent implements OnInit {
   }
 
   deleteWholesale(i) {
-    const control = <FormArray>this.productForm.controls['wholesale'];
+    const control = <FormArray>this.Form.controls['wholesale'];
     control.removeAt(i);
     // this.arrWholesale.splice(i, 1);
   }
@@ -432,20 +432,20 @@ export class ProductsCreateComponent implements OnInit {
   categoryEvent(event) {
     if (event.product_category__id !== 0) {
       if (event.product_category__name === "Other") {
-        this.productForm
+        this.Form
           .get("productCategory")
           .patchValue(event.product_category__id);
-        this.productForm.get("category_custom_keyword").patchValue("");
+        this.Form.get("category_custom_keyword").patchValue("");
       } else {
-        this.productForm
+        this.Form
           .get("productCategory")
           .patchValue(event.product_category__id);
-        this.productForm.get("category_custom_keyword").patchValue("-");
+        this.Form.get("category_custom_keyword").patchValue("-");
       }
       this.product_category__name = event.product_category__name;
     } else {
-      this.productForm.get("productCategory").patchValue("");
-      this.productForm.get("category_custom_keyword").patchValue("-");
+      this.Form.get("productCategory").patchValue("");
+      this.Form.get("category_custom_keyword").patchValue("-");
       this.product_category__name = event.product_category__name;
     }
     console.log("event", event);
@@ -472,17 +472,17 @@ export class ProductsCreateComponent implements OnInit {
 
   checkQtyMinimum() {
 
-    this.productForm.get("productName").patchValue(this.productForm.value.productName.replace(/[^\u0E00-\u0E7Fa-zA-Z_0-9 \.\-\(\)\&]/g, ""));
-    this.productForm.get("productSKU").patchValue(this.productForm.value.productSKU.replace(/[^a-zA-Z_0-9 \.\-]/g, ""));
-    this.productForm.get("productUnit").patchValue(this.productForm.value.productUnit.replace(/[^\u0E00-\u0E7Fa-zA-Z \.\-]/g, ""));
-    this.productForm.get("product_barcode").patchValue(this.productForm.value.product_barcode.replace(/[^A-Z_0-9]/g, ""));
+    this.Form.get("productName").patchValue(this.Form.value.productName.replace(/[^\u0E00-\u0E7Fa-zA-Z_0-9 \.\-\(\)\&]/g, ""));
+    this.Form.get("productSKU").patchValue(this.Form.value.productSKU.replace(/[^a-zA-Z_0-9 \.\-]/g, ""));
+    this.Form.get("productUnit").patchValue(this.Form.value.productUnit.replace(/[^\u0E00-\u0E7Fa-zA-Z \.\-]/g, ""));
+    this.Form.get("product_barcode").patchValue(this.Form.value.product_barcode.replace(/[^A-Z_0-9]/g, ""));
 
-    console.log(this.productForm.value);
+    console.log(this.Form.value);
 
     //Check Vailidate
     this.submitted = true;
     if (
-      this.productForm.invalid ||
+      this.Form.invalid ||
       this.product.update ||
       !this.product.product_image_array_state
     ) {
@@ -490,13 +490,19 @@ export class ProductsCreateComponent implements OnInit {
     }
 
     //Check Qty Minimum
-    const array = this.productForm.controls.wholesale.value
+    const array = this.Form.controls.wholesale.value
     const lookup = array.reduce((a, e) => {
       a[e.qty_minimum] = ++a[e.qty_minimum] || 0;
       return a;
     }, {});
 
     const value = array.filter(e => lookup[e.qty_minimum]);
+    console.log(value);
+    for (let index = 0; index < value.length; index++) {
+      const element = value[index];
+      element.product_currency_code = this.Form.value.product_currency_code
+    }
+
 
     if (value.length > 0) {
       const dialogRef = this.dialogService.open(AleartComponent, {
@@ -523,7 +529,7 @@ export class ProductsCreateComponent implements OnInit {
         this.product.product_image_array_state = state;
 
         //Check Whosale
-        const array = this.productForm.controls.wholesale.value
+        const array = this.Form.controls.wholesale.value
         array.forEach(element => {
           element.product_price = +element.product_price;
           element.retail_product_price = +element.retail_product_price;
@@ -540,13 +546,13 @@ export class ProductsCreateComponent implements OnInit {
         };
         this.channelArray().inArrayObjectInput(channel.one, this.channel.one);
 
-        console.log("productForm", this.productForm);
+        console.log("Form", this.Form);
 
 
         //Check SKU
         const dataJson = {
           distributor_id: this.id_local,
-          product_sku: this.productForm.value.productSKU
+          product_sku: this.Form.value.productSKU
         };
         console.log("SKU : dataJson", dataJson);
 
@@ -601,10 +607,10 @@ export class ProductsCreateComponent implements OnInit {
               }
             });
         } else {
-          console.log("productForm", this.productForm.value.sku);
-          console.log("productForm", this.productForm.value.productSKU);
+          console.log("Form", this.Form.value.sku);
+          console.log("Form", this.Form.value.productSKU);
           if (
-            this.productForm.value.sku === this.productForm.value.productSKU
+            this.Form.value.sku === this.Form.value.productSKU
           ) {
             this.product.update = true;
             const dataSend = {
@@ -697,8 +703,8 @@ export class ProductsCreateComponent implements OnInit {
   }
 
   save() {
-    this.productForm.get("initial_stock").enable();
-    this.productForm.get("warehouse_id").enable();
+    this.Form.get("initial_stock").enable();
+    this.Form.get("warehouse_id").enable();
 
     if (this.RowID === "new") {
       const dataJson = {
@@ -707,26 +713,26 @@ export class ProductsCreateComponent implements OnInit {
           this.product.main_image.port.length > 0
             ? this.product.main_image.port[0].image_url
             : "-",
-        product_title: this.productForm.value.productName,
-        product_buy_price: +this.productForm.value.productPrice,
+        product_title: this.Form.value.productName,
+        product_buy_price: +this.Form.value.productPrice,
         product_price: +this.wholesale.value[0].product_price,
-        product_sku: this.productForm.value.productSKU,
-        product_unit: this.productForm.value.productUnit,
-        product_wholesale_array: this.productForm.controls.wholesale.value,
-        product_category_id: +this.productForm.value.productCategory,
-        category_custom_keyword: this.productForm.value.category_custom_keyword,
-        product_currency_code: this.productForm.value.product_currency_code,
-        product_barcode: this.productForm.value.product_barcode,
-        product_country: this.productForm.value.product_country,
+        product_sku: this.Form.value.productSKU,
+        product_unit: this.Form.value.productUnit,
+        product_wholesale_array: this.Form.controls.wholesale.value,
+        product_category_id: +this.Form.value.productCategory,
+        category_custom_keyword: this.Form.value.category_custom_keyword,
+        product_currency_code: this.Form.value.product_currency_code,
+        product_barcode: this.Form.value.product_barcode,
+        product_country: this.Form.value.product_country,
         product_channel: this.channel.one.channel,
         product_image_array: this.product.product_image_array.port,
         product_is_active: this.active,
-        onhand: +this.productForm.value.initial_stock,
+        onhand: +this.Form.value.initial_stock,
         product_warehouse_array: [
           {
-            warehouse_id: +this.productForm.value.warehouse_id,
+            warehouse_id: +this.Form.value.warehouse_id,
             warehouse_name: this.warehouse_name,
-            onhand: +this.productForm.value.initial_stock,
+            onhand: +this.Form.value.initial_stock,
             available: 0,
             incoming: 0,
             outgoing: 0,
@@ -734,12 +740,12 @@ export class ProductsCreateComponent implements OnInit {
           }
         ],
         product_attribute: {
-          weight: +this.productForm.value.weight,
-          weight_unit: this.productForm.value.weight_unit,
-          height: +this.productForm.value.height,
-          height_unit: this.productForm.value.height_unit,
-          width: +this.productForm.value.width,
-          width_unit: this.productForm.value.width_unit,
+          weight: +this.Form.value.weight,
+          weight_unit: this.Form.value.weight_unit,
+          height: +this.Form.value.height,
+          height_unit: this.Form.value.height_unit,
+          width: +this.Form.value.width,
+          width_unit: this.Form.value.width_unit,
         }
       };
       console.log(dataJson);
@@ -747,6 +753,7 @@ export class ProductsCreateComponent implements OnInit {
         .addProductsDistributor(JSON.stringify(dataJson))
         .subscribe(data => {
           console.log(data);
+          this.Form.reset();
           this.router.navigate([this.URLRputer_ProductList]);
         });
     } else {
@@ -757,27 +764,27 @@ export class ProductsCreateComponent implements OnInit {
           this.product.main_image.port.length > 0
             ? this.product.main_image.port[0].image_url
             : "-",
-        product_title: this.productForm.value.productName,
-        product_buy_price: +this.productForm.value.productPrice,
+        product_title: this.Form.value.productName,
+        product_buy_price: +this.Form.value.productPrice,
         product_price: +this.wholesale.value[0].product_price,
-        product_sku: this.productForm.value.productSKU,
-        product_unit: this.productForm.value.productUnit,
-        product_wholesale_array: this.productForm.controls.wholesale.value,
-        product_category_id: +this.productForm.value.productCategory,
+        product_sku: this.Form.value.productSKU,
+        product_unit: this.Form.value.productUnit,
+        product_wholesale_array: this.Form.controls.wholesale.value,
+        product_category_id: +this.Form.value.productCategory,
         product_id: this.arrobjRow.product_id,
-        category_custom_keyword: this.productForm.value.category_custom_keyword,
-        product_currency_code: this.productForm.value.product_currency_code,
-        product_barcode: this.productForm.value.product_barcode,
-        product_country: this.productForm.value.product_country,
+        category_custom_keyword: this.Form.value.category_custom_keyword,
+        product_currency_code: this.Form.value.product_currency_code,
+        product_barcode: this.Form.value.product_barcode,
+        product_country: this.Form.value.product_country,
         product_channel: this.channel.one.channel,
         product_image_array: this.product.product_image_array.port,
         product_is_active: this.active,
-        onhand: +this.productForm.value.initial_stock,
+        onhand: +this.Form.value.initial_stock,
         product_warehouse_array: [
           {
             warehouse_id: +this.arrobjRow.product_warehouse_array[0].warehouse_id,
             warehouse_name: this.arrobjRow.product_warehouse_array[0].warehouse_name,
-            onhand: +this.productForm.value.initial_stock,
+            onhand: +this.Form.value.initial_stock,
             available: 0,
             incoming: 0,
             outgoing: 0,
@@ -785,12 +792,12 @@ export class ProductsCreateComponent implements OnInit {
           }
         ],
         product_attribute: {
-          weight: +this.productForm.value.weight,
-          weight_unit: this.productForm.value.weight_unit,
-          height: +this.productForm.value.height,
-          height_unit: this.productForm.value.height_unit,
-          width: +this.productForm.value.width,
-          width_unit: this.productForm.value.width_unit,
+          weight: +this.Form.value.weight,
+          weight_unit: this.Form.value.weight_unit,
+          height: +this.Form.value.height,
+          height_unit: this.Form.value.height_unit,
+          width: +this.Form.value.width,
+          width_unit: this.Form.value.width_unit,
         }
       };
       console.log(dataJson);
@@ -798,33 +805,18 @@ export class ProductsCreateComponent implements OnInit {
         .updateProductsDistributor(JSON.stringify(dataJson))
         .subscribe(data => {
           console.log(data);
+          this.Form.reset();
           this.router.navigate([this.URLRputer_ProductList]);
         });
     }
   }
 
   btnCancelClick() {
-    const dialogRef = this.dialogService.open(DialogsCancelComponent, {});
-
-    dialogRef.onClose.subscribe(result => {
-      if (result === "cancel") {
-      }
-      if (result === "ok") {
-        this.router.navigate([this.URLRputer_ProductList]);
-      }
-    });
+    this.router.navigate([this.URLRputer_ProductList]);
   }
 
   btnBackClick() {
-    const dialogRef = this.dialogService.open(DialogsCancelComponent, {});
-
-    dialogRef.onClose.subscribe(result => {
-      if (result === "cancel") {
-      }
-      if (result === "ok") {
-        this.router.navigate([this.URLRputer_ProductDetail, this.RowID, this.status]);
-      }
-    });
+    this.router.navigate([this.URLRputer_ProductDetail, this.RowID, this.status]);
   }
 
   uploadFile(event) {

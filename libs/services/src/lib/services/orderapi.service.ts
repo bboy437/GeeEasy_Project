@@ -6,7 +6,8 @@ import 'rxjs/add/operator/delay';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, map, tap } from 'rxjs/operators';
+import { IObjectOrder, IOrderList } from '@project/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -14,22 +15,27 @@ import { catchError, retry } from 'rxjs/operators';
 
 export class OrderAPIService {
 
-
-  protected ServerApiUrlTest = "http://private-7cc4cf-geeesyapiblueprint.apiary-mock.com/distributor/place_order/lists?cur_page=1&per_page=10&dealer_id=400";
-  protected ServerApiUrls = "https://api.gee-supply.com/v1/";
-  protected ServerApiUrlDist = "https://api.gee-supply.com/v1-dist/";
-  protected ServerApiUrlSup = "https://api.gee-supply.com/v1-sup/";
   protected ServerApiUrlDealer = "https://api.gee-supply.com/v1-dealer/";
+
   constructor(private http: HttpClient) {
   }
 
 
-  // Http Options
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  }
+  // Order List Distributor
+  paramOrderList = "cur_page=" + 1 + "&per_page=" + 100 + "&distributor_id=" + localStorage.getItem('id') + "&short=" + 1;
+  orderList$ = this.http.get<IObjectOrder>(`${this.ServerApiUrlDealer}${'distributor/place_order/lists?'}${this.paramOrderList}`)
+    .pipe(
+      map(orders =>
+        orders.response_data.map(order => ({
+          ...order,
+          dealer_name: order.dealer_data[0].dealer_name.split(",")
+        }) as IOrderList)
+      ),
+      tap(data => console.log('orderList', data)),
+      // shareReplay(1),
+      catchError(this.handleError)
+    );
+
 
   getOrderList(strUrl: string): Observable<any> {
     return this.http.get<any>(this.ServerApiUrlDealer + "distributor/place_order/lists?" + strUrl)
@@ -46,14 +52,6 @@ export class OrderAPIService {
         catchError(this.handleError)
       )
   }
-
-  // getOrderList(strUrl: string): Observable<any> {
-  //   return this.http.get<any>(this.ServerApiUrl + strUrl)
-  //     .pipe(
-  //       retry(1),
-  //       catchError(this.handleError)
-  //     )
-  // }
 
 
   newOrder(objbody: any): Observable<any> {

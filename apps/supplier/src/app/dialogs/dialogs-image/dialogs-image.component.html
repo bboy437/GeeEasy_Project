@@ -1,59 +1,54 @@
-<div class="pages">
-    <nb-card *ngIf="status =='img'" style="width: 1000px; height: 600px;">
-        <nb-card-header>
-            <div class="header">
-                <nb-icon icon="browser-outline"></nb-icon>
-                <label>Image</label>
-            </div>
-        </nb-card-header>
-        <nb-card-body>
-            <div class="header">
-                <div class="row">
-                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+<div class="pages" [formGroup]="Form">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card *ngIf="status =='img'" class="img">
+                <nb-card-header>
+                    <div class="header">
+                        <nb-icon icon="browser-outline"></nb-icon>
+                        <label>Image</label>
+                    </div>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="body">
                         <project-file-upload-note theme="dark" [image_url_array]="product.product_image_array.get">
                         </project-file-upload-note>
                     </div>
-                </div>
-            </div>
-        </nb-card-body>
-        <nb-card-footer>
-            <div class="row">
-                <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="text-align: center;padding-top: 1rem;">
-                    <button nbButton style="width: 100px" status="success" (click)="btnOKClick()">OK</button>
-                </div>
-            </div>
-        </nb-card-footer>
-    </nb-card>
-    <nb-card *ngIf="status =='note'" style="width: 400px;">
-        <nb-card-header>
-            <div class="header">
-                <nb-icon icon="browser-outline"></nb-icon>
-                <label>Note</label>
-            </div>
-        </nb-card-header>
-        <nb-card-body>
-            <div class="header" [formGroup]="Form">
-                <div class="row">
-                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                </nb-card-body>
+                <nb-card-footer>
+                    <div class="body">
+                        <div class="d-flex justify-content-center">
+                            <button nbButton style="width: 100px" status="success" (click)="btnOKClick()">OK</button>
+                        </div>
+                    </div>
+                </nb-card-footer>
+            </nb-card>
+            <nb-card *ngIf="status =='note'" class="note">
+                <nb-card-header>
+                    <div class="header">
+                        <nb-icon icon="browser-outline"></nb-icon>
                         <label>Note</label>
-                        <textarea disabled rows="5" nbInput status="primary" type="text" nbInput fullWidth formControlName="note"
-                            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.note.errors }">
-                            </textarea>
-                        <div *ngIf="submitted && !!f.note.errors" class="invalid-feedback">
-                            <div style="text-align: left" *ngIf="!!f.note.errors.required">
-                                Note Name is required
+                    </div>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <label>Note</label>
+                                <textarea rows="5" nbInput status="primary" type="text" fullWidth
+                                    formControlName="note">
+                                 </textarea>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </nb-card-body>
-        <nb-card-footer>
-            <div class="row">
-                <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="text-align: center;padding-top: 1rem;">
-                    <button nbButton style="width: 100px" status="success" (click)="btnOKClick()">OK</button>
-                </div>
-            </div>
-        </nb-card-footer>
-    </nb-card>
+                </nb-card-body>
+                <nb-card-footer>
+                    <div class="body">
+                        <div class="d-flex justify-content-center">
+                            <button nbButton style="width: 100px" status="success" (click)="btnOKClick()">OK</button>
+                        </div>
+                    </div>
+                </nb-card-footer>
+            </nb-card>
+        </div>
+    </div>
 </div>

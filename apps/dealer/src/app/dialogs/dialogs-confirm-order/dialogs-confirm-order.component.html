@@ -1,150 +1,119 @@
-<!-- Confrim -->
 <div class="pages">
-    <nb-card *ngIf="status == 'confirmPaid'">
-        <nb-card-header>
-            <style type="text/css">
-                nb-icon {
-                    font-size: 2rem;
-                    line-height: 0.8;
-                    padding-right: 0.5rem;
-                }
-            </style>
-            <nb-icon icon="shuffle-2-outline"></nb-icon>
-            <label style="font-size: 18px; font-weight: bold">Confirm Payment</label>
-        </nb-card-header>
-        <nb-card-body>
-            <form [formGroup]="From" (ngSubmit)="onSubmit()">
-                <div class="row">
-                    <div class="col-md-12">
-                        <label>Status</label>
-                        <nb-select placeholder="-------------- Choose ---------------" formControlName="confirm_id"
-                            fullWidth outline status="primary" [(ngModel)]="arrobjRow.confirm_id"
-                            (selectedChange)="changeConfirm($event)">
-                            <nb-option [value]=0>No Confirm Name</nb-option>
-                            <nb-option [value]=1>Fully Paid</nb-option>
-                            <nb-option [value]=2>Partailly Paid</nb-option>
-                        </nb-select>
-                        <div *ngIf="submitted && !!f.confirm_id.errors" class="invalid-feedback">
-                            <div style="text-align: left" *ngIf="!!f.confirm_id.errors.required">
-                                Status is required
-                            </div>
-                        </div><br><br>
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+
+            <nb-card *ngIf="status == 'confirmPaid'" [formGroup]="From">
+                <nb-card-header class="dialogs">
+                    <div class="header">
+                        <nb-icon icon="shuffle-2-outline"></nb-icon>
+                        <label>Confirm Payment</label>
                     </div>
-                    <div class="col-md-12">
-                        <label>Balance</label>
-                        <input nbInput status="primary" type="text" libOnlyCharacternumber mask="separator.2"
-                            thousandSeparator="," nbInput fullWidth formControlName="confirm_balance"
-                            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.confirm_balance.errors }"
-                            [(ngModel)]="arrobjRow.confirm_balance" (keydown)="keyDown($event)" />
-                        <div *ngIf="submitted && !!f.confirm_balance.errors" class="invalid-feedback">
-                            <div style="text-align: left" *ngIf="!!f.confirm_balance.errors.required">
-                                Balance is required
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Status</label>
+                                <nb-select placeholder="-------------- Choose ---------------"
+                                    formControlName="confirm_id" fullWidth outline status="primary"
+                                    (selectedChange)="changeConfirm($event)">
+                                    <nb-option [value]=0>No Confirm Name</nb-option>
+                                    <nb-option [value]=1>Fully Paid</nb-option>
+                                    <nb-option [value]=2>Partailly Paid</nb-option>
+                                </nb-select>
+                                <div *ngIf="submitted && !!f.confirm_id.errors" class="invalid-feedback">
+                                    <div style="text-align: left" *ngIf="!!f.confirm_id.errors.required">
+                                        Status is required
+                                    </div>
+                                </div>
                             </div>
-                        </div><br>
-                    </div>
-                    <div class="col-md-12">
-                        <label>Reference Number</label>
-                        <input nbInput status="primary" type="text" fullWidth formControlName="confirm_reference"
-                            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.confirm_reference.errors }"
-                            [(ngModel)]="arrobjRow.confirm_reference" />
-                        <div *ngIf="submitted && !!f.confirm_reference.errors" class="invalid-feedback">
-                            <div style="text-align: left" *ngIf="!!f.confirm_reference.errors.required">
-                                Reference is required
+                            <div class="col-12">
+                                <project-input inputType="text" libOnly="libOnlyCharacternumber" mask="separator.2"
+                                    thousandSeparator="," label="Balance :" requiredName="Balance"
+                                    [control]="From.get('confirm_balance')" (keydown)="keyDown($event)">
+                                </project-input>
+                            </div>
+                            <div class="col-12">
+                                <project-input inputType="text" libOnly="libOnlyCharacternumber" mask="separator.2"
+                                    thousandSeparator="," label="Reference Number :" requiredName="Reference Number"
+                                    [control]="From.get('confirm_reference')" (keydown)="keyDown($event)">
+                                </project-input>
                             </div>
                         </div>
+                        <div class="d-flex justify-content-center">
+                            <button nbButton style="width: 100px" status="danger"
+                                (click)="btnCancelClick()">Cancel</button>
+                            <button [disabled]="!From.valid" nbButton style="width: 100px; margin-left: 0.7rem;"
+                                status="success" (click)="btnComfrimPaidClick()">OK</button>
+                        </div>
                     </div>
-                </div>
-            </form><br>
-            <div class="row" style="text-align: center;">
-                <div class="col-md-12">
-                    <button nbButton style="width: 100px" status="danger"
-                        (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
-                    <button [disabled]="arrobjRow.confirm_id == 0" nbButton style="width: 100px" status="success"
-                        (click)="btnComfrimPaidClick()">OK</button>
-                </div>
-            </div><br>
-        </nb-card-body>
-    </nb-card>
+                </nb-card-body>
+            </nb-card>
 
-    <nb-card *ngIf="status == 'confirmOrder'">
-        <nb-card-header>
-            <style type="text/css">
-                nb-icon {
-                    font-size: 2rem;
-                    line-height: 0.8;
-                    padding-right: 0.5rem;
-                }
-            </style>
-            <nb-icon icon="shuffle-2-outline"></nb-icon>
-            <label style="font-size: 18px; font-weight: bold">Confirm</label>
-        </nb-card-header>
-        <nb-card-body>
-            <div class="row">
-                <div class="col-12" style="text-align: center;">
-                    <label style="font-size: 16px;">Are you sure you want to Confirm ?</label>
-                </div>
-            </div><br>
-            <div class="row" style="text-align: center;">
-                <div class="col-md-12">
-                    <button nbButton style="width: 100px" status="danger"
-                        (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
-                    <button nbButton style="width: 100px" status="success" (click)="comfrimOrder()">OK</button>
-                </div>
-            </div><br>
-        </nb-card-body>
-    </nb-card>
+            <nb-card *ngIf="status == 'confirmOrder'">
+                <nb-card-header class="dialogs">
+                    <div class="header">
+                        <nb-icon icon="shuffle-2-outline"></nb-icon>
+                        <label>Confirm</label>
+                    </div>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="d-flex justify-content-center" style="padding-bottom: 1rem;">
+                            <label style="font-size: 16px;">Are you sure you want to Confirm ?</label>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button nbButton style="width: 100px" status="danger"
+                                (click)="btnCancelClick()">Cancel</button>
+                            <button nbButton style="width: 100px; margin-left: 0.7rem;" status="success"
+                                (click)="comfrimOrder()">OK
+                            </button>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
 
-    <!-- Delivery -->
-    <nb-card *ngIf="status == 'confirmDelivery'">
-        <nb-card-header>
-            <style type="text/css">
-                nb-icon {
-                    font-size: 2rem;
-                    line-height: 0.8;
-                    padding-right: 0.5rem;
-                }
-            </style>
-            <nb-icon icon="shuffle-2-outline"></nb-icon>
-            <label style="font-size: 18px; font-weight: bold">Confirm Delivery</label>
-        </nb-card-header>
-        <nb-card-body>
-            <form [formGroup]="From1" (ngSubmit)="onSubmit()">
-                <div class="row">
-                    <div class="col-md-12">
-                        <label>Status</label>
-                        <nb-select placeholder="-------------- Choose ---------------" formControlName="confirm_id"
-                            fullWidth outline status="primary" (selectedChange)="changeDelivery($event)">
-                            <nb-option [value]="1">Fully Paid</nb-option>
-                            <nb-option [value]="2">Partailly Paid</nb-option>
-                        </nb-select>
-                        <div *ngIf="submitted && !!d.confirm_id.errors" class="invalid-feedback">
-                            <div style="text-align: left" *ngIf="!!d.confirm_id.errors.required">
-                                Status is required
-                            </div>
-                        </div><br><br>
+            <nb-card *ngIf="status == 'confirmDelivery'" [formGroup]="From1">
+                <nb-card-header class="dialogs">
+                    <div class="header">
+                        <nb-icon icon="shuffle-2-outline"></nb-icon>
+                        <label>Confirm Delivery</label>
                     </div>
-                    <div class="col-md-12">
-                        <label>Balance</label>
-                        <input nbInput status="primary" type="text" libOnlyCharacternumber mask="separator.2"
-                            thousandSeparator="," nbInput fullWidth formControlName="confirm_balance"
-                            class="form-control" [ngClass]="{ 'is-invalid': submitted && d.confirm_balance.errors }"
-                            (keydown)="keyDown($event)" />
-                        <div *ngIf="submitted && !!d.confirm_balance.errors" class="invalid-feedback">
-                            <div style="text-align: left" *ngIf="!!d.confirm_balance.errors.required">
-                                Balance is required
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Status</label>
+                                <nb-select placeholder="-------------- Choose ---------------"
+                                    formControlName="confirm_id" fullWidth outline status="primary"
+                                    (selectedChange)="changeDelivery($event)">
+                                    <nb-option [value]="1">Fully Paid</nb-option>
+                                    <nb-option [value]="2">Partailly Paid</nb-option>
+                                </nb-select>
+                                <div *ngIf="submitted && !!d.confirm_id.errors" class="invalid-feedback">
+                                    <div style="text-align: left" *ngIf="!!d.confirm_id.errors.required">
+                                        Status is required
+                                    </div>
+                                </div>
                             </div>
-                        </div><br><br>
+                            <div class="col-md-12">
+                                <project-input inputType="text" libOnly="libOnlyCharacternumber" mask="separator.2"
+                                    thousandSeparator="," label="Balance :" requiredName="Balance"
+                                    [control]="From1.get('confirm_balance')" (keydown)="keyDown($event)">
+                                </project-input>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <button nbButton style="width: 100px" status="danger"
+                                (click)="btnCancelClick()">Cancel</button>
+                            <button [disabled]="!From1.valid" nbButton style="width: 100px; margin-left: 0.7rem;"
+                                status="success" (click)="btnComfrimDeliveryClick()">OK</button>
+                        </div>
                     </div>
-                </div>
-            </form><br>
-            <div class="row" style="text-align: center;">
-                <div class="col-md-12">
-                    <button nbButton style="width: 100px" status="danger"
-                        (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
-                    <button [disabled]="!From1.valid" nbButton style="width: 100px" status="success"
-                        (click)="btnComfrimDeliveryClick()">OK</button>
-                </div>
-            </div><br>
-        </nb-card-body>
-    </nb-card>
+                </nb-card-body>
+            </nb-card>
+        </div>
+    </div>
 </div>

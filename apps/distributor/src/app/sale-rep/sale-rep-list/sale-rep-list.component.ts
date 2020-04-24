@@ -10,12 +10,12 @@ import { Component, OnInit, QueryList, ViewChildren } from "@angular/core";
 
 
 import { SaleRepService } from "@project/services";
-import { searchResult, iFSalerepAccount } from '@project/interfaces';
+import { searchResult, ISalerepAccount } from '@project/interfaces';
 
 import { WishlistTableService } from "./table-list.service";
 
 @Component({
-  selector: "sale-rep-list",
+  selector: "project-sale-rep-list",
   templateUrl: "./sale-rep-list.component.html",
   styleUrls: ["./sale-rep-list.component.scss"],
   providers: [WishlistTableService, DecimalPipe]
@@ -27,7 +27,7 @@ export class SaleRepListComponent implements OnInit {
 
   strFilter: string;
 
-  wishlist$: Observable<iFSalerepAccount[]>;
+  wishlist$: Observable<ISalerepAccount[]>;
   tatallist$: Observable<number>;
   ColumnMode = ColumnMode;
   loadings = false;

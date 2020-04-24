@@ -6,6 +6,9 @@ import { PurchaseOrderSaveComponent } from './purchase-order-save/purchase-order
 import { PurchaseOrderListComponent } from './purchase-order-list/purchase-order-list.component';
 import { PurchaseOrderCreateComponent } from './purchase-order-create/purchase-order-create.component';
 import { PurchaseReorderComponent } from './purchase-reorder/purchase-reorder.component';
+import { PurchaseOrderSaveGuard } from './purchase-order-save/purchase-order-save-guard';
+import { PurchaseReorderGuard } from './purchase-reorder/purchase-reorder-guard';
+import { PurchaseOrderCreateGuard } from './purchase-order-create/purchase-order-create-guard';
 
 const routes: Routes = [{
 
@@ -14,9 +17,9 @@ const routes: Routes = [{
   children: [
     { path: 'list', component: PurchaseOrderListComponent, },
     { path: 'detail/:status/:id', component: PurchaseOrderDetailComponent, },
-    { path: 'save', component: PurchaseOrderSaveComponent, },
-    { path: 'create', component: PurchaseOrderCreateComponent, },
-    { path: 'reorder/:status/:id', component: PurchaseReorderComponent, },
+    { path: 'save', canDeactivate: [PurchaseOrderSaveGuard], component: PurchaseOrderSaveComponent, },
+    { path: 'create', canDeactivate: [PurchaseOrderCreateGuard], component: PurchaseOrderCreateComponent, },
+    { path: 'reorder/:status/:id', canDeactivate: [PurchaseReorderGuard], component: PurchaseReorderComponent, },
   ],
 
 }];

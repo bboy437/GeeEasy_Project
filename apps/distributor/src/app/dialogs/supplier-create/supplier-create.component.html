@@ -1,72 +1,11 @@
-<nb-card>
-    <nb-card-body>
-        <!-- <form [formGroup]="from" (ngSubmit)="onSubmit()">
-            <div class="row">
-                <div class="col-md-12">
-                    <label>Supplier Name</label>
-                    <input nbInput status="primary" type="text" nbInput status="primary" fullWidth
-                        formControlName="suppliername" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && f.suppliername.errors }"
-                        [(ngModel)]="arrobjRow.supplier_name" />
-                    <div *ngIf="submitted && !!f.suppliername.errors" class="invalid-feedback">
-                        <div style="text-align: left" *ngIf="!!f.suppliername.errors.required">Supplier
-                            Name is
-                            required
-                        </div>
-                    </div>
-                </div>
-            </div><br>
-
-            <div class="row">
-                <div class="col-md-12">
-                    <label>Product Category</label>
-                    <nb-select placeholder="All Category" fullWidth outline status="primary"
-                        [(ngModel)]="arrobjRow.product_category_id" [ngModelOptions]="{standalone: true}">
-                        <nb-option *ngFor="let c of arrCategory" [value]="c.product_category_id">
-                            {{c.product_category_name}}
-                        </nb-option>
-                    </nb-select>
-                </div>
-            </div><br>
-            <div class="row">
-                <div class="col-md-12">
-                    <label>Catalog Keyword:</label>
-                    <input nbInput status="primary" type="text" nbInput status="primary" fullWidth
-                        formControlName="productcategory" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && f.productcategory.errors }"
-                        [(ngModel)]="arrobjRow.product_category_keyword" />
-                    <div *ngIf="submitted && !!f.productcategory.errors" class="invalid-feedback">
-                        <div style="text-align: left" *ngIf="!!f.productcategory.errors.required">
-                            Product
-                            Category is
-                            required</div>
-                    </div>
-                </div>
-            </div><br>
-            <div class="row">
-                <div class="col-md-12">
-                    <label>Supplier Keyword :</label>
-                    <input nbInput status="primary" type="text" nbInput status="primary" fullWidth
-                        formControlName="suppliercategory" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && f.suppliercategory.errors }"
-                        [(ngModel)]="arrobjRow.supplier_keyword" />
-                    <div *ngIf="submitted && !!f.suppliercategory.errors" class="invalid-feedback">
-                        <div style="text-align: left" *ngIf="!!f.suppliercategory.errors.required">
-                            Product
-                            Category is
-                            required</div>
-                    </div><br>
-                </div>
-            </div><br>
-        
-        </form>
-        <div class="row" style="text-align: center">
-            <div class="col-md-12">
-                <button nbButton style="width: 100px" status="danger"
-                    (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
-                <button nbButton style="width: 100px" status="success" (click)="btnSaveClick()">Create</button>
-            </div>
-        </div><br> -->
-        <project-mysupplier-save [id]="'new'" (closes)="btnCancelClick($event)"></project-mysupplier-save>
-    </nb-card-body>
-</nb-card>
+<div class="pages">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body>
+                    <project-my-supplier-save [id]="'new'" (closes)="btnCancelClick($event)"></project-my-supplier-save>
+                </nb-card-body>
+            </nb-card>
+        </div>
+    </div>
+</div>

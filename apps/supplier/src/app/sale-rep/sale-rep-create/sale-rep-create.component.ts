@@ -42,7 +42,7 @@ export class SaleRepCreateComponent implements OnInit {
     private detailPage = "sale-rep/detail";
     arrobjRow: any = {};
     RowID: string;
-    SaleForm: FormGroup;
+    Form: FormGroup;
     submitted = false;
     arrobjState: any = [];
     arrobjCity: any = [];
@@ -166,17 +166,17 @@ export class SaleRepCreateComponent implements OnInit {
     }
 
     get f() {
-        return this.SaleForm.controls;
+        return this.Form.controls;
     }
     onSubmit() {
         this.submitted = true;
-        if (this.SaleForm.invalid) {
+        if (this.Form.invalid) {
             return;
         }
     }
 
     buildForm() {
-        this.SaleForm = this.formBuilder.group({
+        this.Form = this.formBuilder.group({
             sale_rep_name: ["", Validators.required],
             sale_rep_company: ["", Validators.required],
             sale_rep_tag: ["", Validators.required],
@@ -197,7 +197,7 @@ export class SaleRepCreateComponent implements OnInit {
     }
 
     editForm() {
-        this.SaleForm.patchValue({
+        this.Form.patchValue({
             sale_rep_name: this.arrobjRow.sale_rep_name,
             sale_rep_company: this.arrobjRow.sale_rep_company,
             sale_rep_tag: this.arrobjRow.sale_rep_tag,
@@ -216,12 +216,12 @@ export class SaleRepCreateComponent implements OnInit {
     /*New Data Location ------------------------ */
 
     changeProvince(location_name) {
-        this.SaleForm.get('amphoe').patchValue("");
-        this.SaleForm.get('tambon').patchValue("");
-        this.SaleForm.get('zipcode').patchValue("");
-        this.SaleForm.get('location_lat').patchValue(0);
-        this.SaleForm.get('location_lng').patchValue(0);
-        this.SaleForm.get('location_lat_location_lng').patchValue(0 + ',' + 0);
+        this.Form.get('amphoe').patchValue("");
+        this.Form.get('tambon').patchValue("");
+        this.Form.get('zipcode').patchValue("");
+        this.Form.get('location_lat').patchValue(0);
+        this.Form.get('location_lng').patchValue(0);
+        this.Form.get('location_lat_location_lng').patchValue(0 + ',' + 0);
         this.arrAmphoe = null;
         this.arrTambon = null;
 
@@ -265,11 +265,11 @@ export class SaleRepCreateComponent implements OnInit {
     }
 
     changeAmphoe(location_name) {
-        this.SaleForm.get('tambon').patchValue("");
-        this.SaleForm.get('zipcode').patchValue("");
-        this.SaleForm.get('location_lat').patchValue(0);
-        this.SaleForm.get('location_lng').patchValue(0);
-        this.SaleForm.get('location_lat_location_lng').patchValue(0 + ',' + 0);
+        this.Form.get('tambon').patchValue("");
+        this.Form.get('zipcode').patchValue("");
+        this.Form.get('location_lat').patchValue(0);
+        this.Form.get('location_lng').patchValue(0);
+        this.Form.get('location_lat_location_lng').patchValue(0 + ',' + 0);
         this.arrTambon = null;
         if (this.arrAmphoe.length > 0) {
             const arrAmphoe = this.arrAmphoe.filter((x) => x.location_name === location_name)
@@ -313,12 +313,12 @@ export class SaleRepCreateComponent implements OnInit {
     changeTambon(location_name) {
         if (this.arrTambon.length > 0) {
             const arrTambon = this.arrTambon.filter((x) => x.location_name === location_name)
-            this.SaleForm.get('tambon').patchValue(arrTambon[0].location_name);
-            this.SaleForm.get('zipcode').patchValue(arrTambon[0].location_postcode);
-            this.SaleForm.get('location_lat').patchValue(0);
-            this.SaleForm.get('location_lng').patchValue(0);
-            this.SaleForm.get('location_lat_location_lng').patchValue(0 + ',' + 0);
-            console.log("SaleForm", this.SaleForm.value);
+            this.Form.get('tambon').patchValue(arrTambon[0].location_name);
+            this.Form.get('zipcode').patchValue(arrTambon[0].location_postcode);
+            this.Form.get('location_lat').patchValue(0);
+            this.Form.get('location_lng').patchValue(0);
+            this.Form.get('location_lat_location_lng').patchValue(0 + ',' + 0);
+            console.log("Form", this.Form.value);
         }
     }
 
@@ -333,7 +333,7 @@ export class SaleRepCreateComponent implements OnInit {
             return false;
         });
         if (thisLocation.length > 0) {
-            this.SaleForm.get('province').patchValue(strProvince);
+            this.Form.get('province').patchValue(strProvince);
             this.get_Amphoe_Edit(thisLocation[0].location_id, strAmphoe, strTambon);
         }
 
@@ -383,7 +383,7 @@ export class SaleRepCreateComponent implements OnInit {
             return false;
         });
         if (thisLocation.length > 0) {
-            this.SaleForm.get('amphoe').patchValue(strAmphoe);
+            this.Form.get('amphoe').patchValue(strAmphoe);
             this.get_Tambon_Edit(thisLocation[0].location_id, strTambon)
         }
 
@@ -429,9 +429,9 @@ export class SaleRepCreateComponent implements OnInit {
     changeTambonEdit(strTambon) {
         if (this.arrTambon.length > 0) {
             const arrTambon = this.arrTambon.filter((x) => x.location_name === strTambon)
-            this.SaleForm.get('tambon').patchValue(arrTambon[0].location_name);
-            this.SaleForm.get('zipcode').patchValue(arrTambon[0].location_postcode);
-            console.log("SaleForm", this.SaleForm.value);
+            this.Form.get('tambon').patchValue(arrTambon[0].location_name);
+            this.Form.get('zipcode').patchValue(arrTambon[0].location_postcode);
+            console.log("Form", this.Form.value);
         }
     }
 
@@ -445,15 +445,15 @@ export class SaleRepCreateComponent implements OnInit {
         dialogRef.onClose.subscribe(result => {
             if (result) {
                 console.log(result);
-                this.SaleForm.get('addressFull').patchValue(result.address);
-                this.SaleForm.get('addressNo').patchValue(result.num);
-                this.SaleForm.get('province').patchValue(result.state);
-                this.SaleForm.get('amphoe').patchValue(result.city);
-                this.SaleForm.get('tambon').patchValue(result.town);
-                this.SaleForm.get('zipcode').patchValue(result.zipcode);
-                this.SaleForm.get('location_lat').patchValue(result.supplier_addr_location_lat);
-                this.SaleForm.get('location_lng').patchValue(result.supplier_addr_location_lng);
-                this.SaleForm.get('location_lat_location_lng').patchValue(result.supplier_addr_location_lat + ',' + result.supplier_addr_location_lng);
+                this.Form.get('addressFull').patchValue(result.address);
+                this.Form.get('addressNo').patchValue(result.num);
+                this.Form.get('province').patchValue(result.state);
+                this.Form.get('amphoe').patchValue(result.city);
+                this.Form.get('tambon').patchValue(result.town);
+                this.Form.get('zipcode').patchValue(result.zipcode);
+                this.Form.get('location_lat').patchValue(result.supplier_addr_location_lat);
+                this.Form.get('location_lng').patchValue(result.supplier_addr_location_lng);
+                this.Form.get('location_lat_location_lng').patchValue(result.supplier_addr_location_lat + ',' + result.supplier_addr_location_lng);
                 this.changeProvinceEdit(result.state, result.city, result.town);
 
             }
@@ -477,9 +477,9 @@ export class SaleRepCreateComponent implements OnInit {
         this.onInArrayPhone(9, 19, phone.tel, this.phone.tel);
         this.inArrayPhone(12, 12, phone.mobile, this.phone.mobile)
 
-        console.log('btnSaveClick : SaleForm : ', this.SaleForm);
+        console.log('btnSaveClick : Form : ', this.Form);
         this.submitted = true;
-        if (this.SaleForm.invalid || this.image.update || this.phone.tel.number === "" || this.phone.mobile.number === "") {
+        if (this.Form.invalid || this.image.update || this.phone.tel.number === "" || this.phone.mobile.number === "") {
             return;
         }
         this.image.update = true;
@@ -503,28 +503,29 @@ export class SaleRepCreateComponent implements OnInit {
                 dealer_id: 0,
                 sale_rep_id: 0,
                 sale_rep_image_url: (this.image.main_image.port.length > 0) ? this.image.main_image.port[0].image_url : "-",
-                sale_rep_name: this.SaleForm.value.sale_rep_company,
-                sale_rep_company: this.SaleForm.value.sale_rep_name,
-                sale_rep_tag: this.SaleForm.value.sale_rep_tag,
-                sale_rep_first_name: this.SaleForm.value.sale_rep_first_name,
-                sale_rep_last_name: this.SaleForm.value.sale_rep_last_name,
-                sale_rep_email: this.SaleForm.value.sale_rep_email,
+                sale_rep_name: this.Form.value.sale_rep_company,
+                sale_rep_company: this.Form.value.sale_rep_name,
+                sale_rep_tag: this.Form.value.sale_rep_tag,
+                sale_rep_first_name: this.Form.value.sale_rep_first_name,
+                sale_rep_last_name: this.Form.value.sale_rep_last_name,
+                sale_rep_email: this.Form.value.sale_rep_email,
                 sale_rep_mobile: this.phone.mobile.number,
                 sale_rep_tel: this.phone.tel.number,
-                sale_rep_addr_full: this.SaleForm.value.addressFull,
-                sale_rep_addr_number: this.SaleForm.value.addressNo,
-                sale_rep_addr_province: this.SaleForm.value.province,
-                sale_rep_addr_amphoe: this.SaleForm.value.amphoe,
-                sale_rep_addr_tambon: this.SaleForm.value.tambon,
-                sale_rep_addr_post: this.SaleForm.value.zipcode,
-                sale_rep_addr_lat: this.SaleForm.value.location_lat,
-                sale_rep_addr_lng: this.SaleForm.value.location_lng
+                sale_rep_addr_full: this.Form.value.addressFull,
+                sale_rep_addr_number: this.Form.value.addressNo,
+                sale_rep_addr_province: this.Form.value.province,
+                sale_rep_addr_amphoe: this.Form.value.amphoe,
+                sale_rep_addr_tambon: this.Form.value.tambon,
+                sale_rep_addr_post: this.Form.value.zipcode,
+                sale_rep_addr_lat: this.Form.value.location_lat,
+                sale_rep_addr_lng: this.Form.value.location_lng
             }
 
             const dataJson = JSON.stringify(dataJsons);
             console.log("save : dataJson : ", dataJsons);
 
             this.saleRepService.postSalerepAccountCreate(dataJson).subscribe(data => {
+                this.Form.reset();
                 this.router.navigate([this.listPage]);
             });
         } else {
@@ -533,55 +534,40 @@ export class SaleRepCreateComponent implements OnInit {
                 dealer_id: this.arrobjRow.dealer_id,
                 sale_rep_id: this.arrobjRow.sale_rep_id,
                 sale_rep_image_url: (this.image.main_image.port.length > 0) ? this.image.main_image.port[0].image_url : "-",
-                sale_rep_name: this.SaleForm.value.sale_rep_company,
-                sale_rep_company: this.SaleForm.value.sale_rep_name,
-                sale_rep_tag: this.SaleForm.value.sale_rep_tag,
-                sale_rep_first_name: this.SaleForm.value.sale_rep_first_name,
-                sale_rep_last_name: this.SaleForm.value.sale_rep_last_name,
-                sale_rep_email: this.SaleForm.value.sale_rep_email,
+                sale_rep_name: this.Form.value.sale_rep_company,
+                sale_rep_company: this.Form.value.sale_rep_name,
+                sale_rep_tag: this.Form.value.sale_rep_tag,
+                sale_rep_first_name: this.Form.value.sale_rep_first_name,
+                sale_rep_last_name: this.Form.value.sale_rep_last_name,
+                sale_rep_email: this.Form.value.sale_rep_email,
                 sale_rep_mobile: this.phone.mobile.number,
                 sale_rep_tel: this.phone.tel.number,
-                sale_rep_addr_full: this.SaleForm.value.addressFull,
-                sale_rep_addr_number: this.SaleForm.value.addressNo,
-                sale_rep_addr_province: this.SaleForm.value.province,
-                sale_rep_addr_amphoe: this.SaleForm.value.amphoe,
-                sale_rep_addr_tambon: this.SaleForm.value.tambon,
-                sale_rep_addr_post: this.SaleForm.value.zipcode,
-                sale_rep_addr_lat: this.SaleForm.value.location_lat,
-                sale_rep_addr_lng: this.SaleForm.value.location_lng
+                sale_rep_addr_full: this.Form.value.addressFull,
+                sale_rep_addr_number: this.Form.value.addressNo,
+                sale_rep_addr_province: this.Form.value.province,
+                sale_rep_addr_amphoe: this.Form.value.amphoe,
+                sale_rep_addr_tambon: this.Form.value.tambon,
+                sale_rep_addr_post: this.Form.value.zipcode,
+                sale_rep_addr_lat: this.Form.value.location_lat,
+                sale_rep_addr_lng: this.Form.value.location_lng
             }
 
             const dataJson = JSON.stringify(dataJsons);
             console.log("save : arrobjRow : ", dataJsons);
 
             this.saleRepService.postSalerepAccountUpdate(dataJson).subscribe(data => {
+                this.Form.reset();
                 this.router.navigate([this.listPage]);
             });
         }
     }
 
     btnCancelClick() {
-        const dialogRef = this.dialogService.open(DialogsCancelComponent, {});
-
-        dialogRef.onClose.subscribe(result => {
-            if (result === "cancel") {
-            }
-            if (result === "ok") {
-                this.router.navigate([this.listPage]);
-            }
-        });
+        this.router.navigate([this.listPage]);
     }
 
     btnBackClick() {
-        const dialogRef = this.dialogService.open(DialogsCancelComponent, {});
-
-        dialogRef.onClose.subscribe(result => {
-            if (result === "cancel") {
-            }
-            if (result === "ok") {
-                this.router.navigate([this.detailPage, this.RowID]);
-            }
-        });
+        this.router.navigate([this.detailPage, this.RowID]);
     }
 
     uploadFile(event) {

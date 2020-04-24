@@ -33,14 +33,13 @@ import JSON_LOCATION_DETAIL from '../../../../../../libs/shared/src/lib/json/loc
     styleUrls: ['./info-list.component.scss']
 })
 export class InfoListComponent implements OnInit {
-
     private UrlRouter_DistributorsList = "distributors/my-distributor/list";
     private UrlRouter_DistributorsDetail = "distributors/detail";
 
     arrobjRow: any = {};
     objAPIResponse: any = {};
     RowID: string;
-    DistributorForm: FormGroup;
+    Form: FormGroup;
     submitted = false;
     imagePath: any = [];
     uploadData: any = [];
@@ -50,6 +49,7 @@ export class InfoListComponent implements OnInit {
     product_category_id: string;
     loading = false;
     isReload = false;
+    product_category_root_id: number;
 
     phone: any = {
         tel: {
@@ -69,7 +69,6 @@ export class InfoListComponent implements OnInit {
     arrTambon: any[];
     arrLocation: any[] = JSON_LOCATION;
     arrLocationDetail: any[] = JSON_LOCATION_DETAIL;
-
     id_local: string;
 
     image = {
@@ -97,15 +96,13 @@ export class InfoListComponent implements OnInit {
 
     ngOnInit() {
         this.buildForm();
-        // this.getCountryNew();
-        this.getData();
+        this.getDatata();
     }
 
-    getData() {
-        const value = this.id_local;
-        this.distributorAPIService.getDisDetail(value).subscribe(data => {
-            this.arrobjRow = data[0];
-            this.imgURL = data[0].distributor_image_url;
+    getDatata() {
+        this.distributorAPIService.getDisDetail(this.id_local).subscribe(data => {
+            this.arrobjRow = data.response_data[0];
+            this.imgURL = data.response_data[0].distributor_image_url;
 
             if (this.arrobjRow.distributor_image_url !== undefined && this.arrobjRow.distributor_image_url !== "-" && this.arrobjRow.distributor_image_url !== "")
                 this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.distributor_image_url, red_image => {
@@ -122,6 +119,7 @@ export class InfoListComponent implements OnInit {
             this.getCategory();
             this.editForm();
             console.log(this.arrobjRow);
+            console.log("ngOnInit : data : ", data);
 
             this.phoneNumber().main(_self_ => {
                 data.response_data.forEach(item => {
@@ -136,8 +134,7 @@ export class InfoListComponent implements OnInit {
                 });
             });
 
-            this.loading = false;
-        })
+        });
     }
 
     getCategory() {
@@ -147,24 +144,25 @@ export class InfoListComponent implements OnInit {
             .subscribe(data => {
                 this.arrCategory = data.response_data;
                 setTimeout(() => {
-                    this.DistributorForm.get('product_category_id').patchValue(Number(this.arrobjRow.product_category_id));
+                    this.Form.get('product_category_id').patchValue(Number(this.arrobjRow.product_category_id));
                 }, 0);
                 this.product_category_id = this.arrobjRow.product_category_id;
             });
     }
 
     get f() {
-        return this.DistributorForm.controls;
+        return this.Form.controls;
     }
+
     onSubmit() {
         this.submitted = true;
-        if (this.DistributorForm.invalid) {
+        if (this.Form.invalid) {
             return;
         }
     }
 
     buildForm() {
-        this.DistributorForm = this.formBuilder.group({
+        this.Form = this.formBuilder.group({
             distributor_name: ["", Validators.required],
             product_category_id: ["", Validators.required],
             product_category_root_id: [],
@@ -186,7 +184,7 @@ export class InfoListComponent implements OnInit {
     }
 
     editForm() {
-        this.DistributorForm.patchValue({
+        this.Form.patchValue({
             distributor_name: this.arrobjRow.distributor_name,
             product_category_id: this.arrobjRow.product_category_id,
             product_category_root_id: this.arrobjRow.product_category_root_id,
@@ -200,17 +198,19 @@ export class InfoListComponent implements OnInit {
             distributor_addr_lat: this.arrobjRow.distributor_addr_lat,
             distributor_addr_lng: this.arrobjRow.distributor_addr_lng,
         });
+        this.product_category_root_id = +this.arrobjRow.product_category_array[0].product_category_id;
+        this.loading = false;
     }
 
     /*New Data Location ------------------------ */
 
     changeProvince(location_name) {
-        this.DistributorForm.get('amphoe').patchValue("");
-        this.DistributorForm.get('tambon').patchValue("");
-        this.DistributorForm.get('zipcode').patchValue("");
-        this.DistributorForm.get('distributor_addr_lat').patchValue(0);
-        this.DistributorForm.get('distributor_addr_lng').patchValue(0);
-        this.DistributorForm.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
+        this.Form.get('amphoe').patchValue("");
+        this.Form.get('tambon').patchValue("");
+        this.Form.get('zipcode').patchValue("");
+        this.Form.get('distributor_addr_lat').patchValue(0);
+        this.Form.get('distributor_addr_lng').patchValue(0);
+        this.Form.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
         this.arrAmphoe = null;
         this.arrTambon = null;
         if (this.arrProvince.length > 0) {
@@ -220,6 +220,7 @@ export class InfoListComponent implements OnInit {
     }
 
     async get_Amphoe(location_id) {
+
         const get_detail_by_id = (id) => {
             return this.arrLocationDetail.filter(row => {
                 if (row.location_id === id) {
@@ -228,6 +229,7 @@ export class InfoListComponent implements OnInit {
                 return false;
             });
         };
+
         const newArray = [];
         await this.arrLocation.forEach(row => {
             if (row.parent_id == location_id) {
@@ -245,16 +247,18 @@ export class InfoListComponent implements OnInit {
             }
             return false;
         });
+
         this.arrAmphoe = newArray;
+
         console.log("get_Amphoe : arrAmphoe", this.arrAmphoe);
     }
 
     changeAmphoe(location_name) {
-        this.DistributorForm.get('tambon').patchValue("");
-        this.DistributorForm.get('zipcode').patchValue("");
-        this.DistributorForm.get('distributor_addr_lat').patchValue(0);
-        this.DistributorForm.get('distributor_addr_lng').patchValue(0);
-        this.DistributorForm.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
+        this.Form.get('tambon').patchValue("");
+        this.Form.get('zipcode').patchValue("");
+        this.Form.get('distributor_addr_lat').patchValue(0);
+        this.Form.get('distributor_addr_lng').patchValue(0);
+        this.Form.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
         this.arrTambon = null;
         if (this.arrAmphoe.length > 0) {
             const arrAmphoe = this.arrAmphoe.filter((x) => x.location_name === location_name)
@@ -263,6 +267,7 @@ export class InfoListComponent implements OnInit {
     }
 
     async get_Tambon(location_id) {
+
         const get_detail_by_id = (id) => {
             return this.arrLocationDetail.filter(row => {
                 if (row.location_id === id) {
@@ -297,11 +302,12 @@ export class InfoListComponent implements OnInit {
     changeTambon(location_name) {
         if (this.arrTambon.length > 0) {
             const arrTambon = this.arrTambon.filter((x) => x.location_name === location_name)
-            this.DistributorForm.get('tambon').patchValue(arrTambon[0].location_name);
-            this.DistributorForm.get('zipcode').patchValue(arrTambon[0].location_postcode);
-            this.DistributorForm.get('distributor_addr_lat').patchValue(0);
-            this.DistributorForm.get('distributor_addr_lng').patchValue(0);
-            this.DistributorForm.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
+            this.Form.get('tambon').patchValue(arrTambon[0].location_name);
+            this.Form.get('zipcode').patchValue(arrTambon[0].location_postcode);
+            this.Form.get('distributor_addr_lat').patchValue(0);
+            this.Form.get('distributor_addr_lng').patchValue(0);
+            this.Form.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
+            console.log("Form", this.Form.value);
         }
     }
 
@@ -316,7 +322,7 @@ export class InfoListComponent implements OnInit {
             return false;
         });
         if (thisLocation.length > 0) {
-            this.DistributorForm.get('province').patchValue(strProvince);
+            this.Form.get('province').patchValue(strProvince);
             this.get_Amphoe_Edit(thisLocation[0].location_id, strAmphoe, strTambon);
         }
 
@@ -366,7 +372,7 @@ export class InfoListComponent implements OnInit {
             return false;
         });
         if (thisLocation.length > 0) {
-            this.DistributorForm.get('amphoe').patchValue(strAmphoe);
+            this.Form.get('amphoe').patchValue(strAmphoe);
             this.get_Tambon_Edit(thisLocation[0].location_id, strTambon)
         }
 
@@ -412,8 +418,8 @@ export class InfoListComponent implements OnInit {
     changeTambonEdit(strTambon) {
         if (this.arrTambon.length > 0) {
             const arrTambon = this.arrTambon.filter((x) => x.location_name === strTambon)
-            this.DistributorForm.get('tambon').patchValue(arrTambon[0].location_name);
-            this.DistributorForm.get('zipcode').patchValue(arrTambon[0].location_postcode);
+            this.Form.get('tambon').patchValue(arrTambon[0].location_name);
+            this.Form.get('zipcode').patchValue(arrTambon[0].location_postcode);
         }
     }
 
@@ -427,15 +433,15 @@ export class InfoListComponent implements OnInit {
         dialogRef.onClose.subscribe(result => {
             if (result) {
                 console.log(result);
-                this.DistributorForm.get('distributor_addr_full').patchValue(result.address);
-                this.DistributorForm.get('distributor_addr_number').patchValue(result.num);
-                this.DistributorForm.get('province').patchValue(result.state);
-                this.DistributorForm.get('amphoe').patchValue(result.city);
-                this.DistributorForm.get('tambon').patchValue(result.town);
-                this.DistributorForm.get('zipcode').patchValue(result.zipcode);
-                this.DistributorForm.get('distributor_addr_lat').patchValue(result.supplier_addr_location_lat);
-                this.DistributorForm.get('distributor_addr_lng').patchValue(result.supplier_addr_location_lng);
-                this.DistributorForm.get('latitudeAndLongitude').patchValue(result.supplier_addr_location_lat + ',' + result.supplier_addr_location_lng);
+                this.Form.get('distributor_addr_full').patchValue(result.address);
+                this.Form.get('distributor_addr_number').patchValue(result.num);
+                this.Form.get('province').patchValue(result.state);
+                this.Form.get('amphoe').patchValue(result.city);
+                this.Form.get('tambon').patchValue(result.town);
+                this.Form.get('zipcode').patchValue(result.zipcode);
+                this.Form.get('distributor_addr_lat').patchValue(result.supplier_addr_location_lat);
+                this.Form.get('distributor_addr_lng').patchValue(result.supplier_addr_location_lng);
+                this.Form.get('latitudeAndLongitude').patchValue(result.supplier_addr_location_lat + ',' + result.supplier_addr_location_lng);
                 this.changeProvinceEdit(result.state, result.city, result.town);
 
             }
@@ -444,12 +450,13 @@ export class InfoListComponent implements OnInit {
     }
 
     categoryEvent(event) {
+        console.log("event", event);
         if (event.product_category__id !== 0) {
-            this.DistributorForm.get('product_category_id').patchValue(event.product_category__id);
-            this.DistributorForm.get('product_category_root_id').patchValue(event.product_category_root_id);
+            this.Form.get('product_category_id').patchValue(event.product_category__id);
+            this.Form.get('product_category_root_id').patchValue(event.product_category_root_id);
         } else {
-            this.DistributorForm.get('product_category_id').patchValue("");
-            this.DistributorForm.get('product_category_root_id').patchValue("");
+            this.Form.get('product_category_id').patchValue("");
+            this.Form.get('product_category_root_id').patchValue("");
         }
         console.log('event', event);
 
@@ -471,17 +478,19 @@ export class InfoListComponent implements OnInit {
         this.onInArrayPhone(9, 19, phone.tel, this.phone.tel);
         this.inArrayPhone(12, 12, phone.mobile, this.phone.mobile)
 
-        console.log('btnSaveClick : DistributorForm : ', this.DistributorForm);
+        console.log('btnSaveClick : Form : ', this.Form);
         this.submitted = true;
-        if (this.DistributorForm.invalid || this.image.update || this.phone.tel.number === "" || this.phone.mobile.number === "") {
+        if (this.Form.invalid || this.image.update || this.phone.tel.number === "" || this.phone.mobile.number === "") {
             return;
         }
+
         this.image.update = true;
         const dataSend = {
             type_id: 100,
             file_name: "",
             file_type: "",
-            distributor_id: this.id_local
+            supplier_id: this.id_local,
+            user_id: 0
         };
         this.uploadAPIService.uploadImage().getImageArray(dataSend, this.image.main_image.get, red_image_array => {
             console.log('btnSaveClick : red_image_array : ', red_image_array);
@@ -499,54 +508,38 @@ export class InfoListComponent implements OnInit {
             distributor_tel: this.phone.tel.number,
             distributor_mobile: this.phone.mobile.number,
             distributor_image_url: (this.image.main_image.port.length > 0) ? this.image.main_image.port[0].image_url : "-",
-            distributor_name: this.DistributorForm.value.distributor_name,
-            product_category_id: this.DistributorForm.value.product_category_id,
-            product_category_root_id: this.DistributorForm.value.product_category_root_id,
-            distributor_catalog_keyword: this.DistributorForm.value.distributor_catalog_keyword,
-            distributor_firstname: this.DistributorForm.value.distributor_firstname,
-            distributor_lastname: this.DistributorForm.value.distributor_lastname,
-            distributor_email: this.DistributorForm.value.distributor_email,
-            distributor_addr_full: this.DistributorForm.value.distributor_addr_full,
-            distributor_addr_number: this.DistributorForm.value.distributor_addr_number,
-            distributor_addr_tambon: this.DistributorForm.value.tambon,
-            distributor_addr_amphoe: this.DistributorForm.value.amphoe,
-            distributor_addr_province: this.DistributorForm.value.province,
-            distributor_addr_post: this.DistributorForm.value.zipcode,
-            distributor_addr_lat: this.DistributorForm.value.distributor_addr_lat,
-            distributor_addr_lng: this.DistributorForm.value.distributor_addr_lng
+            distributor_name: this.Form.value.distributor_name,
+            product_category_id: this.Form.value.product_category_id,
+            product_category_root_id: this.Form.value.product_category_root_id,
+            distributor_catalog_keyword: this.Form.value.distributor_catalog_keyword,
+            distributor_firstname: this.Form.value.distributor_firstname,
+            distributor_lastname: this.Form.value.distributor_lastname,
+            distributor_email: this.Form.value.distributor_email,
+            distributor_addr_full: this.Form.value.distributor_addr_full,
+            distributor_addr_number: this.Form.value.distributor_addr_number,
+            distributor_addr_tambon: this.Form.value.tambon,
+            distributor_addr_amphoe: this.Form.value.amphoe,
+            distributor_addr_province: this.Form.value.province,
+            distributor_addr_post: this.Form.value.zipcode,
+            distributor_addr_lat: this.Form.value.distributor_addr_lat,
+            distributor_addr_lng: this.Form.value.distributor_addr_lng
         }
         const dataJson = JSON.stringify(dataEdit);
         console.log("save : arrobjRow : ", dataEdit);
 
         this.distributorAPIService.updateDistributor(dataJson).subscribe(data => {
-            // this.router.navigate([this.UrlRouter_DistributorsList]);
             this.loading = false;
             this.image.update = false;
         });
+
     }
 
     btnCancelClick() {
-        const dialogRef = this.dialogService.open(DialogsCancelComponent, {});
-
-        dialogRef.onClose.subscribe(result => {
-            if (result === "cancel") {
-            }
-            if (result === "ok") {
-                this.router.navigate([this.UrlRouter_DistributorsList]);
-            }
-        });
+        this.router.navigate([this.UrlRouter_DistributorsList]);
     }
 
     btnBackClick() {
-        const dialogRef = this.dialogService.open(DialogsCancelComponent, {});
-
-        dialogRef.onClose.subscribe(result => {
-            if (result === "cancel") {
-            }
-            if (result === "ok") {
-                this.router.navigate([this.UrlRouter_DistributorsDetail, this.RowID]);
-            }
-        });
+        this.router.navigate([this.UrlRouter_DistributorsDetail, this.RowID]);
     }
 
     uploadFile(event) {
@@ -572,7 +565,7 @@ export class InfoListComponent implements OnInit {
             type_id: 100,
             file_name: this.imagePath.name,
             file_type: this.imagePath.type,
-            supplier_id: 13356,
+            supplier_id: this.id_local,
             distributor_id: 0
         };
 
@@ -597,7 +590,6 @@ export class InfoListComponent implements OnInit {
                 console.log(res1);
             });
     }
-
 
     phoneNumber() {
         let function_phone = {

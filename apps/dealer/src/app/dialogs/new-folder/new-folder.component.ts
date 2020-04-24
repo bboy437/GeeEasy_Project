@@ -20,7 +20,6 @@ export class NewFolderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.arrobjRow.message = "Untitled folder";
     this.buildForm();
 
   }
@@ -29,6 +28,7 @@ export class NewFolderComponent implements OnInit {
     this.Form = this.formBuilder.group({
       massage: ['', Validators.required],
     });
+    this.Form.get("massage").patchValue("Untitled folder")
   }
 
   get f() { return this.Form.controls; }
@@ -48,7 +48,7 @@ export class NewFolderComponent implements OnInit {
       return;
     }
 
-    this.ref.close(this.arrobjRow.message);
+    this.ref.close(  this.Form.value.message);
   }
 
  

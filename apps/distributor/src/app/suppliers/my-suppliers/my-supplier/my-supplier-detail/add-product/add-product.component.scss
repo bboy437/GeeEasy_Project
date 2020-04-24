@@ -1,0 +1,47 @@
+@import "../../../../../../../../../libs/theme/src/lib/styles/themes";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+.cover-channel {
+  span {
+    &.channel {
+      padding: 0.5rem;
+      font-weight: bold;
+      display: inline-table;
+      margin: 0 0.5rem 0.5rem 0;
+      background-color: #428bca;
+      color: white;
+      nb-icon {
+        top: -8px;
+        right: -8px;
+        font-size: 16px;
+        cursor: pointer;
+        position: relative;
+      }
+    }
+  }
+}
+
+@include nb-install-component() {
+}
+
+.display-block {
+  display: block !important;
+}
+
+.list {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.cover-input center {
+  text-align: center;
+}
+
+.imgsize {
+  max-width: 100%;
+  margin: auto;
+  max-height: 100%;
+}
+
+

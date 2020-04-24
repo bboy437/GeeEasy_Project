@@ -1,34 +1,24 @@
-
 <div class="pages">
-    <nb-card>
-        <nb-card-header>
-            <div class="header">
-                <nb-icon icon="checkmark-square-2-outline"></nb-icon>
-                <label>Confirm Check-In</label>
-            </div>
-        </nb-card-header>
-        <nb-card-body>
-            <!-- <form [formGroup]="saveForm" (ngSubmit)="onSubmit()">
-                <div class="row">
-                    <div class="col-md-12">
-                        <label>Confirm message</label>
-                        <input nbInput status="primary" type="text" nbInput fullWidth formControlName="confirm_message" class="form-control"
-                            [ngClass]="{ 'is-invalid': submitted && f.confirm_message.errors }"
-                            [(ngModel)]="arrobjRow.message" />
-                        <div *ngIf="submitted && !!f.confirm_message.errors" class="invalid-feedback">
-                            <div style="text-align: left" *ngIf="!!f.confirm_message.errors.required">
-                                Confirm message required
-                            </div>
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <nb-icon icon="checkmark-square-2-outline"></nb-icon>
+                        <label>Confirm Check-In</label>
+                    </div>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="d-flex justify-content-center" style="padding-bottom: 1rem;">
+                            <button nbButton style="width: 100px" status="danger"
+                                (click)="btnCancelClick()">Cancel</button>
+                            <button nbButton style="width: 100px; margin-left:0.7rem" status="success"
+                                (click)="btnSaveClick()">OK</button>
                         </div>
                     </div>
-                </div><br>
-            </form> -->
-            <div class="row" style="text-align: center; padding-top: 2.5rem;">
-                <div class="col-md-12">
-                    <button nbButton style="width: 100px" status="danger" (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
-                    <button nbButton style="width: 100px" status="success" (click)="btnSaveClick()">OK</button>
-                </div>
-            </div><br>
-        </nb-card-body>
-    </nb-card>
+                </nb-card-body>
+            </nb-card>
+        </div>
+    </div>
 </div>

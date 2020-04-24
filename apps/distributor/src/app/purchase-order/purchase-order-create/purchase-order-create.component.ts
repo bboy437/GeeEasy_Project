@@ -595,6 +595,7 @@ export class PurchaseOrderCreateComponent implements OnInit {
 
     this.purchaseAPIService.addPurchase(dataJson).subscribe(data => {
       this.isSaveLodding = false;
+      this.supplierNameForm.reset();
       this.router.navigate([this.UrlRouter_Purchase]);
     })
 

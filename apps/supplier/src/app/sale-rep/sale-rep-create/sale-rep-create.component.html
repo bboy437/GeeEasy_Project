@@ -1,4 +1,4 @@
-<div class="pages" [formGroup]="SaleForm" (ngSubmit)="onSubmit()">
+<div class="pages" [formGroup]="Form" (ngSubmit)="onSubmit()">
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card style="padding: 0;">
@@ -13,13 +13,13 @@
                                     Sale</label>
                             </div>
                             <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                <button [disabled]="!SaleForm.valid" *ngIf="RowID == 'new' && !loading"
+                                <button [disabled]="!Form.valid" *ngIf="RowID == 'new' && !loading"
                                     style="float: right;margin: 3px 0px 3px 1rem;" [nbSpinner]="image.update"
                                     nbSpinnerStatus="success" nbButton size="medium" status="success"
                                     (click)="btnSaveClick()">
                                     Save
                                 </button>
-                                <button [disabled]="!SaleForm.valid" *ngIf="RowID != 'new' && !loading"
+                                <button [disabled]="!Form.valid" *ngIf="RowID != 'new' && !loading"
                                     style="float: right;margin: 3px 0px 3px 1rem;" [nbSpinner]="image.update"
                                     nbSpinnerStatus="success" nbButton size="medium" status="success"
                                     (click)="btnSaveClick()">
@@ -68,18 +68,18 @@
                                         <div class="row">
                                             <div class="col-12 ">
                                                 <project-input inputType="text" label="Sale Name :"
-                                                    requiredName="Sale Name" [control]="SaleForm.get('sale_rep_name')">
+                                                    requiredName="Sale Name" [control]="Form.get('sale_rep_name')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
                                                 <project-input inputType="text" label="Sale Company :"
                                                     requiredName="Sale Company"
-                                                    [control]="SaleForm.get('sale_rep_company')">
+                                                    [control]="Form.get('sale_rep_company')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
                                                 <project-input inputType="text" label="Sale Tag :"
-                                                    requiredName="Sale Tag" [control]="SaleForm.get('sale_rep_tag')">
+                                                    requiredName="Sale Tag" [control]="Form.get('sale_rep_tag')">
                                                 </project-input>
                                             </div>
                                         </div>
@@ -100,18 +100,18 @@
                                             <div class="col-12">
                                                 <project-input inputType="text" label="First Name :"
                                                     requiredName="First Name"
-                                                    [control]="SaleForm.get('sale_rep_first_name')">
+                                                    [control]="Form.get('sale_rep_first_name')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
                                                 <project-input inputType="text" label="Last Name :"
                                                     requiredName="Last Name"
-                                                    [control]="SaleForm.get('sale_rep_last_name')">
+                                                    [control]="Form.get('sale_rep_last_name')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
                                                 <project-input inputType="text" label="Email :" requiredName="Email"
-                                                    [control]="SaleForm.get('sale_rep_email')">
+                                                    [control]="Form.get('sale_rep_email')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
@@ -192,18 +192,18 @@
                                             </div>
                                             <div class="col-12">
                                                 <project-textarea rows="3" label="Address :" requiredName="Address"
-                                                    [control]="SaleForm.get('addressFull')">
+                                                    [control]="Form.get('addressFull')">
                                                 </project-textarea>
                                             </div>
                                             <div class="col-12">
                                                 <project-input inputType="text" label="Address Number :"
-                                                    requiredName="Address Number" [control]="SaleForm.get('addressNo')">
+                                                    requiredName="Address Number" [control]="Form.get('addressNo')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
                                                 <project-ngx-select label="Province :" requiredName="Province"
                                                     optionValueField="location_name" optionTextField="location_name"
-                                                    [items]="arrProvince" [control]="SaleForm.get('province')"
+                                                    [items]="arrProvince" [control]="Form.get('province')"
                                                     placeholder="--------- Choose ---------"
                                                     (valueChange)='changeProvince($event)'>
                                                 </project-ngx-select>
@@ -211,7 +211,7 @@
                                             <div class="col-12">
                                                 <project-ngx-select label="Amphoe :" requiredName="Amphoe"
                                                     optionValueField="location_name" optionTextField="location_name"
-                                                    [items]="arrAmphoe" [control]="SaleForm.get('amphoe')"
+                                                    [items]="arrAmphoe" [control]="Form.get('amphoe')"
                                                     placeholder="--------- Choose ---------"
                                                     (valueChange)='changeAmphoe($event)'>
                                                 </project-ngx-select>
@@ -219,20 +219,20 @@
                                             <div class="col-12">
                                                 <project-ngx-select label="Tambon :" requiredName="Tambon"
                                                     optionValueField="location_name" optionTextField="location_name"
-                                                    [items]="arrTambon" [control]="SaleForm.get('tambon')"
+                                                    [items]="arrTambon" [control]="Form.get('tambon')"
                                                     placeholder="--------- Choose ---------"
                                                     (valueChange)='changeTambon($event)'>
                                                 </project-ngx-select>
                                             </div>
                                             <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                                                 <project-input inputType="text" label="Zipcode :" requiredName="Zipcode"
-                                                    [control]="SaleForm.get('zipcode')">
+                                                    [control]="Form.get('zipcode')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                                                 <project-input inputType="text" label="Latitude Longitude :"
                                                     requiredName="Latitude Longitude"
-                                                    [control]="SaleForm.get('location_lat_location_lng')">
+                                                    [control]="Form.get('location_lat_location_lng')">
                                                 </project-input>
                                             </div>
                                         </div>

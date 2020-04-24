@@ -1,0 +1,83 @@
+@import "../../../../../../../../libs/theme/src/lib/styles/themes";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+.display_table {
+  &.height_48px {
+    height: 48px;
+  }
+  width: 100%;
+  display: table;
+  vertical-align: middle;
+  .display_table_cell {
+    display: table-cell;
+    vertical-align: middle;
+    & * {
+      padding: 0;
+      margin: 0;
+    }
+  }
+}
+
+.padding-0 {
+  padding: 0 !important;
+}
+
+.padding-auto-0 {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+.margin-0 {
+  margin: 0 !important;
+}
+
+.pages {
+  nb-card {
+    nb-card-header {
+      label {
+        float: left;
+        font-size: 17px;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+@include nb-install-component() {
+  .show-grid {
+    .row {
+      margin: -0.5rem;
+    }
+
+    div[class^="col-"] {
+      padding: 0.5rem;
+      box-sizing: border-box;
+
+      div {
+        padding: 0.5rem 0.25rem;
+        border-radius: 0.25rem;
+      }
+    }
+  }
+
+  nb-list-item {
+    padding-bottom: 0.2rem;
+    padding-top: 0.2rem;
+    overflow: hidden;
+  }
+
+  thead {
+    font-size: 14px;
+    text-align: center;
+  }
+  tbody {
+    font-size: 14px;
+    text-align: center;
+  }
+}
+
+.list {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}

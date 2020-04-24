@@ -5,7 +5,7 @@
                 <nb-card-header>
                     <div class="header">
                         <nb-icon icon="people-outline"></nb-icon>
-                        <label style="font-size: 20px">Saved Lists</label>
+                        <label>Saved Lists</label>
                     </div>
                 </nb-card-header>
                 <nb-card-body>
@@ -80,10 +80,8 @@
                         </div>
                         <div class="row" *ngIf="isData == 'deleteList'">
                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                <div class="row" style="padding-top: 1rem; text-align: center;">
-                                    <div class="col-md-12" style="padding-top: 1rem;">
-                                        <label style="font-size: 16px;">Are you sure you want to Delete ?</label>
-                                    </div>
+                                <div class="d-flex justify-content-center">
+                                    <label style="font-size: 16px;">Are you sure you want to Delete ?</label>
                                 </div>
                                 <div class="d-flex justify-content-center" style="padding-top: 1rem;">
                                     <button nbButton style="width: 100px" status="gray"
@@ -96,10 +94,8 @@
                         </div>
                         <div class="row" *ngIf="isData == 'delete'">
                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                <div class="row" style="padding-top: 1rem; text-align: center;">
-                                    <div class="col-md-12" style="padding-top: 1rem;">
-                                        <label style="font-size: 16px;">Are you sure you want to Delete ?</label>
-                                    </div>
+                                <div class="d-flex justify-content-center">
+                                    <label style="font-size: 16px;">Are you sure you want to Delete ?</label>
                                 </div>
                                 <div class="d-flex justify-content-center" style="padding-top: 1rem;">
                                     <button nbButton style="width: 100px" status="gray"

@@ -1,10 +1,13 @@
 <div class="pages" [formGroup]="productGroupForm">
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+
             <nb-card *ngIf="status == 'create'">
-                <nb-card-header>
-                    <img src="assets/images/inventory.svg" class="pull-left m-r" width="45">&nbsp;
-                    <label style="font-size: 20px">My Products Group</label>
+                <nb-card-header class="dialogs">
+                    <div class="header">
+                        <nb-icon icon="cube-outline"></nb-icon>
+                        <label>My Products Group</label>
+                    </div>
                 </nb-card-header>
                 <nb-card-body>
                     <div class="body">
@@ -26,10 +29,13 @@
                     </div>
                 </nb-card-body>
             </nb-card>
+
             <nb-card *ngIf="status == 'addProductTogroup'">
-                <nb-card-header>
-                    <img src="assets/images/inventory.svg" class="pull-left m-r" width="45">&nbsp;
-                    <label style="font-size: 20px">Add Products To Group</label>
+                <nb-card-header class="dialogs">
+                    <div class="header">
+                        <nb-icon icon="cube-outline"></nb-icon>
+                        <label>Add Products To Group</label>
+                    </div>
                 </nb-card-header>
                 <nb-card-body>
                     <div class="body">
@@ -53,6 +59,7 @@
                     </div>
                 </nb-card-body>
             </nb-card>
+            
         </div>
     </div>
 </div>

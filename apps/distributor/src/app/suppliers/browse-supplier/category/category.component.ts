@@ -2,7 +2,6 @@
 import { BrowseSupplierAPIService, SupplierAPIService } from '@project/services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
-import { DialogsSupplierWishlistComponent } from '../../../dialogs/dialogs-supplier-wishlist/dialogs-supplier-wishlist.component';
 import { DialogsSupplierRequestComponent } from '../../../dialogs/dialogs-supplier-request/dialogs-supplier-request.component';
 import { DialogsSavedListComponent } from '../../../dialogs/dialogs-saved-list/dialogs-saved-list.component';
 import { Component, OnInit, Input } from '@angular/core';

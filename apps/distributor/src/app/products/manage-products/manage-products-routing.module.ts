@@ -2,7 +2,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { ManageProductsComponent } from './manage-products.component';
 import { MyProductComponent } from './manage-product-list/manage-product.component';
-import { FarvoriteComponent } from './farvorite/farvorite.component';
+import { FarvoriteComponent } from './product-farvorite/product-farvorite.component';
 
 
 const routes: Routes = [

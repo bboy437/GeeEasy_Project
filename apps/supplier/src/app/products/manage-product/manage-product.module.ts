@@ -42,8 +42,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     ProductsListComponent,
     ProductsDetailComponent,
     ProductsCreateComponent
+  ],
 
-
-  ]
 })
 export class ManageProductModule { }

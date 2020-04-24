@@ -1,5 +1,5 @@
-<div class="pages" *ngIf="delivery$ | async as delivery ; else loading">
-    <div class="row">
+<div class="pages" >
+    <div class="row" *ngIf="delivery$ | async as delivery ; else loadings">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngFor="let d of delivery">
             <div class="row">
                 <div class="col-12 col-md-12 col-lg-12 col-xl-12">
@@ -102,10 +102,10 @@
             </div>
         </div>
     </div>
-    <ng-template #loading>
+    <ng-template #loadings>
         <div class="row">
             <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="padding-top: 50px;">
-                <div style="height: 100px;background-color: white;" [nbSpinner]="loading" nbSpinnerStatus="warning">
+                <div style="height: 1000px;" [nbSpinner]="loading" nbSpinnerStatus="warning">
                 </div>
             </div>
         </div>

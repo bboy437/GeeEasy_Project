@@ -17,7 +17,7 @@ export class DealersDetailComponent implements OnInit {
   rowID: string;
   loading = false;
 
-  dealersFrom: FormGroup;
+  dealersForm: FormGroup;
 
   image = {
     update: false,
@@ -71,28 +71,28 @@ export class DealersDetailComponent implements OnInit {
 
 
   buildForm() {
-    this.dealersFrom = this.formBuilder.group({
-      dealer_name: [{ value: '', disabled: true }, Validators.required],
-      dealer_tag: [{ value: '', disabled: true }, Validators.required],
-      dealer_first_name: [{ value: '', disabled: true }, Validators.required],
-      dealer_last_name: [{ value: '', disabled: true }, Validators.required],
-      dealer_company: [{ value: '', disabled: true }, Validators.required],
-      dealer_email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
-      dealer_tel: [{ value: '', disabled: true }, Validators.required],
-      dealer_mobile: [{ value: '', disabled: true }, Validators.required],
-      dealer_addr_full: [{ value: '', disabled: true }, Validators.required],
-      dealer_addr_number: [{ value: '', disabled: true }, Validators.required],
-      dealer_addr_province: [{ value: '', disabled: true }, Validators.required],
-      dealer_addr_amphoe: [{ value: '', disabled: true }, Validators.required],
-      dealer_addr_tambon: [{ value: '', disabled: true }, Validators.required],
-      dealer_addr_post: [{ value: '', disabled: true }, Validators.required],
-      lat_long: [{ value: '', disabled: true }, Validators.required],
+    this.dealersForm = this.formBuilder.group({
+      dealer_name: [],
+      dealer_tag: [],
+      dealer_first_name: [],
+      dealer_last_name: [],
+      dealer_company: [],
+      dealer_email: [],
+      dealer_tel: [],
+      dealer_mobile: [],
+      dealer_addr_full: [],
+      dealer_addr_number: [],
+      dealer_addr_province: [],
+      dealer_addr_amphoe: [],
+      dealer_addr_tambon: [],
+      dealer_addr_post: [],
+      lat_long: [],
     });
 
   }
 
   editForm() {
-    this.dealersFrom.patchValue({
+    this.dealersForm.patchValue({
       dealer_name: this.arrDeler.dealer_name,
       dealer_tag: this.arrDeler.dealer_tag,
       dealer_first_name: this.arrDeler.dealer_first_name,
@@ -110,8 +110,9 @@ export class DealersDetailComponent implements OnInit {
       lat_long: this.arrDeler.dealer_addr_lat + "," + this.arrDeler.dealer_addr_lng
 
     });
+    this.dealersForm.disable();
     this.loading = false;
-    console.log( this.dealersFrom);
+    console.log( this.dealersForm);
     
   }
 

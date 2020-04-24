@@ -5,11 +5,13 @@ import { BrowseSuppliersComponent } from "./browse-supplier/browse-suppliers-lis
 import { BrowseSuppliersDetailComponent } from "./browse-supplier/browse-suppliers-detail/browse-suppliers-detail.component";
 import { SuppliersComponent } from "./suppliers.component";
 import { SavedDetailComponent } from './save-list/saved-detail/saved-detail.component';
-import { MysupplierDetailComponent } from './my-suppliers/my-supplier-detail/my-supplier-detail.component';
-import { VerifedSupplierDetailComponent } from './my-suppliers/verifed-supplier-detail/verifed-supplier-detail.component';
-import { MysupplierSaveComponent } from './my-suppliers/mysupplier-save/mysupplier-save.component';
-import { FavoriteDetailComponent } from './my-suppliers/favorite-detail/favorite-detail.component';
-import { RequestDetailComponent } from './my-suppliers/request-detail/request-detail.component';
+import { MysupplierDetailComponent } from './my-suppliers/my-supplier/my-supplier-detail/my-supplier-detail.component';
+import { VerifedSupplierDetailComponent } from './my-suppliers/verifed-supplier/verifed-supplier-detail/verifed-supplier-detail.component';
+import { FavoriteDetailComponent } from './my-suppliers/favorite/favorite-detail/favorite-detail.component';
+import { RequestDetailComponent } from './my-suppliers/request/request-detail/request-detail.component';
+import { MySupplierSaveGuard } from './my-suppliers/my-supplier/my-supplier-save/my-supplier-save-guard';
+import { MysupplierSaveComponent } from './my-suppliers/my-supplier/my-supplier-save/my-supplier-save.component';
+import { AddProductSaveGuard } from './my-suppliers/my-supplier/my-supplier-detail/add-product/add-product-guard';
 
 
 const routes: Routes = [
@@ -20,15 +22,13 @@ const routes: Routes = [
       { path: "saved-lists", component: SavedListsComponent },
       { path: "saved-detail/:id", component: SavedDetailComponent },
       { path: "browse-suppliers", component: BrowseSuppliersComponent },
-      {
-        path: "browse-suppliers/detail/:id/:status",
-        component: BrowseSuppliersDetailComponent
-      },
-      { path: "detail/:id", component: MysupplierDetailComponent },
+      { path: "browse-suppliers/detail/:id/:status", component: BrowseSuppliersDetailComponent },
+      { path: "detail/:id", canDeactivate: [AddProductSaveGuard], component: MysupplierDetailComponent },
       { path: "verifed/detail/:id", component: VerifedSupplierDetailComponent },
       { path: "wishlist/detail/:id", component: FavoriteDetailComponent },
-      { path: "save/:id", component: MysupplierSaveComponent },
+      { path: "save/:id", canDeactivate: [MySupplierSaveGuard], component: MysupplierSaveComponent },
       { path: "request/detail/:id", component: RequestDetailComponent },
+
       {
         path: "my-suppliers",
         loadChildren: () =>

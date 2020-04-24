@@ -42,8 +42,7 @@ function sort(countries: IOrderList[], column: string, direction: string): IOrde
 
 function matches(country: IOrderList, term: string, term1: any, term2: any, term3: any, startDate: number, endDate: number, pipe: PipeTransform) {
   return country.dealer_order_number.toString().toLowerCase().includes(term.toString().toLowerCase())
-    && country.dealer_data[0].dealer_name.every(el => term1 === '' ? country.dealer_data[0].dealer_name
-      : term1.indexOf(el) > -1)
+    && country.dealer_name.every(el => term1 === '' ? country.dealer_name : term1.indexOf(el) > -1)
     && country.dealer_order_paid_confirm_id.toString().toLowerCase().includes(term2.toString().toLowerCase())
     && country.dealer_order_delivery_id.toString().toLowerCase().includes(term3.toString().toLowerCase())
     && (country.dealer_order_create >= startDate && country.dealer_order_create <= endDate)
@@ -89,16 +88,15 @@ export class OrdersTableService {
 
 
   getData(callback) {
-    const value = "cur_page=" + 1 + "&per_page=" + 10 + "&distributor_id=" + this.id_local + "&short=" + 1;
-    this.orderAPIService.getOrderList(value).subscribe(data => {
-      this.arrOrder = <IOrderList>data.response_data;
-      console.log(this.arrOrder);
 
-      this.arrOrder.forEach(element => {
-        element.dealer_data.forEach(res => {
-          res.dealer_name = res.dealer_name.split(",")
-        });
-      });
+    this.orderAPIService.orderList$.subscribe(res => {
+      this.arrOrder = res;
+
+      // this.arrOrder.forEach(element => {
+      //   element.dealer_data.forEach(res => {
+      //     res.dealer_name = res.dealer_name.split(",")
+      //   });
+      // });
 
       this._search$.pipe(
         tap(() => this._loading$.next(true)),

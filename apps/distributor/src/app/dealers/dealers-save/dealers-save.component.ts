@@ -24,7 +24,7 @@ export class DealersSaveComponent implements OnInit {
     arrobjRow: any = {};
     objAPIResponse: any = {};
     RowID: string;
-    dealersFrom: FormGroup;
+    Form: FormGroup;
     submitted = false;
     loading = false;
     public imagePath;
@@ -95,8 +95,8 @@ export class DealersSaveComponent implements OnInit {
                     });
                 this.location_lat = data.response_data[0].dealer_addr_lat;
                 this.location_lng = data.response_data[0].dealer_addr_lng;
-                console.log(this.arrobjRow);
-                this.editForm();
+                console.log(this.arrobjRow)
+
                 this.changeProvinceEdit(this.arrobjRow.dealer_addr_province, this.arrobjRow.dealer_addr_amphoe, this.arrobjRow.dealer_addr_tambon);
 
 
@@ -112,6 +112,9 @@ export class DealersSaveComponent implements OnInit {
                         });
                     });
                 });
+
+                this.editForm();
+
             })
 
         }
@@ -121,7 +124,7 @@ export class DealersSaveComponent implements OnInit {
 
 
     buildForm() {
-        this.dealersFrom = this.formBuilder.group({
+        this.Form = this.formBuilder.group({
             dealersName: ['', Validators.required],
             productcategory: ['', Validators.required],
             firstName: ['', Validators.required],
@@ -143,37 +146,36 @@ export class DealersSaveComponent implements OnInit {
     }
 
     editForm() {
-        this.dealersFrom.patchValue({
+        this.Form.patchValue({
             dealersName: this.arrobjRow.dealer_name,
             productcategory: this.arrobjRow.dealer_tag,
             firstName: this.arrobjRow.dealer_first_name,
             lastName: this.arrobjRow.dealer_last_name,
             companyName: this.arrobjRow.dealer_company,
             emailAddress: this.arrobjRow.dealer_email,
-            // phoneNo: this.arrobjRow.dealer_tel,
-            // mobileNo: this.arrobjRow.dealer_mobile,
             addressFull: this.arrobjRow.dealer_addr_full,
             addressNo: this.arrobjRow.dealer_addr_number,
-            // province: this.arrobjRow.dealer_name,
-            // amphoe: this.arrobjRow.dealer_name,
-            // tambon: this.arrobjRow.dealer_name,
-            // zipcode: this.arrobjRow.dealer_addr_post,
+            province: this.arrobjRow.dealer_addr_province,
+            amphoe: this.arrobjRow.dealer_addr_amphoe,
+            tambon: this.arrobjRow.dealer_addr_tambon,
+            zipcode: this.arrobjRow.dealer_addr_post,
             latitudeAndLongitude: this.arrobjRow.dealer_addr_lat + ',' + this.arrobjRow.dealer_addr_lng,
             dealer_addr_lat: this.arrobjRow.dealer_addr_lat,
             dealer_addr_lng: this.arrobjRow.dealer_addr_lng,
         });
+        console.log(this.Form.value)
         this.loading = false;
     }
 
     /*New Data Location ------------------------ */
 
     changeProvince(location_name) {
-        this.dealersFrom.get('amphoe').patchValue("");
-        this.dealersFrom.get('tambon').patchValue("");
-        this.dealersFrom.get('zipcode').patchValue("");
-        this.dealersFrom.get('dealer_addr_lat').patchValue(0);
-        this.dealersFrom.get('dealer_addr_lng').patchValue(0);
-        this.dealersFrom.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
+        this.Form.get('amphoe').patchValue("");
+        this.Form.get('tambon').patchValue("");
+        this.Form.get('zipcode').patchValue("");
+        this.Form.get('dealer_addr_lat').patchValue(0);
+        this.Form.get('dealer_addr_lng').patchValue(0);
+        this.Form.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
         this.arrAmphoe = null;
         this.arrTambon = null;
         if (this.arrProvince.length > 0) {
@@ -213,11 +215,11 @@ export class DealersSaveComponent implements OnInit {
     }
 
     changeAmphoe(location_name) {
-        this.dealersFrom.get('tambon').patchValue("");
-        this.dealersFrom.get('zipcode').patchValue("");
-        this.dealersFrom.get('dealer_addr_lat').patchValue(0);
-        this.dealersFrom.get('dealer_addr_lng').patchValue(0);
-        this.dealersFrom.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
+        this.Form.get('tambon').patchValue("");
+        this.Form.get('zipcode').patchValue("");
+        this.Form.get('dealer_addr_lat').patchValue(0);
+        this.Form.get('dealer_addr_lng').patchValue(0);
+        this.Form.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
         this.arrTambon = null;
         if (this.arrAmphoe.length > 0) {
             const arrAmphoe = this.arrAmphoe.filter((x) => x.location_name === location_name)
@@ -259,11 +261,11 @@ export class DealersSaveComponent implements OnInit {
     changeTambon(location_name) {
         if (this.arrTambon.length > 0) {
             const arrTambon = this.arrTambon.filter((x) => x.location_name === location_name)
-            this.dealersFrom.get('tambon').patchValue(arrTambon[0].location_name);
-            this.dealersFrom.get('zipcode').patchValue(arrTambon[0].location_postcode);
-            this.dealersFrom.get('dealer_addr_lat').patchValue(0);
-            this.dealersFrom.get('dealer_addr_lng').patchValue(0);
-            this.dealersFrom.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
+            this.Form.get('tambon').patchValue(arrTambon[0].location_name);
+            this.Form.get('zipcode').patchValue(arrTambon[0].location_postcode);
+            this.Form.get('dealer_addr_lat').patchValue(0);
+            this.Form.get('dealer_addr_lng').patchValue(0);
+            this.Form.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
         }
     }
 
@@ -278,7 +280,7 @@ export class DealersSaveComponent implements OnInit {
             return false;
         });
         if (thisLocation.length > 0) {
-            this.dealersFrom.get('province').patchValue(strProvince);
+            this.Form.get('province').patchValue(strProvince);
             this.get_Amphoe_Edit(thisLocation[0].location_id, strAmphoe, strTambon);
         }
 
@@ -325,7 +327,7 @@ export class DealersSaveComponent implements OnInit {
             return false;
         });
         if (thisLocation.length > 0) {
-            this.dealersFrom.get('amphoe').patchValue(strAmphoe);
+            this.Form.get('amphoe').patchValue(strAmphoe);
             this.get_Tambon_Edit(thisLocation[0].location_id, strTambon)
         }
 
@@ -370,11 +372,10 @@ export class DealersSaveComponent implements OnInit {
     changeTambonEdit(strTambon) {
         if (this.arrTambon.length > 0) {
             const arrTambon = this.arrTambon.filter((x) => x.location_name === strTambon)
-            this.dealersFrom.get('tambon').patchValue(arrTambon[0].location_name);
-            this.dealersFrom.get('zipcode').patchValue(arrTambon[0].location_postcode);
+            this.Form.get('tambon').patchValue(arrTambon[0].location_name);
+            this.Form.get('zipcode').patchValue(arrTambon[0].location_postcode);
         }
     }
-
 
 
     btnDialogMab() {
@@ -385,15 +386,15 @@ export class DealersSaveComponent implements OnInit {
         dialogRef.onClose.subscribe(result => {
             if (result) {
 
-                this.dealersFrom.get('addressFull').patchValue(result.address);
-                this.dealersFrom.get('addressNo').patchValue(result.num);
-                this.dealersFrom.get('province').patchValue(result.state);
-                this.dealersFrom.get('amphoe').patchValue(result.city);
-                this.dealersFrom.get('tambon').patchValue(result.town);
-                this.dealersFrom.get('zipcode').patchValue(result.zipcode);
-                this.dealersFrom.get('dealer_addr_lat').patchValue(result.supplier_addr_location_lat);
-                this.dealersFrom.get('dealer_addr_lng').patchValue(result.supplier_addr_location_lng);
-                this.dealersFrom.get('latitudeAndLongitude').patchValue(result.supplier_addr_location_lat + ',' + result.supplier_addr_location_lng);
+                this.Form.get('addressFull').patchValue(result.address);
+                this.Form.get('addressNo').patchValue(result.num);
+                this.Form.get('province').patchValue(result.state);
+                this.Form.get('amphoe').patchValue(result.city);
+                this.Form.get('tambon').patchValue(result.town);
+                this.Form.get('zipcode').patchValue(result.zipcode);
+                this.Form.get('dealer_addr_lat').patchValue(result.supplier_addr_location_lat);
+                this.Form.get('dealer_addr_lng').patchValue(result.supplier_addr_location_lng);
+                this.Form.get('latitudeAndLongitude').patchValue(result.supplier_addr_location_lat + ',' + result.supplier_addr_location_lng);
                 this.changeProvinceEdit(result.state, result.city, result.town);
 
             }
@@ -401,45 +402,21 @@ export class DealersSaveComponent implements OnInit {
         });
     }
 
-
-
-
-    get f() { return this.dealersFrom.controls; }
+    get f() { return this.Form.controls; }
     onSubmit() {
         this.submitted = true;
-        if (this.dealersFrom.invalid) {
+        if (this.Form.invalid) {
             return;
         }
     }
 
-
     btnCancelClick() {
-        const dialogRef = this.dialogService.open(DialogsCancelComponent, {
-        });
-
-        dialogRef.onClose.subscribe(result => {
-            if (result === 'cancel') {
-            }
-            if (result === 'ok') {
-                this.router.navigate([this.UrlRouter_DealersList]);
-            }
-        });
+        this.router.navigate([this.UrlRouter_DealersList]);
     }
 
     btnBackClick() {
-        const dialogRef = this.dialogService.open(DialogsCancelComponent, {
-        });
-
-        dialogRef.onClose.subscribe(result => {
-            if (result === 'cancel') {
-            }
-            if (result === 'ok') {
-                this.router.navigate([this.UrlRouter_DealersDetail, this.RowID]);
-            }
-        });
+        this.router.navigate([this.UrlRouter_DealersDetail, this.RowID]);
     }
-
-
 
     btnSaveClick() {
 
@@ -459,7 +436,7 @@ export class DealersSaveComponent implements OnInit {
         this.inArrayPhone(12, 12, phone.mobile, this.phone.mobile)
 
         this.submitted = true;
-        if (this.dealersFrom.invalid || this.image.update || this.phone.tel.number === "" || this.phone.mobile.number === "") {
+        if (this.Form.invalid || this.image.update || this.phone.tel.number === "" || this.phone.mobile.number === "") {
             return;
         }
         this.image.update = true;
@@ -482,22 +459,22 @@ export class DealersSaveComponent implements OnInit {
             const dataJsons = {
                 "distributor_id": this.id_local,
                 "sale_rep_id": 0,
-                "dealer_name": this.dealersFrom.value.dealersName,
-                "dealer_first_name": this.dealersFrom.value.firstName,
-                "dealer_last_name": this.dealersFrom.value.lastName,
+                "dealer_name": this.Form.value.dealersName,
+                "dealer_first_name": this.Form.value.firstName,
+                "dealer_last_name": this.Form.value.lastName,
                 "dealer_tel": this.phone.tel.number,
                 "dealer_mobile": this.phone.mobile.number,
-                "dealer_email": this.dealersFrom.value.emailAddress,
-                "dealer_tag": this.dealersFrom.value.productcategory,
-                "dealer_company": this.dealersFrom.value.companyName,
-                "dealer_addr_full": this.dealersFrom.value.addressFull,
-                "dealer_addr_number": this.dealersFrom.value.addressNo,
-                "dealer_addr_tambon": this.dealersFrom.value.tambon,
-                "dealer_addr_amphoe": this.dealersFrom.value.amphoe,
-                "dealer_addr_province": this.dealersFrom.value.province,
-                "dealer_addr_post": this.dealersFrom.value.zipcode,
-                "dealer_addr_lat": this.dealersFrom.value.dealer_addr_lat,
-                "dealer_addr_lng": this.dealersFrom.value.dealer_addr_lng,
+                "dealer_email": this.Form.value.emailAddress,
+                "dealer_tag": this.Form.value.productcategory,
+                "dealer_company": this.Form.value.companyName,
+                "dealer_addr_full": this.Form.value.addressFull,
+                "dealer_addr_number": this.Form.value.addressNo,
+                "dealer_addr_tambon": this.Form.value.tambon,
+                "dealer_addr_amphoe": this.Form.value.amphoe,
+                "dealer_addr_province": this.Form.value.province,
+                "dealer_addr_post": this.Form.value.zipcode,
+                "dealer_addr_lat": this.Form.value.dealer_addr_lat,
+                "dealer_addr_lng": this.Form.value.dealer_addr_lng,
                 "dealer_image_url": (this.image.main_image.port.length > 0) ? this.image.main_image.port[0].image_url : "-",
 
             }
@@ -505,6 +482,7 @@ export class DealersSaveComponent implements OnInit {
             const dataJson = JSON.stringify(dataJsons)
             console.log(dataJsons);
             this.dealerAPIService.addDealer(dataJson).subscribe(data => {
+                this.Form.reset();
                 this.router.navigate([this.UrlRouter_DealersList]);
                 console.log(data);
             })
@@ -514,27 +492,28 @@ export class DealersSaveComponent implements OnInit {
                 "dealer_id": this.arrobjRow.dealer_id,
                 "distributor_id": this.id_local,
                 "sale_rep_id": 0,
-                "dealer_name": this.dealersFrom.value.dealersName,
-                "dealer_first_name": this.dealersFrom.value.firstName,
-                "dealer_last_name": this.dealersFrom.value.lastName,
+                "dealer_name": this.Form.value.dealersName,
+                "dealer_first_name": this.Form.value.firstName,
+                "dealer_last_name": this.Form.value.lastName,
                 "dealer_tel": this.phone.tel.number,
                 "dealer_mobile": this.phone.mobile.number,
-                "dealer_email": this.dealersFrom.value.emailAddress,
-                "dealer_tag": this.dealersFrom.value.productcategory,
-                "dealer_company": this.dealersFrom.value.companyName,
-                "dealer_addr_full": this.dealersFrom.value.addressFull,
-                "dealer_addr_number": this.dealersFrom.value.addressNo,
-                "dealer_addr_tambon": this.dealersFrom.value.tambon,
-                "dealer_addr_amphoe": this.dealersFrom.value.amphoe,
-                "dealer_addr_province": this.dealersFrom.value.province,
-                "dealer_addr_post": this.dealersFrom.value.zipcode,
-                "dealer_addr_lat": this.dealersFrom.value.dealer_addr_lat,
-                "dealer_addr_lng": this.dealersFrom.value.dealer_addr_lng,
+                "dealer_email": this.Form.value.emailAddress,
+                "dealer_tag": this.Form.value.productcategory,
+                "dealer_company": this.Form.value.companyName,
+                "dealer_addr_full": this.Form.value.addressFull,
+                "dealer_addr_number": this.Form.value.addressNo,
+                "dealer_addr_tambon": this.Form.value.tambon,
+                "dealer_addr_amphoe": this.Form.value.amphoe,
+                "dealer_addr_province": this.Form.value.province,
+                "dealer_addr_post": this.Form.value.zipcode,
+                "dealer_addr_lat": this.Form.value.dealer_addr_lat,
+                "dealer_addr_lng": this.Form.value.dealer_addr_lng,
                 "dealer_image_url": (this.image.main_image.port.length > 0) ? this.image.main_image.port[0].image_url : "-",
             }
             const dataJson = JSON.stringify(dataJsons)
             console.log(dataJsons);
             this.dealerAPIService.updateDealer(dataJson).subscribe(data => {
+                this.Form.reset();
                 this.router.navigate([this.UrlRouter_DealersList]);
                 console.log(data);
 
@@ -542,7 +521,6 @@ export class DealersSaveComponent implements OnInit {
         }
 
     }
-
 
     uploadFile(event) {
         if (event.length === 0)
@@ -562,7 +540,6 @@ export class DealersSaveComponent implements OnInit {
         }
         this.upload()
     }
-
 
     upload() {
         const dataJson = {

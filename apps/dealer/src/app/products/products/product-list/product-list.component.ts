@@ -10,7 +10,7 @@ import { Component, OnInit, QueryList, ViewChildren } from "@angular/core";
 
 
 import { SaleRepService ,SellerService} from "@project/services";
-import { searchResult, iFSalerepAccount } from '@project/interfaces';
+import { searchResult, ISalerepAccount } from '@project/interfaces';
 
 import { WishlistTableService } from "./table-list.service";
 
@@ -27,7 +27,7 @@ export class SellerListComponent implements OnInit {
 
   strFilter: string;
 
-  wishlist$: Observable<iFSalerepAccount[]>;
+  wishlist$: Observable<ISalerepAccount[]>;
   tatallist$: Observable<number>;
   ColumnMode = ColumnMode;
   loadings = false;

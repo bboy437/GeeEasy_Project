@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { DecimalPipe, DatePipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { SortDirection, SaleRepService } from '@project/services';
-import { iFSalerepAccount, searchResult } from '@project/interfaces';
+import { ISalerepAccount, searchResult } from '@project/interfaces';
 
 interface State {
   page: number;
@@ -17,7 +17,7 @@ function compare(v1, v2) {
   return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 }
 
-function sort(countries: iFSalerepAccount[], column: string, direction: string): iFSalerepAccount[] {
+function sort(countries: ISalerepAccount[], column: string, direction: string): ISalerepAccount[] {
   if (direction === '') {
     return countries;
   } else {
@@ -28,7 +28,7 @@ function sort(countries: iFSalerepAccount[], column: string, direction: string):
   }
 }
 
-function matches(country: iFSalerepAccount, term: string, pipe: PipeTransform) {
+function matches(country: ISalerepAccount, term: string, pipe: PipeTransform) {
   return country.create_time.toString().toLowerCase().includes(term.toString().toLowerCase())
     || country.sale_rep_name.toString().toLowerCase().includes(term.toString().toLowerCase())
     || country.sale_rep_mobile.toString().toLowerCase().includes(term.toString().toLowerCase())
@@ -41,7 +41,7 @@ function matches(country: iFSalerepAccount, term: string, pipe: PipeTransform) {
 export class WishlistTableService {
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _countries$ = new BehaviorSubject<iFSalerepAccount[]>([]);
+  private _countries$ = new BehaviorSubject<ISalerepAccount[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
 
   private _state: State = {
@@ -78,7 +78,7 @@ export class WishlistTableService {
   getData(callback: (res, countries$, total$) => any) {
     this.data_api.data_send.dealer_id = this.id_local;
     this.saleRepService.getSalerepAccountLists(this.data_api.data_send).subscribe(res => {
-      this.arrWishlist = <iFSalerepAccount>res.response_data;
+      this.arrWishlist = <ISalerepAccount>res.response_data;
       console.log("getData : arrWishlist : ", this.arrWishlist);
       this._search$.pipe(
         tap(() => this._loading$.next(true)),

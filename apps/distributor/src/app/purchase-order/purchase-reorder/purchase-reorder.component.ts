@@ -248,8 +248,8 @@ export class PurchaseReorderComponent implements OnInit {
   }
 
   getProductReorder() {
-    console.log("purchase_order_product_array",this.purchase_order_product_array);
-    
+    console.log("purchase_order_product_array", this.purchase_order_product_array);
+
 
     this.purchase_order_product_array.forEach(element => {
       this.products.push(
@@ -278,7 +278,7 @@ export class PurchaseReorderComponent implements OnInit {
     this.checkCurrency();
 
   }
-  
+
   btnIDClick(options: INgxSelectOption[]) {
     console.log(this.strTab);
     if (options.length > 0) {
@@ -652,6 +652,7 @@ export class PurchaseReorderComponent implements OnInit {
 
     this.purchaseAPIService.addPurchase(dataJson).subscribe(data => {
       this.isSaveLodding = false;
+      this.Form.reset();
       this.router.navigate([this.UrlRouter_Purchase]);
     })
     this.saveSetting()
@@ -680,16 +681,7 @@ export class PurchaseReorderComponent implements OnInit {
 
 
   btnCancel() {
-    const dialogRef = this.dialogService.open(DialogsCancelComponent, {
-    });
-
-    dialogRef.onClose.subscribe(result => {
-      if (result === 'cancel') {
-      }
-      if (result === 'ok') {
-        this.router.navigate([this.UrlRouter_PurchaseDetail, "po", this.RowID]);
-      }
-    });
+    this.router.navigate([this.UrlRouter_PurchaseDetail, "po", this.RowID]);
   }
 
 

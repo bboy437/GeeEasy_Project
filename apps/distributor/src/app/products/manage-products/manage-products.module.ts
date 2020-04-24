@@ -16,7 +16,7 @@ import { LayoutsModule } from '../../layouts/layouts.module';
 import { MapModule } from '../../map/map.module';
 import { ManageProductsComponent } from './manage-products.component';
 import { MyProductComponent } from './manage-product-list/manage-product.component';
-import { FarvoriteComponent } from './farvorite/farvorite.component';
+import { FarvoriteComponent } from './product-farvorite/product-farvorite.component';
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 @NgModule({

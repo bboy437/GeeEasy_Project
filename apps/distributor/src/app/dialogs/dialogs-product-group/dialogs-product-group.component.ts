@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NbDialogRef } from '@nebular/theme';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ProductAPIService } from '@project/services';
 import { Router } from '@angular/router';
+import { ProductAPIService } from '@project/services';
 
 @Component({
   selector: 'project-dialogs-product-group',

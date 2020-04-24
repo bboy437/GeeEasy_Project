@@ -7,24 +7,6 @@ import { NbMenuModule, NbSidebarModule } from "@nebular/theme";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule } from "@angular/common/http";
 import { LayoutsModule } from './layouts/layouts.module';
-import {
-  BillingAPIService,
-  LocationAPIService,
-  SupplierAPIService,
-  BrowseSupplierAPIService,
-  PurchaseAPIService,
-  CheckinAPIService,
-  WarehouseAPIService,
-  ProductAPIService,
-  DealerAPIService,
-  OrderAPIService,
-  SaveListSupplierAPIService,
-  MessagesAPIService,
-  UploadAPIService,
-  DashboardAPIService,DistributorAPIService, AccountAPIService, SaleRepService, SellerService, TeamAPIService, RetailAccountService ,RetailProductService
-} from "@project/services";
-
-
 import { DialogsModule } from "./dialogs/dialogs.module";
 import { MapModule } from './map/map.module';
 
@@ -42,22 +24,7 @@ import { MapModule } from './map/map.module';
     DialogsModule,
     MapModule
   ],
-  providers: [
-    BillingAPIService,
-    SupplierAPIService,
-    LocationAPIService,
-    BrowseSupplierAPIService,
-    PurchaseAPIService,
-    WarehouseAPIService,
-    CheckinAPIService,
-    ProductAPIService,
-    DealerAPIService,
-    OrderAPIService,
-    SaveListSupplierAPIService,
-    MessagesAPIService,
-    UploadAPIService,
-    DashboardAPIService,DistributorAPIService, AccountAPIService ,SaleRepService ,SellerService ,TeamAPIService ,RetailAccountService ,RetailProductService
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

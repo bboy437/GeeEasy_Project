@@ -4,8 +4,9 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError, map, tap } from 'rxjs/operators';
 import { throwError, Subject } from 'rxjs';
+import { IObjectSalerep } from '@project/interfaces';
 
 @Injectable({
     providedIn: 'root'
@@ -15,6 +16,29 @@ export class SaleRepService {
     protected serverApiUrl = "https://api.gee-supply.com/v1-dealer/";
 
     constructor(private http: HttpClient) { }
+
+
+    // My Sale Rep Supplier
+    paramSalerepList = "cur_page=" + 1 + "&per_page=" + 100 + "&supplier_id=" + localStorage.getItem('id');
+    salerepList$ = this.http.get<IObjectSalerep>(`${this.serverApiUrl}${'salerep/account/lists?'}${this.paramSalerepList}`)
+        .pipe(
+            map(salereps => salereps.response_data),
+            tap(data => console.log('SalerepList', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
+
+
+    // My Sale Rep Disributor
+    paramSalerepListDisributor = "cur_page=" + 1 + "&per_page=" + 100 + "&distributor_id=" + localStorage.getItem('id');
+    salerepListDisributor$ = this.http.get<IObjectSalerep>(`${this.serverApiUrl}${'salerep/account/lists?'}${this.paramSalerepListDisributor}`)
+        .pipe(
+            map(salereps => salereps.response_data),
+            tap(data => console.log('SalerepList', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
+
 
     httpOptions = {
         headers: new HttpHeaders({
@@ -86,9 +110,9 @@ export class SaleRepService {
 
     };
 
-    getSalerepAccountDetail(dataSend): Observable<any> {
+    getSalerepAccountDetail(dataSend): Observable<IObjectSalerep> {
         let res_api = this.serverApiUrl.concat("salerep/account/id/" + dataSend);
-        return this.http.get<any>(res_api)
+        return this.http.get<IObjectSalerep>(res_api)
             .pipe(
                 retry(1),
                 catchError(this.handleError)

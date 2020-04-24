@@ -591,6 +591,7 @@ export class PurchaseOrderSaveComponent implements OnInit {
 
     this.purchaseAPIService.addPurchase(dataJson).subscribe(data => {
       this.isSaveLodding = false;
+      this.Form.reset();
       this.router.navigate([this.UrlRouter_Purchase]);
     })
     // this.saveSetting()
@@ -618,16 +619,7 @@ export class PurchaseOrderSaveComponent implements OnInit {
   }
 
   btnCancel() {
-    const dialogRef = this.dialogService.open(DialogsCancelComponent, {
-    });
-
-    dialogRef.onClose.subscribe(result => {
-      if (result === 'cancel') {
-      }
-      if (result === 'ok') {
-        this.router.navigate([this.UrlRouter_Purchase]);
-      }
-    });
+    this.router.navigate([this.UrlRouter_Purchase]);
   }
 
   openImg(img: any) {

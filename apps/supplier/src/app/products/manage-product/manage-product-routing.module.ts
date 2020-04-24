@@ -4,6 +4,8 @@ import { ManageProductComponent } from './manage-product.component';
 import { ProductsListComponent } from './products-list/products-list.component';
 import { ProductsDetailComponent } from './products-detail/products-detail.component';
 import { ProductsCreateComponent } from './products-create/products-create.component';
+import { ProductCreateGuard } from './products-create/products-create-guard';
+
 
 
 
@@ -14,7 +16,7 @@ const routes: Routes = [
     children: [
       { path: "list", component: ProductsListComponent },
       { path: "detail/:id", component: ProductsDetailComponent },
-      { path: "create/:id", component: ProductsCreateComponent },
+      { path: "create/:id", canDeactivate: [ProductCreateGuard], component: ProductsCreateComponent },
     ]
   }
 ];

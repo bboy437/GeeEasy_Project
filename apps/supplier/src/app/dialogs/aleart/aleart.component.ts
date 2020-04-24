@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NbDialogRef, NbIconLibraries } from '@nebular/theme';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'project-aleart',
@@ -10,21 +11,43 @@ export class AleartComponent implements OnInit {
   @Input() status: any;
   @Input() data: any;
   evaIcons = [];
-  
+  Form: FormGroup;
+
   constructor(
     protected ref: NbDialogRef<AleartComponent>,
-    iconsLibrary: NbIconLibraries
+    iconsLibrary: NbIconLibraries,
+    private formBuilder: FormBuilder,
   ) {
-    this.evaIcons = Array.from(iconsLibrary.getPack('eva').icons.keys())
-      .filter(icon => icon.indexOf('outline') === -1);
-
-    iconsLibrary.registerFontPack('fa', { packClass: 'fa', iconClassPrefix: 'fa' });
-    iconsLibrary.registerFontPack('far', { packClass: 'far', iconClassPrefix: 'fa' });
-    iconsLibrary.registerFontPack('ion', { iconClassPrefix: 'ion' });
   }
 
   ngOnInit() {
+    if (this.status === 'Product QtyMinimum')
+      this.buildForm();
+      this.detailForm();
   }
+
+  buildForm() {
+    this.Form = this.formBuilder.group({
+      wholesale: this.formBuilder.array([])
+    });
+  }
+
+  detailForm(){
+    this.data.forEach(element => {
+      this.wholesale.push(
+        this.formBuilder.group(element)
+      );
+    });
+    this.wholesale.disable();
+    console.log(this.wholesale.value);
+    
+
+  }
+
+  get wholesale(): FormArray {
+    return this.Form.get('wholesale') as FormArray;
+  }
+
 
   btnCancelClick() {
     this.ref.close('cancel');

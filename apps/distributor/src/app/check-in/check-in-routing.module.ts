@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 import { CheckInComponent } from "./check-in.component";
 import { CheckInListComponent } from "./check-in-list/check-in-list.component";
 import { CheckInDetailComponent } from "./check-in-detail/check-in-detail.component";
+import { CheckInDetailGuard } from './check-in-detail/check-in-detail-guard';
 
 const routes: Routes = [
   {
@@ -10,7 +11,7 @@ const routes: Routes = [
     component: CheckInComponent,
     children: [
       { path: "list", component: CheckInListComponent },
-      { path: "detail/:id/:status", component: CheckInDetailComponent },
+      { path: "detail/:id/:status", canDeactivate: [CheckInDetailGuard], component: CheckInDetailComponent },
     ]
   }
 ];

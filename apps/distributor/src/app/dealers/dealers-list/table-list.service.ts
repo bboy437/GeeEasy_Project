@@ -68,11 +68,10 @@ export class DealersTableService {
 
 
   getData(callback) {
-    const value = "cur_page=" + 1 + "&per_page=" + 10 ;
-      this.dealerAPIService.getDealerList(value).subscribe(data => {
-      this.arrDealers = <IDealer>data.response_data === undefined ? [] : <IDealer>data.response_data;;
-      console.log(this.arrDealers);
-  
+
+    this.dealerAPIService.dealerList$.subscribe(res => {
+      this.arrDealers = res;
+      
       this._search$.pipe(
         tap(() => this._loading$.next(true)),
         debounceTime(100), // 200

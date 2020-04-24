@@ -7,13 +7,13 @@ import { IPurchaseList } from '@project/interfaces';
 import { DialogsImageComponent } from '../../dialogs/dialogs-image/dialogs-image.component';
 import { DialogsConfirmPoComponent } from '../../dialogs/dialogs-confirm-po/dialogs-confirm-po.component';
 import { TypeaheadMatch } from 'ngx-bootstrap';
-import { DialogsReplyComponent } from '../../dialogs/dialogs-reply/dialogs-reply.component';
 import { debounceTime, map, mergeMap, groupBy, toArray, reduce } from 'rxjs/operators';
 import { Observable, from } from 'rxjs';
 import { AleartComponent } from '../../dialogs/aleart/aleart.component';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from "@angular/forms";
 import { of } from 'rxjs';
+import { DialogsReplyPOComponent } from '../../dialogs/dialogs-reply-po/dialogs-reply-po.component';
 
 
 @Component({
@@ -309,7 +309,7 @@ export class PurchaseOrderDetailComponent implements OnInit {
   }
 
   btnReply() {
-    const dialogRef = this.dialogService.open(DialogsReplyComponent, {
+    const dialogRef = this.dialogService.open(DialogsReplyPOComponent, {
       context: {
         data: this.arrPurchase.purchase_order_id
       }

@@ -1,10 +1,20 @@
+import { ResponsePage } from './purchases';
+
 export interface searchResult {
-  countries: iFSalerepAccount[];
+  countries: ISalerepAccount[];
   total: number;
 }
 
+export interface IObjectSalerep{
+  status_text: string;
+  status_msg: string;
+  status_code: string;
+  response_data?: (ISalerepAccount)[] | null;
+  response_page: ResponsePage;
+}
 
-export interface iFSalerepAccount {
+
+export interface ISalerepAccount {
     sale_rep_mobile: string,
     sale_rep_company_addr: string,
     sale_rep_addr_lat: number,

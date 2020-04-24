@@ -6,7 +6,6 @@ import { NbDialogModule, } from '@nebular/theme';
 import { DialogsMapComponent } from './dialogs-map/dialogs-map.component';
 import { AgmCoreModule } from '@agm/core';
 import { DialogsImageComponent } from './dialogs-image/dialogs-image.component';
-import { DialogsConfirmPoComponent } from './dialogs-confirm-po/dialogs-confirm-po.component';
 import { DialogsCancelComponent } from './dialogs-cancel/dialogs-cancel.component';
 import { AleartComponent } from './aleart/aleart.component';
 import { DialogsConfirmOrderComponent } from './dialogs-confirm-order/dialogs-confirm-order.component';
@@ -46,7 +45,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
   declarations: [
     DialogsMapComponent,
     DialogsImageComponent,
-    DialogsConfirmPoComponent,
     DialogsCancelComponent,
     AleartComponent,
     DialogsConfirmOrderComponent,
@@ -62,7 +60,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
   entryComponents: [
     DialogsMapComponent,
     DialogsImageComponent,
-    DialogsConfirmPoComponent,
     DialogsCancelComponent,
     AleartComponent,
     DialogsConfirmOrderComponent,

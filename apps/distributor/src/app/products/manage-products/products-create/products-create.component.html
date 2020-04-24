@@ -1,4 +1,4 @@
-<div class="pages" [formGroup]="productForm" (ngSubmit)="onSubmit()">
+<div class="pages" [formGroup]="Form" (ngSubmit)="onSubmit()">
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card>
@@ -13,12 +13,12 @@
                                 </label>
                             </div>
                             <div class="col-auto">
-                                <button [disabled]="!productForm.valid" style="float: right;margin: 3px 0px 3px 1rem;"
+                                <button [disabled]="!Form.valid" style="float: right;margin: 3px 0px 3px 1rem;"
                                     *ngIf="RowID == 'new'" [nbSpinner]="product.update" nbSpinnerStatus="success"
                                     nbButton size="medium" status="success" (click)="checkQtyMinimum()">
                                     Save
                                 </button>
-                                <button [disabled]="!productForm.valid" style="float: right;margin: 3px 0px 3px 1rem;"
+                                <button [disabled]="!Form.valid" style="float: right;margin: 3px 0px 3px 1rem;"
                                     *ngIf="RowID != 'new'" [nbSpinner]="product.update" nbSpinnerStatus="success"
                                     nbButton size="medium" status="success" (click)="checkQtyMinimum()">
                                     Update
@@ -75,7 +75,7 @@
                                     <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                         <project-input libOnly="libOnlyProductName" inputType="text"
                                             label="Product Name :" requiredName="Product Name"
-                                            [control]="productForm.get('productName')">
+                                            [control]="Form.get('productName')">
                                         </project-input>
                                     </div>
                                     <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="!loading">
@@ -96,7 +96,7 @@
                                             <div *ngIf="product_category__name == 'Other'">
                                                 <project-input libOnly="libOnlyCharacterDefault" inputType="text"
                                                     label="Custom Category :" requiredName="Custom Category"
-                                                    [control]="productForm.get('category_custom_keyword')">
+                                                    [control]="Form.get('category_custom_keyword')">
                                                 </project-input>
                                             </div>
                                         </div>
@@ -109,22 +109,22 @@
                                                     textAlign="right" mask="separator.2" thousandSeparator=","
                                                     label="Buy Price (Cost) :" requiredName="Buy Price (Cost)"
                                                     typeStyle="price"
-                                                    [nameStyle]="productForm.value.product_currency_code"
-                                                    [control]="productForm.get('productPrice')">
+                                                    [nameStyle]="Form.value.product_currency_code"
+                                                    [control]="Form.get('productPrice')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12  col-md-3 col-lg-3 col-xl-3">
                                                 <project-ngx-select label="Currency :" requiredName="Currency"
                                                     optionValueField="currency_name" optionTextField="currency_name"
                                                     [items]="arrCurrency"
-                                                    [control]="productForm.get('product_currency_code')">
+                                                    [control]="Form.get('product_currency_code')">
                                                 </project-ngx-select>
                                             </div>
                                             <div class="col-12  col-md-3 col-lg-3 col-xl-3">
                                                 <project-input libOnly="libOnlyCharacternumber" inputType="text"
                                                     textAlign="right" mask="separator.0" thousandSeparator=","
                                                     label="Initial Stock :" requiredName="Initial Stock"
-                                                    [control]="productForm.get('initial_stock')"
+                                                    [control]="Form.get('initial_stock')"
                                                     (keyup)="onKeyInitialStock($event.target.value)">
                                                 </project-input>
                                             </div>
@@ -135,18 +135,18 @@
                                             <div class="col-12 col-12 col-md-4 col-lg-4 col-xl-4">
                                                 <project-input libOnly="libOnlySKU" inputType="text"
                                                     label="Product SKU :" requiredName="Product SKU"
-                                                    [control]="productForm.get('productSKU')">
+                                                    [control]="Form.get('productSKU')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12 col-md-2 col-lg-2 col-xl-2">
                                                 <project-input libOnly="libOnlyUnit" inputType="text" label="Unit :"
-                                                    requiredName="Unit" [control]="productForm.get('productUnit')">
+                                                    requiredName="Unit" [control]="Form.get('productUnit')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
                                                 <project-input libOnly="libOnlyBarcode" inputType="text"
                                                     label="Product Barcode :" requiredName="Product Barcode"
-                                                    [control]="productForm.get('product_barcode')">
+                                                    [control]="Form.get('product_barcode')">
                                                 </project-input>
                                             </div>
                                         </div>
@@ -157,26 +157,26 @@
                                                 <project-input libOnly="libOnlyCharacternumber" mask="separator.0"
                                                     textAlign="right" thousandSeparator="," inputType="text"
                                                     label="Product Width :" requiredName="Product Width"
-                                                    [control]="productForm.get('width')">
+                                                    [control]="Form.get('width')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12 col-md-2 col-lg-2 col-xl-2">
                                                 <project-ngx-select label="Unit :" requiredName="Unit"
                                                     optionValueField="unit_name" optionTextField="unit_name"
-                                                    [items]="arrUnitWH" [control]="productForm.get('width_unit')">
+                                                    [items]="arrUnitWH" [control]="Form.get('width_unit')">
                                                 </project-ngx-select>
                                             </div>
                                             <div class="col-12 col-12 col-md-4 col-lg-4 col-xl-4">
                                                 <project-input libOnly="libOnlyCharacternumber" mask="separator.0"
                                                     textAlign="right" thousandSeparator="," inputType="text"
                                                     label="Product Height :" requiredName="Product Height"
-                                                    [control]="productForm.get('height')">
+                                                    [control]="Form.get('height')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12 col-md-2 col-lg-2 col-xl-2">
                                                 <project-ngx-select label="Unit :" requiredName="Unit"
                                                     optionValueField="unit_name" optionTextField="unit_name"
-                                                    [items]="arrUnitWH" [control]="productForm.get('height_unit')">
+                                                    [items]="arrUnitWH" [control]="Form.get('height_unit')">
                                                 </project-ngx-select>
                                             </div>
                                         </div>
@@ -187,13 +187,13 @@
                                                 <project-input libOnly="libOnlyCharacternumber" mask="separator.0"
                                                     textAlign="right" thousandSeparator="," inputType="text"
                                                     label="Product Weight :" requiredName="Product Weight"
-                                                    [control]="productForm.get('weight')">
+                                                    [control]="Form.get('weight')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12 col-md-2 col-lg-2 col-xl-2">
                                                 <project-ngx-select label="Unit :" requiredName="Unit"
                                                     optionValueField="unit_name" optionTextField="unit_name"
-                                                    [items]="arrUnitWeight" [control]="productForm.get('weight_unit')">
+                                                    [items]="arrUnitWeight" [control]="Form.get('weight_unit')">
                                                 </project-ngx-select>
                                             </div>
                                         </div>
@@ -203,7 +203,7 @@
                                             <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
                                                 <project-ngx-select label="Country :" requiredName="Country"
                                                     optionValueField="location_name" optionTextField="location_name"
-                                                    [items]="arrCountry" [control]="productForm.get('product_country')">
+                                                    [items]="arrCountry" [control]="Form.get('product_country')">
                                                 </project-ngx-select>
                                             </div>
                                             <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
@@ -247,7 +247,7 @@
                                                     <project-ngx-select label="Warehouse Name :"
                                                         requiredName="Warehouse Name" optionValueField="warehouse_id"
                                                         optionTextField="warehouse_name" [items]="arrWarehouse"
-                                                        [control]="productForm.get('warehouse_id')"
+                                                        [control]="Form.get('warehouse_id')"
                                                         placeholder="--------- Choose ---------"
                                                         (selectionChanges)='btnIDClick($event)'>
                                                     </project-ngx-select>
@@ -255,7 +255,7 @@
                                                 <div *ngIf="RowID != 'new'">
                                                     <project-input libOnly="libOnlyCharacterDefault" inputType="text"
                                                         label="Warehouse Name :" requiredName="Warehouse Name"
-                                                        [control]="productForm.get('warehouse_name')">
+                                                        [control]="Form.get('warehouse_name')">
                                                     </project-input>
                                                 </div>
                                             </div>
@@ -269,10 +269,32 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;margin-bottom: 0.1rem;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label>
+                                    Product Wholesale
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                <div class="cover-input">
-                                    <label>Product Wholesale :</label>
-                                </div>
                                 <table class="table no-hover">
                                     <thead>
                                         <th style="width: 15%; text-align: center;">
@@ -319,7 +341,7 @@
                                                         <project-input libOnly="libOnlyCharacternumber"
                                                             mask="separator.2" thousandSeparator="," inputType="text"
                                                             textAlign="price" typeStyle="price"
-                                                            [nameStyle]="productForm.value.product_currency_code"
+                                                            [nameStyle]="Form.value.product_currency_code"
                                                             [control]="item.get('product_price')">
                                                         </project-input>
                                                     </td>
@@ -327,7 +349,7 @@
                                                         <project-input libOnly="libOnlyCharacternumber"
                                                             mask="separator.2" thousandSeparator="," inputType="text"
                                                             textAlign="price" typeStyle="price"
-                                                            [nameStyle]="productForm.value.product_currency_code"
+                                                            [nameStyle]="Form.value.product_currency_code"
                                                             [control]="item.get('retail_product_price')">
                                                         </project-input>
                                                     </td>

@@ -80,10 +80,10 @@ export class DialogsConfirmOrderComponent implements OnInit {
     console.log(event);
     // tslint:disable-next-line: triple-equals
     if (event == 1) {
-      this.arrobjRow.confirm_balance = this.data.total_grand;
+      this.From.get('confirm_balance').setValue(this.data.total_grand);
       this.From.get('confirm_balance').disable();
     } else {
-      this.arrobjRow.confirm_balance = 0;
+      this.From.get('confirm_balance').setValue(0);
       this.From.get('confirm_balance').enable();
     }
 
@@ -100,9 +100,9 @@ export class DialogsConfirmOrderComponent implements OnInit {
   comfrimPaid() {
     const dataJson = {
       dealer_order_id: this.data.dealer_order_id,
-      confirm_id: this.arrobjRow.confirm_id,
-      confirm_balance: this.arrobjRow.confirm_balance,
-      confirm_reference: this.arrobjRow.confirm_reference
+      confirm_id: this.From.value.confirm_id,
+      confirm_balance: this.From.value.confirm_balance,
+      confirm_reference: this.From.value.confirm_reference
     }
     console.log('dataJson', dataJson);
     this.orderAPIService.comfirmPaid(JSON.stringify(dataJson)).subscribe(data => {

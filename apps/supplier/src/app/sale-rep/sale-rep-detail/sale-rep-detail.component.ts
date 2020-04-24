@@ -12,7 +12,7 @@ import {
 import { SaleRepService, UploadAPIService } from "@project/services";
 
 @Component({
-  selector: "sale-rep-detail",
+  selector: "project-sale-rep-detail",
   templateUrl: "./sale-rep-detail.component.html",
   styleUrls: ["./sale-rep-detail.component.scss"],
 })
@@ -25,7 +25,7 @@ export class SaleRepDetailComponent implements OnInit {
   loading = false;
   isReload = false;
 
-  SaleForm: FormGroup;
+  Form: FormGroup;
 
 
   image = {
@@ -80,7 +80,7 @@ export class SaleRepDetailComponent implements OnInit {
   }
 
   buildForm() {
-    this.SaleForm = this.formBuilder.group({
+    this.Form = this.formBuilder.group({
         sale_rep_name: [{ value: "", disabled: true }, Validators.required],
         sale_rep_company: [{ value: "", disabled: true }, Validators.required],
         sale_rep_tag: [{ value: "", disabled: true }, Validators.required],
@@ -100,7 +100,7 @@ export class SaleRepDetailComponent implements OnInit {
 }
 
 editForm() {
-  this.SaleForm.patchValue({
+  this.Form.patchValue({
       sale_rep_name: this.arrSale.sale_rep_name,
       sale_rep_company: this.arrSale.sale_rep_company,
       sale_rep_tag: this.arrSale.sale_rep_tag,

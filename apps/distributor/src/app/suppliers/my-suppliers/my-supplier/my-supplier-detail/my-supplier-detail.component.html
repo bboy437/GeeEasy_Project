@@ -1,0 +1,224 @@
+<div class="pages" [formGroup]="Form">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <nb-icon style="float: left; " icon="people-outline"></nb-icon>
+                                <label style="padding-top: 0.2rem;">My Supplier <span class="p-0-12">/</span>
+                                    Detail</label>
+                            </div>
+                            <div class="col-auto">
+                                <button style="margin: 3px 0px 3px 1rem;" nbButton type="button" size="medium"
+                                    status="danger" (click)="btnCancelClick()">
+                                    Back
+                                </button>
+                                <button *ngIf="!loading" style="float: right;margin: 3px 0px 3px 1rem;" nbButton
+                                    type="button" size="medium" status="success" (click)="btnEditClick()">
+                                    Edit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;margin-bottom: 0.1rem;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label>{{arrSupplier.supplier_name}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="primary">
+            <nb-card>
+                <nb-card-body>
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <div class="row">
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="padding-bottom: 1rem;">
+                                            <project-display-file-image theme="white"
+                                                [image_url_array]="image.main_image.get">
+                                            </project-display-file-image>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <div class="row">
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Supplier Name :"
+                                                [control]="Form.get('suppliername')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Product Category :"
+                                                [control]="Form.get('productcategory')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Catalog Keyword :"
+                                                [control]="Form.get('catalogkeyword')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Supplier Keyword :"
+                                                [control]="Form.get('supplierkeyword')">
+                                            </project-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <div class="row">
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="First Name :"
+                                                [control]="Form.get('firstName')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Last Name :"
+                                                [control]="Form.get('lastName')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Company Name :"
+                                                [control]="Form.get('companyName')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Email :"
+                                                [control]="Form.get('emailAddress')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Telephone Number :"
+                                                [control]="Form.get('phoneNo')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Mobile Phone Number :"
+                                                [control]="Form.get('mobileNo')">
+                                            </project-input>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <div class="row">
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-textarea rows="3" label="Address :"
+                                                [control]="Form.get('AddressFull')">
+                                            </project-textarea>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Address Number :"
+                                                [control]="Form.get('AddressNo')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Province :"
+                                                [control]="Form.get('province')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Amphoe :"
+                                                [control]="Form.get('amphoe')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <project-input inputType="text" label="Tambon :"
+                                                [control]="Form.get('tambon')">
+                                            </project-input>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <div class="row">
+                                                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                                    <project-input inputType="text" label="Zipcode :"
+                                                        [control]="Form.get('zipcode')">
+                                                    </project-input>
+                                                </div>
+                                                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                                    <project-input inputType="text" label="Latitude Longitude :"
+                                                        [control]="Form.get('latlong')">
+                                                    </project-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="isProduct === true">
+            <div class="body">
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                        <project-add-product [supplier_id]="RowID" (status)="okClick($event)"></project-add-product>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-lg-12" style="text-align: right">
+                                        <button *ngIf="isAdd === true" nbButton status="success"
+                                            (click)="addProducts()">Add
+                                            Product</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <project-comp-products-supplier-detail [data]="arrSupplierProduct">
+                                        </project-comp-products-supplier-detail>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card
+                *ngIf="!loading && arrSupplier.supplier_addr_location_lat != 0 && arrSupplier.supplier_addr_location_lng != 0">
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <project-map [let]="arrSupplier.supplier_addr_location_lat"
+                                            [long]="arrSupplier.supplier_addr_location_lng">
+                                        </project-map>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+        </div>
+    </div>
+</div>

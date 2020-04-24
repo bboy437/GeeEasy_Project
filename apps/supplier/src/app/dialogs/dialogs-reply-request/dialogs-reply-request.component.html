@@ -1,0 +1,42 @@
+<div class="pages" [formGroup]="Form" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <nb-icon icon="people-outline"></nb-icon>
+                        <label>Reply Distributor</label>
+                    </div>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <project-input libOnly="libOnlyCharacterDefault" label="Massage :"
+                                    requiredName="Massage" [control]="Form.get('massage')">
+                                </project-input>
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <label>Action</label>
+                                <nb-select placeholder="----Choose----" fullWidth status="primary"
+                                    [ngClass]="{ 'is-invalid': submitted && f.action_id.errors }"
+                                    formControlName="action_id">
+                                    <nb-option value="1">Confirmed</nb-option>
+                                    <nb-option value="2">Postpone the response</nb-option>
+                                    <nb-option value="3">Canceled</nb-option>
+                                </nb-select>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button nbButton style="width: 100px" status="danger"
+                                (click)="btnCancelClick()">Cancel</button>
+                            <button [disabled]="Form.invalid" [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny"
+                                nbSpinnerStatus="success" nbButton style="width: 100px; margin-left: 0.7rem;"
+                                status="success" (click)="btnSaveClick()">OK</button>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+    </div>
+</div>

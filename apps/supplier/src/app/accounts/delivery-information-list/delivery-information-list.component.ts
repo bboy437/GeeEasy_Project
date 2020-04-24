@@ -50,12 +50,13 @@ export class DeliveryInformationListComponent implements OnInit {
     errorMassgess: string;
     form: FormGroup;
     arrDeliver$: Observable<ISetting[]>;
-    loading = false;
+    loading = true;
     arrCurrency: any[] = JSON_CURRENCY;
 
 
     delivery$ = this.accountAPIService.arrdelivery$
         .pipe(
+            tap(data => this.loading = false),
             catchError(err => {
                 this.errorMassgess = err;
                 return EMPTY;
@@ -81,16 +82,16 @@ export class DeliveryInformationListComponent implements OnInit {
             order_cutoff_time: ['', Validators.required],
         });
 
-        this.arrDeliver$ = this.accountAPIService.arrdelivery$
-            .pipe(
-                tap(res => console.log('resres', res)
-                ),
-                catchError(err => {
-                    this.errorMassgess = err;
-                    return EMPTY;
-                })
-            )
-        this.loading = false;
+        // this.arrDeliver$ = this.accountAPIService.arrdelivery$
+        //     .pipe(
+        //         tap(res => console.log('resres', res)
+        //         ),
+        //         catchError(err => {
+        //             this.errorMassgess = err;
+        //             return EMPTY;
+        //         })
+        //     )
+        // this.loading = false;
 
     }
 

@@ -12,7 +12,7 @@ export class DialogsCheckinStatusComponent implements OnInit {
 
   @Input() data: number;
   @Input() status: number;
-  strCheckin = '0';
+  Form: FormGroup;
 
   constructor(
     protected ref: NbDialogRef<DialogsCheckinStatusComponent>,
@@ -21,19 +21,29 @@ export class DialogsCheckinStatusComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (this.data > 0) {
-      this.strCheckin = '1';
+    console.log(this.data);
+    this.buildForm();
+  }
+
+  buildForm() {
+    this.Form = this.formBuilder.group({
+      strCheckin: ['', Validators.required],
+    });
+
+    if (this.data === 0) {
+      this.Form.get("strCheckin").patchValue("0");
+    } else {
+      this.Form.get("strCheckin").patchValue("1");
     }
 
   }
-
 
   btnCancelClick() {
     this.ref.close();
   }
 
   btnSaveClick() {
-    this.ref.close(this.strCheckin);
+    this.ref.close(this.Form.value.strCheckin);
   }
 
 }

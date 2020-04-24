@@ -6,25 +6,6 @@ import { AppRoutingModule } from "./app-routing.module";
 import { NbMenuModule, NbSidebarModule } from "@nebular/theme";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule } from "@angular/common/http";
-import {
-  BillingAPIService,
-  LocationAPIService,
-  SupplierAPIService,
-  BrowseSupplierAPIService,
-  PurchaseAPIService,
-  CheckinAPIService,
-  WarehouseAPIService,
-  ProductAPIService,
-  DealerAPIService,
-  OrderAPIService,
-  SaveListSupplierAPIService,
-  MessagesAPIService,
-  UploadAPIService,
-  DashboardAPIService,
-  SaleRepService,
-  DistributorAPIService,
-  ReusableReactiveFormService
-} from "@project/services";
 import { DialogsModule } from "./dialogs/dialogs.module";
 import { NgbdSortableHeader } from "./sortableheader/sortable.directive";
 import { LayoutsModule } from "./layouts/layouts.module";
@@ -46,25 +27,7 @@ import { MapModule } from './map/map.module';
     DropFileModule,
     MapModule
   ],
-  providers: [
-    BillingAPIService,
-    SupplierAPIService,
-    LocationAPIService,
-    BrowseSupplierAPIService,
-    PurchaseAPIService,
-    WarehouseAPIService,
-    CheckinAPIService,
-    ProductAPIService,
-    DealerAPIService,
-    OrderAPIService,
-    SaveListSupplierAPIService,
-    MessagesAPIService,
-    UploadAPIService,
-    DashboardAPIService,
-    SaleRepService,
-    DistributorAPIService,
-    ReusableReactiveFormService
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

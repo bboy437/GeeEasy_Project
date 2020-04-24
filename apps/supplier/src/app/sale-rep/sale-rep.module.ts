@@ -15,7 +15,10 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgxSelectModule } from 'ngx-select-ex';
 
 import { SaleRepRoutingModule } from "./sale-rep-routing.module";
-import { SaleRepListComponent, SaleRepDetailComponent, SaleRepCreateComponent } from "./";
+import { SaleRepListComponent } from './sale-rep-list/sale-rep-list.component';
+import { SaleRepDetailComponent } from './sale-rep-detail/sale-rep-detail.component';
+import { SaleRepCreateComponent } from './sale-rep-create/sale-rep-create.component';
+
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 

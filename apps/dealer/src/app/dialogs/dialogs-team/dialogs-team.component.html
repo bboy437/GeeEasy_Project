@@ -1,36 +1,38 @@
 <!-- Confrim -->
 <div class="pages">
-    <nb-card *ngIf="status == 'addSeallertoTeam'" style="width: 900px;">
-        <nb-card-header>
-            <div class="header">
-                <div class="row">
-                    <div class="col-auto mr-auto">
-                        <nb-icon class="icon-header" icon="people-outline"></nb-icon>
-                        <label style="font-size: 18px; font-weight: bold">{{data.group_name}}</label>
-                    </div>
-                </div>
-            </div>
-        </nb-card-header>
-        <nb-card-body>
-            <form [formGroup]="From" (ngSubmit)="onSubmit()">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="cover-form icon">
-                            <nb-icon icon="search-outline"></nb-icon>
-                            <nb-icon *ngIf="From.value.seller_id" (click)="btnRefresh()"
-                                style="float: right;left: 0; cursor: pointer;" icon="close-outline">
-                            </nb-icon>
-                            <input libOnlyCharacterDefault status="primary" type="text" nbInput fullWidth
-                                status="primary" placeholder="Search for name" formControlName="seller_id"
-                                (keyup)="filterName($event.target.value)" />
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card *ngIf="status == 'addSeallertoTeam'" style="width: 900px;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <nb-icon class="icon-header" icon="people-outline"></nb-icon>
+                                <label style="font-size: 18px; font-weight: bold">{{data.group_name}}</label>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row" [nbSpinner]="loading" nbSpinnerStatus="success">
-                    <nb-card style="height: 28.875rem; width: 100%">
-                        <nb-card-body>
+                </nb-card-header>
+                <nb-card-body>
+                    <form [formGroup]="From" (ngSubmit)="onSubmit()">
+                        <div class="row">
                             <div class="col-md-12">
-                                <!-- <table class="table">
+                                <div class="cover-form icon">
+                                    <nb-icon icon="search-outline"></nb-icon>
+                                    <nb-icon *ngIf="From.value.seller_id" (click)="btnRefresh()"
+                                        style="float: right;left: 0; cursor: pointer;" icon="close-outline">
+                                    </nb-icon>
+                                    <input libOnlyCharacterDefault status="primary" type="text" nbInput fullWidth
+                                        status="primary" placeholder="Search for name" formControlName="seller_id"
+                                        (keyup)="filterName($event.target.value)" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" [nbSpinner]="loading" nbSpinnerStatus="success">
+                            <nb-card style="height: 28.875rem; width: 100%">
+                                <nb-card-body>
+                                    <div class="col-md-12">
+                                        <!-- <table class="table">
                                     <thead>
                                         <tr>
                                             <th style="width: 5%;">
@@ -78,219 +80,232 @@
                                         </tr>
                                     </tbody>
                                 </table> -->
-                                <ngx-datatable [columnMode]="ColumnMode.force" [rows]="arrobjSeller" rowHeight="auto"
-                                    [headerHeight]="50" [scrollbarH]="true" [messages]="messages">
-                                    <ngx-datatable-column name="Location" [sortable]="true" prop="user_addr_province"
-                                        [width]="20">
-                                        <ng-template let-column="column" ngx-datatable-header-template>
-                                            <nb-checkbox class="position-fixed" style="padding: 0rem;"
-                                                [disabled]="arrobjSeller.length == 0" [checked]="checkedAll"
-                                                status="primary" (checkedChange)="updateStatusAll($event)">
-                                            </nb-checkbox>
-                                        </ng-template>
-                                        <ng-template let-row="row" ngx-datatable-cell-template>
-                                            <nb-checkbox status="primary" [ngModel]="row.user_is_active"
-                                                [ngModelOptions]="{standalone: true}"
-                                                (checkedChange)="updateStatus($event, row)"></nb-checkbox>
-                                        </ng-template>
-                                    </ngx-datatable-column>
-                                    <ngx-datatable-column name="Images" [width]="100">
-                                        <ng-template let-row="row" ngx-datatable-cell-template>
-                                            <div class="cover-background-image">
-                                                <div class="background-image padding-width-100px-height-100px"
-                                                    [ngClass]="{'active' : row.user_image_url === '-' || row.user_image_url=== ''}"
-                                                    [ngStyle]="{'background-image': 'url('+row.user_image_url+')'}">
-                                                </div>
-                                            </div>
-                                        </ng-template>
-                                    </ngx-datatable-column>
-                                    <ngx-datatable-column name="Sale Name" [sortable]="true" prop="user_name">
-                                        <ng-template let-row="row" ngx-datatable-cell-template>
-                                            {{ row.user_name }}
-                                        </ng-template>
-                                    </ngx-datatable-column>
-                                    <ngx-datatable-column name="Contact No.	" [sortable]="true" prop="user_mobile">
-                                        <ng-template let-row="row" ngx-datatable-cell-template>
-                                            {{ row.user_mobile }}
-                                        </ng-template>
-                                    </ngx-datatable-column>
-                                    <ngx-datatable-column name="Email" [sortable]="true" prop="user_email">
-                                        <ng-template let-row="row" ngx-datatable-cell-template>
-                                            {{ row.user_email }}
-                                        </ng-template>
-                                    </ngx-datatable-column>
-                                </ngx-datatable> 
+                                        <ngx-datatable [columnMode]="ColumnMode.force" [rows]="arrobjSeller"
+                                            rowHeight="auto" [headerHeight]="50" [scrollbarH]="true"
+                                            [messages]="messages">
+                                            <ngx-datatable-column name="Location" [sortable]="true"
+                                                prop="user_addr_province" [width]="20">
+                                                <ng-template let-column="column" ngx-datatable-header-template>
+                                                    <nb-checkbox class="position-fixed" style="padding: 0rem;"
+                                                        [disabled]="arrobjSeller.length == 0" [checked]="checkedAll"
+                                                        status="primary" (checkedChange)="updateStatusAll($event)">
+                                                    </nb-checkbox>
+                                                </ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <nb-checkbox status="primary" [ngModel]="row.user_is_active"
+                                                        [ngModelOptions]="{standalone: true}"
+                                                        (checkedChange)="updateStatus($event, row)"></nb-checkbox>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Images" [width]="100">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <div class="cover-background-image">
+                                                        <div class="background-image padding-width-100px-height-100px"
+                                                            [ngClass]="{'active' : row.user_image_url === '-' || row.user_image_url=== ''}"
+                                                            [ngStyle]="{'background-image': 'url('+row.user_image_url+')'}">
+                                                        </div>
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Sale Name" [sortable]="true" prop="user_name">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{ row.user_name }}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Contact No.	" [sortable]="true"
+                                                prop="user_mobile">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{ row.user_mobile }}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Email" [sortable]="true" prop="user_email">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{ row.user_email }}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                        </ngx-datatable> 
+                                    </div>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                    </form><br>
+                    <div class="row" style="text-align: center;">
+                        <div class="col-md-12">
+                            <button nbButton style="width: 100px" status="danger"
+                                (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                            <button nbButton style="width: 100px" status="success"
+                                (click)="btnAddSealerClick()">Save</button>
+                        </div>
+                    </div><br>
+                </nb-card-body>
+            </nb-card>
+
+            <nb-card *ngIf="status == 'addProducttoSeller'" style="width: 1300px;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <nb-icon class="icon-header" icon="people-outline"></nb-icon>
+                                <label>{{data.group_name}} <span class="p-0-12">/</span> {{dataUser.user_name}} </label>
                             </div>
-                        </nb-card-body>
-                    </nb-card>
-                </div>
-            </form><br>
-            <div class="row" style="text-align: center;">
-                <div class="col-md-12">
-                    <button nbButton style="width: 100px" status="danger"
-                        (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
-                    <button nbButton style="width: 100px" status="success" (click)="btnAddSealerClick()">Save</button>
-                </div>
-            </div><br>
-        </nb-card-body>
-    </nb-card>
-
-    <nb-card *ngIf="status == 'addProducttoSeller'" style="width: 1300px;">
-        <nb-card-header>
-            <div class="header">
-                <div class="row">
-                    <div class="col-auto mr-auto">
-                        <nb-icon class="icon-header" icon="people-outline"></nb-icon>
-                        <label>{{data.group_name}} <span class="p-0-12">/</span> {{dataUser.user_name}} </label>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </nb-card-header>
-        <nb-card-body>
-            <form [formGroup]="FromProduct">
-                <div class="row">
-                    <div class="col-md-12">
-                        <ngx-select [allowClear]="true" [ngClass]="{ 'is-invalid': submitted && f.seller_id.errors }"
-                            [items]="arrProducts" optionValueField="product_name" optionTextField="product_name "
-                            formControlName="seller_id" placeholder="Search Product"
-                            (selectionChanges)="productSellerChange($event)">
-                        </ngx-select>
-                    </div>
-                </div>
-                <div class="row" [nbSpinner]="loading" nbSpinnerStatus="success">
-                    <nb-card style="height: 28.875rem; width: 100%;">
-                        <nb-card-body>
+                </nb-card-header>
+                <nb-card-body>
+                    <form [formGroup]="FromProduct">
+                        <div class="row">
                             <div class="col-md-12">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th style="text-align: left; ">
-                                                <label>Image</label>
-                                            </th>
-                                            <th style="text-align: left">
-                                                <label>Product Name</label>
-                                            </th>
-                                            <th style="text-align: right; width: 10%;">
-                                                <label>Quantity</label>
-                                            </th>
-                                            <th style="text-align: right">
-                                                <label>Unit Price</label>
-                                            </th>
-                                            <th style="text-align: right; width: 40%;">
-                                                <div class="row">
-                                                    <div class="col-4">
-                                                        <label>Minimum Qty</label>
-                                                    </div>
-                                                    <div class="col-3">
-                                                        <label>Discount</label>
-                                                    </div>
-                                                    <div class="col-2">
-                                                        <label></label>
-                                                    </div>
-                                                    <div class="col-3">
-                                                        <label>Price</label>
-                                                    </div>
-                                                </div>
-                                            </th>
-                                            <th style="text-align: left"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let item of products; let in=index">
-                                            <td style="text-align: left">
-                                                <div class="cover-background-image">
-                                                    <div class="background-image padding-width-100px-height-100px"
-                                                        [ngClass]="{'active' : item.product_image_url === '-' || item.product_image_url === ''}"
-                                                        [ngStyle]="{'background-image': 'url('+item.product_image_url+')'}">
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <label>{{item.product_title}}</label><br>
-                                                <label class="sku">{{item.product_sku}}</label>
-                                            </td>
-                                            <td>
-                                                <input style="text-align: right;" type="text" libOnlyCharacterDefault
-                                                    libOnlyCharacternumber mask="separator.0" thousandSeparator=","
-                                                    onKeyPress="if(this.value.length==7) return false;" nbInput
-                                                    fullWidth status="basic" [(ngModel)]="item.product_qty"
-                                                    [ngModelOptions]="{standalone: true}"
-                                                    (keyup)="onKeyQTY($event.target.value, item)">
-                                            </td>
-                                            <td style="text-align: right;">
-                                                <label style="padding-top: 0.5rem">
-                                                    {{item.product_price |  number : '1.2-2'}}
-                                                </label>
-                                            </td>
-                                            <td style="text-align: right;">
-                                                <div class="row"
-                                                    *ngFor="let s of item.product_wholesale_array; let i=index">
-                                                    <div class="col-4">
+                                <ngx-select [allowClear]="true"
+                                    [ngClass]="{ 'is-invalid': submitted && f.seller_id.errors }" [items]="arrProducts"
+                                    optionValueField="product_name" optionTextField="product_name "
+                                    formControlName="seller_id" placeholder="Search Product"
+                                    (selectionChanges)="productSellerChange($event)">
+                                </ngx-select>
+                            </div>
+                        </div>
+                        <div class="row" [nbSpinner]="loading" nbSpinnerStatus="success">
+                            <nb-card style="height: 28.875rem; width: 100%;">
+                                <nb-card-body>
+                                    <div class="col-md-12">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align: left; ">
+                                                        <label>Image</label>
+                                                    </th>
+                                                    <th style="text-align: left">
+                                                        <label>Product Name</label>
+                                                    </th>
+                                                    <th style="text-align: right; width: 10%;">
+                                                        <label>Quantity</label>
+                                                    </th>
+                                                    <th style="text-align: right">
+                                                        <label>Unit Price</label>
+                                                    </th>
+                                                    <th style="text-align: right; width: 40%;">
+                                                        <div class="row">
+                                                            <div class="col-4">
+                                                                <label>Minimum Qty</label>
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <label>Discount</label>
+                                                            </div>
+                                                            <div class="col-2">
+                                                                <label></label>
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <label>Price</label>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th style="text-align: left"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of products; let in=index">
+                                                    <td style="text-align: left">
+                                                        <div class="cover-background-image">
+                                                            <div class="background-image padding-width-100px-height-100px"
+                                                                [ngClass]="{'active' : item.product_image_url === '-' || item.product_image_url === ''}"
+                                                                [ngStyle]="{'background-image': 'url('+item.product_image_url+')'}">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <label>{{item.product_title}}</label><br>
+                                                        <label class="sku">{{item.product_sku}}</label>
+                                                    </td>
+                                                    <td>
                                                         <input style="text-align: right;" type="text"
                                                             libOnlyCharacterDefault libOnlyCharacternumber
                                                             mask="separator.0" thousandSeparator=","
                                                             onKeyPress="if(this.value.length==7) return false;" nbInput
-                                                            fullWidth status="basic" [(ngModel)]="s.qty_minimum"
+                                                            fullWidth status="basic" [(ngModel)]="item.product_qty"
                                                             [ngModelOptions]="{standalone: true}"
-                                                            (keyup)="onKeyMinimum($event.target.value, s)">
-                                                    </div>
-                                                    <div class="col-3">
-                                                        <input *ngIf="s.thb == true" style="text-align: right;"
-                                                            type="text" libOnlyCharacterDefault libOnlyCharacternumber
-                                                            mask="separator.0" thousandSeparator=","
-                                                            onKeyPress="if(this.value.length==7) return false;" nbInput
-                                                            fullWidth status="basic" [(ngModel)]="s.discount_thb"
-                                                            [ngModelOptions]="{standalone: true}"
-                                                            (keyup)="onKeyDiscountTHB($event.target.value, s)">
-
-                                                        <input *ngIf="s.percent == true" style="text-align: right;"
-                                                            type="text" libOnlyCharacterDefault libOnlyCharacternumber
-                                                            mask="separator.0" thousandSeparator=","
-                                                            onKeyPress="if(this.value.length==7) return false;" nbInput
-                                                            fullWidth status="basic" [(ngModel)]="s.discount_percent"
-                                                            [ngModelOptions]="{standalone: true}"
-                                                            (keyup)="onKeyDiscountPercent($event.target.value, s)">
-                                                    </div>
-                                                    <div class="col-2">
-                                                        <div style="float: left; padding: 0;">
-                                                            <nb-checkbox status="primary" [(ngModel)]="s.thb"
-                                                                [ngModelOptions]="{standalone: true}"
-                                                                (checkedChange)="toggle($event, s, 'THB')">
-                                                                <label>THB</label>
-                                                            </nb-checkbox>
-                                                        </div>
-                                                        <div style="float: left; padding: 0;">
-                                                            <nb-checkbox status="primary" [(ngModel)]="s.percent"
-                                                                [ngModelOptions]="{standalone: true}"
-                                                                (checkedChange)="toggle($event, s,'%')">
-                                                                <label>%</label>
-                                                            </nb-checkbox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-3">
-                                                        <input style="text-align: right;" type="text"
-                                                            libOnlyCharacterDefault libOnlyCharacternumber
-                                                            mask="separator.2" thousandSeparator="," nbInput fullWidth
-                                                            status="basic" (ngModelChange)="s.product_price=$event"
-                                                            [ngModel]="s.product_price  | number:'1.2-2' "
-                                                            [ngModelOptions]="{standalone: true}">
-                                                        <label *ngIf="item.product_wholesale_array.length > 1"
-                                                            class="delete"
-                                                            (click)="deleteWholesale(item.product_wholesale_array,i)">
-                                                            Delete
+                                                            (keyup)="onKeyQTY($event.target.value, item)">
+                                                    </td>
+                                                    <td style="text-align: right;">
+                                                        <label style="padding-top: 0.5rem">
+                                                            {{item.product_price |  number : '1.2-2'}}
                                                         </label>
-                                                    </div>
-                                                </div>
-                                                <div lass="row">
-                                                    <div class="col">
-                                                        <button nbButton style="width: 80px; float: left;" size="small"
-                                                            status="success" (click)="addWholesale(item)">
-                                                            Add
-                                                        </button>
-                                                    </div>
-                                                </div>
+                                                    </td>
+                                                    <td style="text-align: right;">
+                                                        <div class="row"
+                                                            *ngFor="let s of item.product_wholesale_array; let i=index">
+                                                            <div class="col-4">
+                                                                <input style="text-align: right;" type="text"
+                                                                    libOnlyCharacterDefault libOnlyCharacternumber
+                                                                    mask="separator.0" thousandSeparator=","
+                                                                    onKeyPress="if(this.value.length==7) return false;"
+                                                                    nbInput fullWidth status="basic"
+                                                                    [(ngModel)]="s.qty_minimum"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    (keyup)="onKeyMinimum($event.target.value, s)">
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <input *ngIf="s.thb == true" style="text-align: right;"
+                                                                    type="text" libOnlyCharacterDefault
+                                                                    libOnlyCharacternumber mask="separator.0"
+                                                                    thousandSeparator=","
+                                                                    onKeyPress="if(this.value.length==7) return false;"
+                                                                    nbInput fullWidth status="basic"
+                                                                    [(ngModel)]="s.discount_thb"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    (keyup)="onKeyDiscountTHB($event.target.value, s)">
 
-                                                <!-- <table class="table hover" style="font-size: 14px;">
+                                                                <input *ngIf="s.percent == true"
+                                                                    style="text-align: right;" type="text"
+                                                                    libOnlyCharacterDefault libOnlyCharacternumber
+                                                                    mask="separator.0" thousandSeparator=","
+                                                                    onKeyPress="if(this.value.length==7) return false;"
+                                                                    nbInput fullWidth status="basic"
+                                                                    [(ngModel)]="s.discount_percent"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    (keyup)="onKeyDiscountPercent($event.target.value, s)">
+                                                            </div>
+                                                            <div class="col-2">
+                                                                <div style="float: left; padding: 0;">
+                                                                    <nb-checkbox status="primary" [(ngModel)]="s.thb"
+                                                                        [ngModelOptions]="{standalone: true}"
+                                                                        (checkedChange)="toggle($event, s, 'THB')">
+                                                                        <label>THB</label>
+                                                                    </nb-checkbox>
+                                                                </div>
+                                                                <div style="float: left; padding: 0;">
+                                                                    <nb-checkbox status="primary"
+                                                                        [(ngModel)]="s.percent"
+                                                                        [ngModelOptions]="{standalone: true}"
+                                                                        (checkedChange)="toggle($event, s,'%')">
+                                                                        <label>%</label>
+                                                                    </nb-checkbox>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <input style="text-align: right;" type="text"
+                                                                    libOnlyCharacterDefault libOnlyCharacternumber
+                                                                    mask="separator.2" thousandSeparator="," nbInput
+                                                                    fullWidth status="basic"
+                                                                    (ngModelChange)="s.product_price=$event"
+                                                                    [ngModel]="s.product_price  | number:'1.2-2' "
+                                                                    [ngModelOptions]="{standalone: true}">
+                                                                <label *ngIf="item.product_wholesale_array.length > 1"
+                                                                    class="delete"
+                                                                    (click)="deleteWholesale(item.product_wholesale_array,i)">
+                                                                    Delete
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div lass="row">
+                                                            <div class="col">
+                                                                <button nbButton style="width: 80px; float: left;"
+                                                                    size="small" status="success"
+                                                                    (click)="addWholesale(item)">
+                                                                    Add
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- <table class="table hover" style="font-size: 14px;">
                                                     <tbody>
                                                         <tr *ngFor="let s of item.product_wholesale_array; let i=index">
                                                             <td style="text-align: left; padding-top: 1.7rem;">
@@ -366,25 +381,26 @@
                                                         </tr>
                                                     </tbody>
                                                 </table> -->
-                                            </td>
-                                            <td>
-                                                <div style="padding-top: 0.5rem;">
-                                                    <nb-icon icon="close-outline" (click)="btnDeleteProduct(in)">
-                                                    </nb-icon>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr *ngIf="loading || products.length == 0"
-                                            style="height:300px; background-color: white;">
-                                            <td colspan="6" style="padding-top: 50px; text-align: center;">
-                                                <img src="assets/images/loading.png" width="300"><br><br>
-                                                <label>No data.</label>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- <div class="col-lg-12" style="padding: 0.5rem;">
+                                                    </td>
+                                                    <td>
+                                                        <div style="padding-top: 0.5rem;">
+                                                            <nb-icon icon="close-outline"
+                                                                (click)="btnDeleteProduct(in)">
+                                                            </nb-icon>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="loading || products.length == 0"
+                                                    style="height:300px; background-color: white;">
+                                                    <td colspan="6" style="padding-top: 50px; text-align: center;">
+                                                        <img src="assets/images/loading.png" width="300"><br><br>
+                                                        <label>No data.</label>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- <div class="col-lg-12" style="padding: 0.5rem;">
                                 <div class="row">
                                     <div class="col-8"></div>
                                     <div class="col-4">
@@ -408,35 +424,39 @@
                                 </div>
                             </div> -->
 
-                        </nb-card-body>
-                    </nb-card>
-                </div>
-            </form><br>
-            <div class="row" style="text-align: center;">
-                <div class="col-md-12">
-                    <button nbButton style="width: 100px" status="danger"
-                        (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
-                    <button nbButton style="width: 100px" status="success" (click)="addProductSeller()">Save</button>
-                </div>
-            </div><br>
-        </nb-card-body>
-    </nb-card>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                    </form><br>
+                    <div class="row" style="text-align: center;">
+                        <div class="col-md-12">
+                            <button nbButton style="width: 100px" status="danger"
+                                (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                            <button nbButton style="width: 100px" status="success"
+                                (click)="addProductSeller()">Save</button>
+                        </div>
+                    </div><br>
+                </nb-card-body>
+            </nb-card>
 
-    <nb-card *ngIf="status == 'confirmProductTeam'" style="width: 400px;">
-        <nb-card-header>
-            <div class="header">
-                <nb-icon class="icon-header" icon="people-outline"></nb-icon>
-                <label>Confirm Transfer</label>
-            </div>
-        </nb-card-header>
-        <nb-card-body>
-            <div class="row" style="text-align: center; padding-top: 1rem;">
-                <div class="col-md-12">
-                    <button nbButton style="width: 100px" status="danger"
-                        (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
-                    <button nbButton style="width: 100px" status="success" (click)="btnOkClick()">OK</button>
-                </div>
-            </div><br>
-        </nb-card-body>
-    </nb-card>
+            <nb-card *ngIf="status == 'confirmProductTeam'" style="width: 400px;">
+                <nb-card-header>
+                    <div class="header">
+                        <nb-icon class="icon-header" icon="people-outline"></nb-icon>
+                        <label>Confirm Transfer</label>
+                    </div>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="row" style="text-align: center; padding-top: 1rem;">
+                        <div class="col-md-12">
+                            <button nbButton style="width: 100px" status="danger"
+                                (click)="btnCancelClick()">Cancel</button>&nbsp;&nbsp;
+                            <button nbButton style="width: 100px" status="success" (click)="btnOkClick()">OK</button>
+                        </div>
+                    </div><br>
+                </nb-card-body>
+            </nb-card>
+
+        </div>
+    </div>
 </div>

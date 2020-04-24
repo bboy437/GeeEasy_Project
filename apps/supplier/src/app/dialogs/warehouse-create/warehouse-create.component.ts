@@ -8,8 +8,6 @@ import { NbDialogRef } from '@nebular/theme';
 })
 export class WarehouseCreateComponent implements OnInit {
 
-
-
   id_local: string;
 
   constructor(
@@ -22,7 +20,6 @@ export class WarehouseCreateComponent implements OnInit {
 
   ngOnInit() {
   }
-
 
   btnCancelClick(data): void {
     this.ref.close('ok');

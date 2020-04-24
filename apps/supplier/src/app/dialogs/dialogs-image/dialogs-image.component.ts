@@ -44,10 +44,8 @@ export class DialogsImageComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.data)
+    this.buildForm();
 
-    if (this.status === 'note') {
-      this.buildForm();
-    }
     if (this.status === "img") {
       if (this.data.image_array !== undefined)
         this.uploadAPIService
@@ -64,9 +62,10 @@ export class DialogsImageComponent implements OnInit {
 
   buildForm() {
     this.Form = this.formBuilder.group({
-      note: ['', Validators.required],
+      note: [],
     });
     this.Form.get("note").patchValue(this.data.note)
+    this.Form.disable();
   }
 
   get f() { return this.Form.controls; }

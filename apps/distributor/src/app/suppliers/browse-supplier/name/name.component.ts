@@ -1,7 +1,6 @@
 import { BrowseSupplierAPIService, SupplierAPIService } from '@project/services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
-import { DialogsSupplierWishlistComponent } from '../../../dialogs/dialogs-supplier-wishlist/dialogs-supplier-wishlist.component';
 import { DialogsSupplierRequestComponent } from '../../../dialogs/dialogs-supplier-request/dialogs-supplier-request.component';
 import { DialogsSavedListComponent } from '../../../dialogs/dialogs-saved-list/dialogs-saved-list.component';
 import { Component, OnInit, Input } from '@angular/core';
@@ -116,14 +115,6 @@ export class NameComponent implements OnInit {
       // this.getCategory()
     })
 
-    // const dialogRef = this.dialogService.open(DialogsSupplierWishlistComponent, {
-    //   context: {
-    //     data: data
-    //   }
-    // });
-
-    // dialogRef.onClose.subscribe(result => {
-    // });
   }
 
   btnDialogRequest(data: any) {

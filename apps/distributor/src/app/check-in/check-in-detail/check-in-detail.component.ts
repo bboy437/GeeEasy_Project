@@ -88,6 +88,7 @@ export class CheckInDetailComponent implements OnInit {
 
   ngOnInit() {
     this.buildFormCheckIn();
+    this.buildForm();
     const params = this.route.snapshot.paramMap;
     this.RowID = params.get("id");
     this.status = params.get("status");
@@ -332,16 +333,7 @@ export class CheckInDetailComponent implements OnInit {
   }
 
   btnCancelClick() {
-    const dialogRef = this.dialogService.open(DialogsCancelComponent, {
-    });
-
-    dialogRef.onClose.subscribe(result => {
-      if (result === 'cancel') {
-      }
-      if (result === 'ok') {
-        this.router.navigate([this.UrlRouter_CheckInCancel]);
-      }
-    });
+    this.router.navigate([this.UrlRouter_CheckInCancel]);
   }
 
   btnNoteClick(data) {

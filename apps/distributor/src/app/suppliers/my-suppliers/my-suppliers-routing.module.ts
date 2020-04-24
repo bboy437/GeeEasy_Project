@@ -1,10 +1,10 @@
 import { RouterModule, Routes } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { MySuppliersComponent } from "./my-suppliers.component";
-import { VerifedSupplierComponent } from "./verifed-supplier-list/verifed-supplier.component";
-import { MySupplierListComponent } from "./my-supplier-list/my-supplier-list.component";
-import { FavoriteComponent } from './favorite-list/favorite.component';
-import { RequestListComponent } from './request-list/request-list.component';
+import { VerifedSupplierComponent } from "./verifed-supplier/verifed-supplier-list/verifed-supplier.component";
+import { MySupplierListComponent } from "./my-supplier/my-supplier-list/my-supplier-list.component";
+import { FavoriteComponent } from './favorite/favorite-list/favorite.component';
+import { RequestListComponent } from './request/request-list/request-list.component';
 
 
 const routes: Routes = [

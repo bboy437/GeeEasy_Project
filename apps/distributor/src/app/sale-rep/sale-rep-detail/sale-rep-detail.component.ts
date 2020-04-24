@@ -12,7 +12,7 @@ import {
 import { SaleRepService, UploadAPIService } from "@project/services";
 
 @Component({
-  selector: "sale-rep-detail",
+  selector: "project-sale-rep-detail",
   templateUrl: "./sale-rep-detail.component.html",
   styleUrls: ["./sale-rep-detail.component.scss"],
 })

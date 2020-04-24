@@ -6,12 +6,10 @@ import { NbDialogModule, } from '@nebular/theme';
 import { DialogSuccessComponent } from './dialog-success/dialog-success.component';
 import { DialogsSavedListComponent } from './dialogs-saved-list/dialogs-saved-list.component';
 import { DialogsSupplierRequestComponent } from './dialogs-supplier-request/dialogs-supplier-request.component';
-import { DialogsSupplierWishlistComponent } from './dialogs-supplier-wishlist/dialogs-supplier-wishlist.component';
 import { DialogsProductGroupComponent } from './dialogs-product-group/dialogs-product-group.component';
 import { DialogsMapComponent } from './dialogs-map/dialogs-map.component';
 import { AgmCoreModule } from '@agm/core';
 import { DialogsImageComponent } from './dialogs-image/dialogs-image.component';
-import { DialogsConfirmPoComponent } from './dialogs-confirm-po/dialogs-confirm-po.component';
 import { DialogsCheckinStatusComponent } from './dialogs-checkin-status/dialogs-checkin-status.component';
 import { DialogsCancelComponent } from './dialogs-cancel/dialogs-cancel.component';
 import { NewFolderComponent } from './new-folder/new-folder.component';
@@ -55,11 +53,9 @@ import { WarehouseModule } from '../products/warehouse/warehouse.module';
     DialogSuccessComponent,
     DialogsSavedListComponent,
     DialogsSupplierRequestComponent,
-    DialogsSupplierWishlistComponent,
     DialogsProductGroupComponent,
     DialogsMapComponent,
     DialogsImageComponent,
-    DialogsConfirmPoComponent,
     DialogsCheckinStatusComponent,
     DialogsCancelComponent,
     NewFolderComponent,
@@ -78,11 +74,9 @@ import { WarehouseModule } from '../products/warehouse/warehouse.module';
     DialogSuccessComponent,
     DialogsSavedListComponent,
     DialogsSupplierRequestComponent,
-    DialogsSupplierWishlistComponent,
     DialogsProductGroupComponent,
     DialogsMapComponent,
     DialogsImageComponent,
-    DialogsConfirmPoComponent,
     DialogsCheckinStatusComponent,
     DialogsCancelComponent,
     NewFolderComponent,

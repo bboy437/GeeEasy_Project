@@ -6,7 +6,8 @@ import 'rxjs/add/operator/delay';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, map, tap } from 'rxjs/operators';
+import { IObjectDealer } from '@project/interfaces';
 
 @Injectable({
     providedIn: 'root'
@@ -18,24 +19,29 @@ export class DealerAPIService {
 
     constructor(private http: HttpClient) {
     }
-    // Http Options
-    httpOptions = {
-        headers: new HttpHeaders({
-            'Content-Type': 'application/json'
-        })
-    }
+
+    // dealer distributor
+    paramDealer = "cur_page=" + 1 + "&per_page=" + 100;
+    dealerList$ = this.http.get<IObjectDealer>(`${this.ServerApiUrlDealer}${'dealer/account/lists?'}${this.paramDealer}`)
+        .pipe(
+            map(dealers => dealers.response_data),
+            tap(data => console.log('dealers', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
 
 
-    getDealerList(strUrl: string): Observable<any> {
-        return this.http.get<any>(this.ServerApiUrlDealer + "dealer/account/lists?" + strUrl)
+
+    getDealerList(strUrl: string): Observable<IObjectDealer> {
+        return this.http.get<IObjectDealer>(this.ServerApiUrlDealer + "dealer/account/lists?" + strUrl)
             .pipe(
                 retry(1),
                 catchError(this.handleError)
             )
     }
 
-    getDealerDetail(strUrl: string): Observable<any> {
-        return this.http.get<any>(this.ServerApiUrlDealer + "dealer/account/id/" + strUrl)
+    getDealerDetail(strUrl: string): Observable<IObjectDealer> {
+        return this.http.get<IObjectDealer>(this.ServerApiUrlDealer + "dealer/account/id/" + strUrl)
             .pipe(
                 retry(1),
                 catchError(this.handleError)

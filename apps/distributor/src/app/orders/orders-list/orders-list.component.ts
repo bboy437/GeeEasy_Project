@@ -110,7 +110,6 @@ export class OrdersListComponent implements OnInit {
   }
 
   btnReload() {
-
     this.isReload = true;
     this.service.getData(e => {
       this.arrOrder$ = this.service.countries$;
@@ -164,8 +163,8 @@ export class OrdersListComponent implements OnInit {
       const multiproperty = this.Form.value.multiproperty;
       this.service.searchTerm1 = multiproperty;
     }
-
   }
+
   filterDate(value: Date[]): void {
     if (value !== null) {
       this.service.startDate = (new Date(value[0])).getTime() / 1000;
@@ -178,10 +177,10 @@ export class OrdersListComponent implements OnInit {
   }
 
   filterShipmentStatus(event: any) {
-    this.service.searchTerm3 = this.strShipmentStatus;
+    this.service.searchTerm3 = this.Form.value.strShipmentStatus;
+    console.log(this.Form.value.strShipmentStatus);
+    
   }
-
-
 
   btnReset() {
     if (this.name === "") {
@@ -221,11 +220,9 @@ export class OrdersListComponent implements OnInit {
     this.service.pageSize = event;
   }
 
-
   btnNewClick() {
     this.router.navigate([this.UrlRouter_Purchasesave, "new"]);
   }
-
 
   btnRowClick(row: any) {
     this.router.navigate([this.UrlRouter_PurchaseDetail, row, this.name]);

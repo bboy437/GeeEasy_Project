@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PurchaseAPIService, CheckinAPIService } from '@project/services';
-import { IPurchaseList } from '@project/interfaces';
 import { DialogsImageComponent } from '../../dialogs/dialogs-image/dialogs-image.component';
-import { DialogsConfirmPoComponent } from '../../dialogs/dialogs-confirm-po/dialogs-confirm-po.component';
 import { DatePipe } from '@angular/common'
 import { DialogsCheckinStatusComponent } from '../../dialogs/dialogs-checkin-status/dialogs-checkin-status.component';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from "@angular/forms";
@@ -230,16 +228,6 @@ export class PurchaseOrderDetailComponent implements OnInit {
 
   }
 
-  btnConfirm() {
-    const dialogRef = this.dialogService.open(DialogsConfirmPoComponent, {
-      context: {
-        data: this.arrPurchase.purchase_order_id
-      }
-    });
-    dialogRef.onClose.subscribe(result => {
-      this.getPurchaseDetail();
-    });
-  }
 
   btnCancel() {
     if (this.status === 'po') {

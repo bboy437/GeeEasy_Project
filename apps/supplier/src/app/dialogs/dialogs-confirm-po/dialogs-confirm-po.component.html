@@ -5,15 +5,18 @@
                 <nb-card-header>
                     <div class="header">
                         <nb-icon icon="browser-outline"></nb-icon>
-                        <label style="font-size: 18px; font-weight: bold">Confirm Delivery</label>
+                        <label>Confirm Delivery</label>
                     </div>
                 </nb-card-header>
                 <nb-card-body>
-                    <div class="d-flex justify-content-center" style="padding: 2rem;">
-                        <button nbButton style="width: 100px" status="danger" (click)="btnCancelClick()">Cancel</button>
-                        <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success" nbButton
-                            style="width: 100px; margin-left: 0.7rem;" status="success"
-                            (click)="btnSaveClick()">OK</button>
+                    <div class="body">
+                        <div class="d-flex justify-content-center" style="padding: 1rem;">
+                            <button nbButton style="width: 100px" status="danger"
+                                (click)="btnCancelClick()">Cancel</button>
+                            <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success" nbButton
+                                style="width: 100px; margin-left: 0.7rem;" status="success"
+                                (click)="btnSaveClick()">OK</button>
+                        </div>
                     </div>
                 </nb-card-body>
             </nb-card>
@@ -25,14 +28,17 @@
                     </div>
                 </nb-card-header>
                 <nb-card-body>
-                    <div class="d-flex justify-content-center" style="padding: 2rem;">
-                        <button nbButton style="width: 100px" status="danger" (click)="btnCancelClick()">Cancel</button>
-                        <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success" nbButton
-                            style="width: 100px; margin-left: 0.7rem;" status="success" (click)="update()">OK</button>
+                    <div class="body">
+                        <div class="d-flex justify-content-center" style="padding: 1rem;">
+                            <button nbButton style="width: 100px" status="danger"
+                                (click)="btnCancelClick()">Cancel</button>
+                            <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success" nbButton
+                                style="width: 100px; margin-left: 0.7rem;" status="success"
+                                (click)="update()">OK</button>
+                        </div>
                     </div>
                 </nb-card-body>
             </nb-card>
-
         </div>
     </div>
 </div>
