@@ -5,7 +5,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { throwError } from 'rxjs';
+import { throwError, BehaviorSubject } from 'rxjs';
 import { catchError, retry, map, tap } from 'rxjs/operators';
 import { IObjectDealer } from '@project/interfaces';
 
@@ -16,6 +16,9 @@ import { IObjectDealer } from '@project/interfaces';
 export class DealerAPIService {
 
     protected ServerApiUrlDealer = "https://api.gee-supply.com/v1-dealer/";
+
+    private detailDealer = new BehaviorSubject<any>(null);
+    detailDealer$ = this.detailDealer.asObservable();
 
     constructor(private http: HttpClient) {
     }
@@ -30,6 +33,12 @@ export class DealerAPIService {
             catchError(this.handleError)
         );
 
+
+    // Dealer  detail data 
+    dataDetailDealer(data): void {
+        console.log(data)
+        this.detailDealer.next(data);
+    }
 
 
     getDealerList(strUrl: string): Observable<IObjectDealer> {

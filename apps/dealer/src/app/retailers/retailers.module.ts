@@ -13,8 +13,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgxSelectModule } from 'ngx-select-ex';
 
 import { RetailersRoutingModule } from "./retailers-routing.module";
+import { RetailersComponent } from './retailers.component';
 
-import { RetailersComponent } from ".";
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 

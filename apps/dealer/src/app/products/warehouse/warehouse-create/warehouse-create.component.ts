@@ -25,7 +25,7 @@ export class WarehouseCreateComponent implements OnInit {
 
     private UrlRouter_List = "products/warehouse/list";
     private UrlRouter_Detail = "products/warehouse/detail";
-    stockForm: FormGroup;
+    Form: FormGroup;
     RowID: string;
     submitted = false;
     arrobjRow: any = [];
@@ -65,7 +65,6 @@ export class WarehouseCreateComponent implements OnInit {
         }
     }
 
-
     constructor(
         private warehouseAPIService: WarehouseAPIService,
         private router: Router,
@@ -85,8 +84,8 @@ export class WarehouseCreateComponent implements OnInit {
 
         this.Builder();
         const params = this.route.snapshot.paramMap;
-        console.log(params.get("id"));
-        console.log(this.id);
+
+        //Check Params ID
         if (params.get("id")) {
             this.RowID = params.get("id");
         } else {
@@ -95,52 +94,55 @@ export class WarehouseCreateComponent implements OnInit {
             this.strCancel = "dialog";
         }
 
-        console.log('strSave', this.strSave);
-
+        //Check for new or update
         if (this.RowID === "new") {
             this.loading = false;
         } else {
-            this.warehouseAPIService.getWarehouseDetail(this.RowID).subscribe(data => {
-                this.arrobjRow = data.response_data[0];
-                console.log(this.arrobjRow);
-                this.imgURL = data.response_data[0].warehouse_image_url;
-                this.warehouse_image_url = data.response_data[0].warehouse_image_url;
-
-                if (this.arrobjRow.warehouse_image_url !== undefined && this.arrobjRow.warehouse_image_url !== "-" && this.arrobjRow.warehouse_image_url !== "")
-                    this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.warehouse_image_url, red_image => {
-                        this.image.main_image.get.push(red_image);
-                    });
-
-                this.phoneNumber().main(_self_ => {
-                    data.response_data.forEach(item => {
-                        _self_.getNumberArray(item.warehouse_tel, getNumberArray => {
-                            this.phone.tel.number = item.warehouse_tel;
-                            this.phone.tel.number_array = getNumberArray;
-                        });
-                        _self_.getNumberArray(item.warehouse_mobile, getNumberArray => {
-                            this.phone.mobile.number = item.warehouse_mobile;
-                            this.phone.mobile.number_array = getNumberArray;
-                        });
-                    });
-                });
-
-                /*Get Province Edit */
-                this.changeProvinceEdit(
-                    this.arrobjRow.warehouse_addr_province,
-                    this.arrobjRow.warehouse_addr_amphoe,
-                    this.arrobjRow.warehouse_addr_tambon
-                );
-
-                /*Value Data Form */
-                this.editForm();
-                this.loading = false;
+            this.warehouseAPIService.werehouseDetail$ .subscribe(res => {
+                res ? this.getData(res) : this.router.navigate([this.UrlRouter_List]);
 
             })
         }
     }
 
+    getData(data) {
+        this.arrobjRow = data.response_data[0];
+        console.log(this.arrobjRow);
+        this.imgURL = data.response_data[0].warehouse_image_url;
+        this.warehouse_image_url = data.response_data[0].warehouse_image_url;
+
+        if (this.arrobjRow.warehouse_image_url !== undefined && this.arrobjRow.warehouse_image_url !== "-" && this.arrobjRow.warehouse_image_url !== "")
+            this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.warehouse_image_url, red_image => {
+                this.image.main_image.get.push(red_image);
+            });
+
+        this.phoneNumber().main(_self_ => {
+            data.response_data.forEach(item => {
+                _self_.getNumberArray(item.warehouse_tel, getNumberArray => {
+                    this.phone.tel.number = item.warehouse_tel;
+                    this.phone.tel.number_array = getNumberArray;
+                });
+                _self_.getNumberArray(item.warehouse_mobile, getNumberArray => {
+                    this.phone.mobile.number = item.warehouse_mobile;
+                    this.phone.mobile.number_array = getNumberArray;
+                });
+            });
+        });
+
+        /*Get Province Edit */
+        this.changeProvinceEdit(
+            this.arrobjRow.warehouse_addr_province,
+            this.arrobjRow.warehouse_addr_amphoe,
+            this.arrobjRow.warehouse_addr_tambon
+        );
+
+        /*Value Data Form */
+        this.editForm();
+        this.loading = false;
+    }
+
     Builder() {
-        this.stockForm = this.fb.group({
+        this.Form = this.fb.group({
             warehouseName: ['', Validators.required],
             telephoneNumber: [""],
             addressFull: ['', Validators.required],
@@ -156,7 +158,7 @@ export class WarehouseCreateComponent implements OnInit {
     }
 
     editForm() {
-        this.stockForm.patchValue({
+        this.Form.patchValue({
             warehouseName: this.arrobjRow.warehouse_name,
             phoneNo: this.arrobjRow.warehouse_tel,
             mobileNo: this.arrobjRow.warehouse_mobile,
@@ -172,10 +174,10 @@ export class WarehouseCreateComponent implements OnInit {
         });
     }
 
-    get f() { return this.stockForm.controls; }
+    get f() { return this.Form.controls; }
     onSubmit() {
         this.submitted = true;
-        if (this.stockForm.invalid) {
+        if (this.Form.invalid) {
             return;
         }
     }
@@ -197,12 +199,12 @@ export class WarehouseCreateComponent implements OnInit {
     }
 
     changeProvince(location_name) {
-        this.stockForm.get('amphoe').patchValue("");
-        this.stockForm.get('tambon').patchValue("");
-        this.stockForm.get('zipcode').patchValue("");
-        this.stockForm.get('location_lat').patchValue(0);
-        this.stockForm.get('location_lng').patchValue(0);
-        this.stockForm.get('location_lat_location_lng').patchValue(0 + ',' + 0);
+        this.Form.get('amphoe').patchValue("");
+        this.Form.get('tambon').patchValue("");
+        this.Form.get('zipcode').patchValue("");
+        this.Form.get('location_lat').patchValue(0);
+        this.Form.get('location_lng').patchValue(0);
+        this.Form.get('location_lat_location_lng').patchValue(0 + ',' + 0);
         this.arrAmphoe = null;
         this.arrTambon = null;
 
@@ -246,11 +248,11 @@ export class WarehouseCreateComponent implements OnInit {
     }
 
     changeAmphoe(location_name) {
-        this.stockForm.get('tambon').patchValue("");
-        this.stockForm.get('zipcode').patchValue("");
-        this.stockForm.get('location_lat').patchValue(0);
-        this.stockForm.get('location_lng').patchValue(0);
-        this.stockForm.get('location_lat_location_lng').patchValue(0 + ',' + 0);
+        this.Form.get('tambon').patchValue("");
+        this.Form.get('zipcode').patchValue("");
+        this.Form.get('location_lat').patchValue(0);
+        this.Form.get('location_lng').patchValue(0);
+        this.Form.get('location_lat_location_lng').patchValue(0 + ',' + 0);
         this.arrTambon = null;
         if (this.arrAmphoe.length > 0) {
             const arrAmphoe = this.arrAmphoe.filter((x) => x.location_name === location_name)
@@ -294,12 +296,12 @@ export class WarehouseCreateComponent implements OnInit {
     changeTambon(location_name) {
         if (this.arrTambon.length > 0) {
             const arrTambon = this.arrTambon.filter((x) => x.location_name === location_name)
-            this.stockForm.get('tambon').patchValue(arrTambon[0].location_name);
-            this.stockForm.get('zipcode').patchValue(arrTambon[0].location_postcode);
-            this.stockForm.get('location_lat').patchValue(0);
-            this.stockForm.get('location_lng').patchValue(0);
-            this.stockForm.get('location_lat_location_lng').patchValue(0 + ',' + 0);
-            console.log("stockForm", this.stockForm.value);
+            this.Form.get('tambon').patchValue(arrTambon[0].location_name);
+            this.Form.get('zipcode').patchValue(arrTambon[0].location_postcode);
+            this.Form.get('location_lat').patchValue(0);
+            this.Form.get('location_lng').patchValue(0);
+            this.Form.get('location_lat_location_lng').patchValue(0 + ',' + 0);
+            console.log("Form", this.Form.value);
         }
     }
 
@@ -314,7 +316,7 @@ export class WarehouseCreateComponent implements OnInit {
             return false;
         });
         if (thisLocation.length > 0) {
-            this.stockForm.get('province').patchValue(strProvince);
+            this.Form.get('province').patchValue(strProvince);
             this.get_Amphoe_Edit(thisLocation[0].location_id, strAmphoe, strTambon);
         }
 
@@ -364,7 +366,7 @@ export class WarehouseCreateComponent implements OnInit {
             return false;
         });
         if (thisLocation.length > 0) {
-            this.stockForm.get('amphoe').patchValue(strAmphoe);
+            this.Form.get('amphoe').patchValue(strAmphoe);
             this.get_Tambon_Edit(thisLocation[0].location_id, strTambon)
         }
 
@@ -410,9 +412,9 @@ export class WarehouseCreateComponent implements OnInit {
     changeTambonEdit(strTambon) {
         if (this.arrTambon.length > 0) {
             const arrTambon = this.arrTambon.filter((x) => x.location_name === strTambon)
-            this.stockForm.get('tambon').patchValue(arrTambon[0].location_name);
-            this.stockForm.get('zipcode').patchValue(arrTambon[0].location_postcode);
-            console.log("stockForm", this.stockForm.value);
+            this.Form.get('tambon').patchValue(arrTambon[0].location_name);
+            this.Form.get('zipcode').patchValue(arrTambon[0].location_postcode);
+            console.log("Form", this.Form.value);
         }
     }
 
@@ -426,15 +428,15 @@ export class WarehouseCreateComponent implements OnInit {
         dialogRef.onClose.subscribe(result => {
             if (result) {
                 console.log(result);
-                this.stockForm.get('addressFull').patchValue(result.address);
-                this.stockForm.get('addressNo').patchValue(result.num);
-                this.stockForm.get('province').patchValue(result.state);
-                this.stockForm.get('amphoe').patchValue(result.city);
-                this.stockForm.get('tambon').patchValue(result.town);
-                this.stockForm.get('zipcode').patchValue(result.zipcode);
-                this.stockForm.get('location_lat').patchValue(result.supplier_addr_location_lat);
-                this.stockForm.get('location_lng').patchValue(result.supplier_addr_location_lng);
-                this.stockForm.get('location_lat_location_lng').patchValue(result.supplier_addr_location_lat + ',' + result.supplier_addr_location_lng);
+                this.Form.get('addressFull').patchValue(result.address);
+                this.Form.get('addressNo').patchValue(result.num);
+                this.Form.get('province').patchValue(result.state);
+                this.Form.get('amphoe').patchValue(result.city);
+                this.Form.get('tambon').patchValue(result.town);
+                this.Form.get('zipcode').patchValue(result.zipcode);
+                this.Form.get('location_lat').patchValue(result.supplier_addr_location_lat);
+                this.Form.get('location_lng').patchValue(result.supplier_addr_location_lng);
+                this.Form.get('location_lat_location_lng').patchValue(result.supplier_addr_location_lat + ',' + result.supplier_addr_location_lng);
                 this.changeProvinceEdit(result.state, result.city, result.town);
 
             }
@@ -465,7 +467,7 @@ export class WarehouseCreateComponent implements OnInit {
         this.inArrayPhone(12, 12, phone.mobile, this.phone.mobile)
 
         this.submitted = true;
-        if (this.stockForm.invalid || this.image.update) {
+        if (this.Form.invalid || this.image.update) {
             return;
         }
         this.image.update = true;
@@ -491,20 +493,21 @@ export class WarehouseCreateComponent implements OnInit {
                 "dealer_id": this.id_local,
                 "warehouse_type_id": 3,
                 "image_url": (this.image.main_image.port.length > 0) ? this.image.main_image.port[0].image_url : "-",
-                "name": this.stockForm.value.warehouseName,
+                "name": this.Form.value.warehouseName,
                 "tel": this.phone.tel.number,
                 "mobile": this.phone.mobile.number,
-                "addr_address_full": this.stockForm.value.addressFull,
-                "addr_number": this.stockForm.value.addressNo,
-                "addr_province": this.stockForm.value.province,
-                "addr_amphoe": this.stockForm.value.amphoe,
-                "addr_tambon": this.stockForm.value.tambon,
-                "addr_post": this.stockForm.value.zipcode,
-                "location_lat": this.stockForm.value.location_lat,
-                "location_lng": this.stockForm.value.location_lng,
+                "addr_address_full": this.Form.value.addressFull,
+                "addr_number": this.Form.value.addressNo,
+                "addr_province": this.Form.value.province,
+                "addr_amphoe": this.Form.value.amphoe,
+                "addr_tambon": this.Form.value.tambon,
+                "addr_post": this.Form.value.zipcode,
+                "location_lat": this.Form.value.location_lat,
+                "location_lng": this.Form.value.location_lng,
             }
             console.log('dataJson', dataJson);
             this.warehouseAPIService.addWarehouse(JSON.stringify(dataJson)).subscribe(data => {
+                this.Form.reset();
                 console.log(data);
                 // tslint:disable-next-line: triple-equals
                 if (this.strSave == "dialog") {
@@ -519,22 +522,23 @@ export class WarehouseCreateComponent implements OnInit {
                 "dealer_id": this.id_local,
                 "warehouse_type_id": 3,
                 "image_url": (this.image.main_image.port.length > 0) ? this.image.main_image.port[0].image_url : "-",
-                "name": this.stockForm.value.warehouseName,
+                "name": this.Form.value.warehouseName,
                 "tel": this.phone.tel.number,
                 "mobile": this.phone.mobile.number,
-                "addr_address_full": this.stockForm.value.addressFull,
-                "addr_number": this.stockForm.value.addressNo,
-                "addr_province": this.stockForm.value.province,
-                "addr_amphoe": this.stockForm.value.amphoe,
-                "addr_tambon": this.stockForm.value.tambon,
-                "addr_post": this.stockForm.value.zipcode,
-                "location_lat": this.stockForm.value.location_lat,
-                "location_lng": this.stockForm.value.location_lng,
+                "addr_address_full": this.Form.value.addressFull,
+                "addr_number": this.Form.value.addressNo,
+                "addr_province": this.Form.value.province,
+                "addr_amphoe": this.Form.value.amphoe,
+                "addr_tambon": this.Form.value.tambon,
+                "addr_post": this.Form.value.zipcode,
+                "location_lat": this.Form.value.location_lat,
+                "location_lng": this.Form.value.location_lng,
             }
             console.log(dataJson);
             console.log(JSON.stringify(dataJson));
             this.warehouseAPIService.updateWarehouse(JSON.stringify(dataJson)).subscribe(data => {
                 console.log(data);
+                this.Form.reset();
                 this.router.navigate([this.UrlRouter_List]);
             })
         }
@@ -542,84 +546,16 @@ export class WarehouseCreateComponent implements OnInit {
     }
 
     btnCancelClick() {
-        const dialogRef = this.dialogService.open(DialogsCancelComponent, {
-        });
-
-        dialogRef.onClose.subscribe(result => {
-            if (result === 'cancel') {
-            }
-            if (result === 'ok') {
-                if (this.strCancel == "dialog") {
-                    this.closes.emit('ok')
-                } else {
-                    this.router.navigate([this.UrlRouter_List]);
-                }
-            }
-        });
+        if (this.strCancel == "dialog") {
+            this.closes.emit('ok')
+        } else {
+            this.router.navigate([this.UrlRouter_List]);
+        }
 
     }
 
     btnBackClick() {
-        const dialogRef = this.dialogService.open(DialogsCancelComponent, {
-        });
-
-        dialogRef.onClose.subscribe(result => {
-            if (result === 'cancel') {
-            }
-            if (result === 'ok') {
-                this.router.navigate([this.UrlRouter_Detail, this.RowID]);
-            }
-        });
-    }
-
-    uploadFile(event) {
-        if (event.length === 0)
-            return;
-
-        const mimeType = event[0].type;
-        if (mimeType.match(/image\/*/) == null) {
-            this.message = "Only images are supported.";
-            return;
-        }
-        const reader = new FileReader();
-        this.message = event[0].name;
-        this.imagePath = event[0];
-        reader.readAsDataURL(event[0]);
-        reader.onload = (_event) => {
-            this.imgURL = reader.result;
-        }
-        console.log('imgURL', this.imgURL);
-
-        this.upload()
-    }
-
-    upload() {
-        const dataJson = {
-            type_id: 200,
-            file_name: this.imagePath.name,
-            file_type: this.imagePath.type,
-            supplier_id: this.id_local,
-            distributor_id: 0
-        }
-
-        this.uploadAPIService.uploadImg(JSON.stringify(dataJson)).subscribe(res => {
-            console.log(res);
-            this.uploadData = res.response_data[0];
-            this.warehouse_image_url = this.uploadData.file_url;
-
-            this.uploadAPIService.uploadPut(this.uploadData.file_upload_url, this.imagePath).subscribe(res1 => {
-                this.warehouse_image_url = this.uploadData.file_url;
-                console.log(this.warehouse_image_url);
-            })
-
-        })
-
-    }
-
-    btnUpload() {
-        this.uploadAPIService.uploadPut(this.uploadData.file_upload_url, this.imagePath).subscribe(res1 => {
-            console.log(res1);
-        })
+        this.router.navigate([this.UrlRouter_Detail, this.RowID]);
     }
 
     phoneNumber() {

@@ -26,6 +26,9 @@ export class SupplierAPIService {
     private veririedCategorySelectedSubject = new BehaviorSubject<number>(null);
     veririedCategorySelectedAction$ = this.veririedCategorySelectedSubject.asObservable();
 
+    private dataSupplier = new BehaviorSubject<IObjectSupplier>(null);
+    dataSupplier$ = this.dataSupplier.asObservable();
+
     constructor(private http: HttpClient) {
     }
 
@@ -79,6 +82,13 @@ export class SupplierAPIService {
         this.categoryIDSelectedSubject.next(categoryID);
     }
 
+    // data supplier Detail
+    dataSupplierDetail(data: IObjectSupplier): void {
+        console.log(data)
+        this.dataSupplier.next(data);
+    }
+
+
     // verified supplier  the selected category
     selectedCategoryVerifiesSupplier(categoryID: number): void {
         this.veririedCategorySelectedSubject.next(categoryID);
@@ -111,7 +121,7 @@ export class SupplierAPIService {
             )
     }
 
-  
+
 
     //Add Supplier
 

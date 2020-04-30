@@ -58,9 +58,9 @@ export class CategoryComponent implements OnInit {
 
   ngOnInit() {
     this.strCategory = this.name;
-    this.loading = true;
-    this.loading1 = true;
-    this.getCategory();
+    // this.loading = true;
+    // this.loading1 = true;
+    // this.getCategory();
   }
 
   categoryEvent(data) {
@@ -68,8 +68,8 @@ export class CategoryComponent implements OnInit {
     console.log('product_category__id', data.product_category__id);
     this.loading1 = true;
     if (data.product_category__id !== 0) {
-      const supplier_id = "?supplier_id=" + this.id_local;
-      this.distributorAPIService.getDistCate(data.product_category__id + supplier_id).subscribe(res => {
+      const value = data.product_category__id + "?supplier_id=" + this.id_local;
+      this.distributorAPIService.getDistCate(value).subscribe(res => {
         console.log(res);
         this.arrListCategorys = res.response_data;
         this.loading1 = false;

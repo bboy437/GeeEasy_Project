@@ -50,6 +50,7 @@ export class DealersDetailComponent implements OnInit {
 
   getDealerDetail() {
     this.dealerAPIService.getDealerDetail(this.rowID).subscribe(data => {
+      this.dealerAPIService.dataDetailDealer(data);
       this.arrDeler = data.response_data[0];
 
       if (
@@ -68,7 +69,6 @@ export class DealersDetailComponent implements OnInit {
     })
 
   }
-
 
   buildForm() {
     this.dealersForm = this.formBuilder.group({
@@ -112,11 +112,9 @@ export class DealersDetailComponent implements OnInit {
     });
     this.dealersForm.disable();
     this.loading = false;
-    console.log( this.dealersForm);
-    
+    console.log(this.dealersForm);
+
   }
-
-
 
   btnCancelClick() {
     this.router.navigate([this.UrlRouter_DealersList])
@@ -126,7 +124,6 @@ export class DealersDetailComponent implements OnInit {
   btnEditClick() {
     this.router.navigate([this.UrlRouter_DealersEdit, this.rowID])
   }
-
 
   openImg(img: any) {
     this.dialogService.open(DialogsImageComponent, {

@@ -5,9 +5,7 @@ import { ProductsListComponent } from './products-list/products-list.component';
 import { ProductsDetailComponent } from './products-detail/products-detail.component';
 import { ProductsCreateComponent } from './products-create/products-create.component';
 import { ProductCreateGuard } from './products-create/products-create-guard';
-
-
-
+import { ProductResolver } from './product-resolver.service';
 
 const routes: Routes = [
   {
@@ -15,8 +13,17 @@ const routes: Routes = [
     component: ManageProductComponent,
     children: [
       { path: "list", component: ProductsListComponent },
-      { path: "detail/:id", component: ProductsDetailComponent },
-      { path: "create/:id", canDeactivate: [ProductCreateGuard], component: ProductsCreateComponent },
+      {
+        path: "detail/:id",
+        component: ProductsDetailComponent,
+        resolve: { resolvedData: ProductResolver },
+      },
+      {
+        path: "create/:id",
+        component: ProductsCreateComponent,
+        canDeactivate: [ProductCreateGuard],
+        resolve: { resolvedData: ProductResolver },
+      },
     ]
   }
 ];

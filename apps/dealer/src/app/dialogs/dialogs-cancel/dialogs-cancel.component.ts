@@ -16,11 +16,11 @@ export class DialogsCancelComponent implements OnInit {
   }
 
   btnCancelClick() {
-    this.ref.close('cancel');
+    this.ref.close(false);
   }
 
   btnOkClick() {
-    this.ref.close('ok');
+    this.ref.close(true);
   }
 
 }

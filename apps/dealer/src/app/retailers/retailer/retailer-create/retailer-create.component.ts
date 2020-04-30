@@ -37,7 +37,7 @@ export class RetailerCreateComponent implements OnInit {
     arrobjRow: any = {};
     objAPIResponse: any = {};
     RowID: string;
-    SaleForm: FormGroup;
+    Form: FormGroup;
     submitted = false;
     imagePath: any = [];
     uploadData: any = [];
@@ -98,78 +98,60 @@ export class RetailerCreateComponent implements OnInit {
         this.buildForm();
         const params = this.route.snapshot.paramMap;
         this.RowID = params.get("id");
-        if (this.RowID === "new") {
 
+        //Check new or update
+        if (this.RowID === "new") {
             this.getCategory();
             this.loading = false;
         } else {
 
+            this.retailAccountService.retailerDetail$.subscribe(res => {
+                res ? this.getData(res) : this.router.navigate([this.listPage]);
 
-            this.getSalerepAccountDetail(res => {
-                console.log("ngOnInit : getSalerepAccountDetail : res : ", res);
-                this.arrobjRow = res.response_data[0];
-                this.imgURL = res.response_data[0].retail_image_url;
-
-                if (this.arrobjRow.retail_image_url !== undefined && this.arrobjRow.retail_image_url !== "-" && this.arrobjRow.retail_image_url !== "")
-                    this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.retail_image_url, red_image => {
-                        this.image.main_image.get.push(red_image);
-                    });
-
-                console.log("ngOnInit : res : ", res);
-
-                /*Get Province Edit */
-                this.changeProvinceEdit(
-                    this.arrobjRow.retail_addr_province,
-                    this.arrobjRow.retail_addr_amphoe,
-                    this.arrobjRow.retail_addr_tambon
-                );
-
-                /*Value Data Form */
-                this.editForm();
-
-                this.phoneNumber().main(_self_ => {
-                    res.response_data.forEach(item => {
-                        _self_.getNumberArray(item.retail_tel, getNumberArray => {
-                            this.phone.tel.number = item.retail_tel;
-                            this.phone.tel.number_array = getNumberArray;
-                        });
-                        _self_.getNumberArray(item.retail_mobile, getNumberArray => {
-                            this.phone.mobile.number = item.retail_mobile;
-                            this.phone.mobile.number_array = getNumberArray;
-                        });
-                    });
-                });
-                this.loading = false;
             })
         }
     }
+
+    getData(data) {
+        this.arrobjRow = data.response_data[0];
+        this.imgURL = data.response_data[0].retail_image_url;
+
+        if (this.arrobjRow.retail_image_url !== undefined && this.arrobjRow.retail_image_url !== "-" && this.arrobjRow.retail_image_url !== "")
+            this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.retail_image_url, red_image => {
+                this.image.main_image.get.push(red_image);
+            });
+
+        /*Get Province Edit */
+        this.changeProvinceEdit(
+            this.arrobjRow.retail_addr_province,
+            this.arrobjRow.retail_addr_amphoe,
+            this.arrobjRow.retail_addr_tambon
+        );
+
+        /*Value Data Form */
+        this.editForm();
+
+        this.phoneNumber().main(_self_ => {
+            data.response_data.forEach(item => {
+                _self_.getNumberArray(item.retail_tel, getNumberArray => {
+                    this.phone.tel.number = item.retail_tel;
+                    this.phone.tel.number_array = getNumberArray;
+                });
+                _self_.getNumberArray(item.retail_mobile, getNumberArray => {
+                    this.phone.mobile.number = item.retail_mobile;
+                    this.phone.mobile.number_array = getNumberArray;
+                });
+            });
+        });
+        this.loading = false;
+    }
+
 
     clickUpdateOrNew() {
         if (this.loading)
             return
         this.btnSaveClick();
     }
-
-    clickCancelOrBack() {
-        switch (this.RowID) {
-            case 'new':
-                this.btnCancelClick();
-                break;
-
-            default:
-                this.btnBackClick();
-                break;
-        }
-    }
-
-    getSalerepAccountDetail(callback: (res) => any) {
-        const params = this.route.snapshot.paramMap;
-        this.RowID = params.get("id");
-        this.retailAccountService.getRetailAccountDetail(this.RowID).subscribe(res => {
-            console.log("getSalerepAccountDetail : res : ", res);
-            callback(res);
-        })
-    };
 
     getCategory() {
         const valueCategory = "cur_page=" + 1 + "&per_page=" + 10;
@@ -182,17 +164,17 @@ export class RetailerCreateComponent implements OnInit {
     }
 
     get f() {
-        return this.SaleForm.controls;
+        return this.Form.controls;
     }
     onSubmit() {
         this.submitted = true;
-        if (this.SaleForm.invalid) {
+        if (this.Form.invalid) {
             return;
         }
     }
 
     buildForm() {
-        this.SaleForm = this.formBuilder.group({
+        this.Form = this.formBuilder.group({
             salename: ["", Validators.required],
             salerepcompany: ["", Validators.required],
             firstName: ["", Validators.required],
@@ -212,7 +194,7 @@ export class RetailerCreateComponent implements OnInit {
     }
 
     editForm() {
-        this.SaleForm.patchValue({
+        this.Form.patchValue({
             warehouseName: this.arrobjRow.warehouse_name,
             salename: this.arrobjRow.retail_name,
             salerepcompany: this.arrobjRow.retail_company,
@@ -235,29 +217,22 @@ export class RetailerCreateComponent implements OnInit {
     /*New Data Location ------------------------ */
 
     changeProvince(location_name) {
-
-        setTimeout(() => {
-            this.SaleForm.get('amphoe').patchValue("");
-            this.SaleForm.get('tambon').patchValue("");
-            this.SaleForm.get('zipcode').patchValue("");
-            this.SaleForm.get('location_lat').patchValue(0);
-            this.SaleForm.get('location_lng').patchValue(0);
-            this.SaleForm.get('location_lat_location_lng').patchValue(0 + ',' + 0);
-        }, 0);
+        this.Form.get('amphoe').patchValue("");
+        this.Form.get('tambon').patchValue("");
+        this.Form.get('zipcode').patchValue("");
+        this.Form.get('location_lat').patchValue(0);
+        this.Form.get('location_lng').patchValue(0);
+        this.Form.get('location_lat_location_lng').patchValue(0 + ',' + 0);
         this.arrAmphoe = null;
         this.arrTambon = null;
+
         if (this.arrProvince.length > 0) {
-            for (let i = 0; i < this.arrProvince.length; i++) {
-                if (this.arrProvince[i].location_name === location_name) {
-                    const location_id = Number(this.arrProvince[i].location_id);
-                    this.get_Amphoe(location_id);
-                }
-            }
+            const arrProvince = this.arrProvince.filter((x) => x.location_name === location_name)
+            this.get_Amphoe(+arrProvince[0].location_id);
         }
     }
 
     async get_Amphoe(location_id) {
-
         const get_detail_by_id = (id) => {
             return this.arrLocationDetail.filter(row => {
                 if (row.location_id === id) {
@@ -291,18 +266,15 @@ export class RetailerCreateComponent implements OnInit {
     }
 
     changeAmphoe(location_name) {
-        setTimeout(() => {
-            this.SaleForm.get('tambon').patchValue("");
-            this.SaleForm.get('zipcode').patchValue("");
-        }, 0);
+        this.Form.get('tambon').patchValue("");
+        this.Form.get('zipcode').patchValue("");
+        this.Form.get('location_lat').patchValue(0);
+        this.Form.get('location_lng').patchValue(0);
+        this.Form.get('location_lat_location_lng').patchValue(0 + ',' + 0);
         this.arrTambon = null;
         if (this.arrAmphoe.length > 0) {
-            for (let i = 0; i < this.arrAmphoe.length; i++) {
-                if (this.arrAmphoe[i].location_name === location_name) {
-                    const location_id = Number(this.arrAmphoe[i].location_id);
-                    this.get_Tambon(location_id);
-                }
-            }
+            const arrAmphoe = this.arrAmphoe.filter((x) => x.location_name === location_name)
+            this.get_Tambon(+arrAmphoe[0].location_id);
         }
     }
 
@@ -341,14 +313,13 @@ export class RetailerCreateComponent implements OnInit {
 
     changeTambon(location_name) {
         if (this.arrTambon.length > 0) {
-            for (let i = 0; i < this.arrTambon.length; i++) {
-                if (this.arrTambon[i].location_name === location_name) {
-                    setTimeout(() => {
-                        this.SaleForm.get('tambon').patchValue(this.arrTambon[i].location_name);
-                        this.SaleForm.get('zipcode').patchValue(this.arrTambon[i].location_postcode);
-                    }, 0);
-                }
-            }
+            const arrTambon = this.arrTambon.filter((x) => x.location_name === location_name)
+            this.Form.get('tambon').patchValue(arrTambon[0].location_name);
+            this.Form.get('zipcode').patchValue(arrTambon[0].location_postcode);
+            this.Form.get('location_lat').patchValue(0);
+            this.Form.get('location_lng').patchValue(0);
+            this.Form.get('location_lat_location_lng').patchValue(0 + ',' + 0);
+            console.log("Form", this.Form.value);
         }
     }
 
@@ -363,6 +334,7 @@ export class RetailerCreateComponent implements OnInit {
             return false;
         });
         if (thisLocation.length > 0) {
+            this.Form.get('province').patchValue(strProvince);
             this.get_Amphoe_Edit(thisLocation[0].location_id, strAmphoe, strTambon);
         }
 
@@ -412,6 +384,7 @@ export class RetailerCreateComponent implements OnInit {
             return false;
         });
         if (thisLocation.length > 0) {
+            this.Form.get('amphoe').patchValue(strAmphoe);
             this.get_Tambon_Edit(thisLocation[0].location_id, strTambon)
         }
 
@@ -456,14 +429,10 @@ export class RetailerCreateComponent implements OnInit {
     /*Change Tambon Edit */
     changeTambonEdit(strTambon) {
         if (this.arrTambon.length > 0) {
-            for (let i = 0; i < this.arrTambon.length; i++) {
-                if (this.arrTambon[i].location_name === strTambon) {
-                    setTimeout(() => {
-                        this.SaleForm.get('tambon').patchValue(this.arrTambon[i].location_name);
-                        this.SaleForm.get('zipcode').patchValue(this.arrTambon[i].location_postcode);
-                    }, 0);
-                }
-            }
+            const arrTambon = this.arrTambon.filter((x) => x.location_name === strTambon)
+            this.Form.get('tambon').patchValue(arrTambon[0].location_name);
+            this.Form.get('zipcode').patchValue(arrTambon[0].location_postcode);
+            console.log("Form", this.Form.value);
         }
     }
 
@@ -477,20 +446,15 @@ export class RetailerCreateComponent implements OnInit {
         dialogRef.onClose.subscribe(result => {
             if (result) {
                 console.log(result);
-
-
-                setTimeout(() => {
-                    this.SaleForm.get('Address').patchValue(result.address);
-                    this.SaleForm.get('number').patchValue(result.num);
-                    this.SaleForm.get('province').patchValue(result.state);
-                    this.SaleForm.get('amphoe').patchValue(result.city);
-                    this.SaleForm.get('tambon').patchValue(result.town);
-                    this.SaleForm.get('zipcode').patchValue(result.zipcode);
-                    this.SaleForm.get('location_lat').patchValue(result.supplier_addr_location_lat);
-                    this.SaleForm.get('location_lng').patchValue(result.supplier_addr_location_lng);
-                    this.SaleForm.get('location_lat_location_lng').patchValue(result.supplier_addr_location_lat + ',' + result.supplier_addr_location_lng);
-                }, 0);
-
+                this.Form.get('Address').patchValue(result.address);
+                this.Form.get('number').patchValue(result.num);
+                this.Form.get('province').patchValue(result.state);
+                this.Form.get('amphoe').patchValue(result.city);
+                this.Form.get('tambon').patchValue(result.town);
+                this.Form.get('zipcode').patchValue(result.zipcode);
+                this.Form.get('location_lat').patchValue(result.supplier_addr_location_lat);
+                this.Form.get('location_lng').patchValue(result.supplier_addr_location_lng);
+                this.Form.get('location_lat_location_lng').patchValue(result.supplier_addr_location_lat + ',' + result.supplier_addr_location_lng);
                 this.changeProvinceEdit(result.state, result.city, result.town);
 
             }
@@ -569,9 +533,9 @@ export class RetailerCreateComponent implements OnInit {
         this.onInArrayPhone(9, 19, phone.tel, this.phone.tel);
         this.inArrayPhone(12, 12, phone.mobile, this.phone.mobile)
 
-        console.log('btnSaveClick : SaleForm : ', this.SaleForm);
+        console.log('btnSaveClick : Form : ', this.Form);
         this.submitted = true;
-        if (this.SaleForm.invalid || this.image.update || this.phone.tel.number === "" || this.phone.mobile.number === "")
+        if (this.Form.invalid || this.image.update || this.phone.tel.number === "" || this.phone.mobile.number === "")
             return;
 
 
@@ -597,23 +561,23 @@ export class RetailerCreateComponent implements OnInit {
                 "supplier_id": 0,
                 "group_id": 0,
                 "user_id": 0,
-                "retail_name": this.SaleForm.value.salename,
-                "retail_first_name": this.SaleForm.value.firstName,
-                "retail_last_name": this.SaleForm.value.lastName,
+                "retail_name": this.Form.value.salename,
+                "retail_first_name": this.Form.value.firstName,
+                "retail_last_name": this.Form.value.lastName,
                 "retail_tel": this.phone.tel.number,
                 "retail_mobile": this.phone.mobile.number,
-                "retail_email": this.SaleForm.value.emailAddress,
+                "retail_email": this.Form.value.emailAddress,
                 "retail_tag": "-",
-                "retail_company": this.SaleForm.value.salerepcompany,
+                "retail_company": this.Form.value.salerepcompany,
                 "retail_company_addr": "-",
-                "retail_addr_full": this.SaleForm.value.Address,
-                "retail_addr_number": this.SaleForm.value.number,
-                "retail_addr_tambon": this.SaleForm.value.tambon,
-                "retail_addr_amphoe": this.SaleForm.value.amphoe,
-                "retail_addr_province": this.SaleForm.value.province,
-                "retail_addr_post": this.SaleForm.value.zipcode,
-                "retail_addr_lat": this.SaleForm.value.location_lat,
-                "retail_addr_lng": this.SaleForm.value.location_lng,
+                "retail_addr_full": this.Form.value.Address,
+                "retail_addr_number": this.Form.value.number,
+                "retail_addr_tambon": this.Form.value.tambon,
+                "retail_addr_amphoe": this.Form.value.amphoe,
+                "retail_addr_province": this.Form.value.province,
+                "retail_addr_post": this.Form.value.zipcode,
+                "retail_addr_lat": this.Form.value.location_lat,
+                "retail_addr_lng": this.Form.value.location_lng,
                 "retail_image_url": (this.image.main_image.port.length > 0) ? this.image.main_image.port[0].image_url : "-",
                 "retail_image_array": []
             };
@@ -621,6 +585,7 @@ export class RetailerCreateComponent implements OnInit {
             const dataSendApi = JSON.stringify(dataSend);
             // console.log("save : dataSendApi : ", dataSendApi);
             this.retailAccountService.postRetailAccountCreate(dataSendApi).subscribe(res => {
+                this.Form.reset();
                 this.router.navigate([this.listPage]);
             });
         } else {
@@ -630,23 +595,23 @@ export class RetailerCreateComponent implements OnInit {
                 "supplier_id": this.arrobjRow.supplier_id,
                 "group_id": this.arrobjRow.group_id,
                 "user_id": this.arrobjRow.user_id,
-                "retail_name": this.SaleForm.value.salename,
-                "retail_first_name": this.SaleForm.value.firstName,
-                "retail_last_name": this.SaleForm.value.lastName,
+                "retail_name": this.Form.value.salename,
+                "retail_first_name": this.Form.value.firstName,
+                "retail_last_name": this.Form.value.lastName,
                 "retail_tel": this.phone.tel.number,
                 "retail_mobile": this.phone.mobile.number,
-                "retail_email": this.SaleForm.value.emailAddress,
+                "retail_email": this.Form.value.emailAddress,
                 "retail_tag": this.arrobjRow.retail_tag,
-                "retail_company": this.SaleForm.value.salerepcompany,
+                "retail_company": this.Form.value.salerepcompany,
                 "retail_company_addr": this.arrobjRow.retail_company_addr,
-                "retail_addr_full": this.SaleForm.value.Address,
-                "retail_addr_number": this.SaleForm.value.number,
-                "retail_addr_tambon": this.SaleForm.value.tambon,
-                "retail_addr_amphoe": this.SaleForm.value.amphoe,
-                "retail_addr_province": this.SaleForm.value.province,
-                "retail_addr_post": this.SaleForm.value.zipcode,
-                "retail_addr_lat": this.SaleForm.value.location_lat,
-                "retail_addr_lng": this.SaleForm.value.location_lng,
+                "retail_addr_full": this.Form.value.Address,
+                "retail_addr_number": this.Form.value.number,
+                "retail_addr_tambon": this.Form.value.tambon,
+                "retail_addr_amphoe": this.Form.value.amphoe,
+                "retail_addr_province": this.Form.value.province,
+                "retail_addr_post": this.Form.value.zipcode,
+                "retail_addr_lat": this.Form.value.location_lat,
+                "retail_addr_lng": this.Form.value.location_lng,
                 "retail_image_url": (this.image.main_image.port.length > 0) ? this.image.main_image.port[0].image_url : "-",
                 "retail_image_array": []
             };
@@ -654,84 +619,31 @@ export class RetailerCreateComponent implements OnInit {
             const dataSendApi = JSON.stringify(dataSend);
             // console.log("save : dataSendApi : ", dataSendApi);
             this.retailAccountService.postRetailAccountUpdate(dataSendApi).subscribe(data => {
+                this.Form.reset();
                 this.router.navigate([this.listPage]);
             });
+        }
+    }
+
+    clickCancelOrBack() {
+        switch (this.RowID) {
+            case 'new':
+                this.btnCancelClick();
+                break;
+
+            default:
+                this.btnBackClick();
+                break;
         }
     }
 
     btnCancelClick() {
-        const dialogRef = this.dialogService.open(DialogsCancelComponent, {});
-
-        dialogRef.onClose.subscribe(result => {
-            if (result === "cancel") {
-            }
-            if (result === "ok") {
-                this.router.navigate([this.listPage]);
-            }
-        });
+        this.router.navigate([this.listPage]);
     }
 
     btnBackClick() {
-        const dialogRef = this.dialogService.open(DialogsCancelComponent, {});
-
-        dialogRef.onClose.subscribe(result => {
-            if (result === "cancel") {
-            }
-            if (result === "ok") {
-                this.router.navigate([this.detailPage, this.RowID]);
-            }
-        });
+        this.router.navigate([this.detailPage, this.RowID]);
     }
-
-    uploadFile(event) {
-        if (event.length === 0) return;
-
-        const mimeType = event[0].type;
-        if (mimeType.match(/image\/*/) == null) {
-            this.message = "Only images are supported.";
-            return;
-        }
-        const reader = new FileReader();
-        this.message = event[0].name;
-        this.imagePath = event[0];
-        reader.readAsDataURL(event[0]);
-        reader.onload = _event => {
-            this.imgURL = reader.result;
-        };
-        this.upload();
-    }
-
-    upload() {
-        const dataJson = {
-            type_id: 640,
-            file_name: this.imagePath.name,
-            file_type: this.imagePath.type,
-            dealer_id: this.id_local,
-            retail_id: 0
-        };
-
-        this.uploadAPIService.uploadImg(JSON.stringify(dataJson)).subscribe(res => {
-            console.log(res);
-            this.uploadData = res.response_data[0];
-
-            this.uploadAPIService
-                .uploadPut(this.uploadData.file_upload_url, this.imagePath)
-                .subscribe(res1 => {
-                    console.log(res1);
-                    this.arrobjRow.retail_image_url = this.uploadData.file_url;
-                    console.log(this.arrobjRow.retail_image_url);
-                });
-        });
-    }
-
-    btnUpload() {
-        this.uploadAPIService
-            .uploadPut(this.uploadData.file_upload_url, this.imagePath)
-            .subscribe(res1 => {
-                console.log(res1);
-            });
-    }
-
 
     phoneNumber() {
         let function_phone = {
@@ -870,4 +782,5 @@ export class RetailerCreateComponent implements OnInit {
             });
         });
     }
+
 }

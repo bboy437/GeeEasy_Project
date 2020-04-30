@@ -8,7 +8,7 @@ export * from './lib/bills'
 export * from './lib/check-in'
 export * from './lib/products'
 export * from './lib/wharehouse';
-export { ISetting, SettingJson, IObject } from './lib/account';
+export * from './lib/account';
 export * from './lib/sale-rep';
 export * from './lib/seller';
 export * from './lib/team';
@@ -21,3 +21,4 @@ export * from './lib/dist';
 export * from './lib/request';
 export * from './lib/favorite';
 export * from './lib/category';
+export * from './lib/products-dealer';

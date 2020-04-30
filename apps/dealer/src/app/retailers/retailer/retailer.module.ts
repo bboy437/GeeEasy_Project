@@ -10,11 +10,13 @@ import { LayoutsModule } from '../../layouts/layouts.module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { DropFileModule } from '../../drop-file/drop-file.module';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-
 import { NgxSelectModule } from 'ngx-select-ex';
-
 import { RetailerRoutingModule } from "./retailer-routing.module";
-import { RetailerComponent, RetailerListComponent, RetailerDetailComponent, RetailerCreateComponent } from ".";
+import { RetailerComponent } from './retailer.component';
+import { RetailerListComponent } from './retailer-list/retailer-list.component';
+import { RetailerDetailComponent } from './retailer-detail/retailer-detail.component';
+import { RetailerCreateComponent } from './retailer-create/retailer-create.component';
+
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 

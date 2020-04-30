@@ -18,7 +18,7 @@ export interface ISetting {
     setting_json: SettingJson;
 }
 
-export interface IObject {
+export interface IObjectSetting {
     status_text: string;
     status_msg: string;
     status_code: string;

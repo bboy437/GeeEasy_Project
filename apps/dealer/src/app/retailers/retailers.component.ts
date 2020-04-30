@@ -2,8 +2,13 @@ import { Component, OnInit } from "@angular/core";
 
 @Component({
     selector: 'project-retailers',
-    templateUrl: './retailers.component.html',
-    styleUrls: ['./retailers.component.scss']
+    template: `
+        <nb-layout>
+             <nb-layout-column style="padding: 0;">
+                 <router-outlet></router-outlet>
+            </nb-layout-column>
+        </nb-layout>
+      `
 })
 
 export class RetailersComponent implements OnInit {

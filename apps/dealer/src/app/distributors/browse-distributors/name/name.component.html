@@ -1,4 +1,4 @@
-<div class="pages" [formGroup]="Form">
+<div class="pages">
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <div class="body">
@@ -8,11 +8,12 @@
                             <div class="col-12 col-md-6 col-lg-6 col-xl-3">
                                 <div class="cover-form icon">
                                     <nb-icon icon="search-outline"></nb-icon>
-                                    <nb-icon *ngIf="Form.value.strname" (click)="btnRefreshName()"
+                                    <nb-icon *ngIf="strname" (click)="btnRefreshName()"
                                         style="float: right;left: 0; cursor: pointer;" icon="close-outline">
                                     </nb-icon>
-                                    <input libOnlyCharacterDefault status="primary" type="text" nbInput fullWidth 
-                                        placeholder="Search for name" formControlName="strname"  
+                                    <input libOnlyCharacterDefault status="primary" type="text" nbInput fullWidth status="primary"
+                                        placeholder="Search for name" [(ngModel)]="strname"
+                                        [ngModelOptions]="{standalone: true}"
                                         (keyup.enter)="filterName($event.target.value)" />
                                 </div>
                                 <div class="cover-form icon">
@@ -38,9 +39,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr style="height:300px;">
+                                    <tr class="unset" style="height:300px; background-color: #ffffff;">
                                         <td colspan="8" style="padding-top: 50px;">
-                                            <div style="height: 100px;" [nbSpinner]="loading" nbSpinnerStatus="success">
+                                            <div style="height: 100px;background-color: #ffffff;" [nbSpinner]="loading"
+                                                nbSpinnerStatus="success">
                                             </div>
                                         </td>
                                     </tr>
@@ -91,34 +93,6 @@
                                                 {{ row.distributor_addr_amphoe + "," + row.distributor_addr_province }}
                                             </ng-template>
                                         </ngx-datatable-column>
-                                        <!-- <ngx-datatable-column [width]="30">
-                                            <ng-template let-row="row" ngx-datatable-cell-template title="Save lists">
-
-                                                <div class="cover-is-wish">
-                                                    <button type="button" class="buttonlist"
-                                                        (click)="btnDialogSavelists(row); $event.stopPropagation()">
-                                                        <nb-icon icon="list-outline"></nb-icon>
-                                                    </button>
-                                                </div>
-                                            </ng-template>
-                                        </ngx-datatable-column>
-                                        <ngx-datatable-column [width]="30">
-                                            <ng-template let-row="row" ngx-datatable-cell-template title="Save lists">
-
-                                                <div class="cover-is-wish">
-                                                    <div *ngIf="row.distributor_is_wish === 0"
-                                                        (click)="btnDialogWishlist(row); $event.stopPropagation()">
-                                                        <nb-icon icon="heart-outline">
-                                                        </nb-icon>
-                                                    </div>
-                                                    <div *ngIf="row.distributor_is_wish === 1"
-                                                        (click)="btnDialogWishlist(row); $event.stopPropagation()">
-                                                        <nb-icon style="color: red" icon="heart-outline"></nb-icon>
-                                                    </div>
-
-                                                </div>
-                                            </ng-template>
-                                        </ngx-datatable-column> -->
                                     </ngx-datatable> 
 
                                 </nb-card-body>
@@ -137,9 +111,9 @@
                                                 <th class="left">Email</th>
                                                 <th class="left">Contact Number</th>
                                                 <th class="left">Location</th>
-                                                <!-- <th></th>
                                                 <th></th>
-                                                <th></th> -->
+                                                <th></th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                     </table>

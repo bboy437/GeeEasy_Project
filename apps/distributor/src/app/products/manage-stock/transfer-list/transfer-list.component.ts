@@ -43,11 +43,12 @@ export class TransferListComponent implements OnInit {
     this.loading = true;
     this.productAPIService.dataTransfer$.subscribe(res => {
       console.log(res)
-      if (res) {
-        this.arrData = res;
-      } else {
-        this.router.navigate([this.UrlRouter_ProductsStock]);
-      }
+      res ? this.arrData = res : this.router.navigate([this.UrlRouter_ProductsStock]);
+      // if (res) {
+      //   this.arrData = res;
+      // } else {
+      //   this.router.navigate([this.UrlRouter_ProductsStock]);
+      // }
 
     })
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { BrowseSupplierAPIService } from '@project/services';
+import { BrowseSupplierAPIService, DistributorAPIService } from '@project/services';
 
 @Component({
   selector: 'project-comp-category-browse',
@@ -31,7 +31,7 @@ export class CompCategoryBrowseComponent implements OnInit {
 
   ngOnInit() {
     this.lastName[this.lastCount] = "View All";
-    
+
     if (this.status === 'Dealer') {
       this.strLoading = 'success';
     }
@@ -48,11 +48,20 @@ export class CompCategoryBrowseComponent implements OnInit {
       this.lastName[this.lastCount] = "View All";
       this.numID = 0;
       this.strName = "none";
-      const ID = {
-        product_category__id: 0,
-        product_category_root_id: 0,
-      }
-      this.categoryID.emit(ID);
+      this.browseSupplierAPIService.selectBrowseCategory$.subscribe(data => {
+    
+        if (data) {
+          this.categoryID.emit(data);
+          this.lastName[this.lastCount] = data.name;
+          this.numID = data.product_category__id
+        }
+
+      })
+      // const ID = {
+      //   product_category__id: 0,
+      //   product_category_root_id: 0,
+      // }
+      // this.categoryID.emit(ID);
     })
   }
 
@@ -128,19 +137,20 @@ export class CompCategoryBrowseComponent implements OnInit {
     }
 
     this.numID = id;
-    console.log("this.lastCount", this.lastCount);
     if (this.lastCount === 0) {
       console.log('a');
-
       this.numRootID = id
     }
 
     const ID = {
       product_category__id: this.numID,
       product_category_root_id: this.numRootID,
+      name: this.lastName[this.lastCount]
     }
+    console.log("ID", ID);
+    this.browseSupplierAPIService.dataSelectBrowseCategory(ID)
     this.categoryID.emit(ID)
-
+    
   }
 
   view_isActive(callback) {
@@ -202,9 +212,11 @@ export class CompCategoryBrowseComponent implements OnInit {
 
         const ID = {
           product_category__id: 0,
-          product_category_root_id: 0
+          product_category_root_id: 0,
+          name: this.lastName[this.lastCount]
         }
         this.categoryID.emit(ID)
+        this.browseSupplierAPIService.dataSelectBrowseCategory(ID)
 
       });
     } else {
@@ -247,8 +259,10 @@ export class CompCategoryBrowseComponent implements OnInit {
     const ID = {
       product_category__id: this.numID,
       product_category_root_id: this.numRootID,
+      name: this.lastName[this.lastCount]
     }
     this.categoryID.emit(ID)
+    this.browseSupplierAPIService.dataSelectBrowseCategory(ID)
 
   }
 
@@ -266,8 +280,10 @@ export class CompCategoryBrowseComponent implements OnInit {
       const ID = {
         product_category__id: 0,
         product_category_root_id: 0,
+        name: this.lastName[this.lastCount]
       }
       this.categoryID.emit(ID);
+      this.browseSupplierAPIService.dataSelectBrowseCategory(ID)
     })
   }
 

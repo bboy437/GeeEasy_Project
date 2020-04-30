@@ -6,7 +6,7 @@ import { DecimalPipe } from "@angular/common";
 import { DistributorsComponent } from "./distributors.component";
 import { DistributorsRoutingModule } from "./distributors-routing.module";
 import { NbDateFnsDateModule } from "@nebular/date-fns";
-import { BrowseDistributorModule } from "./browse-distributors/browse-supplier.module";
+import { BrowseDistributorModule } from "./browse-distributors/browse-distributor.module";
 import { DialogsModule } from "../dialogs/dialogs.module";
 
 

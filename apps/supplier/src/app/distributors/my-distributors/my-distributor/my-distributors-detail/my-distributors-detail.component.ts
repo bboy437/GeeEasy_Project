@@ -47,26 +47,32 @@ export class MyDistributorsDetailComponent implements OnInit {
     const params = this.route.snapshot.paramMap;
     this.RowID = params.get("id");
     if (this.RowID) {
-      this.distributorAPIService.getDisDetail(this.RowID).subscribe(data => {
-        console.log(data);
-        this.arrDistributor = data.response_data[0];
-        if (this.arrDistributor.length > 0) {
-          this.dataProduct(this.arrDistributor.supplier_product_array);
-        }
-        this.detailForm();
-        if (
-          this.arrDistributor.distributor_image_url !== undefined &&
-          this.arrDistributor.distributor_image_url !== "-" &&
-          this.arrDistributor.distributor_image_url !== ""
-        )
-          this.uploadAPIService
-            .uploadImage()
-            .getUrl(this.arrDistributor.distributor_image_url, red_image => {
-              this.image.main_image.get.push(red_image);
-            });
-
+      this.distributorAPIService.getDisDetail(this.RowID).subscribe(res => {
+        this.distributorAPIService.dataMyDistributorDetail(res)
+        this.getData(res)
       });
     }
+  }
+
+  getData(data) {
+
+    console.log(data);
+    this.arrDistributor = data.response_data[0];
+    if (this.arrDistributor.length > 0) {
+      this.dataProduct(this.arrDistributor.supplier_product_array);
+    }
+    this.detailForm();
+    if (
+      this.arrDistributor.distributor_image_url !== undefined &&
+      this.arrDistributor.distributor_image_url !== "-" &&
+      this.arrDistributor.distributor_image_url !== ""
+    )
+      this.uploadAPIService
+        .uploadImage()
+        .getUrl(this.arrDistributor.distributor_image_url, red_image => {
+          this.image.main_image.get.push(red_image);
+        });
+
   }
 
   dataProduct(data) {

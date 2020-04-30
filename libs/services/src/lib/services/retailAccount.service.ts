@@ -4,8 +4,9 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { retry, catchError } from 'rxjs/operators';
-import { throwError, Subject } from 'rxjs';
+import { retry, catchError, map, tap } from 'rxjs/operators';
+import { throwError, Subject, BehaviorSubject } from 'rxjs';
+import { IRetailerResponse } from '@project/interfaces';
 
 @Injectable({
     providedIn: 'root'
@@ -14,13 +15,28 @@ import { throwError, Subject } from 'rxjs';
 export class RetailAccountService {
     protected serverApiUrl = "https://api.gee-supply.com/v1-dealer/";
 
+    private retailerDetail = new BehaviorSubject<any>(null);
+    retailerDetail$ = this.retailerDetail.asObservable();
+
+
     constructor(private http: HttpClient) { }
 
-    httpOptions = {
-        headers: new HttpHeaders({
-            'Content-Type': 'application/json'
-        })
+    // Retailer List
+    paramRetailerList = "cur_page=" + 1 + "&per_page=" + 100 + "&dealer_id=" + localStorage.getItem('id');
+    retailerList$ = this.http.get<IRetailerResponse>(`${this.serverApiUrl}${'retail/account/lists?'}${this.paramRetailerList}`)
+        .pipe(
+            map(retailers => retailers.response_data),
+            tap(data => console.log('retailers', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
+
+    // Retailer data detail
+    dataRetailerDetail(data): void {
+        console.log(data)
+        this.retailerDetail.next(data);
     }
+
 
     getApi() {
         const function_ = {

@@ -3,23 +3,6 @@
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <div class="body">
                 <div class="row">
-                    <!-- <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                        <div class="row">
-                            <div class="col-auto mr-auto">
-                                <div class="display_table height_48px">
-                                    <div class="display_table_cell">
-                                        <label>
-                                            <a (click)="getCategory()">List Name </a>
-                                            <span *ngIf="strsupCate && strsupCate != '' && strsupCate != undefined"
-                                                class="p-0-12">/</span>
-                                            {{(strsupCate && strsupCate != '' && strsupCate != undefined)?strsupCate:''}}
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-
                     <div class="col-12 col-md-3 col-lg-3 col-xl-3">
                         <project-comp-category-browse [status]="'Dealer'" (categoryID)="categoryEvent($event)">
                         </project-comp-category-browse>
@@ -30,7 +13,7 @@
                                 <ngx-datatable [columnMode]="ColumnMode.force" [rows]="arrListCategorys"
                                     rowHeight="auto" [headerHeight]="46" (activate)="btnRowCate($event)"
                                     [scrollbarH]="true" [messages]="messages">
-                                    <ngx-datatable-column name="Images" [width]="0">
+                                    <ngx-datatable-column name="Images" [width]="100">
                                         <ng-template let-row="row" ngx-datatable-cell-template>
                                             <div class="cover-background-image">
                                                 <div class="background-image padding-width-100px-height-100px"
@@ -40,38 +23,20 @@
                                             </div>
                                         </ng-template>
                                     </ngx-datatable-column>
-                                    <ngx-datatable-column name="Supplier Name" [width]="0" [sortable]="true"
+                                    <ngx-datatable-column name="Distributor Name" [sortable]="true"
                                         prop="distributor_name">
                                         <ng-template let-row="row" ngx-datatable-cell-template>
                                             {{ row.distributor_name }}<br>
                                             {{row.distributor_addr_amphoe + ',' + row.distributor_addr_province}}
                                         </ng-template>
                                     </ngx-datatable-column>
-                                    <!-- <ngx-datatable-column [width]="0">
-                                        <ng-template let-row="row" ngx-datatable-cell-template>
-                                            <div *ngIf="row.distributor_is_wish === 0 || row.distributor_is_wish === undefined"
-                                                (click)="btnDialogWishlist(row); $event.stopPropagation()">
-                                                <nb-icon icon="heart-outline" style="float: right;">
-                                                </nb-icon>
-                                            </div>
-                                            <div *ngIf="row.distributor_is_wish === 1"
-                                                (click)="btnDialogWishlist(row); $event.stopPropagation()">
-                                                <nb-icon style="color: red;float: right;" icon="heart-outline"></nb-icon>
-                                            </div>
-                                            <button type="button" class="buttonlist fix-set" 
-                                                (click)="btnDialogSavelists(row); $event.stopPropagation()">
-                                                <nb-icon style="float: right;" icon="list-outline"></nb-icon>
-                                            </button>
-                                            
-                                        </ng-template>
-                                    </ngx-datatable-column> -->
                                 </ngx-datatable> 
                             </div>
                             <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
                                 <table class="table hover" *ngIf="loading1">
                                     <thead>
                                         <tr>
-                                            <th class="left" style="width: 125px;"> Images</th>
+                                            <th class="left" style="width: 100px;"> Images</th>
                                             <th class="left"> Distributor Name</th>
                                             <th></th>
                                             <th></th>
@@ -79,7 +44,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        <tr class="unset">
                                             <td colspan="5">
                                                 <div style="height: 200px;" [nbSpinner]="loading1"
                                                     nbSpinnerStatus="success">

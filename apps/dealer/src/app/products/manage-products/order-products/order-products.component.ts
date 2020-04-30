@@ -1,7 +1,7 @@
 import { Component, OnInit, QueryList, ViewChildren, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
-import { ProductData } from '@project/interfaces';
+import { IProductDealer } from '@project/interfaces';
 import { Observable } from 'rxjs';
 import { NgbdSortableHeader, SortEvent } from '@project/services';
 import { ProductAPIService } from '@project/services';
@@ -21,7 +21,7 @@ export class OrderProductsComponent implements OnInit {
   private UrlRouter_ProductDistributorDetail = "products/detail-product-distributor";
   private productDetail = "products/products/detail";
 
-  products$: Observable<ProductData[]>;
+  products$: Observable<IProductDealer[]>;
   total$: Observable<number>;
   arrProducts: any = [];
   arrClickProducts: any = [];

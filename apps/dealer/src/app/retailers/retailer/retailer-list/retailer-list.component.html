@@ -22,7 +22,7 @@
         </div>
         <div class="col-12">
             <nb-card>
-                <nb-card-body>
+                <nb-card-body style="padding: 1rem; min-height: calc(100vh - 280px);">
                     <div class="header"></div>
                     <div class="body">
                         <div class="row">
@@ -31,8 +31,11 @@
                                     <div class="col-3">
                                         <div class="cover-form icon">
                                             <nb-icon class="icon-one" icon="search-outline"></nb-icon>
-                                            <nb-icon class="icon-two" *ngIf="strFilter" (click)="refresh()" icon="close-outline"></nb-icon>
-                                            <input libOnlyCharacterDefault type="text" nbInput nbInput fullWidth status="primary" placeholder="Search for name" (keyup)="filter($event.target.value)" [(ngModel)]="strFilter" />
+                                            <nb-icon class="icon-two" *ngIf="strFilter" (click)="refresh()"
+                                                icon="close-outline"></nb-icon>
+                                            <input libOnlyCharacterDefault type="text" nbInput nbInput fullWidth
+                                                status="primary" placeholder="Search for name"
+                                                (keyup)="filter($event.target.value)" [(ngModel)]="strFilter" />
                                         </div>
                                     </div>
                                 </div>
@@ -40,7 +43,9 @@
                             <div class="col-12" *ngIf="!isReload">
                                 <div class="row">
                                     <div class="col-12" *ngIf="wishlist$ | async as wishlist; else loading">
-                                        <ngx-datatable [columnMode]="ColumnMode.force" [rows]="wishlist" rowHeight="auto" [headerHeight]="46" (activate)="btnRow($event)" [scrollbarH]="true" [messages]="messages">
+                                        <ngx-datatable [columnMode]="ColumnMode.force" [rows]="wishlist"
+                                            rowHeight="auto" [headerHeight]="46" (activate)="btnRow($event)"
+                                            [scrollbarH]="true" [messages]="messages">
                                             <ngx-datatable-column name="Images" [width]="100">
                                                 <ng-template let-row="row" ngx-datatable-cell-template>
                                                     <div class="cover-background-image">
@@ -69,8 +74,7 @@
                                                     {{ row.create_time | date: "dd/MM/yyyy" }}
                                                 </ng-template>
                                             </ngx-datatable-column> -->
-                                            <ngx-datatable-column name="Contact " [sortable]="true"
-                                                prop="retail_email">
+                                            <ngx-datatable-column name="Contact " [sortable]="true" prop="retail_email">
                                                 <ng-template let-row="row" ngx-datatable-cell-template>
                                                     {{ row.retail_mobile }}<br>
                                                     {{ row.retail_tel }}<br>
@@ -81,7 +85,8 @@
                                                 prop="retail_addr_province">
                                                 <ng-template let-column="column" ngx-datatable-header-template>
                                                     Location
-                                                    <nb-icon (click)="btnReload()" icon="refresh-outline" style="float: right;margin-right: 1rem; cursor: pointer;">
+                                                    <nb-icon (click)="btnReload()" icon="refresh-outline"
+                                                        style="float: right;margin-right: 1rem; cursor: pointer;">
                                                     </nb-icon>
                                                 </ng-template>
                                                 <ng-template let-row="row" ngx-datatable-cell-template>
@@ -103,12 +108,12 @@
                                     <thead>
                                         <tr>
                                             <!-- 'Order Date','Contact Email','Telephone Number' -->
-                                            <th class="left" *ngFor="let item of ['Images','Retail Name','Total Product','Contact','Location']">
+                                            <th class="left"
+                                                *ngFor="let item of ['Images','Retail Name','Total Product','Contact','Location']">
                                                 {{item}}
                                             </th>
                                             <th (click)="btnReload()">
-                                                <nb-icon style="float: right; cursor: pointer;"
-                                                    icon="refresh-outline">
+                                                <nb-icon style="float: right; cursor: pointer;" icon="refresh-outline">
                                                 </nb-icon>
                                             </th>
                                         </tr>
@@ -116,8 +121,8 @@
                                     <tbody>
                                         <tr class="unset" style="height:300px;">
                                             <td colspan="8" style="padding-top: 50px;">
-                                                <div style="height: 100px;"
-                                                    [nbSpinner]="loadings" nbSpinnerStatus="success">
+                                                <div style="height: 100px;" [nbSpinner]="loadings"
+                                                    nbSpinnerStatus="success">
                                                 </div>
                                             </td>
                                         </tr>
@@ -129,7 +134,8 @@
                                     <table class="table hover" style="width: 100%;">
                                         <thead>
                                             <tr>
-                                                <th class="left" *ngFor="let item of ['Images','Retail Name','Total Product','Contact','Location']">
+                                                <th class="left"
+                                                    *ngFor="let item of ['Images','Retail Name','Total Product','Contact','Location']">
                                                     {{item}}
                                                 </th>
                                                 <th (click)="btnReload()">
@@ -142,29 +148,32 @@
                                         <tbody>
                                             <tr class="unset" style="height:300px; ">
                                                 <td colspan="8" style="padding-top: 50px;">
-                                                    <div style="height: 100px;"
-                                                        [nbSpinner]="isReload" nbSpinnerStatus="success">
+                                                    <div style="height: 100px;" [nbSpinner]="isReload"
+                                                        nbSpinnerStatus="success">
                                                     </div>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>             
-                            </div> 
-                            <div class="col-12  d-flex justify-content-between p-2" *ngIf="!isReload && !loadings">
-                                <ngb-pagination [collectionSize]="tatallist$ | async" [(page)]="wishlistTableService.page"
-                                [pageSize]="wishlistTableService.pageSize"></ngb-pagination>
-                                <select class="custom-select" style="width: auto" name="pageSize"
-                                    [(ngModel)]="wishlistTableService.pageSize">
-                                    <option [ngValue]="10">10 items per page</option>
-                                    <option [ngValue]="20">20 items per page</option>
-                                    <option [ngValue]="50">50 items per page</option>
-                                    <option [ngValue]="100">100 items per page</option>
-                                </select>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </nb-card-body>
+                <nb-card-footer>
+                    <div class="col-12  d-flex justify-content-between p-2" *ngIf="!isReload && !loadings">
+                        <ngb-pagination [collectionSize]="tatallist$ | async" [(page)]="wishlistTableService.page"
+                            [pageSize]="wishlistTableService.pageSize">
+                        </ngb-pagination>
+                        <select class="custom-select" style="width: auto" name="pageSize"
+                            [(ngModel)]="wishlistTableService.pageSize">
+                            <option [ngValue]="10">10 items per page</option>
+                            <option [ngValue]="20">20 items per page</option>
+                            <option [ngValue]="50">50 items per page</option>
+                            <option [ngValue]="100">100 items per page</option>
+                        </select>
+                    </div>
+                </nb-card-footer>
             </nb-card>
         </div>
     </div>

@@ -36,24 +36,30 @@ export class WarehouseDetailComponent implements OnInit {
     this.Builder();
     this.loading = true;
     const params = this.route.snapshot.paramMap;
-    if (params.has("id")) {
-      this.RowID = params.get("id");
+    this.RowID = params.get("id");
 
-      this.warehouseAPIService.getWarehouseDetail(this.RowID).subscribe(data => {
-        this.arrobjRow = data.response_data[0];
-        console.log(this.arrobjRow);
-        if (
-          this.arrobjRow.warehouse_image_url !== undefined &&
-          this.arrobjRow.warehouse_image_url !== "-" &&
-          this.arrobjRow.warehouse_image_url !== ""
-        )
-          this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.warehouse_image_url, red_image => {     
-            this.image.main_image.get.push(red_image);
-          });
-        this.DetailForm();
+    if (this.RowID) {
+      this.warehouseAPIService.getWarehouseDetail(this.RowID).subscribe(res => {
+        this.warehouseAPIService.dataWarehouse(res);
+        this.getData(res);
+
       });
-
     }
+
+  }
+
+  getData(data) {
+    this.arrobjRow = data.response_data[0];
+    console.log(this.arrobjRow);
+    if (
+      this.arrobjRow.warehouse_image_url !== undefined &&
+      this.arrobjRow.warehouse_image_url !== "-" &&
+      this.arrobjRow.warehouse_image_url !== ""
+    )
+      this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.warehouse_image_url, red_image => {
+        this.image.main_image.get.push(red_image);
+      });
+    this.DetailForm();
   }
 
   Builder() {

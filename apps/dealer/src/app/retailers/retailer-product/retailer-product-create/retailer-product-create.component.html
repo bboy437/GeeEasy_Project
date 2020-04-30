@@ -1,4 +1,4 @@
-<div class="pages">
+<div class="pages" [formGroup]="Form">
     <div class="row">
         <div class="col-12">
             <div class="row">
@@ -15,8 +15,9 @@
                                         </label>
                                     </div>
                                     <div class="col-auto">
-                                        <button [nbSpinner]="product.update" nbSpinnerStatus="success" nbButton
-                                            size="medium" status="success" (click)="clickUpdateOrNew()">
+                                        <button [disabled]="!Form.valid" [nbSpinner]="product.update"
+                                            nbSpinnerStatus="success" nbButton size="medium" status="success"
+                                            (click)="clickUpdateOrNew()">
                                             {{(RowID === 'new')?'Save':'Update'}}
                                         </button>
                                         <button nbButton size="medium" status="danger" (click)="clickCancelOrBack()">
@@ -48,90 +49,49 @@
                         nbSpinnerSize="giant">
                         <nb-card-body>
                             <div class="body">
-                                <form [formGroup]="Form">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="row">
-                                                <div class="col-4">
-                                                    <project-file-image theme="white" [image_url_array]="product.main_image.get">
-                                                    </project-file-image>
-                                                </div>
-                                                <div class="col-4">
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="cover-input">
-                                                                <label>Product Name</label>
-                                                                <input nbInput fullWidth type="text" status="primary"
-                                                                    formControlName="product_title"
-                                                                    [ngClass]="{ 'is-invalid': submitted && f.product_title.errors }" />
-                                                                <div *ngIf="submitted && !!f.product_title.errors"
-                                                                    class="invalid-feedback">
-                                                                    <div class="required"
-                                                                        *ngIf="!!f.product_title.errors.required">
-                                                                        Product Name is required
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <div class="cover-input">
-                                                                <label>Product SKU</label>
-                                                                <input libOnlyCharacterDefault nbInput fullWidth
-                                                                    type="text" status="primary"
-                                                                    formControlName="product_sku"
-                                                                    [ngClass]="{ 'is-invalid': submitted && f.product_sku.errors }" />
-                                                                <div *ngIf="submitted && !!f.product_sku.errors"
-                                                                    class="invalid-feedback">
-                                                                    <div class="required"
-                                                                        *ngIf="!!f.product_sku.errors.required">
-                                                                        Product SKU is required
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <div class="cover-input">
-                                                                <label>Product Quantity</label>
-                                                                <input nbInput fullWidth type="text" status="primary"
-                                                                    libOnlyCharacternumber mask="separator.0"
-                                                                    thousandSeparator=","
-                                                                    formControlName="product_stock"
-                                                                    [ngClass]="{ 'is-invalid': submitted && f.product_stock.errors }" />
-                                                                <div *ngIf="submitted && !!f.product_stock.errors"
-                                                                    class="invalid-feedback">
-                                                                    <div class="required"
-                                                                        *ngIf="!!f.product_stock.errors.required">
-                                                                        Product Quantity is required
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <div class="cover-input">
-                                                                <label>Product Price</label>
-                                                                <input libOnlyCharacterDefault nbInput fullWidth
-                                                                    type="text" status="primary" mask="separator.2"
-                                                                    thousandSeparator=","
-                                                                    formControlName="product_price"
-                                                                    [ngClass]="{ 'is-invalid': submitted && f.product_price.errors }" />
-                                                                <div *ngIf="submitted && !!f.product_price.errors"
-                                                                    class="invalid-feedback">
-                                                                    <div class="required"
-                                                                        *ngIf="!!f.product_price.errors.required">
-                                                                        Product Price is required
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12">
-
-                                                        </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <project-file-image theme="white"
+                                                    [image_url_array]="product.main_image.get">
+                                                </project-file-image>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <project-input inputType="text" label="Product Name :"
+                                                            requiredName="Product Name"
+                                                            [control]="Form.get('product_title')">
+                                                        </project-input>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <project-input lib="libOnlyCharacterDefault" inputType="text"
+                                                            label="Product SKU :" requiredName="Product SKU"
+                                                            [control]="Form.get('product_sku')">
+                                                        </project-input>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <project-input lib="libOnlyCharacternumber" mask="separator.0"
+                                                            thousandSeparator="," inputType="text"
+                                                            label="Product Quantity :" requiredName="Product Quantity"
+                                                            [control]="Form.get('product_stock')">
+                                                        </project-input>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <project-input lib="libOnlyCharacternumber" mask="separator.2"
+                                                            thousandSeparator="," inputType="text"
+                                                            label="Product Price :" requiredName="Product Price"
+                                                            [control]="Form.get('product_price')">
+                                                        </project-input>
+                                                    </div>
+                                                    <div class="col-12">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </nb-card-body>
                     </nb-card>

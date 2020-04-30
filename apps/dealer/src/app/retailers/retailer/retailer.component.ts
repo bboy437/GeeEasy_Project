@@ -4,12 +4,11 @@ import { Component, OnInit } from "@angular/core";
     selector: "project-retailer",
     template: `
     <nb-layout>
-      <nb-layout-column>
+      <nb-layout-column style="padding: 0;">
           <router-outlet></router-outlet>
       </nb-layout-column>
     </nb-layout>
   `,
-    styleUrls: ["./retailer.component.scss"],
 })
 
 export class RetailerComponent { }

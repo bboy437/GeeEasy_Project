@@ -102,42 +102,46 @@ export class MyDistributorsCreateComponent implements OnInit {
             this.getCategory();
             this.loading = false;
         } else {
-            this.distributorAPIService.getDisDetail(this.RowID).subscribe(data => {
-                this.arrobjRow = data.response_data[0];
-                this.imgURL = data.response_data[0].distributor_image_url;
+            this.distributorAPIService.myDistributorDetail$.subscribe(res => {
+                res ? this.getData(res) : this.router.navigate([this.UrlRouter_DistributorsList]);
 
-                if (this.arrobjRow.distributor_image_url !== undefined && this.arrobjRow.distributor_image_url !== "-" && this.arrobjRow.distributor_image_url !== "")
-                    this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.distributor_image_url, red_image => {
-                        this.image.main_image.get.push(red_image);
-                    });
-
-                /*Get Province Edit */
-                this.changeProvinceEdit(
-                    this.arrobjRow.distributor_addr_province,
-                    this.arrobjRow.distributor_addr_amphoe,
-                    this.arrobjRow.distributor_addr_tambon
-                );
-
-                this.getCategory();
-                this.editForm();
-                console.log(this.arrobjRow);
-                console.log("ngOnInit : data : ", data);
-
-                this.phoneNumber().main(_self_ => {
-                    data.response_data.forEach(item => {
-                        _self_.getNumberArray(item.distributor_tel, getNumberArray => {
-                            this.phone.tel.number = item.distributor_tel;
-                            this.phone.tel.number_array = getNumberArray;
-                        });
-                        _self_.getNumberArray(item.distributor_mobile, getNumberArray => {
-                            this.phone.mobile.number = item.distributor_mobile;
-                            this.phone.mobile.number_array = getNumberArray;
-                        });
-                    });
-                });
-
-            });
+            })
         }
+    }
+
+    getData(data) {
+        this.arrobjRow = data.response_data[0];
+        this.imgURL = data.response_data[0].distributor_image_url;
+
+        if (this.arrobjRow.distributor_image_url !== undefined && this.arrobjRow.distributor_image_url !== "-" && this.arrobjRow.distributor_image_url !== "")
+            this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.distributor_image_url, red_image => {
+                this.image.main_image.get.push(red_image);
+            });
+
+        /*Get Province Edit */
+        this.changeProvinceEdit(
+            this.arrobjRow.distributor_addr_province,
+            this.arrobjRow.distributor_addr_amphoe,
+            this.arrobjRow.distributor_addr_tambon
+        );
+
+        this.getCategory();
+        this.editForm();
+        console.log(this.arrobjRow);
+        console.log("ngOnInit : data : ", data);
+
+        this.phoneNumber().main(_self_ => {
+            data.response_data.forEach(item => {
+                _self_.getNumberArray(item.distributor_tel, getNumberArray => {
+                    this.phone.tel.number = item.distributor_tel;
+                    this.phone.tel.number_array = getNumberArray;
+                });
+                _self_.getNumberArray(item.distributor_mobile, getNumberArray => {
+                    this.phone.mobile.number = item.distributor_mobile;
+                    this.phone.mobile.number_array = getNumberArray;
+                });
+            });
+        });
     }
 
     getCategory() {
@@ -579,54 +583,6 @@ export class MyDistributorsCreateComponent implements OnInit {
         this.router.navigate([this.UrlRouter_DistributorsDetail, this.RowID]);
     }
 
-    uploadFile(event) {
-        if (event.length === 0) return;
-
-        const mimeType = event[0].type;
-        if (mimeType.match(/image\/*/) == null) {
-            this.message = "Only images are supported.";
-            return;
-        }
-        const reader = new FileReader();
-        this.message = event[0].name;
-        this.imagePath = event[0];
-        reader.readAsDataURL(event[0]);
-        reader.onload = _event => {
-            this.imgURL = reader.result;
-        };
-        this.upload();
-    }
-
-    upload() {
-        const dataJson = {
-            type_id: 100,
-            file_name: this.imagePath.name,
-            file_type: this.imagePath.type,
-            supplier_id: this.id_local,
-            distributor_id: 0
-        };
-
-        this.uploadAPIService.uploadImg(JSON.stringify(dataJson)).subscribe(res => {
-            console.log(res);
-            this.uploadData = res.response_data[0];
-
-            this.uploadAPIService
-                .uploadPut(this.uploadData.file_upload_url, this.imagePath)
-                .subscribe(res1 => {
-                    console.log(res1);
-                    this.arrobjRow.distributor_image_url = this.uploadData.file_url;
-                    console.log(this.arrobjRow.distributor_image_url);
-                });
-        });
-    }
-
-    btnUpload() {
-        this.uploadAPIService
-            .uploadPut(this.uploadData.file_upload_url, this.imagePath)
-            .subscribe(res1 => {
-                console.log(res1);
-            });
-    }
 
     phoneNumber() {
         let function_phone = {

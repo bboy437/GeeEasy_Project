@@ -20,6 +20,7 @@ import JSON_CURRENCY from "../../../../../../../libs/shared/src/lib/json/currenc
 import { ProductWholesaleComponent } from "../../../dialogs/product-wholesale/product-wholesale.component";
 import { WarehouseCreateComponent } from "../../../dialogs/warehouse-create/warehouse-create.component";
 import { AleartComponent } from "../../../dialogs/aleart/aleart.component";
+import { ProductResolved } from '@project/interfaces';
 
 @Component({
   selector: "project-products-create",
@@ -102,63 +103,69 @@ export class ProductsCreateComponent implements OnInit {
     this.buildForm();
     this.get_Country(0);
 
-    const params = this.route.snapshot.paramMap;
-    if (params.has("id")) {
-      this.RowID = params.get("id");
-      if (this.RowID === "new") {
+    this.route.data.subscribe(data => {
+      const resolvedData: ProductResolved = data['resolvedData'];
+      if (resolvedData.product) {
+        this.getData(resolvedData.product)
+      } else {
+        this.RowID = "new";
         this.getCategory();
         this.getWarehouse();
         this.loading = false;
-      } else {
-        this.productAPIService.getProductDetailSup(this.RowID).subscribe(data => {
-          this.arrobjRow = data.response_data[0];
-
-          //Images
-          if (
-            this.arrobjRow.product_image_url !== undefined &&
-            this.arrobjRow.product_image_url !== "-" &&
-            this.arrobjRow.product_image_url !== ""
-          )
-            this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.product_image_url,
-              red_image => {
-                this.product.main_image.get.push(red_image);
-              });
-          if (this.arrobjRow.product_image_array !== undefined)
-            this.uploadAPIService.uploadImage().imageArray(this.arrobjRow.product_image_array,
-              imageArray => {
-                this.product.product_image_array.get = imageArray;
-              }
-            );
-
-          this.imgURL = this.arrobjRow.product_image_url;
-
-          //Wholesale
-          this.arrWholesale = this.arrobjRow.product_wholesale_array;
-
-          this.arrWholesale.forEach(element => {
-            element.product_price = element.product_price % 1 !== 0
-              ? element.product_price
-              : element.product_price + ".00";
-            element.retail_product_price = element.retail_product_price % 1 !== 0
-              ? element.retail_product_price
-              : element.retail_product_price + ".00";
-          });
-          this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
-          this.sort = true;
-
-          //Channel
-          this.channelArray().getObjectArray(this.arrobjRow.product_channel,
-            getObjectArray => {
-              this.channel.one.channel = this.arrobjRow.product_channel;
-              this.channel.one.channel_array = getObjectArray;
-            }
-          );
-
-          this.getCategory();
-          this.getWarehouse();
-        });
       }
-    }
+    });
+
+
+  }
+
+  getData(data) {
+    this.RowID = String(data.response_data[0].supplier_product_id);
+    this.arrobjRow = data.response_data[0];
+
+    //Images
+    if (
+      this.arrobjRow.product_image_url !== undefined &&
+      this.arrobjRow.product_image_url !== "-" &&
+      this.arrobjRow.product_image_url !== ""
+    )
+      this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.product_image_url,
+        red_image => {
+          this.product.main_image.get.push(red_image);
+        });
+    if (this.arrobjRow.product_image_array !== undefined)
+      this.uploadAPIService.uploadImage().imageArray(this.arrobjRow.product_image_array,
+        imageArray => {
+          this.product.product_image_array.get = imageArray;
+        }
+      );
+
+    this.imgURL = this.arrobjRow.product_image_url;
+    //Wholesale
+    this.arrWholesale = this.arrobjRow.product_wholesale_array;
+
+    this.arrWholesale.forEach(element => {
+      element.product_price = element.product_price % 1 !== 0
+        ? element.product_price
+        : element.product_price + ".00";
+      element.retail_product_price = element.retail_product_price % 1 !== 0
+        ? element.retail_product_price
+        : element.retail_product_price + ".00";
+    });
+    this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
+    this.sort = true;
+
+    //Channel
+    this.channelArray().getObjectArray(this.arrobjRow.product_channel,
+      getObjectArray => {
+        this.channel.one.channel = this.arrobjRow.product_channel;
+        this.channel.one.channel_array = getObjectArray;
+      }
+    );
+
+    this.getCategory();
+    this.getWarehouse();
+
+
   }
 
   buildForm() {
@@ -795,55 +802,6 @@ export class ProductsCreateComponent implements OnInit {
 
   btnBackClick() {
     this.router.navigate([this.URLRputer_ProductDetail, this.RowID]);
-  }
-
-  uploadFile(event) {
-    if (event.length === 0) return;
-
-    const mimeType = event[0].type;
-    if (mimeType.match(/image\/*/) == null) {
-      this.message = "Only images are supported.";
-      return;
-    }
-    const reader = new FileReader();
-    this.message = event[0].name;
-    this.imagePath = event[0];
-    reader.readAsDataURL(event[0]);
-    reader.onload = _event => {
-      this.imgURL = reader.result;
-    };
-    this.upload();
-  }
-
-  upload() {
-    const dataJson = {
-      type_id: 120,
-      file_name: this.imagePath.name,
-      file_type: this.imagePath.type,
-      supplier_id: this.id_local,
-      distributor_id: 0
-    };
-
-    this.uploadAPIService.uploadImg(JSON.stringify(dataJson)).subscribe(res => {
-      console.log(res);
-      this.uploadData = res.response_data[0];
-
-      this.uploadAPIService
-        .uploadPut(this.uploadData.file_upload_url, this.imagePath)
-        .subscribe(res1 => {
-          console.log(res1);
-          this.arrobjRow.product_image_url = this.uploadData.file_url;
-          console.log(this.arrobjRow.product_image_url);
-        });
-    });
-  }
-
-  btnUpload() {
-    this.uploadAPIService
-      .uploadPut(this.uploadData.file_upload_url, this.imagePath)
-      .subscribe(res1 => {
-        console.log(res1);
-      });
   }
 
   channelArray() {

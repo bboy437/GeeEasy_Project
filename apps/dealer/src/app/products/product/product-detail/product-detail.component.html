@@ -1,0 +1,111 @@
+<div class="pages" [formGroup]="Form">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <nb-icon icon="cube-outline"></nb-icon>
+                                <label>Manage Product<span class="p-0-12">/</span>Detail</label>
+                            </div>
+                            <div class="col-auto">
+                                <button nbButton size="medium" status="success" (click)="btnEditeClick()">
+                                    Edit
+                                </button>
+                                <button nbButton size="medium" status="danger" (click)="btnCancelClick()">
+                                    Back
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;margin-bottom: 0.1rem;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label>{{product_category_name}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="danger"
+            example-items-rows>
+            <nb-card>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-6 col-xl-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <project-display-file-image theme="white"
+                                            [image_url_array]="image.main_image.get">
+                                        </project-display-file-image>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-6 col-xl-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="cover-input">
+                                                    <nb-checkbox [checked]="active == 1" disabled>Active</nb-checkbox>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <project-input inputType="text" label="Warehouse :"
+                                                    [control]="Form.get('WarehouseName')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12">
+                                                <project-input inputType="text" label="Product Catalog Keyword :"
+                                                    [control]="Form.get('catalogKeyword')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="Product Name :"
+                                                    [control]="Form.get('product_name')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="Product SKU :"
+                                                    [control]="Form.get('product_sku')">
+                                                </project-input>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <project-input inputType="text" label="Product Quantity :"
+                                                    [control]="Form.get('Quantity')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                                <project-input inputType="text" label="Product Unit :"
+                                                    [control]="Form.get('productUnit')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12">
+                                                <project-textarea rows="3" label="Note :"
+                                                    [control]="Form.get('productNote')">
+                                                </project-textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

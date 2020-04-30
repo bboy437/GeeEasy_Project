@@ -1,4 +1,4 @@
-<div class="pages" [formGroup]="stockForm" (ngSubmit)="onSubmit()">
+<div class="pages" [formGroup]="Form" (ngSubmit)="onSubmit()">
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card>
@@ -14,14 +14,14 @@
                             </div>
                             <div class="col-12 col-md-6 col-lg-6 col-xl-6">
                                 <button
-                                    [disabled]="stockForm.invalid || this.phone.tel.number === '' || this.phone.mobile.number === ''"
+                                    [disabled]="Form.invalid || this.phone.tel.number === '' || this.phone.mobile.number === ''"
                                     *ngIf="RowID == 'new' && !loading" style="float: right;margin: 3px 0 3px 1rem;"
                                     [nbSpinner]="image.update" nbSpinnerStatus="success" nbButton size="medium"
                                     status="success" (click)="btnSaveClick()">
                                     Save
                                 </button>
                                 <button
-                                    [disabled]="stockForm.invalid || this.phone.tel.number === '' || this.phone.mobile.number === ''"
+                                    [disabled]="Form.invalid || this.phone.tel.number === '' || this.phone.mobile.number === ''"
                                     *ngIf="RowID != 'new' && !loading" style="float: right;margin: 3px 0 3px 1rem;"
                                     [nbSpinner]="image.update" nbSpinnerStatus="success" nbButton size="medium"
                                     status="success" (click)="btnSaveClick()">
@@ -58,7 +58,7 @@
                                             <div class="col-12">
                                                 <project-input inputType="text" label="Warehouse Name :"
                                                     requiredName="Warehouse Name"
-                                                    [control]="stockForm.get('warehouseName')">
+                                                    [control]="Form.get('warehouseName')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
@@ -136,19 +136,19 @@
                                             </div>
                                             <div class="col-12">
                                                 <project-textarea rows="3" label="Address :" requiredName="Address"
-                                                    [control]="stockForm.get('addressFull')">
+                                                    [control]="Form.get('addressFull')">
                                                 </project-textarea>
                                             </div>
                                             <div class="col-12">
                                                 <project-input inputType="text" label="Address Number :"
                                                     requiredName="Address Number"
-                                                    [control]="stockForm.get('addressNo')">
+                                                    [control]="Form.get('addressNo')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
                                                 <project-ngx-select label="Province :" requiredName="Province"
                                                     optionValueField="location_name" optionTextField="location_name"
-                                                    [items]="arrProvince" [control]="stockForm.get('province')"
+                                                    [items]="arrProvince" [control]="Form.get('province')"
                                                     placeholder="--------- Choose ---------"
                                                     (valueChange)='changeProvince($event)'>
                                                 </project-ngx-select>
@@ -156,7 +156,7 @@
                                             <div class="col-12">
                                                 <project-ngx-select label="Amphoe :" requiredName="Amphoe"
                                                     optionValueField="location_name" optionTextField="location_name"
-                                                    [items]="arrAmphoe" [control]="stockForm.get('amphoe')"
+                                                    [items]="arrAmphoe" [control]="Form.get('amphoe')"
                                                     placeholder="--------- Choose ---------"
                                                     (valueChange)='changeAmphoe($event)'>
                                                 </project-ngx-select>
@@ -164,20 +164,20 @@
                                             <div class="col-12">
                                                 <project-ngx-select label="Tambon :" requiredName="Tambon"
                                                     optionValueField="location_name" optionTextField="location_name"
-                                                    [items]="arrTambon" [control]="stockForm.get('tambon')"
+                                                    [items]="arrTambon" [control]="Form.get('tambon')"
                                                     placeholder="--------- Choose ---------"
                                                     (valueChange)='changeTambon($event)'>
                                                 </project-ngx-select>
                                             </div>
                                             <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                                                 <project-input inputType="text" label="Zipcode :" requiredName="Zipcode"
-                                                    [control]="stockForm.get('zipcode')">
+                                                    [control]="Form.get('zipcode')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                                                 <project-input inputType="text" label="Latitude Longitude :"
                                                     requiredName="Latitude Longitude"
-                                                    [control]="stockForm.get('location_lat_location_lng')">
+                                                    [control]="Form.get('location_lat_location_lng')">
                                                 </project-input>
                                             </div>
                                         </div>

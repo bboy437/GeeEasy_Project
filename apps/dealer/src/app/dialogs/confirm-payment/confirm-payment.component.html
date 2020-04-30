@@ -47,8 +47,7 @@
                         <div class="d-flex justify-content-center">
                             <button nbButton style="width: 100px" status="danger"
                                 (click)="btnCancelClick()">Cancel</button>
-                            <button [nbSpinner]="isSaveLodding" nbSpinnerSize="tiny" nbSpinnerStatus="success"
-                                [disabled]="From.invalid" nbButton style="width: 100px; margin-left: 0.7rem;"
+                            <button [disabled]="From.invalid" nbButton style="width: 100px; margin-left: 0.7rem;"
                                 status="success" (click)="btnComfrimPaidClick()">OK</button>
                         </div>
                     </div>

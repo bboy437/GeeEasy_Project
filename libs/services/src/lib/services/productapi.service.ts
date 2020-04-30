@@ -4,9 +4,9 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { retry, catchError, map, tap } from 'rxjs/operators';
+import { retry, catchError, map, tap, shareReplay } from 'rxjs/operators';
 import { throwError, Subject, BehaviorSubject } from 'rxjs';
-import { IObjStock, ProductDataArray, IObjectProductList, IObjectFavorite, IFavoriteList, IStock, IObjectProductGroup } from '@project/interfaces';
+import { IObjStock, ProductDataArray, IObjectProductList, IObjectFavorite, IFavoriteList, IStock, IObjectProductGroup, IProductDealerResponse } from '@project/interfaces';
 import { Router } from '@angular/router';
 
 
@@ -16,11 +16,22 @@ import { Router } from '@angular/router';
 
 export class ProductAPIService {
 
+
+
+    // Distributor
+    private productDetailDistributor = new BehaviorSubject<any>(null);
+    productDetailDistributor$ = this.productDetailDistributor.asObservable();
+
     private myMethodSubjectTransfer = new BehaviorSubject<any>("");
     dataTransfer$ = this.myMethodSubjectTransfer.asObservable();
 
     private productGroupSelectedSubject = new BehaviorSubject<any>(null);
     productGroupSelectedAction$ = this.productGroupSelectedSubject.asObservable();
+
+    //Dealer
+    private productDetailDealer = new BehaviorSubject<any>(null);
+    productDetailDealer$ = this.productDetailDealer.asObservable();
+
 
     protected ServerApiUrls = "https://api.gee-supply.com/v1/";
     protected ServerApiUrlProductSup = "https://api.gee-supply.com/v1-sup/";
@@ -120,16 +131,42 @@ export class ProductAPIService {
         );
 
 
+    // Dealer Product
+
+    paramProductDealerList = "cur_page=" + 1 + "&per_page=" + 100 + "&dealer_id=" + localStorage.getItem('id');
+    productDealerList$ = this.http.get<IProductDealerResponse>(`${this.ServerApiUrlProducDealer}${'dealer/product/lists?'}${this.paramProductDealerList}`)
+        .pipe(
+            map(products => products.response_data),
+            tap(data => console.log('products', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
+
+
+
     // product the selected Product Group
     selectedProductGroup(data: any): void {
         this.productGroupSelectedSubject.next(data);
     }
 
 
-    // product the selected Transfer
+    // Distributor product the selected Transfer
     clickDataTransfer(data): any {
         this.myMethodSubjectTransfer.next(data);
     }
+
+    // Distributor product data detail
+    dataProductDetailDistributor(data): void {
+        console.log(data)
+        this.productDetailDistributor.next(data);
+    }
+
+    // Dealer product data detail
+    dataProductDetailDealer(data): void {
+        console.log(data)
+        this.productDetailDealer.next(data);
+    }
+
 
 
 
@@ -175,16 +212,18 @@ export class ProductAPIService {
             )
     }
 
-    getProductDetailSup(strUrl: string): Observable<IObjectProductList> {
-        return this.http.get<IObjectProductList>(this.ServerApiUrlProductSup + "supplier/product/id/" + strUrl)
+    getProductDetailSup(id: string): Observable<IObjectProductList> {
+        const url = `${this.ServerApiUrlProductSup}${"/supplier/product/id/"}${id}`;
+        return this.http.get<IObjectProductList>(url)
             .pipe(
                 retry(1),
                 catchError(this.handleError)
-            )
+            );
     }
 
-    getProductDetailDealer(strUrl: string): Observable<any> {
-        return this.http.get<any>(this.ServerApiUrlProducDealer + "dealer/product/id/?" + strUrl)
+    getProductDetailDealer(id: string): Observable<any> {
+        const url = `${this.ServerApiUrlProducDealer}${"/dealer/product/id/?"}${id}`;
+        return this.http.get<any>(url)
             .pipe(
                 retry(1),
                 catchError(this.handleError)
@@ -362,15 +401,17 @@ export class ProductAPIService {
     }
 
 
-    handleError(error) {
-        let errorMessage = '';
-        if (error.error instanceof ErrorEvent) {
-            errorMessage = error.error.message;
+    handleError(err) {
+        let errorMessage: string;
+        if (err.error instanceof ErrorEvent) {
+            // A client-side or network error occurred. Handle it accordingly.
+            errorMessage = `An error occurred: ${err.error.message}`;
         } else {
-            errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            errorMessage = `Backend returned code ${err.status}: ${err.body.error}`;
         }
-        window.alert(errorMessage);
-        // this.router.navigate(["products/manage/list"]);
+        console.error(err);
         return throwError(errorMessage);
     }
 

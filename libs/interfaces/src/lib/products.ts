@@ -1,16 +1,6 @@
 import { ResponsePage, ProductCategoryArray, ProductWholesaleArray, ProductWarehouseArray } from './purchases';
 import { Iwarehouse } from './wharehouse';
 
-// export interface IProduct {
-//   id: string;
-//   product: string;
-//   sku: number;
-//   supplier: string;
-//   orderhiveprice: number;
-//   lastpurchaseprice: number;
-//   wholesaleprice: number;
-//   status: boolean;
-// }
 
 export interface IObjectProductList {
   status_text: string;
@@ -48,9 +38,43 @@ export interface ProductDataArray {
   product_public_status_id: number,
   create_time: number,
   update_time: number,
-  product_channel: string,
   product_row_key: ProductRowKey;
+  supplier_id: number;
+  product_is_transfer: number;
+  product_wholesale_array: ProductWholesaleArray[];
+  ref_3: string;
+  product_category_id: number;
+  ref_1: string;
+  ref_2: string;
+  distributor_product_id: number;
+  product_buy_price: number;
+  product_type_id: number;
+  product_status: number;
+  product_is_active: number;
+  product_unit: string;
+  product_barcode: string;
+  distributor_id: number;
+  category_custom_keyword: string;
+  purchase_order_number: any;
+  product_image_array: any;
+  note: string;
+  product_catalog_keyword: string;
+  warehouse_id: number;
+  purchase_order_id: number;
+  product_note: string;
+  product_country: string;
+  product_currency_code: string;
+  product_category_array: ProductCategoryArray[];
+  warehouse_id_to?: number;
+  warehouse_id_from?: number;
 }
+
+
+export interface ProductResolved {
+  product: IObjectProductList;
+  error?: any;
+}
+
 
 
 export interface ProductRowKey {

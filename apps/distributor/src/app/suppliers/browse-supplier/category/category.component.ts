@@ -40,10 +40,7 @@ export class CategoryComponent implements OnInit {
     `
   }
 
-
   id_local: string;
-
-
 
   constructor(
     private browseSupplierAPIService: BrowseSupplierAPIService,
@@ -59,19 +56,14 @@ export class CategoryComponent implements OnInit {
 
   ngOnInit() {
     this.strCategory = this.name;
-    this.loading = true;
-    this.loading1 = true;
-    // this.getCategory();
-
   }
 
   categoryEvent(data) {
     console.log('data', data);
-    console.log('product_category__id', data.product_category__id);
     this.loading1 = true;
     if (data.product_category__id !== 0) {
-      const distributor_id = "?distributor_id=" + this.id_local
-      this.browseSupplierAPIService.getCategoryID(data.product_category__id + distributor_id).subscribe(res => {
+      const param = data.product_category__id + "?distributor_id=" + this.id_local
+      this.browseSupplierAPIService.getCategoryID(param).subscribe(res => {
         const arrListCategorys = res.response_data;
         console.log('arrListCategorys', this.arrListCategorys);
         this.getCheckRequest(arrListCategorys)
@@ -98,47 +90,6 @@ export class CategoryComponent implements OnInit {
     console.log('this.arrNames', this.arrListCategorys);
   }
 
-  // getCategory() {
-  //   this.strsupCate = '';
-  //   this.id = "";
-  //   const valueCategory = 'cur_page=' + 1 + '&per_page=' + 10
-  //   this.browseSupplierAPIService.getCategory(valueCategory).subscribe(data => {
-  //     this.arrCategory1 = data.response_data;
-  //     this.filter = data.response_data;
-  //     console.log(this.arrCategory1);
-  //     this.loading = false;
-  //     this.loading1 = false;
-  //   })
-  // }
-
-  // subCate(product_category_child_array, product_category_id, product_category_name) {
-  //   // if (e.type == "click") {
-  //   //   console.log(e.row.product_category_child_array);
-  //   //   const product_category_child_array = e.row.product_category_child_array
-  //   //   const product_category_id = e.row.product_category_id
-  //   //   const product_category_name = e.row.product_category_name
-
-  //   this.loading1 = true;
-  //   this.strsupCate = product_category_name;
-  //   this.id = product_category_id;
-  //   const distributor_id = "?distributor_id=" + this.id_local
-  //   this.browseSupplierAPIService.getCategoryID(product_category_id + distributor_id).subscribe(res => {
-  //     this.arrListCategorys = res.response_data;
-  //     console.log('arrListCategorys', this.arrListCategorys);
-  //     this.loading1 = false;
-  //   })
-
-  //   if (product_category_child_array.length > 0) {
-  //     const valueCategory = 'cur_page=' + 1 + '&per_page=' + 10 + '&product_category_id=' + product_category_id
-  //     this.browseSupplierAPIService.getCategory(valueCategory).subscribe(data => {
-  //       this.arrCategory1 = data.response_data;
-  //       this.filter = data.response_data;
-  //       this.loading1 = false;
-  //       console.log(this.arrCategory1);
-  //     })
-  //   }
-  //   // }
-  // }
 
   btnReload() {
     this.arrCategory1 = [];
@@ -163,7 +114,6 @@ export class CategoryComponent implements OnInit {
       option.product_category_name.toLowerCase().indexOf(value.toLowerCase()) > -1);
 
   }
-
 
 
   btnDialogWishlist(data: any) {

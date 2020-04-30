@@ -77,7 +77,13 @@ export class MyDistributorsListComponent implements OnInit {
 
     ngOnInit() {
         this.callApi(e => {
-            // completed
+            this.distributorAPIService.selectCategory$.subscribe(res => {
+                if (res) {
+                    this.id = res[0].distributor_id;
+                    this.isCheckData = "data";
+                    this.arrDistributorDetail = res;
+                }
+            })
         });
     }
 
@@ -106,14 +112,14 @@ export class MyDistributorsListComponent implements OnInit {
     }
 
     btnClickItem(data: any, ) {
+        console.log("btnClickItem : data : ", data);
         this.arrDistributorDetail = [];
         this.loading = true;
-        console.log("btnClickItem : data : ", data);
         this.id = data.distributor_id;
         this.isCheckData = "data";
-        // this.arrDistributorDetail = data;
         this.arrDistributorDetail.push(data)
         console.log(this.arrDistributorDetail);
+        this.distributorAPIService.dataSelectCategory(this.arrDistributorDetail);
         this.loading = false;
     }
 

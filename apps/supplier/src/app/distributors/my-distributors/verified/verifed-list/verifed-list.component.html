@@ -211,7 +211,7 @@
                                 </div>
                             </div> -->
                             <div class="col-12 col-md-9 col-lg-9 col-xl-9" *ngIf="!loading">
-                                <div *ngIf="selectedCategory$ | async as arrDistributor;">
+                                <div *ngIf="selectedCategory$ | async as arrDistributor; loadings ">
                                     <ngx-datatable [columnMode]="ColumnMode.force" [rows]="arrDistributor"
                                         rowHeight="auto" [headerHeight]="46" (activate)="btnRow($event)"
                                         [scrollbarH]="true" [messages]="messages">
@@ -258,6 +258,31 @@
                                         </ngx-datatable-column>
                                     </ngx-datatable> 
                                 </div>
+                                <ng-template #loadings>
+                                    <div class="cover-table">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="left">Image </th>
+                                                    <th class="left"> Distributor Name</th>
+                                                    <th class="left"> Order Date</th>
+                                                    <th class="left"> Contact Number </th>
+                                                    <th class="left"> Location </th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="unset">
+                                                    <td colspan="5">
+                                                        <div style="height: 200px;" [nbSpinner]="loading"
+                                                            nbSpinnerStatus="warning">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </ng-template>
                             </div>
                             <div class="col-12 col-md-9 col-lg-9 col-xl-9" *ngIf="loading">
                                 <div class="cover-table">

@@ -13,8 +13,8 @@
                                     </div>
 
                                     <div class="col-auto">
-                                        <button *ngIf="!dataSend.loading" nbButton type="button" size="medium" status="success"
-                                            (click)="click().editRetailer()">
+                                        <button *ngIf="!dataSend.loading" nbButton type="button" size="medium"
+                                            status="success" (click)="click().editRetailer()">
                                             Edit
                                         </button>
                                         <button nbButton type="button" size="medium" status="danger"
@@ -43,7 +43,8 @@
                     </nb-card>
                 </div>
                 <div class="col-12">
-                    <nb-card class="box-shadow-unset" size="xsmall" [nbSpinner]="dataSend.loading" nbSpinnerStatus="success">
+                    <nb-card class="box-shadow-unset" size="xsmall" [nbSpinner]="dataSend.loading"
+                        nbSpinnerStatus="success">
                         <nb-card-body>
                             <div class="body">
                                 <div class="row">
@@ -117,15 +118,18 @@
                                                         <div class="cover-input">
                                                             <label>Latitude, Longitude</label>
                                                             <input libOnlyCharacterDefault disabled type="text" nbInput
-                                                                fullWidth [(ngModel)]="dataSend.map.latitude +', '+ dataSend.map.longitude" />
+                                                                fullWidth
+                                                                [(ngModel)]="dataSend.map.latitude +', '+ dataSend.map.longitude" />
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12" *ngIf="dataSend.map.latitude != 0 && dataSend.map.longitude != 0">
-                                        <project-map [let]="dataSend.map.latitude" [long]="dataSend.map.longitude"></project-map>
+                                    <div class="col-12"
+                                        *ngIf="dataSend.map.latitude != 0 && dataSend.map.longitude != 0">
+                                        <project-map [let]="dataSend.map.latitude" [long]="dataSend.map.longitude">
+                                        </project-map>
                                     </div>
                                 </div>
                             </div>
@@ -169,19 +173,24 @@
                                                     <div class="col-3">
                                                         <div class="cover-form icon">
                                                             <nb-icon class="icon-one" icon="search-outline"></nb-icon>
-                                                            <nb-icon class="icon-two" *ngIf="strFilter" (click)="refresh()"
+                                                            <nb-icon class="icon-two" *ngIf="strFilter"
                                                                 icon="close-outline"></nb-icon>
-                                                            <input libOnlyCharacterDefault type="text" nbInput nbInput fullWidth
-                                                                status="primary" placeholder="Search for name"
-                                                                (keyup)="filter($event.target.value)" [(ngModel)]="strFilter" />
+                                                            <input libOnlyCharacterDefault type="text" nbInput nbInput
+                                                                fullWidth status="primary" placeholder="Search for name"
+                                                                (keyup)="filter($event.target.value)"
+                                                                [(ngModel)]="strFilter" />
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-12" *ngIf="!isReload">
                                                 <div class="row">
-                                                    <div class="col-12" *ngIf="wishlist$ | async as wishlist; else loading">
-                                                        <ngx-datatable [columnMode]="ColumnMode.force" [rows]="wishlist" rowHeight="auto" [headerHeight]="46" (activate)="click().detailProducts($event)" [scrollbarH]="true" [messages]="messages">
+                                                    <div class="col-12"
+                                                        *ngIf="wishlist$ | async as wishlist; else loading">
+                                                        <ngx-datatable [columnMode]="ColumnMode.force" [rows]="wishlist"
+                                                            rowHeight="auto" [headerHeight]="46"
+                                                            (activate)="click().detailProducts($event)"
+                                                            [scrollbarH]="true" [messages]="messages">
                                                             <ngx-datatable-column name="Images" [width]="100">
                                                                 <ng-template let-row="row" ngx-datatable-cell-template>
                                                                     <div class="cover-background-image">
@@ -201,20 +210,22 @@
                                                             </ngx-datatable-column>
                                                             <ngx-datatable-column name="Date" [sortable]="true"
                                                                 prop="create_time">
-                                                                <ng-template let-column="column" ngx-datatable-header-template>
+                                                                <ng-template let-column="column"
+                                                                    ngx-datatable-header-template>
                                                                     <div class="center">
                                                                         Date
                                                                     </div>
                                                                 </ng-template>
                                                                 <ng-template let-row="row" ngx-datatable-cell-template>
                                                                     <div class="center">
-                                                                        {{row.create_time * 1000 |  date: 'dd/MM/yyyy HH:mm'}} 
+                                                                        {{row.create_time * 1000 |  date: 'dd/MM/yyyy HH:mm'}}
                                                                     </div>
                                                                 </ng-template>
                                                             </ngx-datatable-column>
-                                                            <ngx-datatable-column name="Retailer Stock" [sortable]="true"
-                                                                prop="total_quantity">
-                                                                <ng-template let-column="column" ngx-datatable-header-template>
+                                                            <ngx-datatable-column name="Retailer Stock"
+                                                                [sortable]="true" prop="total_quantity">
+                                                                <ng-template let-column="column"
+                                                                    ngx-datatable-header-template>
                                                                     <div class="right">
                                                                         Retailer Stock
                                                                     </div>
@@ -227,11 +238,12 @@
                                                             </ngx-datatable-column>
                                                             <ngx-datatable-column name="Product Price" [sortable]="true"
                                                                 prop="total_product">
-                                                                <ng-template let-column="column" ngx-datatable-header-template>
+                                                                <ng-template let-column="column"
+                                                                    ngx-datatable-header-template>
                                                                     <div class="right">
                                                                         Product Price
-                                                                        <nb-icon (click)="btnReload()" icon="refresh-outline" 
-                                                                        style="
+                                                                        <nb-icon (click)="btnReload()"
+                                                                            icon="refresh-outline" style="
                                                                             float: right;
                                                                             margin-left: 1rem;
                                                                             margin-right: 1rem; 
@@ -255,7 +267,8 @@
                                                     <thead>
                                                         <tr>
                                                             <!-- 'Order Date','Contact Email','Telephone Number' -->
-                                                            <th class="left" *ngFor="let item of ['Images','Product Name','Product SKU','Product Quantity','Product Price']">
+                                                            <th class="left"
+                                                                *ngFor="let item of ['Images','Product Name','Product SKU','Product Quantity','Product Price']">
                                                                 {{item}}
                                                             </th>
                                                             <th (click)="btnReload()">
@@ -268,8 +281,8 @@
                                                     <tbody>
                                                         <tr class="unset" style="height:300px;">
                                                             <td colspan="8" style="padding-top: 50px;">
-                                                                <div style="height: 100px;"
-                                                                    [nbSpinner]="loadings" nbSpinnerStatus="success">
+                                                                <div style="height: 100px;" [nbSpinner]="loadings"
+                                                                    nbSpinnerStatus="success">
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -281,7 +294,8 @@
                                                     <table class="table hover" style="width: 100%;">
                                                         <thead>
                                                             <tr>
-                                                                <th class="left" *ngFor="let item of ['Images','Product Name','Product SKU','Product Quantity','Product Price']">
+                                                                <th class="left"
+                                                                    *ngFor="let item of ['Images','Product Name','Product SKU','Product Quantity','Product Price']">
                                                                     {{item}}
                                                                 </th>
                                                                 <th (click)="btnReload()">
@@ -294,18 +308,20 @@
                                                         <tbody>
                                                             <tr class="unset" style="height:300px; ">
                                                                 <td colspan="8" style="padding-top: 50px;">
-                                                                    <div style="height: 100px;"
-                                                                        [nbSpinner]="isReload" nbSpinnerStatus="success">
+                                                                    <div style="height: 100px;" [nbSpinner]="isReload"
+                                                                        nbSpinnerStatus="success">
                                                                     </div>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
-                                                </div>             
-                                            </div> 
-                                            <div class="col-12  d-flex justify-content-between p-2" *ngIf="!isReload && !loadings">
-                                                <ngb-pagination [collectionSize]="tatallist$ | async" [(page)]="wishlistTableService.page"
-                                                [pageSize]="wishlistTableService.pageSize"></ngb-pagination>
+                                                </div>
+                                            </div>
+                                            <div class="col-12  d-flex justify-content-between p-2"
+                                                *ngIf="!isReload && !loadings">
+                                                <ngb-pagination [collectionSize]="tatallist$ | async"
+                                                    [(page)]="wishlistTableService.page"
+                                                    [pageSize]="wishlistTableService.pageSize"></ngb-pagination>
                                                 <select class="custom-select" style="width: auto" name="pageSize"
                                                     [(ngModel)]="wishlistTableService.pageSize">
                                                     <option [ngValue]="10">10 items per page</option>

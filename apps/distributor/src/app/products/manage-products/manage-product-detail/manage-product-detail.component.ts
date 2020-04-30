@@ -53,24 +53,21 @@ export class MyProductDetailComponent implements OnInit {
     this.buildForm();
     const params = this.route.snapshot.paramMap;
     this.status = this.route.snapshot.queryParamMap.get('status')
-    if (params.has("id")) {
-      this.RowID = params.get("id");
-      if (this.RowID === "new") {
-      } else {
+    this.RowID = params.get("id");
+    
+    if (this.RowID) {
+      this.productAPIService.productDistributor$.subscribe(res => {
+        this.arrProducts = res;
 
-        this.productAPIService.productDistributor$.subscribe(res => {
-          this.arrProducts = res;
-
-          if (this.arrProducts.length > 0) {
-            for (let i = 0; i < this.arrProducts.length; i++) {
-              // tslint:disable-next-line: triple-equals
-              if (this.arrProducts[i].product_id == this.RowID) {
-                this.getDetail(this.arrProducts[i].product_row_key)
-              }
+        if (this.arrProducts.length > 0) {
+          for (let i = 0; i < this.arrProducts.length; i++) {
+            // tslint:disable-next-line: triple-equals
+            if (this.arrProducts[i].product_id == this.RowID) {
+              this.getDetail(this.arrProducts[i].product_row_key)
             }
           }
-        })
-      }
+        }
+      })
     }
 
   }

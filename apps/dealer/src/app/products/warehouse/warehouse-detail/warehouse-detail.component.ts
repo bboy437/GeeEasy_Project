@@ -16,7 +16,7 @@ export class WarehouseDetailComponent implements OnInit {
   RowID: string;
   arrobjRow: any = [];
   Form: FormGroup;
-  loading = false; 
+  loading = false;
 
   image = {
     update: false,
@@ -34,32 +34,39 @@ export class WarehouseDetailComponent implements OnInit {
     private uploadAPIService: UploadAPIService,
   ) { }
 
-  ngOnInit() {   
+  ngOnInit() {
     this.Builder();
-    this.loading = true; 
+    this.loading = true;
     const params = this.route.snapshot.paramMap;
-    if (params.has("id")) {
-      this.RowID = params.get("id");
-      if (this.RowID === "new") {
-      } else {
-        this.warehouseAPIService.getWarehouseDetail(this.RowID).subscribe(data => {
-          this.arrobjRow = data.response_data[0];
-          console.log(this.arrobjRow );
-          this.DetailForm();
+    this.RowID = params.get("id");
 
-          if (
-            this.arrobjRow.warehouse_image_url !== undefined &&
-            this.arrobjRow.warehouse_image_url !== "-" &&
-            this.arrobjRow.warehouse_image_url !== ""
-          )
-            this.uploadAPIService
-              .uploadImage()
-              .getUrl(this.arrobjRow.warehouse_image_url, red_image => {
-                this.image.main_image.get.push(red_image);
-              });
-        })
-      }
+    if (this.RowID) {
+      this.warehouseAPIService.getWarehouseDetail(this.RowID).subscribe(res => {
+        this.warehouseAPIService.dataWarehouse(res);
+        this.getData(res);
+
+      })
     }
+  }
+
+  getData(data) {
+
+    this.arrobjRow = data.response_data[0];
+    console.log(this.arrobjRow);
+    this.DetailForm();
+
+    if (
+      this.arrobjRow.warehouse_image_url !== undefined &&
+      this.arrobjRow.warehouse_image_url !== "-" &&
+      this.arrobjRow.warehouse_image_url !== ""
+    )
+      this.uploadAPIService
+        .uploadImage()
+        .getUrl(this.arrobjRow.warehouse_image_url, red_image => {
+          this.image.main_image.get.push(red_image);
+        });
+
+
   }
 
   Builder() {
@@ -78,7 +85,6 @@ export class WarehouseDetailComponent implements OnInit {
     });
   }
 
-
   DetailForm() {
     this.Form.patchValue({
       warehouse_name: this.arrobjRow.warehouse_name,
@@ -95,13 +101,13 @@ export class WarehouseDetailComponent implements OnInit {
     this.loading = false;
   }
 
-  btnCancelClick(){
+  btnCancelClick() {
     this.router.navigate([this.UrlRouter_warehouseList]);
 
   }
 
-  btnSaveClick(){
-    this.router.navigate([this.UrlRouter_warehouseEdit,  this.arrobjRow.warehouse_id]);
+  btnSaveClick() {
+    this.router.navigate([this.UrlRouter_warehouseEdit, this.arrobjRow.warehouse_id]);
   }
 
 }

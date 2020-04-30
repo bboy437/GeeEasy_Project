@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ProductAPIService, UploadAPIService } from "@project/services";
-import { ProductData } from "@project/interfaces";
+import { ProductData, ProductResolved } from "@project/interfaces";
 import { DialogsImageComponent } from "../../../dialogs/dialogs-image/dialogs-image.component";
 import { NbDialogService } from "@nebular/theme";
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from "@angular/forms";
@@ -57,45 +57,50 @@ export class ProductsDetailComponent implements OnInit {
     this.loading = true;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildForms();
-    const params = this.route.snapshot.paramMap;
-    if (params.has("id")) {
-      this.RowID = params.get("id");
 
-      if (this.RowID === "new") {
-      } else {
-        this.productAPIService.getProductDetailSup(this.RowID).subscribe(data => {
-          this.arrProductDetail = data.response_data[0];
-          console.log("arrProductDetail : data : ", this.arrProductDetail);
-          if (
-            this.arrProductDetail.product_image_url !== undefined &&
-            this.arrProductDetail.product_image_url !== "-" &&
-            this.arrProductDetail.product_image_url !== ""
-          )
-            this.uploadAPIService.uploadImage().getUrl(this.arrProductDetail.product_image_url, red_image => {
-              this.product.main_image.get.push(red_image);
-            }
-            );
-          if (this.arrProductDetail.product_image_array !== undefined)
-            this.uploadAPIService.uploadImage().imageArray(this.arrProductDetail.product_image_array, imageArray => {
-              this.product.product_image_array.get = imageArray;
-            }
-            );
-
-          this.arrWholesale = this.arrProductDetail.product_wholesale_array;
-
-          this.arrWholesale.forEach(element => {
-            element.product_price = element.product_price % 1 !== 0 ? element.product_price : element.product_price + ".00";
-            element.retail_product_price = element.retail_product_price % 1 !== 0 ? element.retail_product_price : element.retail_product_price + ".00";
-          });
-          this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
-
-          this.getProductDetail(this.arrProductDetail);
-          this.detailForm();
-        });
+    this.route.data.subscribe(data => {
+      const resolvedData: ProductResolved = data['resolvedData'];
+      if (resolvedData.error) {
+        this.router.navigate([this.UrlRouter_Products]);
       }
-    }
+      this.getData(resolvedData.product)
+    });
+
+
+  }
+
+  getData(data) {
+
+    this.arrProductDetail = data.response_data[0];
+    console.log("arrProductDetail : data : ", this.arrProductDetail);
+    if (
+      this.arrProductDetail.product_image_url !== undefined &&
+      this.arrProductDetail.product_image_url !== "-" &&
+      this.arrProductDetail.product_image_url !== ""
+    )
+      this.uploadAPIService.uploadImage().getUrl(this.arrProductDetail.product_image_url, red_image => {
+        this.product.main_image.get.push(red_image);
+      }
+      );
+    if (this.arrProductDetail.product_image_array !== undefined)
+      this.uploadAPIService.uploadImage().imageArray(this.arrProductDetail.product_image_array, imageArray => {
+        this.product.product_image_array.get = imageArray;
+      }
+      );
+
+    this.arrWholesale = this.arrProductDetail.product_wholesale_array;
+
+    this.arrWholesale.forEach(element => {
+      element.product_price = element.product_price % 1 !== 0 ? element.product_price : element.product_price + ".00";
+      element.retail_product_price = element.retail_product_price % 1 !== 0 ? element.retail_product_price : element.retail_product_price + ".00";
+    });
+    this.arrWholesale.sort((a, b) => a.qty_minimum - b.qty_minimum);
+
+    this.getProductDetail(this.arrProductDetail);
+    this.detailForm();
+
   }
 
   getProductDetail(data: any) {

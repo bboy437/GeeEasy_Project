@@ -21,12 +21,12 @@
         </div>
         <div *ngIf="loading" class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading"
             nbSpinnerStatus="warning">
-            <nb-card style="padding: 10rem;">
+            <nb-card style="min-height: calc(100vh - 380px);">
                 <nb-card-body>
                 </nb-card-body>
             </nb-card>
         </div>
-        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="primary">
+        <div *ngIf="!loading" class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card>
                 <nb-card-body style="padding-bottom: 2rem;">
                     <div class="body">

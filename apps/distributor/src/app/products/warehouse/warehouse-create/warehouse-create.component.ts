@@ -85,8 +85,8 @@ export class WarehouseCreateComponent implements OnInit {
 
         this.Builder();
         const params = this.route.snapshot.paramMap;
-        console.log(params.get("id"));
-        console.log(this.id);
+
+        //Check params id
         if (params.get("id")) {
             this.RowID = params.get("id");
         } else {
@@ -95,48 +95,50 @@ export class WarehouseCreateComponent implements OnInit {
             this.strCancel = "dialog";
         }
 
-        console.log('strSave', this.strSave);
-
+        //Check new or update
         if (this.RowID === "new") {
             this.loading = false;
         } else {
-            this.warehouseAPIService.getWarehouseDetail(this.RowID).subscribe(data => {
-                this.arrobjRow = data.response_data[0];
-                console.log(this.arrobjRow);
-                this.imgURL = data.response_data[0].warehouse_image_url;
-                this.warehouse_image_url = data.response_data[0].warehouse_image_url;
-
-                if (this.arrobjRow.warehouse_image_url !== undefined && this.arrobjRow.warehouse_image_url !== "-" && this.arrobjRow.warehouse_image_url !== "")
-                    this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.warehouse_image_url, red_image => {
-                        this.image.main_image.get.push(red_image);
-                    });
-
-                this.phoneNumber().main(_self_ => {
-                    data.response_data.forEach(item => {
-                        _self_.getNumberArray(item.warehouse_tel, getNumberArray => {
-                            this.phone.tel.number = item.warehouse_tel;
-                            this.phone.tel.number_array = getNumberArray;
-                        });
-                        _self_.getNumberArray(item.warehouse_mobile, getNumberArray => {
-                            this.phone.mobile.number = item.warehouse_mobile;
-                            this.phone.mobile.number_array = getNumberArray;
-                        });
-                    });
-                });
-
-                /*Get Province Edit */
-                this.changeProvinceEdit(
-                    this.arrobjRow.warehouse_addr_province,
-                    this.arrobjRow.warehouse_addr_amphoe,
-                    this.arrobjRow.warehouse_addr_tambon
-                );
-
-                /*Value Data Form */
-                this.editForm();
-                this.loading = false;
-
+            this.warehouseAPIService.werehouseDetail$.subscribe(res => {
+                res ? this.getData(res) : this.router.navigate([this.UrlRouter_List]);
             })
         }
+    }
+
+    getData(data) {
+        this.arrobjRow = data.response_data[0];
+        console.log(this.arrobjRow);
+        this.imgURL = data.response_data[0].warehouse_image_url;
+        this.warehouse_image_url = data.response_data[0].warehouse_image_url;
+
+        if (this.arrobjRow.warehouse_image_url !== undefined && this.arrobjRow.warehouse_image_url !== "-" && this.arrobjRow.warehouse_image_url !== "")
+            this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.warehouse_image_url, red_image => {
+                this.image.main_image.get.push(red_image);
+            });
+
+        this.phoneNumber().main(_self_ => {
+            data.response_data.forEach(item => {
+                _self_.getNumberArray(item.warehouse_tel, getNumberArray => {
+                    this.phone.tel.number = item.warehouse_tel;
+                    this.phone.tel.number_array = getNumberArray;
+                });
+                _self_.getNumberArray(item.warehouse_mobile, getNumberArray => {
+                    this.phone.mobile.number = item.warehouse_mobile;
+                    this.phone.mobile.number_array = getNumberArray;
+                });
+            });
+        });
+
+        /*Get Province Edit */
+        this.changeProvinceEdit(
+            this.arrobjRow.warehouse_addr_province,
+            this.arrobjRow.warehouse_addr_amphoe,
+            this.arrobjRow.warehouse_addr_tambon
+        );
+
+        /*Value Data Form */
+        this.editForm();
+        this.loading = false;
     }
 
     Builder() {
@@ -549,56 +551,6 @@ export class WarehouseCreateComponent implements OnInit {
 
     btnBackClick() {
         this.router.navigate([this.UrlRouter_Detail, this.RowID]);
-    }
-
-    uploadFile(event) {
-        if (event.length === 0)
-            return;
-
-        const mimeType = event[0].type;
-        if (mimeType.match(/image\/*/) == null) {
-            this.message = "Only images are supported.";
-            return;
-        }
-        const reader = new FileReader();
-        this.message = event[0].name;
-        this.imagePath = event[0];
-        reader.readAsDataURL(event[0]);
-        reader.onload = (_event) => {
-            this.imgURL = reader.result;
-        }
-        console.log('imgURL', this.imgURL);
-
-        this.upload()
-    }
-
-    upload() {
-        const dataJson = {
-            type_id: 200,
-            file_name: this.imagePath.name,
-            file_type: this.imagePath.type,
-            supplier_id: this.id_local,
-            distributor_id: 0
-        }
-
-        this.uploadAPIService.uploadImg(JSON.stringify(dataJson)).subscribe(res => {
-            console.log(res);
-            this.uploadData = res.response_data[0];
-            this.warehouse_image_url = this.uploadData.file_url;
-
-            this.uploadAPIService.uploadPut(this.uploadData.file_upload_url, this.imagePath).subscribe(res1 => {
-                this.warehouse_image_url = this.uploadData.file_url;
-                console.log(this.warehouse_image_url);
-            })
-
-        })
-
-    }
-
-    btnUpload() {
-        this.uploadAPIService.uploadPut(this.uploadData.file_upload_url, this.imagePath).subscribe(res1 => {
-            console.log(res1);
-        })
     }
 
     phoneNumber() {

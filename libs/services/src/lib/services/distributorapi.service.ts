@@ -5,7 +5,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { retry, catchError, map, tap } from 'rxjs/operators';
-import { throwError, Subject } from 'rxjs';
+import { throwError, Subject, BehaviorSubject } from 'rxjs';
 import { IObjectDistributor } from '@project/interfaces';
 
 @Injectable({
@@ -21,14 +21,16 @@ export class DistributorAPIService {
     protected ServerApiUrlAddWishList = "https://private-anon-7da3873a29-geeesyapiblueprint.apiary-mock.com/supplier/request_information/";
     protected ServerApiUrlAddRequest = "https://nwt0gw8wy8.execute-api.ap-southeast-1.amazonaws.com/Prod/supplier/request_information/submit";
 
-    data$: Observable<any>;
-    private myMethodSubject = new Subject<any>();
-    dataCategory$: Observable<any>;
-    private myCategory = new Subject<any>();
+
+
+    private myDistributorDetail = new BehaviorSubject<IObjectDistributor>(null);
+    myDistributorDetail$ = this.myDistributorDetail.asObservable();
+
+    private selectCategory = new BehaviorSubject<IObjectDistributor>(null);
+    selectCategory$ = this.selectCategory.asObservable();
+
 
     constructor(private http: HttpClient) {
-        this.data$ = this.myMethodSubject.asObservable();
-        this.dataCategory$ = this.myCategory.asObservable();
     }
 
 
@@ -44,25 +46,14 @@ export class DistributorAPIService {
         );
 
 
-    httpOptions = {
-        headers: new HttpHeaders({
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
 
-        })
-
+    dataMyDistributorDetail(data: IObjectDistributor) {
+        this.myDistributorDetail.next(data);
     }
 
-
-    clickData(data) {
-        this.myMethodSubject.next(data);
+    dataSelectCategory(data) {
+        this.selectCategory.next(data);
     }
-
-    clickDataCategory(data) {
-        this.myCategory.next(data);
-    }
-
-
 
 
     //get distributor
@@ -124,7 +115,6 @@ export class DistributorAPIService {
 
 
 
- 
 
 
     //Add Distributor

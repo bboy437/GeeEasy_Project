@@ -5,7 +5,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { retry, catchError, map, tap } from 'rxjs/operators';
-import { throwError, Subject } from 'rxjs';
+import { throwError, Subject, BehaviorSubject } from 'rxjs';
 import { IObjectSalerep } from '@project/interfaces';
 
 @Injectable({
@@ -13,10 +13,13 @@ import { IObjectSalerep } from '@project/interfaces';
 })
 
 export class SaleRepService {
+
     protected serverApiUrl = "https://api.gee-supply.com/v1-dealer/";
 
-    constructor(private http: HttpClient) { }
+    private dataSaleRepDetail = new BehaviorSubject<any>(null);
+    dataSaleRepDetail$ = this.dataSaleRepDetail.asObservable();
 
+    constructor(private http: HttpClient) { }
 
     // My Sale Rep Supplier
     paramSalerepList = "cur_page=" + 1 + "&per_page=" + 100 + "&supplier_id=" + localStorage.getItem('id');
@@ -39,12 +42,12 @@ export class SaleRepService {
             catchError(this.handleError)
         );
 
-
-    httpOptions = {
-        headers: new HttpHeaders({
-            'Content-Type': 'application/json'
-        })
+    // Sale Rep data detail
+    dataSaleRep(data): void {
+        console.log(data)
+        this.dataSaleRepDetail.next(data);
     }
+
 
     getApi() {
         let function_ = {

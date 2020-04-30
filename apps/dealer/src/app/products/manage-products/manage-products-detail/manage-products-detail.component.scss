@@ -1,0 +1,58 @@
+@import "../../../../../../../libs/theme-dealer/src/lib/styles/themes";
+@import "~@nebular/bootstrap/styles/buttons";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+@include nb-install-component() {
+  .show-grid {
+    .row {
+      margin: -0.5rem;
+    }
+
+    div[class^="col-"] {
+      padding: 0.5rem;
+      box-sizing: border-box;
+
+
+      div {
+        text-align: center;
+        padding: 0.5rem 0.25rem;
+        border-radius: 0.25rem;
+      }
+    }
+  }
+  nb-card {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  thead {
+    text-align: center;
+    font-size: 14px;
+  }
+  tbody {
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .form-inline [fullWidth] {
+    flex: 1;
+  }
+  
+  .form-inline > * {
+    margin: 0 1.5rem 1.5rem 0;
+  }
+
+  nb-card.inline-form-card nb-card-body {
+    padding-bottom: 0;
+  }
+
+  .disbletable{
+    text-align: center; 
+    font-size: 18px; 
+    color: #000000; 
+    max-width: 10rem;
+  }
+
+
+}

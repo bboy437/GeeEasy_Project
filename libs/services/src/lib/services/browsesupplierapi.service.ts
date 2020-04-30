@@ -5,7 +5,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { throwError } from 'rxjs';
+import { throwError, BehaviorSubject } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 @Injectable({
@@ -17,8 +17,17 @@ export class BrowseSupplierAPIService {
     protected ServerApiUrl = "https://api.gee-supply.com/v1-sup/";
     protected ServerApiUrlDist = "https://api.gee-supply.com/v1-dist/";
 
+    private selectBrowseCategory = new BehaviorSubject<any>(null);
+    selectBrowseCategory$ = this.selectBrowseCategory.asObservable();
+
     constructor(private http: HttpClient) {
+
     }
+
+    dataSelectBrowseCategory(data) {
+        this.selectBrowseCategory.next(data);
+    }
+
 
     //supplier
 

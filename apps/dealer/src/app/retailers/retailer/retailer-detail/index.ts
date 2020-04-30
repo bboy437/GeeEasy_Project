@@ -1,1 +1,0 @@
-export { RetailerDetailComponent } from "./retailer-detail.component";

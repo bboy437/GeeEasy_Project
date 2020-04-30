@@ -1,8 +1,7 @@
-import { from } from 'rxjs';
 
+// Service
 export * from './lib/services.module';
 export * from './lib/components/sortableheader/sortable.directive';
-
 export { BillingAPIService } from './lib/services/billingapi.service';
 export { SupplierAPIService } from './lib/services/supplierapi.service';
 export { BrowseSupplierAPIService } from './lib/services/browsesupplierapi.service';
@@ -29,3 +28,5 @@ export { ReusableReactiveFormService } from './lib/services/reusable-reactive-fo
 export { VerifiedService } from './lib/services/verified.service';
 export { RequestService } from './lib/services/request.service'
 export { FavoriteService } from './lib/services/favorite.service'
+
+

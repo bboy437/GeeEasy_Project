@@ -8,7 +8,7 @@ import { FormControl } from '@angular/forms';
 })
 export class TextareaComponent implements OnInit {
 
-  
+
   @Input() label: string;
   @Input() control: FormControl;
   @Input() rows: string;
@@ -23,6 +23,9 @@ export class TextareaComponent implements OnInit {
   @Input() requiredName: string;
   @Input() emailName: string;
 
+  //Error validate
+  @Input() forceShowErrors = false;
+
   constructor() {
   }
 
@@ -31,7 +34,7 @@ export class TextareaComponent implements OnInit {
 
   showErrors() {
     const { dirty, touched, errors } = this.control
-    return dirty && touched && errors
+    return (errors && this.forceShowErrors) || (dirty && touched && errors)
   }
 
 }

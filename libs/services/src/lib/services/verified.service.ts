@@ -14,7 +14,7 @@ export class VerifiedService {
 
   private supplierUrl = 'https://api.gee-supply.com/v1-sup/';
 
-  private categorySelectedSubject = new BehaviorSubject<string>("");
+  private categorySelectedSubject = new BehaviorSubject<string>(undefined);
   categorySelectedAction$ = this.categorySelectedSubject.asObservable();
 
   constructor(

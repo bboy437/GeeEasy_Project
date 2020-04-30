@@ -22,7 +22,7 @@
         </div>
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card>
-                <nb-card-body>
+                <nb-card-body style="min-height: calc(100vh - 280px);">
                     <div class="header">
                         <div class="row">
                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
@@ -45,52 +45,11 @@
                     <div class="body">
                         <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="padding: 0;">
                             <div class="cover-table" *ngIf="!isReload">
-                                <!-- <table class="table hover" style="width: 100%;"
-                                    *ngIf="products$ | async as Products ; else loading">
-                                    <thead>
-                                        <tr>
-                                            <th class="left" scope="col" sortable="warehouse_name"
-                                                (sort)="onSort($event)">
-                                                Warehouse Name</th>
-                                            <th class="left" scope="col" sortable="Order" (sort)="onSort($event)">
-                                                Location
-                                            </th>
-                                            <th style="text-align: right; cursor: pointer;" (click)="btnReload()">
-                                                <nb-icon icon="refresh-outline"></nb-icon>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody style="cursor: pointer;">
-                                        <tr *ngFor="let products of Products;"
-                                            (click)="btnRowClick(products.warehouse_id)">
-                                            <td class="left">
-                                                <ngb-highlight [result]="products.warehouse_name"
-                                                    [term]="service.searchTerm">
-                                                </ngb-highlight><br>
-                                            </td>
-                                            <td class="left">
-                                                <ngb-highlight
-                                                    [result]="products.warehouse_addr_tambon + ',' + products.warehouse_addr_amphoe + ',' +  products.warehouse_addr_province "
-                                                    [term]="service.searchTerm">
-                                                </ngb-highlight><br>
-                                            </td>
-                                            <td></td>
-
-                                        </tr>
-                                        <tr *ngIf="Products.length == 0" style="height:300px; background-color: white;">
-                                            <td colspan="3" style="padding-top: 50px;">
-                                                <img src="assets/images/loading.png" width="300"><br><br>
-                                                <label>No data.</label>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table> -->
                                 <div class="row" *ngIf="products$ | async as Products; else loading">
                                     <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                         <ngx-datatable [columnMode]="ColumnMode.force" [rows]="Products"
                                             rowHeight="auto" [headerHeight]="46" (activate)="btnRow($event)"
                                             [scrollbarH]="true" [messages]="messages">
-
 
                                             <ngx-datatable-column name="Images" [maxWidth]="120">
                                                 <ng-template let-row="row" ngx-datatable-cell-template>
@@ -197,22 +156,22 @@
 
                                 </table>
                             </div>
-
-                            <div *ngIf="!isReload && !loading" class="d-flex justify-content-between p-2">
-                                <ngb-pagination [collectionSize]="total$ | async" [(page)]="service.page"
-                                    [pageSize]="service.pageSize">
-                                </ngb-pagination>
-
-                                <select class="custom-select" style="width: auto" name="pageSize"
-                                    (change)="onPageChange($event.target.value)">
-                                    <option [value]="10">10 items per page</option>
-                                    <option [value]="20">20 items per page</option>
-                                    <option [value]="50">50 items per page</option>
-                                </select>
-                            </div>
                         </div>
                     </div>
                 </nb-card-body>
+                <nb-card-footer>
+                    <div *ngIf="!isReload && !loading" class="d-flex justify-content-between p-2">
+                        <ngb-pagination [collectionSize]="total$ | async" [(page)]="service.page"
+                            [pageSize]="service.pageSize">
+                        </ngb-pagination>
+                        <select class="custom-select" style="width: auto" name="pageSize"
+                            (change)="onPageChange($event.target.value)">
+                            <option [value]="10">10 items per page</option>
+                            <option [value]="20">20 items per page</option>
+                            <option [value]="50">50 items per page</option>
+                        </select>
+                    </div>
+                </nb-card-footer>
             </nb-card>
         </div>
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">

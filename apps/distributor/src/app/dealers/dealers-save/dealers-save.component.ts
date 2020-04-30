@@ -86,42 +86,43 @@ export class DealersSaveComponent implements OnInit {
         if (this.RowID === "new") {
             this.loading = false;
         } else {
-            this.dealerAPIService.getDealerDetail(this.RowID).subscribe(data => {
-                this.arrobjRow = data.response_data[0];
-                this.imgURL = data.response_data[0].dealer_image_url;
-                if (this.arrobjRow.dealer_image_url !== undefined && this.arrobjRow.dealer_image_url !== "-" && this.arrobjRow.dealer_image_url !== "")
-                    this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.dealer_image_url, red_image => {
-                        this.image.main_image.get.push(red_image);
-                    });
-                this.location_lat = data.response_data[0].dealer_addr_lat;
-                this.location_lng = data.response_data[0].dealer_addr_lng;
-                console.log(this.arrobjRow)
-
-                this.changeProvinceEdit(this.arrobjRow.dealer_addr_province, this.arrobjRow.dealer_addr_amphoe, this.arrobjRow.dealer_addr_tambon);
-
-
-                this.phoneNumber().main(_self_ => {
-                    data.response_data.forEach(item => {
-                        _self_.getNumberArray(item.dealer_tel, getNumberArray => {
-                            this.phone.tel.number = item.dealer_tel;
-                            this.phone.tel.number_array = getNumberArray;
-                        });
-                        _self_.getNumberArray(item.dealer_mobile, getNumberArray => {
-                            this.phone.mobile.number = item.dealer_mobile;
-                            this.phone.mobile.number_array = getNumberArray;
-                        });
-                    });
-                });
-
-                this.editForm();
+            this.dealerAPIService.detailDealer$.subscribe(res => {
+                res ? this.getData(res) : this.router.navigate([this.UrlRouter_DealersList]);
 
             })
-
         }
 
     }
 
+    getData(data) {
+        this.arrobjRow = data.response_data[0];
+        this.imgURL = data.response_data[0].dealer_image_url;
+        if (this.arrobjRow.dealer_image_url !== undefined && this.arrobjRow.dealer_image_url !== "-" && this.arrobjRow.dealer_image_url !== "")
+            this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.dealer_image_url, red_image => {
+                this.image.main_image.get.push(red_image);
+            });
+        this.location_lat = data.response_data[0].dealer_addr_lat;
+        this.location_lng = data.response_data[0].dealer_addr_lng;
+        console.log(this.arrobjRow)
 
+        this.changeProvinceEdit(this.arrobjRow.dealer_addr_province, this.arrobjRow.dealer_addr_amphoe, this.arrobjRow.dealer_addr_tambon);
+
+
+        this.phoneNumber().main(_self_ => {
+            data.response_data.forEach(item => {
+                _self_.getNumberArray(item.dealer_tel, getNumberArray => {
+                    this.phone.tel.number = item.dealer_tel;
+                    this.phone.tel.number_array = getNumberArray;
+                });
+                _self_.getNumberArray(item.dealer_mobile, getNumberArray => {
+                    this.phone.mobile.number = item.dealer_mobile;
+                    this.phone.mobile.number_array = getNumberArray;
+                });
+            });
+        });
+
+        this.editForm();
+    }
 
     buildForm() {
         this.Form = this.formBuilder.group({
@@ -377,7 +378,6 @@ export class DealersSaveComponent implements OnInit {
         }
     }
 
-
     btnDialogMab() {
 
         const dialogRef = this.dialogService.open(DialogsMapComponent, {
@@ -522,47 +522,6 @@ export class DealersSaveComponent implements OnInit {
 
     }
 
-    uploadFile(event) {
-        if (event.length === 0)
-            return;
-
-        const mimeType = event[0].type;
-        if (mimeType.match(/image\/*/) == null) {
-            this.message = "Only images are supported.";
-            return;
-        }
-        const reader = new FileReader();
-        this.message = event[0].name;
-        this.imagePath = event[0];
-        reader.readAsDataURL(event[0]);
-        reader.onload = (_event) => {
-            this.imgURL = reader.result;
-        }
-        this.upload()
-    }
-
-    upload() {
-        const dataJson = {
-            type_id: 600,
-            file_name: this.imagePath.name,
-            file_type: this.imagePath.type,
-            supplier_id: 13356,
-            distributor_id: 0
-        }
-
-        this.uploadAPIService.uploadImg(JSON.stringify(dataJson)).subscribe(res => {
-            console.log(res);
-            this.uploadData = res.response_data[0];
-
-            this.uploadAPIService.uploadPut(this.uploadData.file_upload_url, this.imagePath).subscribe(res1 => {
-                console.log(res1);
-                this.arrobjRow.dealer_image_url = this.uploadData.file_url;
-                console.log(this.arrobjRow.dealer_image_url);
-            })
-
-        })
-
-    }
 
     phoneNumber() {
         let function_phone = {

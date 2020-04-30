@@ -26,6 +26,9 @@ export class InputComponent implements OnInit {
   @Input() requiredName: string;
   @Input() emailName: string;
 
+ //Error validate
+  @Input() forceShowErrors = false;
+
   constructor(private productAPIService: ProductAPIService) {
   }
 
@@ -34,7 +37,7 @@ export class InputComponent implements OnInit {
 
   showErrors() {
     const { dirty, touched, errors } = this.control
-    return dirty && touched && errors
+    return (errors && this.forceShowErrors) || (dirty && touched && errors)
   }
 
 }

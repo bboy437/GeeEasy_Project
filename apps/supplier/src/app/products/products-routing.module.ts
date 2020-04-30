@@ -9,6 +9,7 @@ const routes: Routes = [
     children: [
       {
         path: "manage",
+        data: { preload: false },
         loadChildren: () =>
           import("./manage-product/manage-product.module").then(m => m.ManageProductModule)
       },

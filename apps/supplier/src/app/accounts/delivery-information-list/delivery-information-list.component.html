@@ -1,113 +1,103 @@
-<div class="pages" >
-    <div class="row" *ngIf="delivery$ | async as delivery ; else loadings">
-        <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngFor="let d of delivery">
-            <div class="row">
-                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                    <nb-card-header>
-                        <div class="header">
-                            <button nbButton size="medium" status="success" (click)="onAdd(d)">
-                                Save
-                            </button>
+<div class="pages" [formGroup]="Form">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;">
+                <nb-card-header>
+                    <div class="cover-header header">
+                        <div class="row">
+                            <div class="col-auto mr-auto"></div>
+                            <div class="col-auto">
+                                <button [nbSpinner]="issaveloading" nbSpinnerStatus="success" nbButton size="medium"
+                                    status="success" (click)="btnSaveClick()">
+                                    Save
+                                </button>
+                            </div>
                         </div>
-                    </nb-card-header>
-                </div>
-                <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="min-height: calc(100vh - 380px);">
-                    <nb-card-body>
-                        <div class="body">
-                            <div class="row">
-                                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                    <div class="row">
-                                        <div class="col-12 col-md-3 col-lg-3 col-xl-3">
-                                            <div class="cover-input">
-                                                <label>Delivery Currency</label>
-                                                <ngx-select [allowClear]="true" [items]="arrCurrency"
-                                                    optionValueField="currency_name" optionTextField="currency_name"
-                                                    [(ngModel)]="d.setting_json.minimum_order_currency_code">
-                                                </ngx-select>
-                                            </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="warning">
+            <nb-card style="min-height: calc(100vh - 380px);">
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                                        <div class="cover-input">
+                                            <label>Delivery Currency</label>
+                                            <ngx-select [allowClear]="true" [items]="arrCurrency"
+                                                optionValueField="currency_name" optionTextField="currency_name"
+                                                formControlName="minimum_order_currency_code">
+                                            </ngx-select>
                                         </div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <label>Delivery Days</label>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label>Delivery Days</label>
+                                            </div>
+                                            <div class="col-2" style="margin-bottom: -1rem;">
+                                                <div class="cover-input">
+                                                    <input libOnlyCharacternumber status="primary" type="number" nbInput
+                                                        fullWidth status="primary" formControlName="delivery_days" />
                                                 </div>
-                                                <div class="col-2" style="margin-bottom: -1rem;">
-                                                    <div class="cover-input">
-                                                        <input libOnlyCharacternumber status="primary" type="number"
-                                                            nbInput fullWidth status="primary"
-                                                            [(ngModel)]="d.setting_json.delivery_days" />
-                                                    </div>
-                                                </div>
-                                                <div class="col" style="margin-bottom: -1rem;">
-                                                    <span [ngClass]="{'active' : d.setting_json.delivery_days == item}"
-                                                        class="payment" *ngFor="let item of payment"
-                                                        (click)="clickPayment(item, d)">
-                                                        {{item}}
-                                                    </span>
-                                                </div>
+                                            </div>
+                                            <div class="col" style="margin-bottom: -1rem;">
+                                                <span [ngClass]="{'active' : Form.value.delivery_days == item}"
+                                                    class="payment" *ngFor="let item of payment"
+                                                    (click)="clickPayment(item)">
+                                                    {{item}}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-12 col-md-3 col-lg-3 col-xl-3">
-                                            <label>Delivery Radius</label>
-                                            <div class="cover-input price">
-                                                <a>KM</a>
-                                                <input style="text-align: right;" libOnlyCharacternumber
-                                                    mask="separator.0" thousandSeparator="," status="primary"
-                                                    type="text" nbInput fullWidth status="primary"
-                                                    [(ngModel)]="d.setting_json.delivery_radius_distance_code" />
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-3 col-lg-3 col-xl-3">
-                                            <div class="cover-input">
-                                                <label>Minimum Free Delivery</label>
-                                                <input style="text-align: right;" mask="separator.0"
-                                                    thousandSeparator="," libOnlyCharacternumber status="primary"
-                                                    type="text" nbInput fullWidth status="primary"
-                                                    [(ngModel)]="d.setting_json.minimum_free_delivery" />
-                                            </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                                        <label>Delivery Radius</label>
+                                        <div class="cover-input price">
+                                            <a>KM</a>
+                                            <input style="text-align: right;" libOnlyCharacternumber mask="separator.0"
+                                                thousandSeparator="," status="primary" type="text" nbInput fullWidth
+                                                status="primary" formControlName="delivery_radius_distance_code" />
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-12 col-md-3 col-lg-3 col-xl-3">
-                                            <label>Minimum Order Price</label>
-                                            <div class="cover-input price">
-                                                <a>{{d.setting_json.minimum_order_currency_code}}</a>
-                                                <input style="text-align: right;" libOnlyCharacterDefault
-                                                    libOnlyCharacternumber mask="separator.2" thousandSeparator=","
-                                                    status="primary" type="text" nbInput fullWidth status="primary"
-                                                    [(ngModel)]="d.setting_json.minimum_order_price" />
-                                            </div>
+                                    <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                                        <div class="cover-input">
+                                            <label>Minimum Free Delivery</label>
+                                            <input style="text-align: right;" mask="separator.0" thousandSeparator=","
+                                                libOnlyCharacternumber status="primary" type="text" nbInput fullWidth
+                                                status="primary" formControlName="minimum_free_delivery" />
                                         </div>
-                                        <div class="col-12 col-md-3 col-lg-3 col-xl-3">
-                                            <div class="cover-input">
-                                                <label>Order Cutoft Time</label>
-                                                <!-- <input libOnlyCharacterDefault status="primary" type="number" nbInput
-                                                    fullWidth status="primary"
-                                                    [(ngModel)]="d.setting_json.order_cutoff_time" /> -->
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                                        <label>Minimum Order Price</label>
+                                        <div class="cover-input price">
+                                            <a>{{Form.value.minimum_order_currency_code}}</a>
+                                            <input style="text-align: right;" libOnlyCharacterDefault
+                                                libOnlyCharacternumber mask="separator.2" thousandSeparator=","
+                                                status="primary" type="text" nbInput fullWidth status="primary"
+                                                formControlName="minimum_order_price" />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                                        <div class="cover-input">
+                                            <label>Order Cutoft Time</label>
+                                            <ngb-timepicker formControlName="order_cutoff_time">
+                                            </ngb-timepicker>
 
-                                                <ngb-timepicker [(ngModel)]="d.setting_json.order_cutoff_time">
-                                                </ngb-timepicker>
-
-                                                <!-- {{new Date(elem.timestamp)}} -->
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </nb-card-body>
-                </div>
-            </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
         </div>
     </div>
-    <ng-template #loadings>
-        <div class="row">
-            <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="padding-top: 50px;">
-                <div style="height: 1000px;" [nbSpinner]="loading" nbSpinnerStatus="warning">
-                </div>
-            </div>
-        </div>
-    </ng-template>
 </div>

@@ -69,6 +69,7 @@ export class MysupplierDetailComponent implements OnInit {
 
   getData() {
     this.supplierAPIService.getSupID(this.RowID).subscribe(data => {
+      this.supplierAPIService.dataSupplierDetail(data);
       this.arrSupplier = data.response_data[0];
       console.log(this.arrSupplier);
       this.dataProduct(this.arrSupplier.supplier_product_array);

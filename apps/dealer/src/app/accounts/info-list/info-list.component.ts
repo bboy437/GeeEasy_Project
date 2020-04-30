@@ -24,7 +24,7 @@ export class InfoListComponent implements OnInit {
   arrobjRow: any = {};
   objAPIResponse: any = {};
   RowID: string;
-  dealersFrom: FormGroup;
+  Form: FormGroup;
   submitted = false;
   arrobjState: any = [];
   arrobjCity: any = [];
@@ -71,7 +71,6 @@ export class InfoListComponent implements OnInit {
       port: []
     }
   }
-
 
   id_local: string;
 
@@ -134,7 +133,7 @@ export class InfoListComponent implements OnInit {
   }
 
   buildForm() {
-    this.dealersFrom = this.formBuilder.group({
+    this.Form = this.formBuilder.group({
       dealersName: ['', Validators.required],
       productcategory: ['', Validators.required],
       firstName: ['', Validators.required],
@@ -157,24 +156,20 @@ export class InfoListComponent implements OnInit {
   }
 
 
-
-
   editForm() {
-    this.dealersFrom.patchValue({
+    this.Form.patchValue({
       dealersName: this.arrobjRow.dealer_name,
       productcategory: this.arrobjRow.dealer_tag,
       firstName: this.arrobjRow.dealer_first_name,
       lastName: this.arrobjRow.dealer_last_name,
       companyName: this.arrobjRow.dealer_company,
       emailAddress: this.arrobjRow.dealer_email,
-      // phoneNo: this.arrobjRow.dealer_tel,
-      // mobileNo: this.arrobjRow.dealer_mobile,
       addressFull: this.arrobjRow.dealer_addr_full,
       addressNo: this.arrobjRow.dealer_addr_number,
-      // province: this.arrobjRow.dealer_name,
-      // amphoe: this.arrobjRow.dealer_name,
-      // tambon: this.arrobjRow.dealer_name,
-      // zipcode: this.arrobjRow.dealer_addr_post,
+      province: this.arrobjRow.dealer_addr_province,
+      amphoe: this.arrobjRow.dealer_addr_amphoe,
+      tambon: this.arrobjRow.dealer_addr_tambon,
+      zipcode: this.arrobjRow.dealer_addr_post,
       latitudeAndLongitude: this.arrobjRow.dealer_addr_lat + ',' + this.arrobjRow.dealer_addr_lng,
       dealer_addr_lat: this.arrobjRow.dealer_addr_lat,
       dealer_addr_lng: this.arrobjRow.dealer_addr_lng,
@@ -185,29 +180,21 @@ export class InfoListComponent implements OnInit {
   /*New Data Location ------------------------ */
 
   changeProvince(location_name) {
-
-    setTimeout(() => {
-      this.dealersFrom.get('amphoe').patchValue("");
-      this.dealersFrom.get('tambon').patchValue("");
-      this.dealersFrom.get('zipcode').patchValue("");
-      this.dealersFrom.get('dealer_addr_lat').patchValue(0);
-      this.dealersFrom.get('dealer_addr_lng').patchValue(0);
-      this.dealersFrom.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
-    }, 0);
+    this.Form.get('amphoe').patchValue("");
+    this.Form.get('tambon').patchValue("");
+    this.Form.get('zipcode').patchValue("");
+    this.Form.get('dealer_addr_lat').patchValue(0);
+    this.Form.get('dealer_addr_lng').patchValue(0);
+    this.Form.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
     this.arrAmphoe = null;
     this.arrTambon = null;
     if (this.arrProvince.length > 0) {
-      for (let i = 0; i < this.arrProvince.length; i++) {
-        if (this.arrProvince[i].location_name === location_name) {
-          const location_id = Number(this.arrProvince[i].location_id);
-          this.get_Amphoe(location_id);
-        }
-      }
+      const arrProvince = this.arrProvince.filter((x) => x.location_name === location_name)
+      this.get_Amphoe(+arrProvince[0].location_id);
     }
   }
 
   async get_Amphoe(location_id) {
-
     const get_detail_by_id = (id) => {
       return this.arrLocationDetail.filter(row => {
         if (row.location_id === id) {
@@ -216,7 +203,6 @@ export class InfoListComponent implements OnInit {
         return false;
       });
     };
-
     const newArray = [];
     await this.arrLocation.forEach(row => {
       if (row.parent_id == location_id) {
@@ -234,33 +220,24 @@ export class InfoListComponent implements OnInit {
       }
       return false;
     });
-
     this.arrAmphoe = newArray;
-
     console.log("get_Amphoe : arrAmphoe", this.arrAmphoe);
   }
 
   changeAmphoe(location_name) {
-    setTimeout(() => {
-      this.dealersFrom.get('tambon').patchValue("");
-      this.dealersFrom.get('zipcode').patchValue("");
-      this.dealersFrom.get('dealer_addr_lat').patchValue(0);
-      this.dealersFrom.get('dealer_addr_lng').patchValue(0);
-      this.dealersFrom.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
-    }, 0);
+    this.Form.get('tambon').patchValue("");
+    this.Form.get('zipcode').patchValue("");
+    this.Form.get('dealer_addr_lat').patchValue(0);
+    this.Form.get('dealer_addr_lng').patchValue(0);
+    this.Form.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
     this.arrTambon = null;
     if (this.arrAmphoe.length > 0) {
-      for (let i = 0; i < this.arrAmphoe.length; i++) {
-        if (this.arrAmphoe[i].location_name === location_name) {
-          const location_id = Number(this.arrAmphoe[i].location_id);
-          this.get_Tambon(location_id);
-        }
-      }
+      const arrAmphoe = this.arrAmphoe.filter((x) => x.location_name === location_name)
+      this.get_Tambon(+arrAmphoe[0].location_id);
     }
   }
 
   async get_Tambon(location_id) {
-
     const get_detail_by_id = (id) => {
       return this.arrLocationDetail.filter(row => {
         if (row.location_id === id) {
@@ -287,24 +264,18 @@ export class InfoListComponent implements OnInit {
       }
       return false;
     });
-
     this.arrTambon = newArray;
     console.log("arrTambon", this.arrTambon);
   }
 
   changeTambon(location_name) {
     if (this.arrTambon.length > 0) {
-      for (let i = 0; i < this.arrTambon.length; i++) {
-        if (this.arrTambon[i].location_name === location_name) {
-          setTimeout(() => {
-            this.dealersFrom.get('tambon').patchValue(this.arrTambon[i].location_name);
-            this.dealersFrom.get('zipcode').patchValue(this.arrTambon[i].location_postcode);
-            this.dealersFrom.get('dealer_addr_lat').patchValue(0);
-            this.dealersFrom.get('dealer_addr_lng').patchValue(0);
-            this.dealersFrom.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
-          }, 0);
-        }
-      }
+      const arrTambon = this.arrTambon.filter((x) => x.location_name === location_name)
+      this.Form.get('tambon').patchValue(arrTambon[0].location_name);
+      this.Form.get('zipcode').patchValue(arrTambon[0].location_postcode);
+      this.Form.get('dealer_addr_lat').patchValue(0);
+      this.Form.get('dealer_addr_lng').patchValue(0);
+      this.Form.get('latitudeAndLongitude').patchValue(0 + ',' + 0);
     }
   }
 
@@ -319,9 +290,7 @@ export class InfoListComponent implements OnInit {
       return false;
     });
     if (thisLocation.length > 0) {
-      setTimeout(() => {
-        this.dealersFrom.get('province').patchValue(strProvince);
-      }, 0);
+      this.Form.get('province').patchValue(strProvince);
       this.get_Amphoe_Edit(thisLocation[0].location_id, strAmphoe, strTambon);
     }
 
@@ -329,7 +298,6 @@ export class InfoListComponent implements OnInit {
 
   /*Get Amphoe Edit */
   async get_Amphoe_Edit(location_id, strAmphoe, strTambon) {
-
     const get_detail_by_id = (id) => {
       return this.arrLocationDetail.filter(row => {
         if (row.location_id == id) {
@@ -355,7 +323,6 @@ export class InfoListComponent implements OnInit {
       }
       return false;
     });
-
     this.arrAmphoe = newArray;
     this.changeAmphoeEdit(strAmphoe, strTambon);
 
@@ -363,7 +330,6 @@ export class InfoListComponent implements OnInit {
 
   /*Change Amphoe Edit */
   async changeAmphoeEdit(strAmphoe, strTambon) {
-
     const thisLocation = await this.arrAmphoe.filter(row => {
       if (row.location_name.indexOf(strAmphoe) !== -1) {
         return true;
@@ -371,9 +337,7 @@ export class InfoListComponent implements OnInit {
       return false;
     });
     if (thisLocation.length > 0) {
-      setTimeout(() => {
-        this.dealersFrom.get('amphoe').patchValue(strAmphoe);
-      }, 0);
+      this.Form.get('amphoe').patchValue(strAmphoe);
       this.get_Tambon_Edit(thisLocation[0].location_id, strTambon)
     }
 
@@ -382,7 +346,6 @@ export class InfoListComponent implements OnInit {
 
   /*Get Tambon Edit */
   async get_Tambon_Edit(location_id, strTambon) {
-
     const get_detail_by_id = (id) => {
       return this.arrLocationDetail.filter(row => {
         if (row.location_id == id) {
@@ -418,19 +381,11 @@ export class InfoListComponent implements OnInit {
   /*Change Tambon Edit */
   changeTambonEdit(strTambon) {
     if (this.arrTambon.length > 0) {
-      for (let i = 0; i < this.arrTambon.length; i++) {
-        if (this.arrTambon[i].location_name === strTambon) {
-          setTimeout(() => {
-            this.dealersFrom.get('tambon').patchValue(this.arrTambon[i].location_name);
-            this.dealersFrom.get('zipcode').patchValue(this.arrTambon[i].location_postcode);
-          }, 0);
-        }
-      }
+      const arrTambon = this.arrTambon.filter((x) => x.location_name === strTambon)
+      this.Form.get('tambon').patchValue(arrTambon[0].location_name);
+      this.Form.get('zipcode').patchValue(arrTambon[0].location_postcode);
     }
   }
-
-
-
 
   btnDialogMab() {
 
@@ -440,20 +395,15 @@ export class InfoListComponent implements OnInit {
     dialogRef.onClose.subscribe(result => {
       if (result) {
 
-        setTimeout(() => {
-          this.dealersFrom.get('addressFull').patchValue(result.address);
-          this.dealersFrom.get('addressNo').patchValue(result.num);
-          this.dealersFrom.get('province').patchValue(result.state);
-          this.dealersFrom.get('amphoe').patchValue(result.city);
-          this.dealersFrom.get('tambon').patchValue(result.town);
-          this.dealersFrom.get('zipcode').patchValue(result.zipcode);
-          this.dealersFrom.get('dealer_addr_lat').patchValue(result.supplier_addr_location_lat);
-          this.dealersFrom.get('dealer_addr_lng').patchValue(result.supplier_addr_location_lng);
-          this.dealersFrom.get('latitudeAndLongitude').patchValue(result.supplier_addr_location_lat + ',' + result.supplier_addr_location_lng);
-        }, 0);
-
-
-
+        this.Form.get('addressFull').patchValue(result.address);
+        this.Form.get('addressNo').patchValue(result.num);
+        this.Form.get('province').patchValue(result.state);
+        this.Form.get('amphoe').patchValue(result.city);
+        this.Form.get('tambon').patchValue(result.town);
+        this.Form.get('zipcode').patchValue(result.zipcode);
+        this.Form.get('dealer_addr_lat').patchValue(result.supplier_addr_location_lat);
+        this.Form.get('dealer_addr_lng').patchValue(result.supplier_addr_location_lng);
+        this.Form.get('latitudeAndLongitude').patchValue(result.supplier_addr_location_lat + ',' + result.supplier_addr_location_lng);
         this.changeProvinceEdit(result.state, result.city, result.town);
 
       }
@@ -461,48 +411,24 @@ export class InfoListComponent implements OnInit {
     });
   }
 
-
-
-
-  get f() { return this.dealersFrom.controls; }
+  get f() { return this.Form.controls; }
   onSubmit() {
     this.submitted = true;
-    if (this.dealersFrom.invalid) {
+    if (this.Form.invalid) {
       return;
     }
   }
 
-
   btnCancelClick() {
-    const dialogRef = this.dialogService.open(DialogsCancelComponent, {
-    });
-
-    dialogRef.onClose.subscribe(result => {
-      if (result === 'cancel') {
-      }
-      if (result === 'ok') {
-        this.router.navigate([this.UrlRouter_DealersList]);
-      }
-    });
+    this.router.navigate([this.UrlRouter_DealersList]);
   }
 
   btnBackClick() {
-    const dialogRef = this.dialogService.open(DialogsCancelComponent, {
-    });
-
-    dialogRef.onClose.subscribe(result => {
-      if (result === 'cancel') {
-      }
-      if (result === 'ok') {
-        this.router.navigate([this.UrlRouter_DealersDetail, this.RowID]);
-      }
-    });
+    this.router.navigate([this.UrlRouter_DealersDetail, this.RowID]);
   }
 
-
-
   btnSaveClick() {
-    console.log(this.dealersFrom);
+    console.log(this.Form);
     let phone = {
       tel: {
         target: {
@@ -519,7 +445,7 @@ export class InfoListComponent implements OnInit {
     this.inArrayPhone(12, 12, phone.mobile, this.phone.mobile)
 
     this.submitted = true;
-    if (this.dealersFrom.invalid || this.image.update || this.phone.tel.number === "" || this.phone.mobile.number === "") {
+    if (this.Form.invalid || this.image.update || this.phone.tel.number === "" || this.phone.mobile.number === "") {
       return;
     }
 
@@ -538,8 +464,6 @@ export class InfoListComponent implements OnInit {
 
   }
 
-
-
   save() {
     this.loading = true;
 
@@ -547,22 +471,22 @@ export class InfoListComponent implements OnInit {
       "dealer_id": this.id_local,
       "distributor_id": 0,
       "sale_rep_id": 0,
-      "dealer_name": this.dealersFrom.value.dealersName,
-      "dealer_first_name": this.dealersFrom.value.firstName,
-      "dealer_last_name": this.dealersFrom.value.lastName,
+      "dealer_name": this.Form.value.dealersName,
+      "dealer_first_name": this.Form.value.firstName,
+      "dealer_last_name": this.Form.value.lastName,
       "dealer_tel": this.phone.tel.number,
       "dealer_mobile": this.phone.mobile.number,
-      "dealer_email": this.dealersFrom.value.emailAddress,
-      "dealer_tag": this.dealersFrom.value.productcategory,
-      "dealer_company": this.dealersFrom.value.companyName,
-      "dealer_addr_full": this.dealersFrom.value.addressFull,
-      "dealer_addr_number": this.dealersFrom.value.addressNo,
-      "dealer_addr_tambon": this.dealersFrom.value.tambon,
-      "dealer_addr_amphoe": this.dealersFrom.value.amphoe,
-      "dealer_addr_province": this.dealersFrom.value.province,
-      "dealer_addr_post": this.dealersFrom.value.zipcode,
-      "dealer_addr_lat": this.dealersFrom.value.dealer_addr_lat,
-      "dealer_addr_lng": this.dealersFrom.value.dealer_addr_lng,
+      "dealer_email": this.Form.value.emailAddress,
+      "dealer_tag": this.Form.value.productcategory,
+      "dealer_company": this.Form.value.companyName,
+      "dealer_addr_full": this.Form.value.addressFull,
+      "dealer_addr_number": this.Form.value.addressNo,
+      "dealer_addr_tambon": this.Form.value.tambon,
+      "dealer_addr_amphoe": this.Form.value.amphoe,
+      "dealer_addr_province": this.Form.value.province,
+      "dealer_addr_post": this.Form.value.zipcode,
+      "dealer_addr_lat": this.Form.value.dealer_addr_lat,
+      "dealer_addr_lng": this.Form.value.dealer_addr_lng,
       "dealer_image_url": (this.image.main_image.port.length > 0) ? this.image.main_image.port[0].image_url : "-"
     }
 
@@ -571,15 +495,14 @@ export class InfoListComponent implements OnInit {
 
     this.dealerAPIService.updateDealer(dataJson).subscribe(data => {
       // this.router.navigate([this.UrlRouter_DealersList]);
+      this.Form.reset();
       console.log(data);
       this.getData();
     })
   }
 
-
-
   btnClear() {
-    this.dealersFrom.reset('')
+    this.Form.reset('')
   }
 
   phoneNumber() {

@@ -15,7 +15,8 @@ import { SharedModule } from "@project/shared";
 
 import { IConfig, NgxMaskModule } from "ngx-mask";
 import { MapModule } from '../map/map.module';
-import { MyProductDetailComponent } from './my-product-detail/my-product-detail.component';
+import { ManageProductDetailComponent } from './manage-products/manage-products-detail/manage-products-detail.component';
+
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 @NgModule({
@@ -36,7 +37,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
   ],
   declarations: [
     ProductsComponent,
-    MyProductDetailComponent,
+    ManageProductDetailComponent,
 
   ]
 })

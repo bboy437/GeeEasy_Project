@@ -20,7 +20,7 @@ export class SaleRepCreateGuard implements CanDeactivate<SaleRepCreateComponent>
 
         if (component.Form.touched) {
             // return confirm(`Are you sure you want to Cancel ?`);
-            return Observable.create((observer: Observer<boolean>) => {
+            return new Observable((observer: Observer<boolean>) => {
                 console.log(observer);
                 const dialogRef = this.dialogService.open(DialogsCancelComponent);
                 dialogRef.onClose.subscribe(async result => {

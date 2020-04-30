@@ -26,6 +26,9 @@ export class NgxSelectComponent implements OnInit {
   @Output() valueChange = new EventEmitter();
   @Output() selectionChanges = new EventEmitter();
 
+  //Error validate
+  @Input() forceShowErrors = false;
+
   constructor() { }
 
   ngOnInit() {
@@ -33,7 +36,7 @@ export class NgxSelectComponent implements OnInit {
 
   showErrors() {
     const { dirty, touched, errors } = this.control
-    return dirty && touched && errors
+    return (errors && this.forceShowErrors) || (dirty && touched && errors)
   }
 
   valueChanged(data) {

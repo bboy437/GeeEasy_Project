@@ -20,6 +20,7 @@ import { DeleteComponent } from '../../../dialogs/delete/delete.component';
 })
 
 export class RetailerDetailComponent implements OnInit {
+    private Url_Retailer_Edit = "retailers/retailer/create";
     strFilter: string;
     events: number[] = []
     wishlist$: Observable<retailersProduct[]>;
@@ -78,31 +79,32 @@ export class RetailerDetailComponent implements OnInit {
     ngOnInit() {
         this.dataSend.loading = true;
         const params = this.route.snapshot.paramMap;
+        this.dataSend.retailer_id = params.get("id");
         this.retailId = params.get("id");
-        this.getSalerepAccountDetail(res => {
-            res.response_data.forEach(item => {
-                this.dataSend.data_api = item;
-                this.dataSend.map.latitude = (item.retail_addr_lat !== undefined) ? item.retail_addr_lat : 0;
-                this.dataSend.map.longitude = (item.retail_addr_lng !== undefined) ? item.retail_addr_lng : 0;
-                setTimeout(() => this.dataSend.loading = false, 1000);
-                console.log("getSalerepAccountDetail : item : ", item);
-                this.getDataForm(item, res => {
-                    this.cover_input = res;
-                });
-                this.getRetailProductLists(red => {
-                    this.loadings = false;
-                })
-            });
-        })
+        if (this.retailId) {
+            this.retailAccountService.getRetailAccountDetail(this.retailId).subscribe(res => {
+                this.getData(res);
+                this.retailAccountService.dataRetailerDetail(res);
+            })
+        }
     };
 
-    getSalerepAccountDetail(callback: (res) => any) {
-        const params = this.route.snapshot.paramMap;
-        this.dataSend.retailer_id = params.get("id");
-        this.retailAccountService.getRetailAccountDetail(this.dataSend.retailer_id).subscribe(res => {
-            callback(res);
-        })
-    };
+    getData(data) {
+        data.response_data.forEach(item => {
+            this.dataSend.data_api = item;
+            this.dataSend.map.latitude = (item.retail_addr_lat !== undefined) ? item.retail_addr_lat : 0;
+            this.dataSend.map.longitude = (item.retail_addr_lng !== undefined) ? item.retail_addr_lng : 0;
+            setTimeout(() => this.dataSend.loading = false, 1000);
+            console.log("getSalerepAccountDetail : item : ", item);
+            this.getDataForm(item, res => {
+                this.cover_input = res;
+            });
+            this.getRetailProductLists(red => {
+                this.loadings = false;
+            })
+        });
+    }
+
 
     getDataForm(api, callback: (res) => any) {
         let res = {
@@ -110,6 +112,7 @@ export class RetailerDetailComponent implements OnInit {
             col_6_2: [],
             col_6_3: []
         };
+        // tslint:disable-next-line: forin
         for (const key in api) {
             this.getCol_6_1(key, (status, res_) => {
                 if (status) {
@@ -222,7 +225,7 @@ export class RetailerDetailComponent implements OnInit {
                 title: "retail_addr_number",
                 topic: "Address Number",
                 input: "", col: "12"
-            },  {
+            }, {
                 type: "input",
                 index: 2,
                 title: "retail_addr_province",
@@ -296,6 +299,10 @@ export class RetailerDetailComponent implements OnInit {
         return _function;
     };
 
+    btnEditClick() {
+        this.router.navigate([this.Url_Retailer_Edit, this.retailId]);
+    }
+
     btnReload() {
         this.isReload = true;
         this.wishlistTableService.getData((res, countries$, total$) => {
@@ -316,9 +323,6 @@ export class RetailerDetailComponent implements OnInit {
     filter(value: any) {
         this.wishlistTableService.searchTerm = value;
     }
-
-
-
 
     remove(retail_product_id, callback: (res) => any) {
         const dataJson = {

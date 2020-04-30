@@ -107,53 +107,46 @@ export class SaleRepCreateComponent implements OnInit {
         this.buildForm();
         const params = this.route.snapshot.paramMap;
         this.RowID = params.get("id");
+
+        //Check new or update
         if (this.RowID === "new") {
             this.getCategory();
             this.loading = false;
         } else {
-
-
-            this.getSalerepAccountDetail(res => {
-                console.log("ngOnInit : getSalerepAccountDetail : res : ", res);
-                this.arrobjRow = res.response_data[0];
-                console.log("ngOnInit : res : ", res);
-                this.imgURL = res.response_data[0].sale_rep_image_url;
-                if (this.arrobjRow.sale_rep_image_url !== undefined && this.arrobjRow.sale_rep_image_url !== "-" && this.arrobjRow.sale_rep_image_url !== "")
-                    this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.sale_rep_image_url, red_image => {
-                        this.image.main_image.get.push(red_image);
-                    });
-
-                this.editForm();
-                this.phoneNumber().main(_self_ => {
-                    res.response_data.forEach(item => {
-                        _self_.getNumberArray(item.sale_rep_tel, getNumberArray => {
-                            this.phone.tel.number = item.sale_rep_tel;
-                            this.phone.tel.number_array = getNumberArray;
-                        });
-                        _self_.getNumberArray(item.sale_rep_mobile, getNumberArray => {
-                            this.phone.mobile.number = item.sale_rep_mobile;
-                            this.phone.mobile.number_array = getNumberArray;
-                        });
-                    });
-                });
-                /*Get Province Edit */
-                this.changeProvinceEdit(
-                    this.arrobjRow.sale_rep_addr_province,
-                    this.arrobjRow.sale_rep_addr_amphoe,
-                    this.arrobjRow.sale_rep_addr_tambon
-                );
+            this.saleRepService.dataSaleRepDetail$.subscribe(res => {
+                res ? this.getData(res) : this.router.navigate([this.listPage]);
             })
         }
     }
 
-    getSalerepAccountDetail(callback: (res) => any) {
-        const params = this.route.snapshot.paramMap;
-        this.RowID = params.get("id");
-        this.saleRepService.getSalerepAccountDetail(this.RowID).subscribe(res => {
-            console.log("getSalerepAccountDetail : res : ", res);
-            callback(res);
-        })
-    };
+    getData(data) {
+        this.arrobjRow = data.response_data[0];
+        this.imgURL = data.response_data[0].sale_rep_image_url;
+        if (this.arrobjRow.sale_rep_image_url !== undefined && this.arrobjRow.sale_rep_image_url !== "-" && this.arrobjRow.sale_rep_image_url !== "")
+            this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.sale_rep_image_url, red_image => {
+                this.image.main_image.get.push(red_image);
+            });
+
+        this.editForm();
+        this.phoneNumber().main(_self_ => {
+            data.response_data.forEach(item => {
+                _self_.getNumberArray(item.sale_rep_tel, getNumberArray => {
+                    this.phone.tel.number = item.sale_rep_tel;
+                    this.phone.tel.number_array = getNumberArray;
+                });
+                _self_.getNumberArray(item.sale_rep_mobile, getNumberArray => {
+                    this.phone.mobile.number = item.sale_rep_mobile;
+                    this.phone.mobile.number_array = getNumberArray;
+                });
+            });
+        });
+        /*Get Province Edit */
+        this.changeProvinceEdit(
+            this.arrobjRow.sale_rep_addr_province,
+            this.arrobjRow.sale_rep_addr_amphoe,
+            this.arrobjRow.sale_rep_addr_tambon
+        );
+    }
 
     getCategory() {
         const valueCategory = "cur_page=" + 1 + "&per_page=" + 10;
@@ -568,52 +561,6 @@ export class SaleRepCreateComponent implements OnInit {
 
     btnBackClick() {
         this.router.navigate([this.detailPage, this.RowID]);
-    }
-
-    uploadFile(event) {
-        if (event.length === 0) return;
-
-        const mimeType = event[0].type;
-        if (mimeType.match(/image\/*/) == null) {
-            this.message = "Only images are supported.";
-            return;
-        }
-        const reader = new FileReader();
-        this.message = event[0].name;
-        this.imagePath = event[0];
-        reader.readAsDataURL(event[0]);
-        reader.onload = _event => {
-            this.imgURL = reader.result;
-        };
-        this.upload();
-    }
-
-    upload() {
-        const dataJson = {
-            type_id: 100,
-            file_name: this.imagePath.name,
-            file_type: this.imagePath.type,
-            distributor_id: this.id_local,
-            sale_rep_id: 0
-        };
-
-        this.uploadAPIService.uploadImg(JSON.stringify(dataJson)).subscribe(res => {
-            console.log(res);
-            this.uploadData = res.response_data[0];
-            this.arrobjRow.sale_rep_image_url = this.uploadData.file_url;
-            this.uploadAPIService
-                .uploadPut(this.uploadData.file_upload_url, this.imagePath)
-                .subscribe(res1 => {
-                });
-        });
-    }
-
-    btnUpload() {
-        this.uploadAPIService
-            .uploadPut(this.uploadData.file_upload_url, this.imagePath)
-            .subscribe(res1 => {
-                console.log(res1);
-            });
     }
 
     phoneNumber() {

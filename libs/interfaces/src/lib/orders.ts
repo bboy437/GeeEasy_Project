@@ -25,6 +25,7 @@ export interface IOrderList {
     dealer_data: DealerData[];
     distributor_data: DistributorData[];
     dealer_name: any;
+    distributor_name: any;
 }
 
 

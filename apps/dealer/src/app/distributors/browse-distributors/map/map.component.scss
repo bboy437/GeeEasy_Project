@@ -3,21 +3,22 @@
 @import "~bootstrap/scss/mixins/breakpoints";
 @import "~@nebular/theme/styles/global/breakpoints";
 
-@include nb-install-component() { }
+@include nb-install-component() {
+}
 
 .active_all {
-  color: #fff;
-  :hover{
-    background-color: rgba(236, 43, 43, 0.1);
-  }
-  background-color: #f84d2f; 
+  background-color: #49506b;
+}
+
+.active_d {
+  background-color: #49506b;
 }
 
 .row {
   &.cover-set {
-    cursor: pointer; 
+    cursor: pointer;
     padding-top: 0.6rem;
-    margin: -0.10px;
+    margin: -0.1px;
     .col-12 {
       &.border-bottom-1 {
         padding-top: 10px;
@@ -28,23 +29,22 @@
 }
 
 agm-map {
-    height: calc(100vh - 200px);
-  }
-
-  .form-control {
-    display: block;
-    width: 100%;
-    height: calc(1.5em + 0.75rem + 2px);
-    padding: 0.375rem 0.75rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    border-color: #3366ff;
-    font-size: 14px;
+  height: calc(100vh - 200px);
 }
-  
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  border-color: #3366ff;
+  font-size: 14px;
+}

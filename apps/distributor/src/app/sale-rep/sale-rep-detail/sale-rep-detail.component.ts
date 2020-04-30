@@ -31,25 +31,37 @@ export class SaleRepDetailComponent implements OnInit {
   image = {
     update: false,
     main_image: {
-        get: [],
-        port: []
+      get: [],
+      port: []
     }
-}
+  }
 
   constructor(
-    private router: Router, 
-    private route: ActivatedRoute, 
-    private saleRepService: SaleRepService, 
+    private router: Router,
+    private route: ActivatedRoute,
+    private saleRepService: SaleRepService,
     private dialogService: NbDialogService,
     private formBuilder: FormBuilder,
     private uploadAPIService: UploadAPIService
-    ) { }
+  ) { }
 
   ngOnInit() {
     this.buildForm();
-    this.getSalerepAccountDetail(res => {
-      console.log("ngOnInit : getSalerepAccountDetail : res : ", res);
-      this.arrSale = res.response_data[0];
+
+    const params = this.route.snapshot.paramMap;
+    this.RowID = params.get("id");
+    if (this.RowID) {
+      this.saleRepService.getSalerepAccountDetail(this.RowID).subscribe(res => {
+        this.saleRepService.dataSaleRep(res);
+        this.getData(res);
+
+      })
+    }
+
+  }
+
+  getData(data) {
+    this.arrSale = data.response_data[0];
 
       if (
         this.arrSale.sale_rep_image_url !== undefined &&
@@ -63,44 +75,30 @@ export class SaleRepDetailComponent implements OnInit {
           });
 
       this.editForm();
-    })
-  }
-
-  getSalerepAccountDetail(callback: (res) => any) {
-    const params = this.route.snapshot.paramMap;
-    this.RowID = params.get("id");
-    this.saleRepService.getSalerepAccountDetail(this.RowID).subscribe(res => {
-      console.log("getSalerepAccountDetail : res : ", res);
-      callback(res);
-    })
-  };
-
-  dataProduct(data) {
-    this.arrSaleProduct = data;
   }
 
   buildForm() {
     this.SaleForm = this.formBuilder.group({
-        sale_rep_name: [{ value: "", disabled: true }, Validators.required],
-        sale_rep_company: [{ value: "", disabled: true }, Validators.required],
-        sale_rep_tag: [{ value: "", disabled: true }, Validators.required],
-        sale_rep_first_name: [{ value: "", disabled: true }, Validators.required],
-        sale_rep_last_name: [{ value: "", disabled: true }, Validators.required],
-        sale_rep_email: [{ value: "", disabled: true }, [Validators.required, Validators.email]],
-        sale_rep_tel: [{ value: "", disabled: true }, [Validators.required]],
-        sale_rep_mobile: [{ value: "", disabled: true }, [Validators.required]],
-        addressFull: [{ value: "", disabled: true }, [Validators.required]],
-        addressNo: [{ value: "", disabled: true }, [Validators.required]],
-        province: [{ value: "", disabled: true }, Validators.required],
-        amphoe: [{ value: "", disabled: true }, Validators.required],
-        tambon: [{ value: "", disabled: true }, Validators.required],
-        zipcode: [{ value: "", disabled: true }, Validators.required],
-        location_lat_location_lng: [{ value: "", disabled: true }, Validators.required],
+      sale_rep_name: [{ value: "", disabled: true }, Validators.required],
+      sale_rep_company: [{ value: "", disabled: true }, Validators.required],
+      sale_rep_tag: [{ value: "", disabled: true }, Validators.required],
+      sale_rep_first_name: [{ value: "", disabled: true }, Validators.required],
+      sale_rep_last_name: [{ value: "", disabled: true }, Validators.required],
+      sale_rep_email: [{ value: "", disabled: true }, [Validators.required, Validators.email]],
+      sale_rep_tel: [{ value: "", disabled: true }, [Validators.required]],
+      sale_rep_mobile: [{ value: "", disabled: true }, [Validators.required]],
+      addressFull: [{ value: "", disabled: true }, [Validators.required]],
+      addressNo: [{ value: "", disabled: true }, [Validators.required]],
+      province: [{ value: "", disabled: true }, Validators.required],
+      amphoe: [{ value: "", disabled: true }, Validators.required],
+      tambon: [{ value: "", disabled: true }, Validators.required],
+      zipcode: [{ value: "", disabled: true }, Validators.required],
+      location_lat_location_lng: [{ value: "", disabled: true }, Validators.required],
     });
-}
+  }
 
-editForm() {
-  this.SaleForm.patchValue({
+  editForm() {
+    this.SaleForm.patchValue({
       sale_rep_name: this.arrSale.sale_rep_name,
       sale_rep_company: this.arrSale.sale_rep_company,
       sale_rep_tag: this.arrSale.sale_rep_tag,
@@ -116,10 +114,9 @@ editForm() {
       tambon: this.arrSale.sale_rep_addr_tambon,
       zipcode: this.arrSale.sale_rep_addr_post,
       location_lat_location_lng: this.arrSale.sale_rep_addr_lat + ',' + this.arrSale.sale_rep_addr_lng,
-  });
-  this.loading = false;
-}
-
+    });
+    this.loading = false;
+  }
 
   btnEditClick() {
     this.router.navigate([

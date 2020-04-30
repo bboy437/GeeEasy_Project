@@ -1,7 +1,7 @@
 import { RouterModule, Routes } from "@angular/router";
 import { NgModule } from "@angular/core";
+import { RetailersComponent } from './retailers.component';
 
-import { RetailersComponent, RetailerProductModule } from ".";
 
 
 const routes: Routes = [{
@@ -11,12 +11,12 @@ const routes: Routes = [{
     children: [
         {
             path: 'retailer', loadChildren: () =>
-                import("./").then(
+                import("./retailer/retailer.module").then(
                     m => m.RetailerModule
                 )
         }, {
             path: 'product', loadChildren: () =>
-                import("./").then(
+                import("./retailer-product/retailer-product.module").then(
                     m => m.RetailerProductModule
                 )
         }

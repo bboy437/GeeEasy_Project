@@ -23,7 +23,7 @@ export class CheckInDetailGuard implements CanDeactivate<CheckInDetailComponent>
         console.log(component.productForm.touched);
         if (component.checkinForm.touched || component.productForm.touched) {
             // return confirm(`Are you sure you want to Cancel ?`);
-            return Observable.create((observer: Observer<boolean>) => {
+            return new Observable((observer: Observer<boolean>) => {
                 const dialogRef = this.dialogService.open(DialogsCancelComponent);
                 dialogRef.onClose.subscribe(result => {
                     console.log(result);

@@ -2,14 +2,14 @@ import { Injectable, PipeTransform } from '@angular/core';
 
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 
-import { ProductData } from '@project/interfaces';
+import { IProductDealer } from '@project/interfaces';
 import { DecimalPipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { SortDirection } from '@project/services';
 import { ProductAPIService } from '@project/services';
 
 interface SearchResult {
-  countries: ProductData[];
+  countries: IProductDealer[];
   total: number;
 }
 
@@ -25,7 +25,7 @@ function compare(v1, v2) {
   return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 }
 
-function sort(countries: ProductData[], column: string, direction: string): ProductData[] {
+function sort(countries: IProductDealer[], column: string, direction: string): IProductDealer[] {
   if (direction === '') {
     return countries;
   } else {
@@ -36,7 +36,7 @@ function sort(countries: ProductData[], column: string, direction: string): Prod
   }
 }
 
-function matches(country: ProductData, term: string, pipe: PipeTransform) {
+function matches(country: IProductDealer, term: string, pipe: PipeTransform) {
   return country.product_title.toString().toLowerCase().includes(term.toString().toLowerCase()) 
 }
 
@@ -46,7 +46,7 @@ function matches(country: ProductData, term: string, pipe: PipeTransform) {
 export class TableService {
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _countries$ = new BehaviorSubject<ProductData[]>([]);
+  private _countries$ = new BehaviorSubject<IProductDealer[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
 
   private _state: State = {
@@ -68,11 +68,10 @@ export class TableService {
     }
 
   getData(callback) {
-    const value = "cur_page=" + 1 + "&per_page=" + 10 + "&dealer_id=" + this.id_local;
-    this.productAPIService.getProductDealer(value).subscribe(data => {
-      this.arrProducts = <ProductData>data.response_data === undefined ? []: data.response_data;
-      console.log(this.arrProducts);
 
+    this.productAPIService.productDealerList$.subscribe(data => {
+      this.arrProducts = data;
+      console.log(data);   
 
       this._search$.pipe(
         tap(() => this._loading$.next(true)),

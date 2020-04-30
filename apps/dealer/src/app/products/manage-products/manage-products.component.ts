@@ -3,10 +3,48 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'project-manage-products',
-  templateUrl: './manage-products.component.html',
-  styleUrls: ['./manage-products.component.scss']
+  template: `
+  <nb-layout>
+    <nb-layout-column style="padding: 0;">
+        <div class="pages">
+            <div class="row">
+                <div class="col-12">
+                    <nb-card>
+                        <nb-card-header>
+                            <div class="header">
+                                <div class="row">
+                                    <div class="col-auto mr-auto">
+                                        <nb-icon class="icon-header" icon="cube-outline"></nb-icon>
+                                        <label>Manager Products</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button nbButton size="medium" status="primary" (click)="_router().newProducts()">
+                                            New Product
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </nb-card-header>
+                    </nb-card>
+                </div>
+                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                    <nb-card>
+                        <nb-card-body>
+                            <nb-route-tabset [tabs]="tabs">
+                                <router-outlet></router-outlet>
+                            </nb-route-tabset>
+                        </nb-card-body>
+                    </nb-card>
+                </div>
+                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                    <project-footercomponent> </project-footercomponent>
+                </div>
+            </div>
+        </div>
+    </nb-layout-column>
+  </nb-layout>
+  `
 })
-
 
 export class ManageProductsComponent implements OnInit {
   tabs = [
@@ -24,7 +62,7 @@ export class ManageProductsComponent implements OnInit {
   ];
 
   constructor(
-    private router: Router ) {
+    private router: Router) {
   }
 
   ngOnInit() {
@@ -37,26 +75,26 @@ export class ManageProductsComponent implements OnInit {
   _router() {
     let _self_ = this;
     let _function = {
-      getSelf(callback : (res) => any) {
+      getSelf(callback: (res) => any) {
         let _self = this;
         callback(_self);
       },
-      consoleLog(_function_,_title_,_data_) {
+      consoleLog(_function_, _title_, _data_) {
         let _self = this;
-        console.log(_function_," : ",_title_ ," : ",_data_);
+        console.log(_function_, " : ", _title_, " : ", _data_);
       },
-      navigate(url,value,callback : (res) => any) {
+      navigate(url, value, callback: (res) => any) {
         let _self = this;
-        _self.consoleLog("navigate","url",url);
-        _self.consoleLog("navigate","value",value);
-        _self_.router.navigate([url,value]);
+        _self.consoleLog("navigate", "url", url);
+        _self.consoleLog("navigate", "value", value);
+        _self_.router.navigate([url, value]);
         callback(true);
       },
       newProducts() {
-        let _self = this ,pageUrl = "products/products/create/";
-        _self.consoleLog("newProducts","pageUrl",pageUrl);
-        _self.navigate(pageUrl,"new",navigateByUrl => {
-          _self.consoleLog("newProducts","navigateByUrl",navigateByUrl);
+        let _self = this, pageUrl = "products/products/create/";
+        _self.consoleLog("newProducts", "pageUrl", pageUrl);
+        _self.navigate(pageUrl, "new", navigateByUrl => {
+          _self.consoleLog("newProducts", "navigateByUrl", navigateByUrl);
         });
       }
     }

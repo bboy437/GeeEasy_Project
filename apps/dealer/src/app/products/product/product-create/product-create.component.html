@@ -1,0 +1,134 @@
+<div class="pages" [formGroup]="Form">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <nb-icon icon="cube-outline"></nb-icon>
+                                <label *ngIf="RowID == 'new'">Manage Product<span class="p-0-12">/</span>Create
+                                    Product</label>
+                                <label *ngIf="RowID != 'new'">Manage Product<span class="p-0-12">/</span>Update Product
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <button [disabled]="!Form.valid" *ngIf="RowID == 'new'" [nbSpinner]="image.update"
+                                    nbSpinnerStatus="success" nbButton size="medium" status="success"
+                                    (click)="btnSaveClick()">
+                                    Save
+                                </button>
+                                <button [disabled]="!Form.valid" *ngIf="RowID != 'new'" [nbSpinner]="image.update"
+                                    nbSpinnerStatus="success" nbButton size="medium" status="success"
+                                    (click)="btnSaveClick()">
+                                    Update
+                                </button>
+                                <button *ngIf="RowID == 'new'" nbButton size="medium" status="danger"
+                                    (click)="btnCancelClick()">
+                                    Cancel
+                                </button>
+                                <button *ngIf="RowID != 'new'" nbButton size="medium" status="danger"
+                                    (click)="btnBackClick()">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div *ngIf="RowID != 'new'" class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card style="padding: 0;margin-bottom: 0.1rem;">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label>{{strUpdateName}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-6 col-xl-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <project-file-image theme="white" [image_url_array]="image.main_image.get">
+                                        </project-file-image>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-6 col-xl-6">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="cover-input">
+                                            <nb-checkbox [checked]="active === 1" (checkedChange)="toggle($event)">
+                                                Active</nb-checkbox>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <project-ngx-select label="Warehouse Name :" requiredName="Warehouse Name"
+                                            optionValueField="warehouse_id" optionTextField="warehouse_name"
+                                            [items]="arrWarehouse" [control]="Form.get('WarehouseName')"
+                                            placeholder="--------- Choose ---------" [forceShowErrors]="submitted">
+                                        </project-ngx-select>
+                                    </div>
+                                    <div class="col-12">
+                                        <project-input inputType="text" label="Product Catalog Keyword :"
+                                            requiredName="Product Catalog Keyword"
+                                            [control]="Form.get('catalogKeyword')" [forceShowErrors]="submitted">
+                                        </project-input>
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <project-input inputType="text" label="Product Name :"
+                                            requiredName="Product Name" [control]="Form.get('productName')"
+                                            [forceShowErrors]="submitted">
+                                        </project-input>
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <project-input inputType="text" label="Product SKU :" requiredName="Product SKU"
+                                            [control]="Form.get('productSKU')" [forceShowErrors]="submitted">
+                                        </project-input>
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <project-input libOnly="libOnlyCharacternumber" mask="separator.2"
+                                            thousandSeparator="," inputType="text" label="Product Price :"
+                                            requiredName="Product Price" [control]="Form.get('productPrice')"
+                                            [forceShowErrors]="submitted">
+                                        </project-input>
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <project-input libOnly="libOnlyCharacternumber" mask="separator.0"
+                                            thousandSeparator="," inputType="text" label="Product Quantity :"
+                                            requiredName="Product Quantity" [control]="Form.get('Quantity')"
+                                            [forceShowErrors]="submitted">
+                                        </project-input>
+                                    </div>
+                                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                        <project-input inputType="text" label="Product Unit :"
+                                            requiredName="Product Unit" [control]="Form.get('productUnit')"
+                                            [forceShowErrors]="submitted">
+                                        </project-input>
+                                    </div>
+                                    <div class="col-12">
+                                        <project-textarea rows="3" label="Note :" requiredName="Note"
+                                            [control]="Form.get('productNote')" [forceShowErrors]="submitted">
+                                        </project-textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <project-footercomponent> </project-footercomponent>
+        </div>
+    </div>
+</div>

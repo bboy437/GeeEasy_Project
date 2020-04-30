@@ -28,16 +28,6 @@ export class RetailerProductCreateComponent implements OnInit {
   RowID: string;
   Form: FormGroup;
   submitted = false;
-  arrobjState: any = [];
-  arrobjCity: any = [];
-  arrobjTown: any = [];
-  strZipcode: string;
-  strState = "";
-  strTown = "";
-  strCity = "";
-  isValidatorsstate = "";
-  isValidatorsTown = "";
-  isValidatorsCity = "";
   imagePath: any = [];
   uploadData: any = [];
   imgURL: any;
@@ -309,6 +299,7 @@ export class RetailerProductCreateComponent implements OnInit {
       this.retailProductService
         .postRetailProductCreate(dataJson)
         .subscribe(res => {
+          this.Form.reset();
           this.router.navigate([this.retailerDetail, this.retailId]);
         });
     } else {
@@ -335,37 +326,22 @@ export class RetailerProductCreateComponent implements OnInit {
       this.retailProductService
         .postRetailProductUpdate(dataJson)
         .subscribe(data => {
+          this.Form.reset();
           this.router.navigate([this.retailerDetail, this.retailId]);
         });
     }
   }
 
   btnCancelClick() {
-    const dialogRef = this.dialogService.open(DialogsCancelComponent, {});
-
-    dialogRef.onClose.subscribe(result => {
-      if (result === "cancel") {
-      }
-      if (result === "ok") {
-        this.router.navigate([this.retailerDetail, this.retailId]);
-      }
-    });
+    this.router.navigate([this.retailerDetail, this.retailId]);
   }
 
   btnBackClick() {
-    const dialogRef = this.dialogService.open(DialogsCancelComponent, {});
-
-    dialogRef.onClose.subscribe(result => {
-      if (result === "cancel") {
-      }
-      if (result === "ok") {
-        this.router.navigate([
-          this.retailerProductDetail,
-          this.retailId,
-          this.RowID
-        ]);
-      }
-    });
+    this.router.navigate([
+      this.retailerProductDetail,
+      this.retailId,
+      this.RowID
+    ]);
   }
 
   uploadFile(event) {
@@ -431,7 +407,7 @@ export class RetailerProductCreateComponent implements OnInit {
           product_discount: 0,
           discount:
             _wholesale.discount_percent !== 0 &&
-            _wholesale.discount_percent !== "0"
+              _wholesale.discount_percent !== "0"
               ? "discount_percent"
               : "discount_thb",
           product_wholesale: {
@@ -529,21 +505,21 @@ export class RetailerProductCreateComponent implements OnInit {
                   ] = product_wholesale_qty;
                   const product_price = parseFloat(
                     self.product_wholesale_array[index].product_wholesale[
-                      "product_price"
+                    "product_price"
                     ]
                   );
                   const discount_thb = parseFloat(
                     self.product_wholesale_array[index].product_wholesale[
-                      "discount_thb"
+                    "discount_thb"
                     ]
                   );
                   const discount_thb_default =
                     self.product_wholesale_array[index].product_wholesale[
-                      "discount_thb"
+                    "discount_thb"
                     ];
                   const discount_percent = parseFloat(
                     self.product_wholesale_array[index].product_wholesale[
-                      "discount_percent"
+                    "discount_percent"
                     ]
                   );
                   _self.calculate(
@@ -691,17 +667,17 @@ export class RetailerProductCreateComponent implements OnInit {
           }
           const product_price = parseFloat(
             self.product_wholesale_array[index].product_wholesale[
-              "product_price"
+            "product_price"
             ]
           );
           const discount_thb = parseFloat(
             self.product_wholesale_array[index].product_wholesale[
-              "discount_thb"
+            "discount_thb"
             ]
           );
           const discount_percent = parseFloat(
             self.product_wholesale_array[index].product_wholesale[
-              "discount_percent"
+            "discount_percent"
             ]
           );
           _self.calculate(
