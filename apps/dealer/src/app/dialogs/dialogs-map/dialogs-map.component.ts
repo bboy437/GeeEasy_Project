@@ -26,6 +26,7 @@ export class DialogsMapComponent implements OnInit {
   @ViewChild('search', { static: true }) searchElementRef: ElementRef;
   placeServiceIsReady: true;
   dataAddreess: any = [];
+  loading = false;
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
@@ -33,6 +34,7 @@ export class DialogsMapComponent implements OnInit {
     protected ref: NbDialogRef<DialogsMapComponent>,
     private http: HttpClient
   ) {
+    this.loading = true;
     this.mapsAPILoader.load().then(() => {
       this.setCurrentLocation();
       this.geoCoder = new google.maps.Geocoder;
@@ -69,6 +71,12 @@ export class DialogsMapComponent implements OnInit {
 
   }
 
+  getCurrent(latitude, longitude) {
+    this.latitude = latitude;
+    this.longitude = longitude;
+    this.getGeocode(this.latitude, this.longitude);
+  }
+
 
 
   // Get Current Location Coordinates
@@ -77,15 +85,19 @@ export class DialogsMapComponent implements OnInit {
       navigator.geolocation.getCurrentPosition((position) => {
         this.latitude = position.coords.latitude;
         this.longitude = position.coords.longitude;
-        this.zoom = 8;
+        this.zoom = 12;
         // this.getAddress(this.latitude, this.longitude);
         this.getGeocode(this.latitude, this.longitude);
+        console.log(this.latitude, this.longitude);
+
 
       });
     }
   }
 
   markerDragEnd($event: MouseEvent) {
+    console.log($event);
+    
     this.latitude = $event.coords.lat;
     this.longitude = $event.coords.lng;
     // this.getAddress(this.latitude, this.longitude);
@@ -104,7 +116,7 @@ export class DialogsMapComponent implements OnInit {
       const datalocationsfull: any = data;
       if (datalocationsfull.status === 'OK') {
         if (datalocationsfull.results[0]) {
-          const values: any  = datalocationsfull.results[0].address_components
+          const values: any = datalocationsfull.results[0].address_components
           this.checkDataAddress(values)
           this.zoom = 12;
           this.address = datalocationsfull.results[0].formatted_address;
@@ -116,6 +128,7 @@ export class DialogsMapComponent implements OnInit {
       } else {
         window.alert('Geocoder failed due to: ' + status);
       }
+      this.loading = false;
     });
 
   }
@@ -169,7 +182,7 @@ export class DialogsMapComponent implements OnInit {
           const strCheckdata1 = data[3].long_name.split("เขต")
           if (strCheckdata1[0] === "") {
             const strcity = strCheckdata1[1].split(" ")
-            
+
             if (strcity[0] === "") {
               datalocation.city = "เขต" + strcity[1];
             } else {

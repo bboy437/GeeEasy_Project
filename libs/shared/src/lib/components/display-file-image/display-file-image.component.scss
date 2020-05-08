@@ -126,7 +126,7 @@
         .background-image {
           @for $i from 1 through 100 {
             &.height-#{$i} {
-              padding-top: #{$i}vh;
+              padding-top: #{$i + "%"};
             }
           }
           border-width: 0;

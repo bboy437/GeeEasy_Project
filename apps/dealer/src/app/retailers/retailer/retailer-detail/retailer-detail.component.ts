@@ -2,7 +2,7 @@
 import { DecimalPipe } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from '@angular/router';
-import { RetailAccountService, RetailProductService } from "@project/services";
+import { RetailAccountService, RetailProductService, UploadAPIService } from "@project/services";
 import { ColumnMode } from '@swimlane/ngx-datatable';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 
@@ -11,6 +11,7 @@ import { WishlistTableService } from "./table-list.service";
 import { searchRetailersProduct, retailersProduct } from '@project/interfaces';
 import { NbDialogService } from '@nebular/theme';
 import { DeleteComponent } from '../../../dialogs/delete/delete.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
     selector: "retailer-detail",
@@ -23,6 +24,8 @@ export class RetailerDetailComponent implements OnInit {
     private Url_Retailer_Edit = "retailers/retailer/create";
     strFilter: string;
     events: number[] = []
+    arrobjRow: any = [];
+    Form: FormGroup;
     wishlist$: Observable<retailersProduct[]>;
     tatallist$: Observable<number>;
     isReload = false;
@@ -31,7 +34,7 @@ export class RetailerDetailComponent implements OnInit {
     messages = {
         emptyMessage: `
         <div class="imglist">
-            <img src="assets/images/loading.png" width="300" >
+            <img src="assets/images/loadings.png" width="300" >
         </div>
         <div class="labelList">
             <label >No data. Please select information in the list</label>
@@ -40,28 +43,18 @@ export class RetailerDetailComponent implements OnInit {
     };
 
 
-    dataSend = {
-        retailer_id: "0",
-        data_api: {
-            retail_name: '-',
-            retail_image_url: '-'
-        },
-        map: {
-            latitude: 0,
-            longitude: 0
-        },
-        loading: false
-    };
+    retailId: string;
+    id_local: string;
 
-    cover_input = {
-        col_6_1: [],
-        col_6_2: [],
-        col_6_3: []
+
+    image = {
+        update: false,
+        main_image: {
+            get: [],
+            port: []
+        }
     }
 
-    retailId: string;
-
-    id_local: string;
 
     constructor(
         private router: Router,
@@ -70,16 +63,17 @@ export class RetailerDetailComponent implements OnInit {
         private retailProductService: RetailProductService,
         private wishlistTableService: WishlistTableService,
         private dialogService: NbDialogService,
+        private uploadAPIService: UploadAPIService,
+        private formBuilder: FormBuilder,
     ) {
         this.id_local = localStorage.getItem('id');
-        console.log(' this.id_local', this.id_local);
         this.loadings = true;
     }
 
     ngOnInit() {
-        this.dataSend.loading = true;
+        this.buildForm();
+
         const params = this.route.snapshot.paramMap;
-        this.dataSend.retailer_id = params.get("id");
         this.retailId = params.get("id");
         if (this.retailId) {
             this.retailAccountService.getRetailAccountDetail(this.retailId).subscribe(res => {
@@ -91,170 +85,69 @@ export class RetailerDetailComponent implements OnInit {
 
     getData(data) {
         data.response_data.forEach(item => {
-            this.dataSend.data_api = item;
-            this.dataSend.map.latitude = (item.retail_addr_lat !== undefined) ? item.retail_addr_lat : 0;
-            this.dataSend.map.longitude = (item.retail_addr_lng !== undefined) ? item.retail_addr_lng : 0;
-            setTimeout(() => this.dataSend.loading = false, 1000);
-            console.log("getSalerepAccountDetail : item : ", item);
-            this.getDataForm(item, res => {
-                this.cover_input = res;
-            });
+            console.log('item', item)
+            this.arrobjRow = item;
+
+            if (
+                item.retail_image_url !== undefined &&
+                item.retail_image_url !== "-" &&
+                item.retail_image_url !== ""
+            )
+                this.uploadAPIService
+                    .uploadImage()
+                    .getUrl(item.retail_image_url, red_image => {
+                        this.image.main_image.get.push(red_image);
+                    });
+
             this.getRetailProductLists(red => {
-                this.loadings = false;
             })
+            this.editForm();
         });
     }
 
-
-    getDataForm(api, callback: (res) => any) {
-        let res = {
-            col_6_1: [],
-            col_6_2: [],
-            col_6_3: []
-        };
-        // tslint:disable-next-line: forin
-        for (const key in api) {
-            this.getCol_6_1(key, (status, res_) => {
-                if (status) {
-                    res_.forEach(item => {
-                        item.input = api[key];
-                        res.col_6_1.push(item);
-                    });
-                }
-            });
-            this.getCol_6_2(key, (status, res_) => {
-                if (status) {
-                    res_.forEach(item => {
-                        item.input = api[key];
-                        res.col_6_2.push(item);
-                    });
-                }
-            });
-            this.getCol_6_3(key, (status, res_) => {
-                if (status) {
-                    res_.forEach(item => {
-                        item.input = api[key];
-                        res.col_6_3.push(item);
-                    });
-                }
-            });
-        }
-        res.col_6_1.sort(function (a, b) {
-            return a.index - b.index;
+    buildForm() {
+        this.Form = this.formBuilder.group({
+            retail_name: [],
+            retail_company: [],
+            retail_first_name: [],
+            retail_last_name: [],
+            retail_email: [],
+            retail_tel: [],
+            retail_mobile: [],
+            Address: [],
+            number: [],
+            province: [],
+            amphoe: [],
+            tambon: [],
+            zipcode: [],
+            location_lat: [],
+            location_lng: [],
+            location_lat_location_lng: [],
         });
-        res.col_6_2.sort(function (a, b) {
-            return a.index - b.index;
+    }
+
+    editForm() {
+        this.Form.patchValue({
+            retail_name: this.arrobjRow.retail_name,
+            retail_company: this.arrobjRow.retail_company,
+            retail_first_name: this.arrobjRow.retail_first_name,
+            retail_last_name: this.arrobjRow.retail_last_name,
+            retail_email: this.arrobjRow.retail_email,
+            retail_tel: this.arrobjRow.retail_tel,
+            retail_mobile: this.arrobjRow.retail_mobile,
+            Address: this.arrobjRow.retail_addr_full,
+            number: this.arrobjRow.retail_addr_number,
+            province: this.arrobjRow.retail_addr_province,
+            amphoe: this.arrobjRow.retail_addr_amphoe,
+            tambon: this.arrobjRow.retail_addr_tambon,
+            zipcode: this.arrobjRow.retail_addr_post,
+            location_lat: this.arrobjRow.retail_addr_lat,
+            location_lng: this.arrobjRow.retail_addr_lng,
+            location_lat_location_lng: this.arrobjRow.retail_addr_lat + ',' + this.arrobjRow.retail_addr_lng,
         });
-        res.col_6_3.sort(function (a, b) {
-            return a.index - b.index;
-        });
-        callback(res)
-    };
-
-    getCol_6_1(title, callback: (status, res) => any) {
-        const col_6_1 = [
-            {
-                type: "input",
-                index: 0,
-                title: "retail_name",
-                topic: "Retail Name",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 1,
-                title: "retail_company",
-                topic: "Retail Company",
-                input: "", col: "12"
-            }
-        ],
-            status = col_6_1.filter(res => res.title === title).length > 0,
-            res = col_6_1.filter(res => res.title === title);
-        callback(status, res);
-    };
-
-    getCol_6_2(title, callback: (status, res) => any) {
-        const col_6_2 = [
-            {
-                type: "input",
-                index: 0,
-                title: "retail_first_name",
-                topic: "First Name",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 1,
-                title: "retail_last_name",
-                topic: "Last Name",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 2,
-                title: "retail_email",
-                topic: "Email",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 3,
-                title: "retail_tel",
-                topic: "Telephone Number",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 4,
-                title: "retail_mobile",
-                topic: "Mobile Phone Number",
-                input: "", col: "12"
-            }
-        ],
-            status = col_6_2.filter(res => res.title === title).length > 0,
-            res = col_6_2.filter(res => res.title === title);
-        callback(status, res);
-    };
-
-    getCol_6_3(title, callback: (status, res) => any) {
-        const col_6_3 = [
-            {
-                type: "textarea",
-                index: 0,
-                title: "retail_addr_full",
-                topic: "Address",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 1,
-                title: "retail_addr_number",
-                topic: "Address Number",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 2,
-                title: "retail_addr_province",
-                topic: "Province",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 3,
-                title: "retail_addr_amphoe",
-                topic: "Amphoe",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 4,
-                title: "retail_addr_tambon",
-                topic: "Tambon",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 5,
-                title: "retail_addr_post",
-                topic: "Zipcode",
-                input: "", col: "6"
-            }
-        ],
-            status = col_6_3.filter(res => res.title === title).length > 0,
-            res = col_6_3.filter(res => res.title === title);
-        callback(status, res);
-    };
+        this.Form.disable();
+        this.loadings = false;
+    }
 
     click() {
         let self = this;
@@ -271,7 +164,7 @@ export class RetailerDetailComponent implements OnInit {
             editRetailer() {
                 let _self = this;
                 const page = "retailers/retailer/create";
-                _self.routerNavigateTwo(page, self.dataSend.retailer_id);
+                _self.routerNavigateTwo(page, self.retailId);
             },
             listRetailer() {
                 let _self = this;
@@ -281,19 +174,19 @@ export class RetailerDetailComponent implements OnInit {
             createProducts() {
                 let _self = this;
                 const page = "retailers/product/create";
-                _self.routerNavigateThree(page, self.dataSend.retailer_id, "new");
+                _self.routerNavigateThree(page, self.retailId, "new");
             },
             detailProducts(item) {
                 let _self = this;
                 if (item.type == "click") {
                     const page = "retailers/product/detail";
-                    _self.routerNavigateThree(page, self.dataSend.retailer_id, item.row.retail_product_id);
+                    _self.routerNavigateThree(page, self.retailId, item.row.retail_product_id);
                 }
             },
             dealerProduct() {
                 let _self = this;
                 const page = "retailers/product/dealer";
-                _self.routerNavigateThree(page, self.dataSend.retailer_id, "push");
+                _self.routerNavigateThree(page, self.retailId, "push");
             },
         };
         return _function;

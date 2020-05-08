@@ -14,7 +14,10 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgxSelectModule } from 'ngx-select-ex';
 
 import { SaleRepRoutingModule } from "./seller-routing.module";
-import { SellerComponent, SellerListComponent, SellerDetailComponent, SellerCreateComponent } from ".";
+import { SellerComponent } from './seller.component';
+import { SellerListComponent } from './seller-list/seller-list.component';
+import { SellerDetailComponent } from './seller-detail/seller-detail.component';
+import { SellerCreateComponent } from './seller-create/seller-create.component';
 import { SellerProductDetailComponent } from './seller-product-detail/seller-product-detail.component';
 import { SellerProductCreateComponent } from './seller-product-create/seller-product-create.component';
 

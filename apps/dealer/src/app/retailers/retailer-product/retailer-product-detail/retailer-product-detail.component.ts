@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { RetailProductService, WarehouseAPIService } from '@project/services';
+import { RetailProductService, WarehouseAPIService, UploadAPIService } from '@project/services';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -25,6 +25,15 @@ export class RetailerProductDetailComponent implements OnInit {
         product_image_array: []
     }
 
+    image = {
+        update: false,
+        main_image: {
+            get: [],
+            port: []
+        }
+    }
+
+
     id_local: string;
 
     constructor(
@@ -33,6 +42,7 @@ export class RetailerProductDetailComponent implements OnInit {
         private retailProductService: RetailProductService,
         private warehouseAPIService: WarehouseAPIService,
         private fb: FormBuilder,
+        private uploadAPIService: UploadAPIService
     ) {
         this.id_local = localStorage.getItem('id');
         console.log(' this.id_local', this.id_local);
@@ -75,6 +85,18 @@ export class RetailerProductDetailComponent implements OnInit {
                     });
                 });
             }
+
+            if (
+                this.arrProduct.product_image_url !== undefined &&
+                this.arrProduct.product_image_url !== "-" &&
+                this.arrProduct.product_image_url !== ""
+            )
+                this.uploadAPIService
+                    .uploadImage()
+                    .getUrl(this.arrProduct.product_image_url, red_image => {
+                        this.image.main_image.get.push(red_image);
+                    });
+
             console.log(' this.arrProduct', this.arrProduct);
             this.valueForm();
             this.loading = false;
@@ -89,6 +111,7 @@ export class RetailerProductDetailComponent implements OnInit {
             product_title: [{ value: '', disabled: true }, Validators.required],
             product_sku: [{ value: '', disabled: true }, Validators.required],
             product_price: [{ value: '', disabled: true }, Validators.required],
+            product_stock: [{ value: '', disabled: true }, Validators.required],
         });
     }
 
@@ -98,6 +121,12 @@ export class RetailerProductDetailComponent implements OnInit {
             product_title: this.arrProduct.product_title,
             product_sku: this.arrProduct.product_sku,
             product_price: this.arrProduct.product_price,
+            product_stock:
+                this.arrProduct.checkin_data !== undefined
+                    ? this.arrProduct.checkin_data.onhand !== undefined
+                        ? this.arrProduct.checkin_data.onhand
+                        : ""
+                    : "",
         });
     }
 

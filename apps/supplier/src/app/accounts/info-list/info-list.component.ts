@@ -31,29 +31,16 @@ export class InfoListComponent implements OnInit {
     RowID: string;
     Form: FormGroup;
     submitted = false;
-    imagePath: any = [];
-    uploadData: any = [];
     arrCategory: any = [];
-    imgURL: any;
-    public message = "No File chosen";
     loading = false;
     strCancel: string;
     strSave: string;
     product_category__name: string;
     product_category_root_id: number;
 
-    phone: any = {
-        tel: {
-            input: "",
-            number: "",
-            number_array: []
-        },
-        mobile: {
-            input: "",
-            number: "",
-            number_array: []
-        },
-    }
+    phones: any;
+    mobiles: any;
+    isCheckPhone = false;
 
     arrProvince: any[] = JSON_PROVINCE;
     arrAmphoe: any[];
@@ -100,24 +87,12 @@ export class InfoListComponent implements OnInit {
         this.supplierAPIService.getSupID(value).subscribe(data => {
             this.arrobjRow = data.response_data[0];
             console.log(this.arrobjRow);
-            this.imgURL = data.response_data[0].supplier_image_url;
+
             if (this.arrobjRow.supplier_image_url !== undefined && this.arrobjRow.supplier_image_url !== "-" && this.arrobjRow.supplier_image_url !== "")
                 this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.supplier_image_url, red_image => {
                     this.image.main_image.get.push(red_image);
                 });
 
-            this.phoneNumber().main(_self_ => {
-                data.response_data.forEach(item => {
-                    _self_.getNumberArray(item.supplier_phone, getNumberArray => {
-                        this.phone.tel.number = item.supplier_phone;
-                        this.phone.tel.number_array = getNumberArray;
-                    });
-                    _self_.getNumberArray(item.supplier_addr_phone, getNumberArray => {
-                        this.phone.mobile.number = item.supplier_addr_phone;
-                        this.phone.mobile.number_array = getNumberArray;
-                    });
-                });
-            });
 
             /*Get Province Edit */
             this.changeProvinceEdit(
@@ -151,7 +126,8 @@ export class InfoListComponent implements OnInit {
             lastName: ['', Validators.required],
             companyName: ['', Validators.required],
             emailAddress: ['', [Validators.required, Validators.email]],
-            telephoneNumber: [""],
+            phone: ["", [Validators.minLength(9)]],
+            mobile: ["", [Validators.minLength(10)]],
             Address: ['', Validators.required],
             number: ['', Validators.required],
             province: ['', Validators.required],
@@ -177,7 +153,6 @@ export class InfoListComponent implements OnInit {
             lastName: this.arrobjRow.supplier_name_last,
             companyName: this.arrobjRow.supplier_company_name,
             emailAddress: this.arrobjRow.supplier_company_contact,
-            // phoneNo: this.arrobjRow.supplier_addr_phone,
             Address: this.arrobjRow.supplier_addr_full,
             number: this.arrobjRow.supplier_addr_number,
             latitudeAndLongitude: this.arrobjRow.supplier_addr_location_lat + ',' + this.arrobjRow.supplier_addr_location_lng,
@@ -478,26 +453,32 @@ export class InfoListComponent implements OnInit {
         console.log("product_category__name", this.product_category__name);
     }
 
+    onDataTel(data) {
+        this.phones = data;
+        if (this.phones.tel.number === "") {
+            this.isCheckPhone = true;
+        } else {
+            this.isCheckPhone = false;
+        }
+        console.log('phones', this.phones);
+    }
+
+    onDataMobilel(data) {
+        this.mobiles = data;
+        if (this.mobiles.mobile.number === "") {
+            this.isCheckPhone = true;
+        } else {
+            this.isCheckPhone = false;
+        }
+        console.log('mobiles', this.mobiles);
+
+    }
+
 
     btnSaveClick() {
 
-        let phone = {
-            tel: {
-                target: {
-                    value: this.phone.tel.input
-                }
-            },
-            mobile: {
-                target: {
-                    value: this.phone.mobile.input
-                }
-            }
-        }
-        this.onInArrayPhone(9, 19, phone.tel, this.phone.tel);
-        this.inArrayPhone(12, 12, phone.mobile, this.phone.mobile)
-
         this.submitted = true;
-        if (this.Form.invalid || this.image.update || this.phone.tel.number === "" || this.phone.mobile.number === "") {
+        if (this.Form.invalid || this.image.update) {
             return;
         }
         this.image.update = true;
@@ -522,8 +503,8 @@ export class InfoListComponent implements OnInit {
             distributor_id: this.id_local,
             dealer_id: 0,
             sale_rep_id: 0,
-            supplier_phone: this.phone.tel.number,
-            supplier_addr_phone: this.phone.mobile.number,
+            supplier_phone: this.phones.tel.number,
+            supplier_addr_phone: this.mobiles.mobile.number,
             supplier_image_url: (this.image.main_image.port.length > 0) ? this.image.main_image.port[0].image_url : "-",
             supplier_id: this.arrobjRow.supplier_id,
             supplier_name: this.Form.value.suppliername,
@@ -562,173 +543,15 @@ export class InfoListComponent implements OnInit {
     }
 
     btnCancelClick() {
-        const dialogRef = this.dialogService.open(DialogsCancelComponent, {
-        });
-
-        dialogRef.onClose.subscribe(result => {
-            if (result === 'cancel') {
-            }
-            if (result === 'ok') {
-                // tslint:disable-next-line: triple-equals
-                if (this.strCancel == "dialog") {
-                    this.closes.emit('ok')
-                } else {
-                    this.router.navigate([this.UrlRouter_Supplier]);
-                }
-            }
-        });
+        if (this.strCancel == "dialog") {
+            this.closes.emit('ok')
+        } else {
+            this.router.navigate([this.UrlRouter_Supplier]);
+        }
     }
 
     btnBackClick() {
-        const dialogRef = this.dialogService.open(DialogsCancelComponent, {
-        });
-
-        dialogRef.onClose.subscribe(result => {
-            if (result === 'cancel') {
-            }
-            if (result === 'ok') {
-                this.router.navigate([this.UrlRouter_SupplierDetail, this.RowID]);
-            }
-        });
+        this.router.navigate([this.UrlRouter_SupplierDetail, this.RowID]);
     }
-
-    phoneNumber() {
-        let function_phone = {
-            consoleLog(_function_, _title_, _data_) {
-                let _self_ = this;
-                console.log(_function_, " : ", _title_, " : ", _data_);
-            },
-            checkLength(_min_length_, _max_length_, _phone_, callback: (res) => any) {
-                let _self_ = this;
-                const res = ((_min_length_ <= _phone_) && (_phone_ <= _max_length_ || _phone_ > _max_length_));
-                console.log("checkLength : _min_length_ <= _phone_ ", _min_length_ <= _phone_);
-                console.log("checkLength :  _phone_ <= _max_length_ ", _phone_ <= _max_length_);
-                callback(res);
-            },
-            checkIncludes(_phone_, _new_phone_, callback: (res) => any) {
-                let _self_ = this;
-                const res = _phone_.includes(_new_phone_);
-                callback(res);
-            },
-            newNumber(checkLength, _phone_, _new_phone_, callback: (res) => any) {
-                let _self_ = this;
-                const res = (!checkLength) ? (_phone_ != "") ? ",".concat(_new_phone_) : _new_phone_ : "";
-                callback(res)
-            },
-            getNumberArray(_phone_, callback: (res) => any) {
-                let _self_ = this;
-                const res = (_phone_ !== undefined) ? _phone_.split(",") : [];
-                callback(res)
-            },
-            removeNumberIndex(index, _phone_array_, callback: (res) => any) {
-                let _self_ = this;
-                const res = _phone_array_.splice(index, 1);
-                callback(res)
-            },
-            getNumber(_phone_array_, callback: (res) => any) {
-                let _self_ = this;
-                let res = "";
-                _phone_array_.forEach(item => {
-                    _self_.newNumber(false, res, item, newNumber => {
-                        res = res.concat(newNumber);
-                    });
-                });
-                callback(res)
-            },
-            replaceString(_replace_, _new_replace_, _phone_, callback: (res) => any) {
-                let _self_ = this;
-                let res = _phone_.replace(_replace_, _new_replace_);
-                callback(res);
-            },
-            matchString(_match_, _phone_, callback: (res) => any) {
-                let _self_ = this;
-                let res = (_phone_.match(_match_)) ? true : false;
-                callback(res);
-            },
-            main(callback: (res) => any) {
-                let _self_ = this;
-                callback(_self_);
-            }
-        }
-        return function_phone;
-    }
-
-    onInput(_min_, _max_, _event_, _phone_) {
-        this.phoneNumber().main(_self_ => {
-            _phone_.input = _event_.target.value;
-            _self_.checkLength(_min_, _max_, _event_.target.value.length, checkLength => {
-                if (checkLength) {
-                    _self_.matchString(/^\(?([0-9]{1,4})\)?[-. ]?([0-9]{1,4})[-. ]?([0-9]{1,4})[-. ]?([0-9]{1,4})$/, _event_.target.value, matchString => {
-                        console.log("onInput : matchString : ", matchString);
-                        if (matchString)
-                            _self_.checkIncludes(_phone_.number, _event_.target.value, checkIncludes => {
-                                _self_.newNumber(checkIncludes, _phone_.number, _event_.target.value, newNumber => {
-                                    _phone_.number = _phone_.number.concat(newNumber);
-                                    _self_.getNumberArray(_phone_.number, getNumberArray => {
-                                        _phone_.number_array = getNumberArray;
-                                    });
-                                });
-                            });
-                        _phone_.input = "";
-                        _event_.target.value = "";
-                    });
-                }
-            });
-        });
-    };
-
-    onInArrayPhone(_min_, _max_, _event_, _phone_) {
-        this.phoneNumber().main(_self_ => {
-            _phone_.input = _event_.target.value;
-            _self_.checkLength(_min_, _max_, _event_.target.value.length, checkLength => {
-                if (checkLength) {
-                    _self_.matchString(/^\(?([0-9]{1,4})\)?[-. ]?([0-9]{1,4})[-. ]?([0-9]{1,4})[-. ]?([0-9]{1,4})$/, _event_.target.value, matchString => {
-                        console.log("onInput : matchString : ", matchString);
-                        if (matchString)
-                            _self_.checkIncludes(_phone_.number, _event_.target.value, checkIncludes => {
-                                _self_.newNumber(checkIncludes, _phone_.number, _event_.target.value, newNumber => {
-                                    _phone_.number = _phone_.number.concat(newNumber);
-                                    _self_.getNumberArray(_phone_.number, getNumberArray => {
-                                        _phone_.number_array = getNumberArray;
-                                    });
-                                });
-                            });
-                        _phone_.input = "";
-                        _event_.target.value = "";
-                    });
-                }
-            });
-        });
-    }
-
-    inArrayPhone(_min_, _max_, _event_, _phone_) {
-        this.phoneNumber().main(_self_ => {
-            _phone_.input = _event_.target.value;
-            _self_.checkLength(_min_, _max_, _event_.target.value.length, checkLength => {
-                if (checkLength) {
-                    _self_.checkIncludes(_phone_.number, _event_.target.value, checkIncludes => {
-                        _self_.newNumber(checkIncludes, _phone_.number, _event_.target.value, newNumber => {
-                            _phone_.number = _phone_.number.concat(newNumber);
-                            _self_.getNumberArray(_phone_.number, getNumberArray => {
-                                _phone_.number_array = getNumberArray;
-                                _event_.target.value = "";
-                            });
-                        });
-                    });
-                }
-            });
-        });
-    }
-
-    removePhoneNumberIndex(index, _phone_) {
-        this.phoneNumber().main(_self_ => {
-            _self_.removeNumberIndex(index, _phone_.number_array, removeNumberIndex => {
-                _self_.getNumber(_phone_.number_array, getNumber => {
-                    _phone_.number = getNumber;
-                });
-            });
-        });
-    }
-
 
 }

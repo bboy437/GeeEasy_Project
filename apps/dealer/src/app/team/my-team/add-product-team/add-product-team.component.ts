@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TeamAPIService, ProductAPIService } from '@project/services';
+import { TeamAPIService, ProductAPIService, UploadAPIService } from '@project/services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -31,13 +31,22 @@ export class AddProductTeamComponent implements OnInit {
 
   id_local: string;
 
+  image = {
+    update: false,
+    main_image: {
+        get: [],
+        port: []
+    }
+}
+
   constructor(
     private teamAPIService: TeamAPIService,
     private router: Router,
     private route: ActivatedRoute,
     private dialogService: NbDialogService,
     private formBuilder: FormBuilder,
-    private productAPIService: ProductAPIService
+    private productAPIService: ProductAPIService,
+    private uploadAPIService: UploadAPIService
   ) {
     this.id_local = localStorage.getItem('id');
     console.log(' this.id_local', this.id_local);
@@ -162,6 +171,17 @@ export class AddProductTeamComponent implements OnInit {
         warehouse: warehouse
       })
       console.log('warehouse', this.warehouse);
+
+      if (
+        this.warehouse[0].product_image_url !== undefined &&
+        this.warehouse[0].product_image_url !== "-" &&
+        this.warehouse[0].product_image_url !== ""
+    )
+        this.uploadAPIService
+            .uploadImage()
+            .getUrl(this.warehouse[0].product_image_url, red_image => {
+                this.image.main_image.get.push(red_image);
+            });
 
       this.FromProduct.get('product_title').patchValue(this.warehouse[0].product_title);
       this.FromProduct.get('product_sku').patchValue(this.warehouse[0].product_sku);
@@ -326,7 +346,6 @@ export class AddProductTeamComponent implements OnInit {
 
   }
 
-
   saveTransfer(data, transfer: any) {
 
     const dataJson = {
@@ -369,7 +388,6 @@ export class AddProductTeamComponent implements OnInit {
   btnSaveClick() {
     this.save();
   }
-
 
   save() {
 

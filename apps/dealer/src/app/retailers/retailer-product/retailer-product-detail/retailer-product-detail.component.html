@@ -7,7 +7,8 @@
                         <div class="row">
                             <div class="col-auto mr-auto">
                                 <nb-icon class="icon-header" icon="archive-outline"></nb-icon>
-                                <label>Retailer<span class="p-0-12">/</span>Product Retailer<span class="p-0-12">/</span>Detail</label>
+                                <label>Retailer<span class="p-0-12">/</span>Product Retailer<span
+                                        class="p-0-12">/</span>Detail</label>
                             </div>
                             <div class="col-auto">
                                 <button *ngIf="!loading" style="float: right;margin: 3px 0px 3px 1rem;" nbButton
@@ -25,7 +26,7 @@
             </nb-card>
         </div>
         <div class="col-12">
-            <nb-card class="topic" [nbSpinner]="loading" nbSpinnerStatus="success">
+            <nb-card class="topic">
                 <nb-card-header>
                     <div class="header">
                         <div class="row">
@@ -38,48 +39,37 @@
             </nb-card>
         </div>
         <div class="col-12">
-            <nb-card class="box-shadow-unset" [nbSpinner]="loading" nbSpinnerStatus="success">
+            <nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
                 <nb-card-body>
                     <div class="body">
                         <div class="row">
                             <div class="col-12">
                                 <div class="row">
                                     <div class="col-4">
-                                        <div class="row">
-                                            <div class="col-12"
-                                                style="padding-bottom: 1rem;">
-                                                <div class="cover-background-image">
-                                                    <div class="background-image padding-top-100"
-                                                        [ngClass]="{'active' : arrProduct.product_image_url === '-' || arrProduct.product_image_url === ''}"
-                                                        [ngStyle]="{'background-image': 'url('+arrProduct.product_image_url+')'}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <project-file-image theme="white" [image_url_array]="image.main_image.get">
+                                        </project-file-image>
                                     </div>
                                     <div class="col-4">
                                         <div class="row">
                                             <div class="col-12">
-                                                <div class="cover-input">
-                                                    <label>Product Name :</label>
-                                                    <input libOnlyCharacterDefault type="text" nbInput fullWidth
-                                                        formControlName="product_title" />
-                                                </div>
+                                                <project-input inputType="text" label="Product Name :"
+                                                    [control]="Form.get('product_title')">
+                                                </project-input>
                                             </div>
                                             <div class="col-12">
-                                                <div class="cover-input">
-                                                    <label>Product SKU :</label>
-                                                    <input libOnlyCharacterDefault type="text" nbInput fullWidth
-                                                        formControlName="product_sku" />
-                                                </div>
+                                                <project-input label="Product SKU :"
+                                                    [control]="Form.get('product_sku')">
+                                                </project-input>
                                             </div>
                                             <div class="col-12">
-                                                <div class="cover-input">
-                                                    <label>Product Price :</label>
-                                                    <input libOnlyCharacterDefault mask="separator.2"
-                                                    thousandSeparator="," type="text" nbInput fullWidth
-                                                        formControlName="product_price" />
-                                                </div>
+                                                <project-input label="Product Quantity :"
+                                                    [control]="Form.get('product_stock')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12">
+                                                <project-input inputType="text" label="Product Price :"
+                                                    [control]="Form.get('product_price')">
+                                                </project-input>
                                             </div>
                                         </div>
                                     </div>
@@ -150,7 +140,10 @@
                                                 </label>
                                             </td>
                                             <td>
-                                                <nb-radio-group class="disabled" disabled [name]="i" [(ngModel)]="item.discount" (valueChange)="productWholesaleArray().onChange(i,$event)" [ngModelOptions]="{standalone: true}">
+                                                <nb-radio-group class="disabled" disabled [name]="i"
+                                                    [(ngModel)]="item.discount"
+                                                    (valueChange)="productWholesaleArray().onChange(i,$event)"
+                                                    [ngModelOptions]="{standalone: true}">
                                                     <nb-radio value="discount_thb">THB</nb-radio>
                                                     <nb-radio value="discount_percent">%</nb-radio>
                                                 </nb-radio-group>
@@ -163,7 +156,7 @@
                                         </tr>
                                         <tr *ngIf="product_wholesale_array.length === 0">
                                             <td colspan="5">
-                                                <img src="assets/images/loading.png" width="300"/>
+                                                <img src="assets/images/loading.png" width="300" />
                                                 <br><br>
                                                 <label>
                                                     No Data.
@@ -194,7 +187,8 @@
         <div class="col-12">
             <nb-card class="box-shadow-unset">
                 <nb-card-body>
-                    <project-list-file-upload [image_url_array]="product_image.image_url_array"></project-list-file-upload>
+                    <project-list-file-upload [image_url_array]="product_image.image_url_array">
+                    </project-list-file-upload>
                 </nb-card-body>
             </nb-card>
         </div>

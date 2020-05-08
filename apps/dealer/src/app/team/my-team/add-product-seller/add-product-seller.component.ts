@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TeamAPIService, ProductAPIService, SellerService } from '@project/services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { AleartComponent } from '../../../dialogs/aleart/aleart.component';
 import { DialogsCancelComponent } from '../../../dialogs/dialogs-cancel/dialogs-cancel.component';
 import { log } from 'util';
@@ -14,7 +14,7 @@ import { log } from 'util';
 })
 export class AddProductSellerComponent implements OnInit {
   private UrlRouter_Detail = "team/myteam/detail";
-  FromProduct: FormGroup;
+  Form: FormGroup;
   group_id: string;
   user_id: string;
   user_name: string;
@@ -26,9 +26,6 @@ export class AddProductSellerComponent implements OnInit {
   arrUser: any = [];
   arrProducts: any = [];
   arrProductsFilter: any = [];
-  products: any = [];
-  arrWholesale = [];
-  checkin_data: any = {};
   loading = false;
 
   id_local: string;
@@ -61,16 +58,23 @@ export class AddProductSellerComponent implements OnInit {
   }
 
   buildFormProduct() {
-    this.FromProduct = this.formBuilder.group({
-      seller_id: []
+    this.Form = this.formBuilder.group({
+      seller_id: [],
+      product: this.formBuilder.array([])
     });
+  }
+
+  get product(): FormArray {
+    return this.Form.get('product') as FormArray;
   }
 
   getDataSeller() {
     this.sellerService.getSellerProduct(this.user_id).subscribe(res => {
-      this.products = res.response_data;
-      if (this.products.length > 0) {
-        this.products.forEach(element => {
+      console.log('res', res.response_data);
+      const products = res.response_data;
+
+      if (products.length > 0) {
+        products.forEach(element => {
           element.product_wholesale_array.forEach(wholesale => {
             element.product_qty = 1;
             element.product_price = wholesale.product_price;
@@ -78,12 +82,24 @@ export class AddProductSellerComponent implements OnInit {
 
           });
         });
-        this.loading = false;
+
+        let group;
+        let product_wholesale_array;
+        products.forEach(element => {
+          product_wholesale_array = this.formBuilder.array(element.product_wholesale_array)
+          group = this.formBuilder.group({
+            ...element,
+            product_wholesale_array: product_wholesale_array
+          })
+          this.product.push(group);
+        });
+        console.log('product', this.product.value);
       }
 
-      console.log('products', this.products);
+      this.loading = false;
 
-    })
+    });
+
   }
 
   getData() {
@@ -110,13 +126,11 @@ export class AddProductSellerComponent implements OnInit {
 
     let dataProduct = [];
     dataProduct = this.arrProductsFilter.filter((x) => x.product_id === event[0].data.product_id)
-    console.log(event[0].data);
-    console.log('this.arrProductsFilter', this.arrProductsFilter);
     console.log('dataProduct', dataProduct);
-
+    let group;
     if (event.length > 0) {
       for (let index = 0; index < dataProduct.length; index++) {
-        this.products.push({
+        group = this.formBuilder.group({
           product_id: dataProduct[index].product_id,
           product_title: dataProduct[index].product_title,
           product_sku: dataProduct[index].product_sku,
@@ -125,7 +139,7 @@ export class AddProductSellerComponent implements OnInit {
           product_image_url: dataProduct[index].product_image_url,
           onhand: dataProduct[index].checkin_data.onhand,
           checkin_data: dataProduct[index].checkin_data,
-          product_wholesale_array: [{
+          product_wholesale_array: this.formBuilder.array([{
             qty_minimum: 1,
             unit_price: dataProduct[index].product_price,
             discount_thb: 0,
@@ -134,7 +148,7 @@ export class AddProductSellerComponent implements OnInit {
             thb: true,
             percent: false,
             status: 'THB',
-          }],
+          }]),
           product_data_ref: {
             ref_1: '0',
             ref_2: '0',
@@ -143,14 +157,19 @@ export class AddProductSellerComponent implements OnInit {
 
         })
       }
+      console.log('group', group.value);
+      this.product.push(group)
+      console.log('this.product', this.product.value);
 
-      console.log('this.products', this.products);
+
     }
+
   }
+
 
   onKeyQTY(searchValue, data: any): void {
     console.log(data);
-    if (data.product_qty <= 0 || data.product_qty > data.onhand || data.product_qty === "") {
+    if (data.value.product_qty <= 0 || data.value.product_qty > data.onhand || data.value.product_qty === "") {
       const dialogRef = this.dialogService.open(AleartComponent, {
         context: {
           status: 'Quantity',
@@ -158,14 +177,19 @@ export class AddProductSellerComponent implements OnInit {
       });
       dialogRef.onClose.subscribe(result => {
         if (result === 'ok') {
-          data.product_qty = 1;
-          data.checkin_data.onhand = data.product_qty;
+          data.value.product_qty = 1;
+          data.value.checkin_data.onhand = data.value.product_qty;
         }
       });
 
     } else {
-      data.checkin_data.onhand = data.product_qty;
+      data.value.checkin_data.onhand = data.value.product_qty;
     }
+
+    const array = this.product.value
+    this.product.patchValue(array)
+    console.log(this.product.value);
+
   }
 
   onKeyMinimum(searchValue, data: any): void {
@@ -181,13 +205,13 @@ export class AddProductSellerComponent implements OnInit {
           data.qty_minimum = 1;
         }
       });
-
     }
+
   }
 
   onKeyPrice(searchValue, data: any): void {
     console.log(data);
-    console.log('this.products', this.products);
+    console.log('this.product', this.product);
 
     if (data.unit_price < 0 || data.unit_price === "") {
       const dialogRef = this.dialogService.open(AleartComponent, {
@@ -197,6 +221,7 @@ export class AddProductSellerComponent implements OnInit {
       });
       dialogRef.onClose.subscribe(result => {
         if (result === 'ok') {
+          data.unit_price = 1;
           data.thb === true ? data.discount_thb = 0 : data.discount_percent = 0;
           data.sales_price = (data.unit_price - Number(data.thb === true ? data.discount_thb : data.discount_percent));
         }
@@ -209,7 +234,7 @@ export class AddProductSellerComponent implements OnInit {
 
   onKeyDiscountTHB(searchValue, data: any): void {
     console.log(data);
-    console.log('this.products', this.products);
+    console.log('this.product', this.product);
 
     data.discount_percent = 0;
     if (data.discount_thb < 0 || data.discount_thb === "") {
@@ -229,8 +254,6 @@ export class AddProductSellerComponent implements OnInit {
       data.sales_price = (Number(data.unit_price) - Number(data.discount_thb));
     }
   }
-
-
 
   onKeyDiscountPercent(searchValue, data: any): void {
     console.log(data);
@@ -259,7 +282,6 @@ export class AddProductSellerComponent implements OnInit {
     console.log(data);
   }
 
-
   toggle(checked: boolean, data: any, status) {
     console.log(checked, data, status);
     if (status === 'THB') {
@@ -281,7 +303,6 @@ export class AddProductSellerComponent implements OnInit {
     }
   }
 
-
   addWholesale(product, i) {
 
     const data: any = {};
@@ -295,13 +316,15 @@ export class AddProductSellerComponent implements OnInit {
     data.status = 'THB';
 
     product.product_wholesale_array.push(data);
+
     console.log(product, i);
-    console.log('this.products', this.products);
+    console.log('this.product', this.product);
   }
 
-
   btnDeleteProduct(i) {
-    this.products.splice(i, 1);
+    // this.products.splice(i, 1);
+    const control = <FormArray>this.Form.controls['product'];
+    control.removeAt(i);
 
   }
 
@@ -309,36 +332,35 @@ export class AddProductSellerComponent implements OnInit {
     this.save();
   }
 
-
   save() {
     this.loading = true;
-    for (let i = 0; i < this.products.length; i++) {
-      for (let iw = 0; iw < this.products[i].product_wholesale_array.length; iw++) {
-        delete this.products[i].product_totalplice;
-        delete this.products[i].product_qty;
-        delete this.products[i].onhand;
-        delete this.products[i].user_id;
-        delete this.products[i].dealer_id;
+    for (let i = 0; i < this.product.value.length; i++) {
+      for (let iw = 0; iw < this.product.value[i].product_wholesale_array.length; iw++) {
+        delete this.product.value[i].product_totalplice;
+        delete this.product.value[i].product_qty;
+        delete this.product.value[i].onhand;
+        delete this.product.value[i].user_id;
+        delete this.product.value[i].dealer_id;
         // delete this.products[i].create_time;
         // delete this.products[i].user_product_id;
-        delete this.products[i].group_id;
-        this.products[i].create_time = 0;
-        this.products[i].user_product_id = 0;
-        this.products[i].product_wholesale_array[iw].unit_prices = Number(this.products[i].product_wholesale_array[iw].unit_price);
-        this.products[i].product_wholesale_array[iw].product_price = Number(this.products[i].product_price);
-        this.products[i].product_wholesale_array[iw].sales_price = Number(this.products[i].product_wholesale_array[iw].sales_price);
-        delete this.products[i].product_wholesale_array[iw].unit_price
+        delete this.product.value[i].group_id;
+        this.product.value[i].create_time = 0;
+        this.product.value[i].user_product_id = 0;
+        this.product.value[i].product_wholesale_array[iw].unit_prices = Number(this.product.value[i].product_wholesale_array[iw].unit_price);
+        this.product.value[i].product_wholesale_array[iw].product_price = Number(this.product.value[i].product_price);
+        this.product.value[i].product_wholesale_array[iw].sales_price = Number(this.product.value[i].product_wholesale_array[iw].sales_price);
+        delete this.product.value[i].product_wholesale_array[iw].unit_price
       }
       // Unit Price
     }
 
-    console.log(this.products);
+    console.log(this.product.value);
 
     const dataJson = {
       group_id: this.group_id,
       user_id: this.user_id,
       dealer_id: this.id_local,
-      product_json: this.products,
+      product_json: this.product.value,
 
     }
 
@@ -357,9 +379,7 @@ export class AddProductSellerComponent implements OnInit {
     });
 
     dialogRef.onClose.subscribe(result => {
-      if (result === 'cancel') {
-      }
-      if (result === 'ok') {
+      if (result) {
         this.router.navigate([this.UrlRouter_Detail, this.group_id, this.status]);
       }
     });

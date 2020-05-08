@@ -60,13 +60,6 @@ const routes: Routes = [
         m => m.FileManagerModule
       )
   },
-  {
-    path: "sale-rep",
-    loadChildren: () =>
-      import("./sale-rep/sale-rep.module").then(
-        m => m.SaleRepModule
-      )
-  },
   { path: "**", redirectTo: "dashboard" }
 ];
 

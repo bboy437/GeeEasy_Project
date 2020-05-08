@@ -1,4 +1,4 @@
-<div class="pages" [formGroup]="FromProduct">
+<div class="pages" [formGroup]="Form">
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card style="padding:0;">
@@ -41,10 +41,9 @@
                 </nb-card-header>
             </nb-card>
         </div>
-
         <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="success">
             <nb-card>
-                <nb-card-body>
+                <nb-card-body style="min-height: calc(100vh - 250px);">
                     <div class="body">
                         <div class="row">
                             <div class="col-md-6">
@@ -93,7 +92,7 @@
                                             <th style="text-align: left"></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <!-- <tbody>
                                         <tr *ngFor="let item of products; let in=index">
                                             <td style="text-align: left">
                                                 <div class="cover-background-image">
@@ -179,14 +178,6 @@
                                                                 <label style="color: black;">%</label>
                                                             </nb-checkbox>
                                                         </div>
-                                                        <!-- <nb-radio-group [(ngModel)]="wholesale.status"
-                                                            [ngModelOptions]="{standalone: true}"
-                                                            [name]="wholesale.status" [status]="wholesale.status"
-                                                            [class.control-status-example]="wholesale.status === 'control'"
-                                                            (valueChange)="toggle($event, wholesale, wholesale.status)">
-                                                            <nb-radio value="THB">THB</nb-radio>
-                                                            <nb-radio value="%">%</nb-radio>
-                                                        </nb-radio-group> -->
                                                     </div>
                                                     <div class="col-2">
                                                         <div style="padding-top: 0.5rem">
@@ -228,6 +219,142 @@
                                                 <label>No data.</label>
                                             </td>
                                         </tr>
+                                    </tbody> -->
+                                    <tbody>
+                                        <ng-container formArrayName="product">
+                                            <tr *ngFor="let item of product.controls; let i = index;">
+                                                <ng-container [formGroupName]="i">
+                                                    <td style="text-align: left">
+                                                        <div class="cover-background-image">
+                                                            <div class="background-image padding-width-100px-height-100px"
+                                                                [ngClass]="{'active' : item.value.product_image_url === '-' || item.value.product_image_url === ''}"
+                                                                [ngStyle]="{'background-image': 'url('+item.value.product_image_url+')'}">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td style="text-align: left">
+                                                        <label>{{item.value.product_title}}</label><br>
+                                                        <label class="sku">{{item.value.product_sku}}</label>
+                                                    </td>
+                                                    <td>
+                                                        <input style="text-align: right;" type="text"
+                                                            libOnlyCharacterDefault libOnlyCharacternumber
+                                                            mask="separator.0" thousandSeparator=","
+                                                            onKeyPress="if(this.value.length==7) return false;" nbInput
+                                                            fullWidth status="basic" formControlName="product_qty"
+                                                            (keyup)="onKeyQTY($event.target.value, item)">
+                                                    </td>
+                                                    <td style="text-align: right;">
+                                                        <label style="padding-top: 0.5rem">
+                                                            {{item.value.product_price |  number : '1.2-2'}}
+                                                        </label>
+                                                    </td>
+                                                    <td style="text-align: right;">
+                                                        <div class="row"
+                                                            *ngFor="let wholesale of item.value.product_wholesale_array; let iw=index">
+                                                            <div class="col-3">
+                                                                <input style="text-align: right;" type="text"
+                                                                    libOnlyCharacterDefault libOnlyCharacternumber
+                                                                    mask="separator.0" thousandSeparator=","
+                                                                    onKeyPress="if(this.value.length==7) return false;"
+                                                                    nbInput fullWidth status="basic"
+                                                                    [(ngModel)]="wholesale.qty_minimum "
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    (keyup)="onKeyMinimum($event.target.value, wholesale)">
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <input style="text-align: right;" type="text"
+                                                                    libOnlyCharacterDefault libOnlyCharacternumber
+                                                                    mask="separator.2" thousandSeparator="," nbInput
+                                                                    fullWidth status="basic"
+                                                                    [(ngModel)]="wholesale.unit_price"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    (keyup)="onKeyPrice($event.target.value, wholesale)">
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <input *ngIf="wholesale.thb == true"
+                                                                    style="text-align: right;" type="text"
+                                                                    libOnlyCharacterDefault libOnlyCharacternumber
+                                                                    mask="separator.0" thousandSeparator=","
+                                                                    onKeyPress="if(this.value.length==7) return false;"
+                                                                    nbInput fullWidth status="basic"
+                                                                    [(ngModel)]="wholesale.discount_thb"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    (keyup)="onKeyDiscountTHB($event.target.value, wholesale)">
+
+                                                                <input *ngIf="wholesale.percent == true"
+                                                                    style="text-align: right;" type="text"
+                                                                    libOnlyCharacterDefault libOnlyCharacternumber
+                                                                    mask="separator.0" thousandSeparator=","
+                                                                    onKeyPress="if(this.value.length==7) return false;"
+                                                                    nbInput fullWidth status="basic"
+                                                                    [(ngModel)]="wholesale.discount_percent "
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    (keyup)="onKeyDiscountPercent($event.target.value, wholesale)">
+
+
+                                                            </div>
+                                                            <div class="col-1">
+                                                                <div style="float: left; padding: 0;">
+                                                                    <nb-checkbox status="primary"
+                                                                        [(ngModel)]="wholesale.thb"
+                                                                        [ngModelOptions]="{standalone: true}"
+                                                                        (checkedChange)="toggle($event, wholesale, 'THB')">
+                                                                        <label style="color: black;">THB</label>
+                                                                    </nb-checkbox>
+                                                                </div>
+                                                                <div style="float: left; padding: 0;">
+                                                                    <nb-checkbox status="primary"
+                                                                        [(ngModel)]="wholesale.percent"
+                                                                        [ngModelOptions]="{standalone: true}"
+                                                                        (checkedChange)="toggle($event, wholesale,'%')">
+                                                                        <label style="color: black;">%</label>
+                                                                    </nb-checkbox>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-2">
+                                                                <div style="padding-top: 0.5rem">
+                                                                    <label>
+                                                                        {{wholesale.sales_price |  number : '1.2-2'}}
+                                                                    </label>
+                                                                </div>
+                                                                <div *ngIf="item.value.product_wholesale_array.length > 1">
+                                                                    <label class="delete"
+                                                                        (click)="deleteWholesale(item.value.product_wholesale_array,iw)">
+                                                                        Delete
+                                                                    </label>
+                                                                </div>
+
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div lass="row">
+                                                            <div class="col">
+                                                                <button nbButton style="width: 80px; float: left;"
+                                                                    size="small" status="success"
+                                                                    (click)="addWholesale(item.value, i)">
+                                                                    Add
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div style="padding-top: 0.5rem;">
+                                                            <nb-icon icon="close-outline" (click)="btnDeleteProduct(i)">
+                                                            </nb-icon>
+                                                        </div>
+                                                    </td>
+                                                </ng-container>
+                                            </tr>
+                                        </ng-container>
+                                        <tr *ngIf="loading || product.value.length == 0"
+                                            style="height:300px; background-color: white;">
+                                            <td colspan="6" style="padding-top: 50px; text-align: center;">
+                                                <img src="assets/images/loading.png" width="300"><br><br>
+                                                <label>No data.</label>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -236,8 +363,6 @@
                 </nb-card-body>
             </nb-card>
         </div>
-
-
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <project-footercomponent> </project-footercomponent>
         </div>

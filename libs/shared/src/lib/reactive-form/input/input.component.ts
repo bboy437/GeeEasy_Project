@@ -26,6 +26,7 @@ export class InputComponent implements OnInit {
   @Input() requiredName: string;
   @Input() emailName: string;
 
+
  //Error validate
   @Input() forceShowErrors = false;
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SellerService } from '@project/services';
+import { SellerService, UploadAPIService } from '@project/services';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -17,11 +17,22 @@ export class SellerProductDetailComponent implements OnInit {
     arrProduct: any = [];
     loading = false;
     Form: FormGroup;
+
+    image = {
+        update: false,
+        main_image: {
+            get: [],
+            port: []
+        }
+    }
+
+
     constructor(
         private router: Router,
         private route: ActivatedRoute,
         private sellerService: SellerService,
         private fb: FormBuilder,
+        private uploadAPIService: UploadAPIService
     ) {
         this.loading = true;
 
@@ -37,6 +48,7 @@ export class SellerProductDetailComponent implements OnInit {
 
     getProductDetail(id) {
         this.sellerService.getSellerProductDetail(id).subscribe(res => {
+            this.sellerService.dataSellerProductDetail(res);
             this.arrProduct = res.response_data[0];
             this.arrProduct.product_wholesale_array.forEach(element => {
                 this.arrProduct.product_price = element.product_price;
@@ -45,6 +57,11 @@ export class SellerProductDetailComponent implements OnInit {
             });
             console.log(' this.arrProduct', this.arrProduct);
             this.valueForm();
+            if (this.arrProduct.product_image_url !== undefined && this.arrProduct.product_image_url !== "-" && this.arrProduct.product_image_url !== "")
+                this.uploadAPIService.uploadImage().getUrl(this.arrProduct.product_image_url, red_image => {
+                    this.image.main_image.get.push(red_image);
+                });
+
             this.loading = false;
 
         })

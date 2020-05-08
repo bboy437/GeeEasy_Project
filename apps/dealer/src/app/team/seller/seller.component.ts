@@ -8,8 +8,7 @@ import { Component, OnInit } from "@angular/core";
           <router-outlet></router-outlet>
       </nb-layout-column>
     </nb-layout>
-  `,
-  styleUrls: ["./seller.component.scss"],
+  `
 })
 
 export class SellerComponent { }

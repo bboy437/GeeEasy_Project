@@ -10,9 +10,10 @@
                                 <label>Dealers <span class="p-0-12">/</span>New Dealer</label> -->
                             </div>
                             <div class="col-auto">
-                                <button nbButton style="float: right;margin: 3px 0px 3px 1rem;"
-                                    [nbSpinner]="image.update" nbSpinnerStatus="success" nbButton size="medium"
-                                    status="success" (click)="btnSaveClick()">Save</button>
+                                <button [disabled]="Form.invalid || isCheckPhone" nbButton
+                                    style="float: right;margin: 3px 0px 3px 1rem;" [nbSpinner]="image.update"
+                                    nbSpinnerStatus="success" nbButton size="medium" status="success"
+                                    (click)="btnSaveClick()">Save</button>
                                 <!-- <button nbButton style="float: right;margin: 3px 0px 3px 1rem;" status="danger"
                                     (click)="btnCancelClick()">Cancel</button> -->
                                 <!-- <button style="float: right;margin: 3px 0px 3px 1rem;" nbButton type="button"
@@ -65,7 +66,8 @@
                                                         <label>Product Category :</label>
                                                         <project-comp-category [status]="'Supplier'"
                                                             [product_category_root_id]="product_category_root_id"
-                                                            [active]="'Distributor'" (categoryID)="categoryEvent($event)">
+                                                            [active]="'Distributor'"
+                                                            (categoryID)="categoryEvent($event)">
                                                         </project-comp-category>
                                                         <div *ngIf="submitted && !!f.product_category_id.errors">
                                                             <div class="required"
@@ -80,98 +82,48 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12" style="padding-top: 1rem;">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12" style="padding-top: 1rem;">
                                 <div class="row">
                                     <div class="col-12 col-12 col-md-6 col-lg-6 col-xl-6">
                                         <div class="row">
-                                            <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                                 <div class="cover-create-topic">
                                                     <label>
                                                         Address Information
                                                     </label>
                                                 </div>
                                             </div>
-                                            <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                                 <project-input libOnly="libOnlyCharacterDefault" inputType="text"
                                                     label="First Name :" requiredName="First Name"
                                                     [control]="Form.get('distributor_firstname')">
                                                 </project-input>
                                             </div>
-                                            <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                                 <project-input libOnly="libOnlyCharacterDefault" inputType="text"
                                                     label="Last Name :" requiredName="Last Name"
                                                     [control]="Form.get('distributor_lastname')">
                                                 </project-input>
                                             </div>
-                                            <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                                 <project-input libOnly="libOnlyCharacterDefault" inputType="text"
                                                     label="Email :" requiredName="Email"
                                                     [control]="Form.get('distributor_email')">
                                                 </project-input>
                                             </div>
-                                            <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-phone-number">
-                                                    <div class="row">
-                                                        <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
-                                                            <div class="cover-input">
-                                                                <label>Telephone Number</label>
-                                                                <input libOnlyCharacterDefault nbInput fullWidth
-                                                                    type="text" status="primary"
-                                                                    libOnlyCharacterphonnumber
-                                                                    formControlName="telephoneNumber"
-                                                                    (keyup)="onInput(19,19,$event,phone.tel)"
-                                                                    (keyup.enter)="onInArrayPhone(9,19,$event,phone.tel)"
-                                                                    [(ngModel)]="phone.tel.input"
-                                                                    [ngClass]="{'is-invalid': submitted && phone.tel.number === ''}" />
-                                                                <div class="invalid-feedback"
-                                                                    [ngClass]="{'display-block': submitted && phone.tel.number === ''}">
-                                                                    <div class="required">
-                                                                        Telephone Number is required
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <span class="phone"
-                                                                *ngFor="let item of phone.tel.number_array ; let i = index">
-                                                                {{item}}<nb-icon
-                                                                    (click)="removePhoneNumberIndex(i,phone.tel)"
-                                                                    icon="close-outline"></nb-icon>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="!loading">
+                                                <project-input-telephone label="Telephone Number :"
+                                                    requiredName="Telephone Number" [control]="Form.get('phone')"
+                                                    [data]="arrobjRow.distributor_tel"
+                                                    (valueChange)="onDataTel($event)">
+                                                </project-input-telephone>
                                             </div>
-                                            <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-phone-number">
-                                                    <div class="row">
-                                                        <div class="col-12 col-12 col-md-12 col-lg-12 col-xl-12">
-                                                            <div class="cover-input">
-                                                                <label>Mobile Phone Number</label>
-                                                                <input libOnlyCharacterDefault nbInput fullWidth
-                                                                    type="text" status="primary" mask='000-000-0000'
-                                                                    placeholder="XXX-XXX-XXXX"
-                                                                    (keyup)="inArrayPhone(12,12,$event,phone.mobile)"
-                                                                    (keyup.enter)="inArrayPhone(12,12,$event,phone.mobile)"
-                                                                    [ngClass]="{'is-invalid': submitted && phone.mobile.number === ''}" />
-                                                                <div class="invalid-feedback"
-                                                                    [ngClass]="{'display-block': submitted && phone.mobile.number === ''}">
-                                                                    <div class="required">
-                                                                        Mobile Phone Number is required
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <span class="phone"
-                                                                *ngFor="let item of phone.mobile.number_array ; let i = index">
-                                                                {{item}}<nb-icon
-                                                                    (click)="removePhoneNumberIndex(i,phone.mobile)"
-                                                                    icon="close-outline"></nb-icon>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="!loading">
+                                                <project-input-mobile-phone label="Mobile Number :"
+                                                    requiredName="Mobile Number" [control]="Form.get('mobile')"
+                                                    [data]="arrobjRow.distributor_mobile"
+                                                    (valueChange)="onDataMobilel($event)">
+                                                </project-input-mobile-phone>
                                             </div>
                                         </div>
                                     </div>

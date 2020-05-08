@@ -1,6 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
-import { TeamAPIService } from '@project/services';
+import { TeamAPIService, UploadAPIService } from '@project/services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
 import { DialogsTeamComponent } from '../../../dialogs/dialogs-team/dialogs-team.component';
@@ -30,12 +30,21 @@ export class MyteamDetailComponent implements OnInit {
 
     id_local: string;
 
+    image = {
+        update: false,
+        main_image: {
+            get: [],
+            port: []
+        }
+    }
+
     constructor(
         private teamAPIService: TeamAPIService,
         private router: Router,
         private route: ActivatedRoute,
         private dialogService: NbDialogService,
         private fb: FormBuilder,
+        private uploadAPIService: UploadAPIService
     ) {
         this.id_local = localStorage.getItem('id');
         console.log(' this.id_local', this.id_local);
@@ -45,17 +54,13 @@ export class MyteamDetailComponent implements OnInit {
     ngOnInit() {
         this.Builder();
         const params = this.route.snapshot.paramMap;
+        this.RowID = params.get("id");
+        this.RowStatus = params.get("status");
 
-        if (params.has("id")) {
-            this.RowID = params.get("id");
-            this.RowStatus = params.get("status");
-            console.log('RowStatus', this.RowStatus);
-
-            if (this.RowID === "new") {
-            } else {
-                this.getData();
-            }
+        if (this.RowID) {
+            this.getData();
         }
+        
     }
 
     Builder() {
@@ -72,6 +77,18 @@ export class MyteamDetailComponent implements OnInit {
             this.getSeller(-1)
             console.log(this.arrobjRow);
             this.Form.get('group_name').patchValue(this.arrobjRow.group_name);
+
+            if (
+                this.arrobjRow.group_image_url !== undefined &&
+                this.arrobjRow.group_image_url !== "-" &&
+                this.arrobjRow.group_image_url !== ""
+            )
+                this.uploadAPIService
+                    .uploadImage()
+                    .getUrl(this.arrobjRow.group_image_url, red_image => {
+                        this.image.main_image.get.push(red_image);
+                    });
+
             this.loading = false;
         })
     }
@@ -116,7 +133,6 @@ export class MyteamDetailComponent implements OnInit {
         });
     }
 
-
     addProductToTeamChange() {
 
         // const dialogRef = this.dialogService.open(DialogsTeamComponent, {
@@ -137,7 +153,6 @@ export class MyteamDetailComponent implements OnInit {
         // });
         this.router.navigate([this.UrlRouter_AddProductToTeam, this.arrobjRow.group_id, this.arrobjRow.group_name, this.RowStatus]);
     }
-
 
     addProductToSellerChange(data) {
         console.log(data);
@@ -196,7 +211,7 @@ export class MyteamDetailComponent implements OnInit {
 
     btnRowClick(row: any) {
         this.router.navigate([this.UrlRouter_SellerDetail, row, 'team']);
-      }
-    
+    }
+
 
 }

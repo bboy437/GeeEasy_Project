@@ -46,6 +46,8 @@ import { TextareaComponent } from './reactive-form/textarea/textarea.component';
 import { SelectComponent } from './reactive-form/select/select.component';
 import { IConfig, NgxMaskModule } from "ngx-mask";
 import { NgxSelectComponent } from './reactive-form/ngx-select/ngx-select.component';
+import { InputTelephoneComponent } from './reactive-form/input-telephone/input-telephone.component';
+import { InputMobilePhoneComponent } from './reactive-form/input-mobile-phone/input-mobile-phone.component';
 
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
@@ -60,7 +62,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MapsComponent, FileImageComponent, CompCategoryComponent,
     CompCategoryBrowseComponent, OnlyUnit, CompPaymentComponent,
     CompProductsSupplierDetailComponent, CompCategoryOwnComponent, OnlyProductName,
-    InputComponent, TextareaComponent, SelectComponent, NgxSelectComponent,
+    InputComponent, TextareaComponent, SelectComponent, NgxSelectComponent, InputTelephoneComponent, InputMobilePhoneComponent,
   ],
   imports: [
     CommonModule,
@@ -84,7 +86,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     FileImageComponent, FileUploadComponent, FileUploadNoteComponent, ListFileUploadComponent,
     DecimalMask, CompLocationComponent, MapsComponent, CompCategoryComponent, CompCategoryBrowseComponent,
     OnlyUnit, CompPaymentComponent, CompProductsSupplierDetailComponent, CompCategoryOwnComponent,
-    OnlyProductName, InputComponent, NgxSelectComponent, TextareaComponent, SelectComponent
+    OnlyProductName, InputComponent, NgxSelectComponent, TextareaComponent, SelectComponent, InputTelephoneComponent, InputMobilePhoneComponent
   ],
   entryComponents: [MapsComponent]
 })

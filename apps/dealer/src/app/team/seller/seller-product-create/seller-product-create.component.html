@@ -7,7 +7,8 @@
                         <div class="row">
                             <div class="col-auto mr-auto">
                                 <nb-icon class="icon-header" icon="person-outline"></nb-icon>
-                                <label>Seller<span class="p-0-12">/</span>Product<span class="p-0-12">/</span>Update</label>
+                                <label>Seller<span class="p-0-12">/</span>Product<span
+                                        class="p-0-12">/</span>Update</label>
                             </div>
 
                             <div class="col-auto">
@@ -39,80 +40,25 @@
             </nb-card>
         </div>
         <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="success">
-            <nb-card class="box-shadow-unset">
-                <nb-card-body>
+            <nb-card>
+                <nb-card-body style="min-height: calc(100vh - 250px);">
                     <div class="body">
                         <div class="row">
                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                 <div class="row">
                                     <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                        <div class="row">
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12"
-                                                style="padding-bottom: 1rem;">
-                                                <div class="cover-input center">
-                                                    <div class="uppy-Dashboard-inner"
-                                                        *ngIf="imgURL == undefined || imgURL == '-' "
-                                                        (click)="fileInput.click()" appDragDrop
-                                                        (change)="uploadFile($event.target.files)"
-                                                        (onFileDropped)="uploadFile($event)">
-                                                        <div class="uppy-Dashboard-innerWrap">
-                                                            <div class="uppy-Dashboard-dropFilesHereHint">Drop your
-                                                                files
-                                                                here</div>
-                                                            <div class="uppy-DashboardAddFiles">
-                                                                <input nbInput status="primary" hidden type="file"
-                                                                    #fileInput
-                                                                    (change)="uploadFile($event.target.files)"
-                                                                    accept='image/*'>
-                                                                <div class="uppy-DashboardTabs">
-                                                                    <div class="uppy-Dashboard-dropFilesTitle">Drop
-                                                                        files
-                                                                        here , paste or <span>browse</span> </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="uppy-Dashboard-inner"
-                                                        *ngIf="imgURL != undefined && imgURL != '-'"
-                                                        (click)="fileInput.click()" appDragDrop
-                                                        (change)="uploadFile($event.target.files)"
-                                                        (onFileDropped)="uploadFile($event)">
-                                                        <div class="uppy-Dashboard-innerWrap">
-                                                            <img *ngIf="imgURL != undefined && imgURL != '-'"
-                                                                class="imgsize" [src]="imgURL" />
-                                                        </div>
-                                                    </div>
-                                                    <input nbInput status="primary" hidden type="file" #fileInput
-                                                        (change)="uploadFile($event.target.files)" accept='image/*'>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <project-file-image theme="white" [image_url_array]="image.main_image.get"
+                                            [height]="50">
+                                        </project-file-image>
                                     </div>
                                     <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                        <div class="row">
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Product Name :</label>
-                                                    <input status="primary" type="text"
-                                                        status="primary" nbInput fullWidth
-                                                        formControlName="product_title" class="form-control"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.product_title.errors }" />
-                                                    <div *ngIf="submitted && !!f.product_title.errors"
-                                                        class="invalid-feedback">
-                                                        <div class="required" *ngIf="!!f.product_title.errors.required">
-                                                            Product Name is required
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                                                <div class="cover-input">
-                                                    <label>Product SKU :</label>
-                                                    <input type="text" nbInput fullWidth
-                                                        formControlName="product_sku" />
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <project-input inputType="text" label="Product Name :"
+                                            requiredName="Product Name" [control]="Form.get('product_title')"
+                                            [forceShowErrors]="submitted">
+                                        </project-input>
+                                        <project-input inputType="text" label="Product SKU :"
+                                            [control]="Form.get('product_sku')">
+                                        </project-input>
                                     </div>
 
                                 </div>

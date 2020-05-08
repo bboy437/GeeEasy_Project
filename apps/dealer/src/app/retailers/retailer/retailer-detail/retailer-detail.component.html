@@ -1,41 +1,139 @@
-<div class="pages">
+<div class="pages" [formGroup]="Form">
     <div class="row">
-        <div class="col-12">
-            <div class="row">
-                <div class="col-12">
-                    <nb-card>
-                        <nb-card-header>
-                            <div class="header">
-                                <div class="row">
-                                    <div class="col-auto mr-auto">
-                                        <nb-icon class="icon-header" icon="archive-outline"></nb-icon>
-                                        <label>Retailer<span class="p-0-12">/</span>Detail</label>
-                                    </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <nb-icon class="icon-header" icon="archive-outline"></nb-icon>
+                                <label>Retailer<span class="p-0-12">/</span>Detail</label>
+                            </div>
 
-                                    <div class="col-auto">
-                                        <button *ngIf="!dataSend.loading" nbButton type="button" size="medium"
-                                            status="success" (click)="click().editRetailer()">
-                                            Edit
-                                        </button>
-                                        <button nbButton type="button" size="medium" status="danger"
-                                            (click)="click().listRetailer()">
-                                            Back
-                                        </button>
+                            <div class="col-auto">
+                                <button *ngIf="!loadings" nbButton type="button" size="medium" status="success"
+                                    (click)="click().editRetailer()">
+                                    Edit
+                                </button>
+                                <button nbButton type="button" size="medium" status="danger"
+                                    (click)="click().listRetailer()">
+                                    Back
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card class="margin-bottom-0-1-rem">
+                <nb-card-header>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-auto mr-auto">
+                                <label>
+                                    {{arrobjRow.retail_name}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-header>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loadings" nbSpinnerStatus="success">
+            <nb-card>
+                <nb-card-body>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                        <project-display-file-image [height]="50" theme="white"
+                                            [image_url_array]="image.main_image.get">
+                                        </project-display-file-image>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                        <project-input inputType="text" label="Retail Name :"
+                                            [control]="Form.get('retail_name')">
+                                        </project-input>
+                                        <project-input inputType="text" label="Retail Company :"
+                                            [control]="Form.get('retail_company')">
+                                        </project-input>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                        <project-input inputType="text" label="First Name :"
+                                            [control]="Form.get('retail_first_name')">
+                                        </project-input>
+                                        <project-input inputType="text" label="Last Name :"
+                                            [control]="Form.get('retail_last_name')">
+                                        </project-input>
+                                        <project-input inputType="text" label="Email :"
+                                            [control]="Form.get('retail_email')">
+                                        </project-input>
+                                        <project-input inputType="text" label="Telephone Number :"
+                                            [control]="Form.get('retail_tel')">
+                                        </project-input>
+                                        <project-input inputType="text" label="Mobile Phone Number :"
+                                            [control]="Form.get('retail_mobile')">
+                                        </project-input>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                        <project-textarea rows="3" label="Address :" [control]="Form.get('Address')">
+                                        </project-textarea>
+                                        <project-input inputType="text" label="Address Number :"
+                                            [control]="Form.get('number')">
+                                        </project-input>
+                                        <project-input inputType="text" label="Province :"
+                                            [control]="Form.get('province')">
+                                        </project-input>
+                                        <project-input inputType="text" label="Amphoe :" [control]="Form.get('amphoe')">
+                                        </project-input>
+                                        <project-input inputType="text" label="Tambon :" [control]="Form.get('tambon')">
+                                        </project-input>
+                                        <div class="row">
+                                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                                <project-input inputType="text" label="Zipcode :"
+                                                    [control]="Form.get('zipcode')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                                <project-input inputType="text" label="Latitude, Longitude :"
+                                                    [control]="Form.get('location_lat_location_lng')">
+                                                </project-input>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </nb-card-header>
-                    </nb-card>
-                </div>
+                            <div class="col-12 col-md-12 col-lg-12 col-xl-12" *ngIf="!loadings">
+                                <project-map [let]="arrobjRow.retail_addr_lat" [long]="arrobjRow.retail_addr_lng">
+                                </project-map>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="row">
                 <div class="col-12">
                     <nb-card class="margin-bottom-0-1-rem">
                         <nb-card-header>
                             <div class="header">
                                 <div class="row">
                                     <div class="col-auto mr-auto">
-                                        <label>
-                                            {{dataSend.data_api.retail_name}}
-                                        </label>
+                                        <nb-icon class="icon-header" icon="archive-outline"></nb-icon>
+                                        <label>Product Retailer</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button nbButton size="medium" status="primary"
+                                            (click)="click().createProducts()">
+                                            Create Product
+                                        </button>
+                                        <button nbButton size="medium" status="primary"
+                                            (click)="click().dealerProduct()">
+                                            Add Product To Retailer
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -43,303 +141,178 @@
                     </nb-card>
                 </div>
                 <div class="col-12">
-                    <nb-card class="box-shadow-unset" size="xsmall" [nbSpinner]="dataSend.loading"
-                        nbSpinnerStatus="success">
+                    <nb-card>
                         <nb-card-body>
+                            <div class="header"></div>
                             <div class="body">
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="row">
-                                            <div class="col-6">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="cover-background-image margin-bottom-1rem">
-                                                            <div class="background-image padding-top-10"
-                                                                [ngClass]="{'active' : dataSend.data_api.retail_image_url === '-' || dataSend.data_api.retail_image_url === ''}"
-                                                                [ngStyle]="{'background-image': 'url('+dataSend.data_api.retail_image_url+')'}">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="row">
-                                                    <div class="col-{{item.col}}"
-                                                        *ngFor="let item of cover_input.col_6_1; let i = index">
-                                                        <div class="cover-input">
-                                                            <label>
-                                                                {{item.topic}} :
-                                                            </label>
-                                                            <input *ngIf="item.type === 'input'" libOnlyCharacterDefault
-                                                                disabled type="text" nbInput fullWidth
-                                                                [(ngModel)]="item.input" />
-                                                            <textarea *ngIf="item.type === 'textarea'" rows="3" disabled
-                                                                type="text" nbInput fullWidth
-                                                                [(ngModel)]="item.input"></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="row">
-                                                    <div class="col-{{item.col}}"
-                                                        *ngFor="let item of cover_input.col_6_2; let i = index">
-                                                        <div class="cover-input">
-                                                            <label>
-                                                                {{item.topic}} :
-                                                            </label>
-                                                            <input *ngIf="item.type === 'input'" libOnlyCharacterDefault
-                                                                disabled type="text" nbInput fullWidth
-                                                                [(ngModel)]="item.input" />
-                                                            <textarea *ngIf="item.type === 'textarea'" rows="3" disabled
-                                                                type="text" nbInput fullWidth
-                                                                [(ngModel)]="item.input"></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="row">
-                                                    <div class="col-{{item.col}}"
-                                                        *ngFor="let item of cover_input.col_6_3; let i = index">
-                                                        <div class="cover-input">
-                                                            <label>
-                                                                {{item.topic}} :
-                                                            </label>
-                                                            <input *ngIf="item.type === 'input'" libOnlyCharacterDefault
-                                                                disabled type="text" nbInput fullWidth
-                                                                [(ngModel)]="item.input" />
-                                                            <textarea *ngIf="item.type === 'textarea'" rows="3" disabled
-                                                                type="text" nbInput fullWidth
-                                                                [(ngModel)]="item.input"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="cover-input">
-                                                            <label>Latitude, Longitude</label>
-                                                            <input libOnlyCharacterDefault disabled type="text" nbInput
-                                                                fullWidth
-                                                                [(ngModel)]="dataSend.map.latitude +', '+ dataSend.map.longitude" />
-                                                        </div>
-                                                    </div>
+                                            <div class="col-3">
+                                                <div class="cover-form icon">
+                                                    <nb-icon class="icon-one" icon="search-outline"></nb-icon>
+                                                    <nb-icon class="icon-two" *ngIf="strFilter" icon="close-outline">
+                                                    </nb-icon>
+                                                    <input libOnlyCharacterDefault type="text" nbInput nbInput fullWidth
+                                                        status="primary" placeholder="Search for name"
+                                                        (keyup)="filter($event.target.value)" [(ngModel)]="strFilter"
+                                                        [ngModelOptions]="{standalone: true}" />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12"
-                                        *ngIf="dataSend.map.latitude != 0 && dataSend.map.longitude != 0">
-                                        <project-map [let]="dataSend.map.latitude" [long]="dataSend.map.longitude">
-                                        </project-map>
+                                    <div class="col-12" *ngIf="!isReload">
+                                        <div class="row">
+                                            <div class="col-12" *ngIf="wishlist$ | async as wishlist; else loading">
+                                                <ngx-datatable [columnMode]="ColumnMode.force" [rows]="wishlist"
+                                                    rowHeight="auto" [headerHeight]="46"
+                                                    (activate)="click().detailProducts($event)" [scrollbarH]="true"
+                                                    [messages]="messages">
+                                                    <ngx-datatable-column name="Images" [width]="100">
+                                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                                            <div class="cover-background-image">
+                                                                <div class="background-image padding-width-100px-height-100px"
+                                                                    [ngClass]="{'active' : row.product_image_url === '-' || row.product_image_url === ''}"
+                                                                    [ngStyle]="{'background-image': 'url('+row.product_image_url+')'}">
+                                                                </div>
+                                                            </div>
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                    <ngx-datatable-column name="Product Name" [sortable]="true"
+                                                        prop="product_title" [width]="400">
+                                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                                            <label>{{row.product_title}}</label><br>
+                                                            <label class="sku">{{row.product_sku}}</label>
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                    <ngx-datatable-column name="Date" [sortable]="true"
+                                                        prop="create_time">
+                                                        <ng-template let-column="column" ngx-datatable-header-template>
+                                                            <div class="center">
+                                                                Date
+                                                            </div>
+                                                        </ng-template>
+                                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                                            <div class="center">
+                                                                {{row.create_time * 1000 |  date: 'dd/MM/yyyy HH:mm'}}
+                                                            </div>
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                    <ngx-datatable-column name="Retailer Stock" [sortable]="true"
+                                                        prop="total_quantity">
+                                                        <ng-template let-column="column" ngx-datatable-header-template>
+                                                            <div class="right">
+                                                                Retailer Stock
+                                                            </div>
+                                                        </ng-template>
+                                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                                            <div class="right">
+                                                                {{ row.checkin_data.onhand | number }}
+                                                            </div>
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                    <ngx-datatable-column name="Product Price" [sortable]="true"
+                                                        prop="total_product">
+                                                        <ng-template let-column="column" ngx-datatable-header-template>
+                                                            <div class="right">
+                                                                Product Price
+                                                                <nb-icon (click)="btnReload()" icon="refresh-outline"
+                                                                    style="
+                                                                            float: right;
+                                                                            margin-left: 1rem;
+                                                                            margin-right: 1rem; 
+                                                                            cursor: pointer;">
+                                                                </nb-icon>
+                                                            </div>
+                                                        </ng-template>
+                                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                                            <div class="right">
+                                                                {{ row.product_price | number : '1.2-2' }}
+                                                                <!-- <nb-icon icon="close-outline"></nb-icon> -->
+                                                            </div>
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                </ngx-datatable> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ng-template #loading>
+                                        <table class="table hover" style="width: 100%;margin: 0 0.5rem;">
+                                            <thead>
+                                                <tr>
+                                                    <!-- 'Order Date','Contact Email','Telephone Number' -->
+                                                    <th class="left"
+                                                        *ngFor="let item of ['Images','Product Name','Product SKU','Product Quantity','Product Price']">
+                                                        {{item}}
+                                                    </th>
+                                                    <th (click)="btnReload()">
+                                                        <nb-icon style="float: right; cursor: pointer;"
+                                                            icon="refresh-outline">
+                                                        </nb-icon>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="unset" style="height:300px;">
+                                                    <td colspan="8" style="padding-top: 50px;">
+                                                        <div style="height: 100px;" [nbSpinner]="loadings"
+                                                            nbSpinnerStatus="success">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </ng-template>
+                                    <div class="col-12" *ngIf="isReload">
+                                        <div class="cover-table" style="width: 100%;">
+                                            <table class="table hover" style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="left"
+                                                            *ngFor="let item of ['Images','Product Name','Product SKU','Product Quantity','Product Price']">
+                                                            {{item}}
+                                                        </th>
+                                                        <th (click)="btnReload()">
+                                                            <nb-icon style="float: right; cursor: pointer;"
+                                                                icon="refresh-outline">
+                                                            </nb-icon>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="unset" style="height:300px; ">
+                                                        <td colspan="8" style="padding-top: 50px;">
+                                                            <div style="height: 100px;" [nbSpinner]="isReload"
+                                                                nbSpinnerStatus="success">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-12  d-flex justify-content-between p-2"
+                                        *ngIf="!isReload && !loadings">
+                                        <ngb-pagination [collectionSize]="tatallist$ | async"
+                                            [(page)]="wishlistTableService.page"
+                                            [pageSize]="wishlistTableService.pageSize"></ngb-pagination>
+                                        <select class="custom-select" style="width: auto" name="pageSize"
+                                            [(ngModel)]="wishlistTableService.pageSize"
+                                            [ngModelOptions]="{standalone: true}">
+                                            <option [ngValue]="10">10 items per page</option>
+                                            <option [ngValue]="20">20 items per page</option>
+                                            <option [ngValue]="50">50 items per page</option>
+                                            <option [ngValue]="100">100 items per page</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
                         </nb-card-body>
                     </nb-card>
                 </div>
-                <div class="col-12">
-                    <div class="row">
-                        <div class="col-12">
-                            <nb-card class="margin-bottom-0-1-rem">
-                                <nb-card-header>
-                                    <div class="header">
-                                        <div class="row">
-                                            <div class="col-auto mr-auto">
-                                                <nb-icon class="icon-header" icon="archive-outline"></nb-icon>
-                                                <label>Product Retailer</label>
-                                            </div>
-                                            <div class="col-auto">
-                                                <button nbButton size="medium" status="primary"
-                                                    (click)="click().createProducts()">
-                                                    Create Product
-                                                </button>
-                                                <button nbButton size="medium" status="primary"
-                                                    (click)="click().dealerProduct()">
-                                                    Add Product To Retailer
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </nb-card-header>
-                            </nb-card>
-                        </div>
-                        <div class="col-12">
-                            <nb-card class="box-shadow-unset">
-                                <nb-card-body>
-                                    <div class="header"></div>
-                                    <div class="body">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="row">
-                                                    <div class="col-3">
-                                                        <div class="cover-form icon">
-                                                            <nb-icon class="icon-one" icon="search-outline"></nb-icon>
-                                                            <nb-icon class="icon-two" *ngIf="strFilter"
-                                                                icon="close-outline"></nb-icon>
-                                                            <input libOnlyCharacterDefault type="text" nbInput nbInput
-                                                                fullWidth status="primary" placeholder="Search for name"
-                                                                (keyup)="filter($event.target.value)"
-                                                                [(ngModel)]="strFilter" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-12" *ngIf="!isReload">
-                                                <div class="row">
-                                                    <div class="col-12"
-                                                        *ngIf="wishlist$ | async as wishlist; else loading">
-                                                        <ngx-datatable [columnMode]="ColumnMode.force" [rows]="wishlist"
-                                                            rowHeight="auto" [headerHeight]="46"
-                                                            (activate)="click().detailProducts($event)"
-                                                            [scrollbarH]="true" [messages]="messages">
-                                                            <ngx-datatable-column name="Images" [width]="100">
-                                                                <ng-template let-row="row" ngx-datatable-cell-template>
-                                                                    <div class="cover-background-image">
-                                                                        <div class="background-image padding-width-100px-height-100px"
-                                                                            [ngClass]="{'active' : row.product_image_url === '-' || row.product_image_url === ''}"
-                                                                            [ngStyle]="{'background-image': 'url('+row.product_image_url+')'}">
-                                                                        </div>
-                                                                    </div>
-                                                                </ng-template>
-                                                            </ngx-datatable-column>
-                                                            <ngx-datatable-column name="Product Name" [sortable]="true"
-                                                                prop="product_title" [width]="400">
-                                                                <ng-template let-row="row" ngx-datatable-cell-template>
-                                                                    <label>{{row.product_title}}</label><br>
-                                                                    <label class="sku">{{row.product_sku}}</label>
-                                                                </ng-template>
-                                                            </ngx-datatable-column>
-                                                            <ngx-datatable-column name="Date" [sortable]="true"
-                                                                prop="create_time">
-                                                                <ng-template let-column="column"
-                                                                    ngx-datatable-header-template>
-                                                                    <div class="center">
-                                                                        Date
-                                                                    </div>
-                                                                </ng-template>
-                                                                <ng-template let-row="row" ngx-datatable-cell-template>
-                                                                    <div class="center">
-                                                                        {{row.create_time * 1000 |  date: 'dd/MM/yyyy HH:mm'}}
-                                                                    </div>
-                                                                </ng-template>
-                                                            </ngx-datatable-column>
-                                                            <ngx-datatable-column name="Retailer Stock"
-                                                                [sortable]="true" prop="total_quantity">
-                                                                <ng-template let-column="column"
-                                                                    ngx-datatable-header-template>
-                                                                    <div class="right">
-                                                                        Retailer Stock
-                                                                    </div>
-                                                                </ng-template>
-                                                                <ng-template let-row="row" ngx-datatable-cell-template>
-                                                                    <div class="right">
-                                                                        {{ row.checkin_data.onhand | number }}
-                                                                    </div>
-                                                                </ng-template>
-                                                            </ngx-datatable-column>
-                                                            <ngx-datatable-column name="Product Price" [sortable]="true"
-                                                                prop="total_product">
-                                                                <ng-template let-column="column"
-                                                                    ngx-datatable-header-template>
-                                                                    <div class="right">
-                                                                        Product Price
-                                                                        <nb-icon (click)="btnReload()"
-                                                                            icon="refresh-outline" style="
-                                                                            float: right;
-                                                                            margin-left: 1rem;
-                                                                            margin-right: 1rem; 
-                                                                            cursor: pointer;">
-                                                                        </nb-icon>
-                                                                    </div>
-                                                                </ng-template>
-                                                                <ng-template let-row="row" ngx-datatable-cell-template>
-                                                                    <div class="right">
-                                                                        {{ row.product_price | number : '1.2-2' }}
-                                                                        <!-- <nb-icon icon="close-outline"></nb-icon> -->
-                                                                    </div>
-                                                                </ng-template>
-                                                            </ngx-datatable-column>
-                                                        </ngx-datatable> 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <ng-template #loading>
-                                                <table class="table hover" style="width: 100%;margin: 0 0.5rem;">
-                                                    <thead>
-                                                        <tr>
-                                                            <!-- 'Order Date','Contact Email','Telephone Number' -->
-                                                            <th class="left"
-                                                                *ngFor="let item of ['Images','Product Name','Product SKU','Product Quantity','Product Price']">
-                                                                {{item}}
-                                                            </th>
-                                                            <th (click)="btnReload()">
-                                                                <nb-icon style="float: right; cursor: pointer;"
-                                                                    icon="refresh-outline">
-                                                                </nb-icon>
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr class="unset" style="height:300px;">
-                                                            <td colspan="8" style="padding-top: 50px;">
-                                                                <div style="height: 100px;" [nbSpinner]="loadings"
-                                                                    nbSpinnerStatus="success">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </ng-template>
-                                            <div class="col-12" *ngIf="isReload">
-                                                <div class="cover-table" style="width: 100%;">
-                                                    <table class="table hover" style="width: 100%;">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="left"
-                                                                    *ngFor="let item of ['Images','Product Name','Product SKU','Product Quantity','Product Price']">
-                                                                    {{item}}
-                                                                </th>
-                                                                <th (click)="btnReload()">
-                                                                    <nb-icon style="float: right; cursor: pointer;"
-                                                                        icon="refresh-outline">
-                                                                    </nb-icon>
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr class="unset" style="height:300px; ">
-                                                                <td colspan="8" style="padding-top: 50px;">
-                                                                    <div style="height: 100px;" [nbSpinner]="isReload"
-                                                                        nbSpinnerStatus="success">
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                            <div class="col-12  d-flex justify-content-between p-2"
-                                                *ngIf="!isReload && !loadings">
-                                                <ngb-pagination [collectionSize]="tatallist$ | async"
-                                                    [(page)]="wishlistTableService.page"
-                                                    [pageSize]="wishlistTableService.pageSize"></ngb-pagination>
-                                                <select class="custom-select" style="width: auto" name="pageSize"
-                                                    [(ngModel)]="wishlistTableService.pageSize">
-                                                    <option [ngValue]="10">10 items per page</option>
-                                                    <option [ngValue]="20">20 items per page</option>
-                                                    <option [ngValue]="50">50 items per page</option>
-                                                    <option [ngValue]="100">100 items per page</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </nb-card-body>
-                            </nb-card>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
-        <div class="col-12">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <project-footercomponent> </project-footercomponent>
         </div>
     </div>

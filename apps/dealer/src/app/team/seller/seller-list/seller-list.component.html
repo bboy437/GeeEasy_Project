@@ -22,7 +22,7 @@
         </div>
         <div class="col-12">
             <nb-card>
-                <nb-card-body>
+                <nb-card-body style="min-height: calc(100vh - 280px);">
                     <div class="header"></div>
                     <div class="body">
                         <div class="row">
@@ -167,20 +167,22 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="col-12  d-flex justify-content-between p-2" *ngIf="!isReload && !loadings">
-                                <ngb-pagination [collectionSize]="tatallist$ | async"
-                                    [(page)]="wishlistTableService.page" [pageSize]="wishlistTableService.pageSize">
-                                </ngb-pagination>
-                                <select class="custom-select" style="width: auto" name="pageSize"
-                                    (change)="onPageChange($event.target.value)">
-                                    <option [value]="10">10 items per page</option>
-                                    <option [value]="20">20 items per page</option>
-                                    <option [value]="50">50 items per page</option>
-                                </select>
-                            </div>
                         </div>
                     </div>
                 </nb-card-body>
+                <nb-card-footer>
+                    <div class="col-12  d-flex justify-content-between p-2" *ngIf="!isReload && !loadings">
+                        <ngb-pagination [collectionSize]="tatallist$ | async" [(page)]="wishlistTableService.page"
+                            [pageSize]="wishlistTableService.pageSize">
+                        </ngb-pagination>
+                        <select class="custom-select" style="width: auto" name="pageSize"
+                            (change)="onPageChange($event.target.value)">
+                            <option [value]="10">10 items per page</option>
+                            <option [value]="20">20 items per page</option>
+                            <option [value]="50">50 items per page</option>
+                        </select>
+                    </div>
+                </nb-card-footer>
             </nb-card>
         </div>
     </div>

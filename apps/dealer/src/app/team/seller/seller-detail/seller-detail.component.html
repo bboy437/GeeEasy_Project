@@ -1,4 +1,4 @@
-<div class="pages">
+<div class="pages" [formGroup]="Form">
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card>
@@ -31,12 +31,7 @@
                     <div class="header">
                         <div class="row">
                             <div class="col-auto mr-auto">
-                                <label>
-                                    <span *ngIf="user_.group_ !== '-'" class="sku">{{user_.group_}}</span><span
-                                        *ngIf="user_.group_ !== '-'" class="p-0-12"></span>
-                                    <span *ngIf="user_.team_ !== '-'" class="sku">{{user_.team_}}</span><span
-                                        *ngIf="user_.team_ !== '-'" class="p-0-12"></span>{{arrSale.user_name}}
-                                </label>
+                                <label>{{arrobjRow.user_name}} </label>
                             </div>
                             <div class="col-auto">
                                 <div class="cover-status">
@@ -68,7 +63,7 @@
             </nb-card>
         </div>
         <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="success">
-            <nb-card class="box-shadow-unset">
+            <nb-card>
                 <nb-card-body>
                     <div class="body">
                         <div class="row">
@@ -77,16 +72,66 @@
                                     <div class="col-3">
                                         <div class="row">
                                             <div class="col-12">
-                                                <div class="cover-background-image">
-                                                    <div class="background-image padding-top-100"
-                                                        [ngClass]="{'active' : arrSale.user_image_url === '-' || arrSale.user_image_url === ''}"
-                                                        [ngStyle]="{'background-image': 'url('+arrSale.user_image_url+')'}">
-                                                    </div>
-                                                </div>
+                                                <project-display-file-image theme="white" 
+                                                    [image_url_array]="image.main_image.get">
+                                                </project-display-file-image>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-9">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <project-input inputType="text" label="Seller Name :"
+                                                    [control]="Form.get('user_name')">
+                                                </project-input>
+                                                <project-input inputType="text" label="Seller Company :"
+                                                    [control]="Form.get('user_company')">
+                                                </project-input>
+                                                <project-input inputType="text" label="Seller Tag :"
+                                                    [control]="Form.get('user_tag')">
+                                                </project-input>
+                                                <project-input inputType="text" label="First Name :"
+                                                    [control]="Form.get('user_first_name')">
+                                                </project-input>
+                                                <project-input inputType="text" label="Last Name :"
+                                                    [control]="Form.get('user_last_name')">
+                                                </project-input>
+                                                <project-input inputType="text" label="Email :"
+                                                    [control]="Form.get('user_email')">
+                                                </project-input>
+                                                <project-input inputType="text" label="Telephone Number :"
+                                                    [control]="Form.get('user_tel')">
+                                                </project-input>
+                                                <project-input inputType="text" label="Mobile Phone Number :"
+                                                    [control]="Form.get('user_mobile')">
+                                                </project-input>
+                                            </div>
+                                            <div class="col-6">
+                                                <project-textarea rows="3" label="Address :"
+                                                    [control]="Form.get('addressFull')">
+                                                </project-textarea>
+                                                <project-input inputType="text" label="Address Number :"
+                                                    [control]="Form.get('addressNo')">
+                                                </project-input>
+                                                <project-input inputType="text" label="Province :"
+                                                    [control]="Form.get('province')">
+                                                </project-input>
+                                                <project-input inputType="text" label="Amphoe :"
+                                                    [control]="Form.get('amphoe')">
+                                                </project-input>
+                                                <project-input inputType="text" label="Tambon :"
+                                                    [control]="Form.get('tambon')">
+                                                </project-input>
+                                                <project-input inputType="text" label="Zipcode :"
+                                                    [control]="Form.get('zipcode')">
+                                                </project-input>
+                                                <project-input inputType="text" label="Latitude, Longitude :"
+                                                    [control]="Form.get('location_lat_location_lng')">
+                                                </project-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="col-9">
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="row">
@@ -133,7 +178,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -141,9 +186,8 @@
                 </nb-card-body>
             </nb-card>
         </div>
-
-        <div class="col-12 col-md-12 col-lg-12 col-xl-12" [nbSpinner]="loading" nbSpinnerStatus="success">
-            <nb-card class="box-shadow-unset">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+            <nb-card>
                 <nb-card-body>
                     <div class="body">
                         <div class="row">
@@ -301,7 +345,7 @@
                 </nb-card-body>
             </nb-card>
         </div>
-        <div class="col-12">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <project-footercomponent> </project-footercomponent>
         </div>
     </div>

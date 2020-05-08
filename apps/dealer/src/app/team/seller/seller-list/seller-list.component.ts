@@ -10,7 +10,7 @@ import { Component, OnInit, QueryList, ViewChildren } from "@angular/core";
 
 
 import { SaleRepService ,SellerService} from "@project/services";
-import { searchResult, ISalerepAccount } from '@project/interfaces';
+import { searchResult, ISeller } from '@project/interfaces';
 
 import { WishlistTableService } from "./table-list.service";
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -26,7 +26,7 @@ export class SellerListComponent implements OnInit {
   private create = "team/seller/create";
   private detail = "team/seller/detail";
   Form: FormGroup;
-  wishlist$: Observable<ISalerepAccount[]>;
+  wishlist$: Observable<ISeller[]>;
   tatallist$: Observable<number>;
   ColumnMode = ColumnMode;
   loadings = false;

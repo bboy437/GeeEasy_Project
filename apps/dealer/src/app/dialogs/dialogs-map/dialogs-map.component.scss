@@ -1,7 +1,22 @@
-
 @import "../../../../../../libs/theme-dealer/src/lib/styles/themes";
 @import "~bootstrap/scss/mixins/breakpoints";
 @import "~@nebular/theme/styles/global/breakpoints";
+
+.icon-map {
+  top: -230px;
+  font-size: 16px;
+  cursor: pointer;
+  position: relative;
+  right: 15px;
+  width: 30px;
+  float: right;
+  background-color: white;
+  padding: 8px;
+  width: 40px;
+  margin-right: -5px;
+  border-radius: 3px;
+  color: #666666;
+}
 
 @include nb-install-component() {
   .show-grid {
@@ -34,6 +49,4 @@
   agm-map {
     height: 400px;
   }
-
 }
-

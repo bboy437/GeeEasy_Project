@@ -1,7 +1,6 @@
 <div class="pages">
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-
             <nb-card *ngIf="status == 'confirmPaid'" [formGroup]="From">
                 <nb-card-header class="dialogs">
                     <div class="header">
@@ -49,7 +48,6 @@
                     </div>
                 </nb-card-body>
             </nb-card>
-
             <nb-card *ngIf="status == 'confirmOrder'">
                 <nb-card-header class="dialogs">
                     <div class="header">
@@ -72,7 +70,6 @@
                     </div>
                 </nb-card-body>
             </nb-card>
-
             <nb-card *ngIf="status == 'confirmDelivery'" [formGroup]="From1">
                 <nb-card-header class="dialogs">
                     <div class="header">

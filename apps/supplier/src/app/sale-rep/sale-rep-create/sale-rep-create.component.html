@@ -13,13 +13,13 @@
                                     Sale</label>
                             </div>
                             <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                <button [disabled]="!Form.valid" *ngIf="RowID == 'new' && !loading"
+                                <button [disabled]="!Form.valid || isCheckPhone" *ngIf="RowID == 'new' && !loading"
                                     style="float: right;margin: 3px 0px 3px 1rem;" [nbSpinner]="image.update"
                                     nbSpinnerStatus="success" nbButton size="medium" status="success"
                                     (click)="btnSaveClick()">
                                     Save
                                 </button>
-                                <button [disabled]="!Form.valid" *ngIf="RowID != 'new' && !loading"
+                                <button [disabled]="!Form.valid || isCheckPhone" *ngIf="RowID != 'new' && !loading"
                                     style="float: right;margin: 3px 0px 3px 1rem;" [nbSpinner]="image.update"
                                     nbSpinnerStatus="success" nbButton size="medium" status="success"
                                     (click)="btnSaveClick()">
@@ -105,8 +105,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <project-input inputType="text" label="Last Name :"
-                                                    requiredName="Last Name"
-                                                    [control]="Form.get('sale_rep_last_name')">
+                                                    requiredName="Last Name" [control]="Form.get('sale_rep_last_name')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
@@ -115,67 +114,17 @@
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
-                                                <div class="cover-phone-number">
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="cover-input">
-                                                                <label>Telephone Number</label>
-                                                                <input nbInput fullWidth type="text" status="primary"
-                                                                    libOnlyCharacterphonnumber
-                                                                    formControlName="telephoneNumber"
-                                                                    (keyup)="onInput(19,19,$event,phone.tel)"
-                                                                    (keyup.enter)="onInArrayPhone(9,19,$event,phone.tel)"
-                                                                    (change)="onInArrayPhone(9,19,$event,phone.tel)"
-                                                                    [(ngModel)]="phone.tel.input"
-                                                                    [ngClass]="{'is-invalid': submitted && phone.tel.number === ''}" />
-                                                                <div class="invalid-feedback"
-                                                                    [ngClass]="{'display-block': submitted && phone.tel.number === ''}">
-                                                                    <div class="required">
-                                                                        Telephone Number is required
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <span class="phone"
-                                                                *ngFor="let item of phone.tel.number_array ; let i = index">
-                                                                {{item}}<nb-icon
-                                                                    (click)="removePhoneNumberIndex(i,phone.tel)"
-                                                                    icon="close-outline"></nb-icon>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-input-telephone label="Telephone Number :" theme="dark"
+                                                    requiredName="Telephone Number" [control]="Form.get('phone')"
+                                                    [data]="arrobjRow.sale_rep_tel" (valueChange)="onDataTel($event)">
+                                                </project-input-telephone>
                                             </div>
                                             <div class="col-12">
-                                                <div class="cover-phone-number">
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="cover-input">
-                                                                <label>Mobile Phone Number</label>
-                                                                <input nbInput fullWidth type="text" status="primary"
-                                                                    mask='000-000-0000' placeholder="XXX-XXX-XXXX"
-                                                                    (keyup)="inArrayPhone(12,12,$event,phone.mobile)"
-                                                                    (keyup.enter)="inArrayPhone(12,12,$event,phone.mobile)"
-                                                                    [ngClass]="{'is-invalid': submitted && phone.mobile.number === ''}" />
-                                                                <div class="invalid-feedback"
-                                                                    [ngClass]="{'display-block': submitted && phone.mobile.number === ''}">
-                                                                    <div class="required">
-                                                                        Mobile Phone Number is required
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <span class="phone"
-                                                                *ngFor="let item of phone.mobile.number_array ; let i = index">
-                                                                {{item}}<nb-icon
-                                                                    (click)="removePhoneNumberIndex(i,phone.mobile)"
-                                                                    icon="close-outline"></nb-icon>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-input-mobile-phone label="Mobile Number :" theme="dark"
+                                                    requiredName="Mobile Number" [control]="Form.get('mobile')"
+                                                    [data]="arrobjRow.sale_rep_mobile"
+                                                    (valueChange)="onDataMobilel($event)">
+                                                </project-input-mobile-phone>
                                             </div>
                                         </div>
                                     </div>

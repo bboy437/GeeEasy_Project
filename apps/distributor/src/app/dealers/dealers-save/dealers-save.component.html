@@ -12,12 +12,14 @@
                                 <label *ngIf="RowID != 'new'">Dealers <span class="p-0-12">/</span> Update</label>
                             </div>
                             <div class="col-auto">
-                                <button [disabled]="!Form.valid" *ngIf="RowID == 'new'" style="float: right;margin: 3px 0px 3px 1rem;"
-                                    [nbSpinner]="image.update" nbSpinnerStatus="success" nbButton size="medium"
-                                    status="success" (click)="btnSaveClick()">Save</button>
-                                <button [disabled]="!Form.valid" *ngIf="RowID != 'new'" style="float: right;margin: 3px 0px 3px 1rem;"
-                                    [nbSpinner]="image.update" nbSpinnerStatus="success" nbButton size="medium"
-                                    status="success" (click)="btnSaveClick()">Update</button>
+                                <button [disabled]="!Form.valid || isCheckPhone" *ngIf="RowID == 'new'"
+                                    style="float: right;margin: 3px 0px 3px 1rem;" [nbSpinner]="image.update"
+                                    nbSpinnerStatus="success" nbButton size="medium" status="success"
+                                    (click)="btnSaveClick()">Save</button>
+                                <button [disabled]="!Form.valid || isCheckPhone" *ngIf="RowID != 'new'"
+                                    style="float: right;margin: 3px 0px 3px 1rem;" [nbSpinner]="image.update"
+                                    nbSpinnerStatus="success" nbButton size="medium" status="success"
+                                    (click)="btnSaveClick()">Update</button>
                                 <button *ngIf="RowID == 'new'" nbButton style="float: right;margin: 3px 0px 3px 1rem;"
                                     status="danger" (click)="btnCancelClick()">Cancel</button>
                                 <button *ngIf="RowID != 'new'" nbButton style="float: right;margin: 3px 0px 3px 1rem;"
@@ -44,8 +46,7 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <project-input inputType="text" label="Dealer Keyword :"
-                                                    requiredName="Dealer Keyword"
-                                                    [control]="Form.get('dealersName')">
+                                                    requiredName="Dealer Keyword" [control]="Form.get('dealersName')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
@@ -83,8 +84,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <project-input inputType="text" label="Company Name :"
-                                                    requiredName="Company Name"
-                                                    [control]="Form.get('companyName')">
+                                                    requiredName="Company Name" [control]="Form.get('companyName')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
@@ -93,69 +93,17 @@
                                                 </project-input>
                                             </div>
                                             <div class="col-12">
-                                                <div class="cover-phone-number">
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="cover-input">
-                                                                <label>Telephone Number</label>
-                                                                <input libOnlyCharacterDefault nbInput fullWidth
-                                                                    type="text" status="primary"
-                                                                    libOnlyCharacterphonnumber
-                                                                    formControlName="telephoneNumber"
-                                                                    (keyup)="onInput(19,19,$event,phone.tel)"
-                                                                    (keyup.enter)="onInArrayPhone(9,19,$event,phone.tel)"
-                                                                    (change)="onInArrayPhone(9,19,$event,phone.tel)"
-                                                                    [(ngModel)]="phone.tel.input"
-                                                                    [ngClass]="{'is-invalid': submitted && phone.tel.number === ''}" />
-                                                                <div class="invalid-feedback"
-                                                                    [ngClass]="{'display-block': submitted && phone.tel.number === ''}">
-                                                                    <div class="required">
-                                                                        Telephone Number is required
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <span class="phone"
-                                                                *ngFor="let item of phone.tel.number_array ; let i = index">
-                                                                {{item}}<nb-icon
-                                                                    (click)="removePhoneNumberIndex(i,phone.tel)"
-                                                                    icon="close-outline"></nb-icon>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-input-telephone label="Telephone Number :"
+                                                    requiredName="Telephone Number" [control]="Form.get('phone')"
+                                                    [data]="arrobjRow.dealer_tel" (valueChange)="onDataTel($event)">
+                                                </project-input-telephone>
                                             </div>
                                             <div class="col-12">
-                                                <div class="cover-phone-number">
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="cover-input">
-                                                                <label>Mobile Phone Number</label>
-                                                                <input libOnlyCharacterDefault nbInput fullWidth
-                                                                    type="text" status="primary" mask='000-000-0000'
-                                                                    placeholder="XXX-XXX-XXXX"
-                                                                    (keyup)="inArrayPhone(12,12,$event,phone.mobile)"
-                                                                    (keyup.enter)="inArrayPhone(12,12,$event,phone.mobile)"
-                                                                    [ngClass]="{'is-invalid': submitted && phone.mobile.number === ''}" />
-                                                                <div class="invalid-feedback"
-                                                                    [ngClass]="{'display-block': submitted && phone.mobile.number === ''}">
-                                                                    <div class="required">
-                                                                        Mobile Phone Number is required
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <span class="phone"
-                                                                *ngFor="let item of phone.mobile.number_array ; let i = index">
-                                                                {{item}}<nb-icon
-                                                                    (click)="removePhoneNumberIndex(i,phone.mobile)"
-                                                                    icon="close-outline"></nb-icon>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <project-input-mobile-phone label="Mobile Number :"
+                                                    requiredName="Mobile Number" [control]="Form.get('mobile')"
+                                                    [data]="arrobjRow.dealer_mobile"
+                                                    (valueChange)="onDataMobilel($event)">
+                                                </project-input-mobile-phone>
                                             </div>
                                         </div>
                                     </div>
@@ -176,8 +124,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <project-input inputType="text" label="Address Number :"
-                                                    requiredName="Address Number"
-                                                    [control]="Form.get('addressNo')">
+                                                    requiredName="Address Number" [control]="Form.get('addressNo')">
                                                 </project-input>
                                             </div>
                                             <div class="col-12">

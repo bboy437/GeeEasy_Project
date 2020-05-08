@@ -22,7 +22,7 @@
         </div>
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <nb-card>
-                <nb-card-body>
+                <nb-card-body style="min-height: calc(100vh - 190px);">
                     <div class="row" style="padding: 1rem;">
                         <div class="col-12 col-lg-3">
                         </div>
@@ -67,7 +67,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-12 col-lg-3">
                             <div *ngIf="!loading">
@@ -105,14 +104,14 @@
                                             <td *ngIf="group_id_group != t.group_id" colspan="2"
                                                 style="text-align: left;">
                                                 <div>
-                                                    <ngb-highlight [result]="t.group_name " [term]="service.searchTerm">
+                                                    <ngb-highlight [result]="t.group_name ">
                                                     </ngb-highlight>
                                                 </div>
                                             </td>
                                             <td *ngIf="group_id_group == t.group_id" colspan="1"
                                                 style="text-align: left;">
                                                 <div>
-                                                    <ngb-highlight [result]="t.group_name " [term]="service.searchTerm">
+                                                    <ngb-highlight [result]="t.group_name ">
                                                     </ngb-highlight>
                                                 </div>
                                             </td>
@@ -134,7 +133,7 @@
                                     <thead>
                                         <tr>
                                             <th style="text-align: left; ">Group </th>
-                                            <th style="text-align: right; cursor: pointer;" (click)="btnReload()">
+                                            <th style="text-align: right; cursor: pointer;" (click)="btnRefreshGroup()">
                                                 <nb-icon icon="refresh-outline"></nb-icon>
                                             </th>
                                         </tr>
@@ -151,7 +150,6 @@
                                 </table>
                             </div>
                         </div>
-
                         <div class="col-12 col-lg-3">
                             <div *ngIf="!loading1">
                                 <table class="table no-hover" style="width: 100%;">
@@ -187,14 +185,14 @@
                                             <td *ngIf="group_id_team != t.group_id" colspan="2"
                                                 style="text-align: left;">
                                                 <div>
-                                                    <ngb-highlight [result]="t.group_name " [term]="service.searchTerm">
+                                                    <ngb-highlight [result]="t.group_name ">
                                                     </ngb-highlight>
                                                 </div>
                                             </td>
                                             <td *ngIf="group_id_team == t.group_id" colspan="1"
                                                 style="text-align: left;">
                                                 <div>
-                                                    <ngb-highlight [result]="t.group_name " [term]="service.searchTerm">
+                                                    <ngb-highlight [result]="t.group_name ">
                                                     </ngb-highlight>
                                                 </div>
                                             </td>
@@ -216,7 +214,7 @@
                                     <thead>
                                         <tr>
                                             <th style="text-align: left; ">Team </th>
-                                            <th style="text-align: right; cursor: pointer;" (click)="btnReload()">
+                                            <th style="text-align: right; cursor: pointer;">
                                                 <!-- <nb-icon icon="refresh-outline"></nb-icon> -->
                                             </th>
                                         </tr>
@@ -233,7 +231,6 @@
                                 </table>
                             </div>
                         </div>
-
                         <div class="col-12 col-lg-6">
                             <div *ngIf="!loading2">
                                 <table class="table hover" style="width: 100%;">
@@ -259,8 +256,7 @@
                                                 </td>
                                                 <td style="text-align: left;">
                                                     <div style=" padding-top: 1rem;">
-                                                        <ngb-highlight [result]="t.user_name "
-                                                            [term]="service.searchTerm">
+                                                        <ngb-highlight [result]="t.user_name ">
                                                         </ngb-highlight>
                                                     </div>
                                                 </td>
@@ -309,11 +305,9 @@
                             </div>
                         </div>
                     </div>
-
                 </nb-card-body>
             </nb-card>
         </div>
-
         <div class="col-12 col-md-12 col-lg-12 col-xl-12">
             <project-footercomponent> </project-footercomponent>
         </div>

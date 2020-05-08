@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RetailAccountService, RetailProductService, ProductAPIService, TeamAPIService } from '@project/services';
+import { RetailAccountService, RetailProductService, ProductAPIService, TeamAPIService, UploadAPIService } from '@project/services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -30,15 +30,23 @@ export class DealerProductPushComponent implements OnInit {
 
     id_local: string;
 
+    image = {
+        update: false,
+        main_image: {
+            get: [],
+            port: []
+        }
+    }
+
     constructor(
         private retailAccountService: RetailAccountService,
         private retailProductService: RetailProductService,
-        private teamAPIService: TeamAPIService,
         private router: Router,
         private route: ActivatedRoute,
         private dialogService: NbDialogService,
         private formBuilder: FormBuilder,
-        private productAPIService: ProductAPIService
+        private productAPIService: ProductAPIService,
+        private uploadAPIService: UploadAPIService
     ) {
         this.id_local = localStorage.getItem('id');
         console.log(' this.id_local', this.id_local);
@@ -178,6 +186,18 @@ export class DealerProductPushComponent implements OnInit {
             })
             console.log('warehouse', this.warehouse);
 
+            if (
+                this.warehouse[0].product_image_url !== undefined &&
+                this.warehouse[0].product_image_url !== "-" &&
+                this.warehouse[0].product_image_url !== ""
+            )
+                this.uploadAPIService
+                    .uploadImage()
+                    .getUrl(this.warehouse[0].product_image_url, red_image => {
+                        this.image.main_image.get.push(red_image);
+                    });
+
+
             this.FromProduct.get('product_title').patchValue(this.warehouse[0].product_title);
             this.FromProduct.get('product_sku').patchValue(this.warehouse[0].product_sku);
             this.FromProduct.get('product_price').patchValue(this.warehouse[0].product_price);
@@ -212,7 +232,6 @@ export class DealerProductPushComponent implements OnInit {
 
         console.log('warehouse', this.warehouse);
     }
-
 
     updateStatusAll(checked: boolean) {
         console.log('checked', checked);
@@ -311,7 +330,6 @@ export class DealerProductPushComponent implements OnInit {
         console.log("checkTransfer : this.products : ", this.products);
     };
 
-
     btnDeleteProduct(i: any, product) {
         console.log("btnDeleteProduct : i : ", i);
         console.log("btnDeleteProduct : product : ", product);
@@ -352,6 +370,7 @@ export class DealerProductPushComponent implements OnInit {
             callback(red);
         });
     }
+
     remove(retail_product_id, callback: (res) => any) {
         const dataJson = {
             retail_id: this.RetailId,
@@ -362,6 +381,7 @@ export class DealerProductPushComponent implements OnInit {
             callback(red);
         });
     }
+
     update(callback: (res) => any) {
         const dataJson = {
             retail_id: this.RetailId,
@@ -380,9 +400,7 @@ export class DealerProductPushComponent implements OnInit {
         });
 
         dialogRef.onClose.subscribe(result => {
-            if (result === 'cancel') {
-            }
-            if (result === 'ok') {
+            if (result) {
                 this.router.navigate([this.UrlRouter_Detail, this.RetailId]);
             }
         });
@@ -391,4 +409,5 @@ export class DealerProductPushComponent implements OnInit {
     btnBackClick() {
         this.router.navigate([this.UrlRouter_Detail, this.RetailId]);
     }
+
 }

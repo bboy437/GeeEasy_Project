@@ -1,1 +1,0 @@
-export { SellerCreateComponent } from "./seller-create.component";

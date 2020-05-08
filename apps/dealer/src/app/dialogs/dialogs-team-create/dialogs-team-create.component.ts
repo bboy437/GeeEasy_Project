@@ -119,7 +119,6 @@ export class DialogsTeamCreateComponent implements OnInit {
     this.loading = false;
   }
 
-
   get f() { return this.Form.controls; }
   onSubmit() {
     this.submitted = true;
@@ -127,8 +126,6 @@ export class DialogsTeamCreateComponent implements OnInit {
       return;
     }
   }
-
-
 
   btnSaveClick() {
 
@@ -209,9 +206,7 @@ export class DialogsTeamCreateComponent implements OnInit {
     });
 
     dialogRef.onClose.subscribe(result => {
-      if (result === 'cancel') {
-      }
-      if (result === 'ok') {
+      if (result) {
         this.ref.close();
       }
     });
@@ -223,9 +218,8 @@ export class DialogsTeamCreateComponent implements OnInit {
     });
 
     dialogRef.onClose.subscribe(result => {
-      if (result === 'cancel') {
-      }
-      if (result === 'ok') {
+
+      if (result) {
         this.ref.close();
       }
     });
@@ -233,61 +227,6 @@ export class DialogsTeamCreateComponent implements OnInit {
 
 
 }
-
-
-
-
-  // uploadFile(event) {
-  //   if (event.length === 0)
-  //     return;
-
-  //   const mimeType = event[0].type;
-  //   if (mimeType.match(/image\/*/) == null) {
-  //     this.message = "Only images are supported.";
-  //     return;
-  //   }
-  //   const reader = new FileReader();
-  //   this.message = event[0].name;
-  //   this.imagePath = event[0];
-  //   reader.readAsDataURL(event[0]);
-  //   reader.onload = (_event) => {
-  //     this.imgURL = reader.result;
-  //   }
-  //   console.log('imgURL', this.imgURL);
-
-  //   this.upload()
-  // }
-
-
-  // upload() {
-  //   const dataJson = {
-  //     type_id: 600,
-  //     file_name: this.imagePath.name,
-  //     file_type: this.imagePath.type,
-  //     dealer_id: this.id_local,
-  //     distributor_id: 0
-  //   }
-
-  //   this.uploadAPIService.uploadImg(JSON.stringify(dataJson)).subscribe(res => {
-  //     console.log(res);
-  //     this.uploadData = res.response_data[0];
-  //     this.imag_url = this.uploadData.file_url;
-
-  //     this.uploadAPIService.uploadPut(this.uploadData.file_upload_url, this.imagePath).subscribe(res1 => {
-  //       this.imag_url = this.uploadData.file_url;
-  //       console.log(this.imag_url);
-  //     })
-
-  //   })
-
-  // }
-
-  // btnUpload() {
-  //   this.uploadAPIService.uploadPut(this.uploadData.file_upload_url, this.imagePath).subscribe(res1 => {
-  //     console.log(res1);
-  //   })
-  // }
-
 
 
 

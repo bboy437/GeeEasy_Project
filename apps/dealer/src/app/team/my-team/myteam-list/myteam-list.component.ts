@@ -5,7 +5,6 @@ import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { SortEvent, NgbdSortableHeader, DealerAPIService, OrderAPIService, DistributorAPIService, TeamAPIService } from '@project/services';
 import { ITeam } from '@project/interfaces';
-import { TableService } from './table.service';
 import { NbDialogService } from '@nebular/theme';
 import { DialogsTeamComponent } from '../../../dialogs/dialogs-team/dialogs-team.component';
 import { DialogsTeamCreateComponent } from '../../../dialogs/dialogs-team-create/dialogs-team-create.component';
@@ -16,7 +15,6 @@ import { DeleteComponent } from '../../../dialogs/delete/delete.component';
   selector: 'project-myteam-list',
   templateUrl: './myteam-list.component.html',
   styleUrls: ['./myteam-list.component.scss'],
-  providers: [TableService, DecimalPipe]
 })
 export class MyteamListComponent implements OnInit {
 
@@ -26,14 +24,11 @@ export class MyteamListComponent implements OnInit {
   private UrlRouter_TeamCreate = "team/myteam/create";
   private UrlRouter_PurchaseBack = "dealers/list";
   formControl = new FormControl(new Date());
-  arrTeam$: Observable<ITeam[]>;
-  total$: Observable<number>;
   arrTeam: any = [];
   arrGroup: any = [];
   arrSeller: any = [];
   filter: any = [];
   filter1: any = [];
-  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   Form: FormGroup;
   group_name: string;
   team_name: string;
@@ -56,14 +51,12 @@ export class MyteamListComponent implements OnInit {
   )
 
   constructor(
-    public service: TableService,
     private router: Router,
     private dialogService: NbDialogService,
     private teamAPIService: TeamAPIService,
     private formBuilder: FormBuilder,
   ) {
     this.id_local = localStorage.getItem('id');
-    console.log(' this.id_local', this.id_local);
     this.loading = true;
   }
 
@@ -75,30 +68,10 @@ export class MyteamListComponent implements OnInit {
     });
 
     this.getDataGroup(0)
-    this.callApi(e => {
-      // completed
-    });
 
   }
 
-  callApi(callback) {
-    this.service.getData(e => {
-      this.arrTeam$ = this.service.countries$;
-      this.total$ = this.service.total$;
-      this.loading = false;
-      callback(true);
-    });
-  }
 
-  btnReload() {
-
-    this.isReload = true;
-    this.service.getData(e => {
-      this.arrTeam$ = this.service.countries$;
-      this.total$ = this.service.total$;
-      this.isReload = false;
-    });
-  }
 
   getDataGroup(group_id) {
     this.group_id_group = '';
@@ -326,7 +299,6 @@ export class MyteamListComponent implements OnInit {
 
 
   btnReset() {
-    this.service.searchTerm = '';
   }
 
 

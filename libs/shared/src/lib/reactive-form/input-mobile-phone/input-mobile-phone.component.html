@@ -1,0 +1,49 @@
+<div class="field">
+    <div class="cover-input">
+        <label>{{ label }}</label>
+        <input libOnlyCharacterDefault nbInput fullWidth type="text" status="primary" [formControl]="control"
+            mask='000-000-0000' placeholder="XXX-XXX-XXXX" (keyup)="inArrayPhone(12,12,$event,phone.mobile)"
+            (keyup.enter)="inArrayPhone(12,12,$event,phone.mobile)" (change)="inArrayPhone(12,12,$event,phone.mobile)"
+            [ngClass]="{ 'is-invalid': showErrors() }" />
+    </div>
+
+    <div>
+        <span class="phone {{theme}}" *ngFor="let item of phone.mobile.number_array ; let i = index">
+            {{item}}
+            <nb-icon (click)="removePhoneNumberIndex(i,phone.mobile)" icon="close-outline"> </nb-icon>
+        </span>
+    </div>
+
+
+    <div *ngIf="showErrors()">
+        <p class="required" *ngIf="control.errors.required">
+            {{requiredName}} is required
+        </p>
+        <p class="required" *ngIf="control.errors.email">
+            {{requiredName}} must be a valid email
+        </p>
+        <p class="required" *ngIf="control.errors.minlength">
+            {{requiredName}} you entered is
+            {{ control.errors.minlength.actualLength }}
+            characters long, but it must be at least
+            {{ control.errors.minlength.requiredLength }}
+            characters
+        </p>
+        <p class="required" *ngIf="control.errors.maxlength">
+            {{requiredName}} you entered is
+            {{ control.errors.maxlength.actualLength }}
+            characters long, but it cannot be longer than
+            {{ control.errors.maxlength.requiredLength }}
+            characters
+        </p>
+        <p class="required" *ngIf="control.errors.pattern">
+            Invalid format
+        </p>
+        <p class="required" *ngIf="control.errors.nonUniqueUsername">
+            Username is taken
+        </p>
+        <p class="required" *ngIf="control.errors.noConnection">
+            Can't tell if username is taken
+        </p>
+    </div>
+</div>

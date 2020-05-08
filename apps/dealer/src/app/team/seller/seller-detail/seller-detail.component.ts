@@ -3,12 +3,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DecimalPipe } from "@angular/common";
 import { ProductData } from "@project/interfaces";
 import { ColumnMode } from '@swimlane/ngx-datatable';
-import { NgbdSortableHeader, SortEvent } from "@project/services";
+import { NgbdSortableHeader, SortEvent, UploadAPIService } from "@project/services";
 import { Component, OnInit, QueryList, ViewChildren } from "@angular/core";
 import { DialogsImageComponent } from '../../../dialogs/dialogs-image/dialogs-image.component';
 import { NbDialogService } from '@nebular/theme';
 
 import { SellerService } from "@project/services";
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
     // tslint:disable-next-line: component-selector
@@ -22,19 +23,14 @@ export class SellerDetailComponent implements OnInit {
     private backPageTeam = "team/myteam/list";
     private detailProduct = "team/seller/product-detail";
     products: any = [];
-    arrSale: any = [];
-    arrSaleProduct: any = [];
+    arrobjRow: any = [];
+    Form: FormGroup;
     RowID: string;
     status: string;
     loading = false;
     isReload = false;
 
     totalSale = 0;
-
-    cover_input = {
-        col_6_1: [],
-        col_6_2: []
-    }
 
     user_ = {
         group_: "-",
@@ -45,193 +41,101 @@ export class SellerDetailComponent implements OnInit {
         }
     }
 
+    image = {
+        update: false,
+        main_image: {
+            get: [],
+            port: []
+        }
+    }
+
     constructor(
         private router: Router,
         private route: ActivatedRoute,
         private sellerService: SellerService,
-        private dialogService: NbDialogService
+        private dialogService: NbDialogService,
+        private uploadAPIService: UploadAPIService,
+        private formBuilder: FormBuilder,
     ) {
         this.loading = true;
     }
 
     ngOnInit() {
+
+        this.Builder();
         const params = this.route.snapshot.paramMap;
         this.status = params.get("status");
-        this.getSalerepAccountDetail(res => {
-            console.log("ngOnInit : getSalerepAccountDetail : res : ", res);
-            res.response_data.forEach(item => {
-                this.arrSale = item;
-                this.getDataForm(item, res => {
-                    this.cover_input = res;
-                });
-                // tslint:disable-next-line: forin
-                for (const key in item.user_data_ref) {
-                    console.log("for in : key : ", key);
-                    console.log("for in : item.user_data_ref : ", item.user_data_ref[key]);
-                    if (item.user_data_ref.hasOwnProperty(key) && key === 'total_sale') {
-                        this.totalSale = item.user_data_ref[key];
-                    }
-                }
-            });
-        })
+        this.RowID = params.get("id");
+
+        if (this.RowID) {
+
+            this.sellerService.getSellerDetail(this.RowID).subscribe(res => {
+                this.sellerService.dataSellerDetail(res);;
+                this.getData(res);
+            })
+        }
     }
 
-    getCol_6_1(title, callback: (status, res) => any) {
-        const col_6_1 = [
-            {
-                type: "input",
-                index: 0,
-                title: "user_name",
-                topic: "Seller Name",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 1,
-                title: "user_company",
-                topic: "Seller Company",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 2,
-                title: "user_tag",
-                topic: "Seller Tag",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 3,
-                title: "user_first_name",
-                topic: "First Name",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 4,
-                title: "user_last_name",
-                topic: "Last Name",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 5,
-                title: "user_email",
-                topic: "Email",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 6,
-                title: "user_tel",
-                topic: "Telephone Number",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 7,
-                title: "user_mobile",
-                topic: "Mobile Phone Number",
-                input: "", col: "12"
-            }
-        ],
-            status = col_6_1.filter(res => res.title === title).length > 0,
-            res = col_6_1.filter(res => res.title === title);
-        callback(status, res);
-    };
-
-    getCol_6_2(title, callback: (status, res) => any) {
-        const col_6_2 = [
-            {
-                type: "textarea",
-                index: 0,
-                title: "user_addr_full",
-                topic: "Address",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 1,
-                title: "user_addr_number",
-                topic: "Address Number",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 2,
-                title: "user_addr_province",
-                topic: "Address Number",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 3,
-                title: "user_first_name",
-                topic: "Province",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 4,
-                title: "user_addr_amphoe",
-                topic: "Amphoe",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 5,
-                title: "user_addr_tambon",
-                topic: "Tambon",
-                input: "", col: "12"
-            }, {
-                type: "input",
-                index: 6,
-                title: "user_addr_post",
-                topic: "Zipcode",
-                input: "", col: "12"
-            }
-        ],
-            status = col_6_2.filter(res => res.title === title).length > 0,
-            res = col_6_2.filter(res => res.title === title);
-        callback(status, res);
-    };
-
-    getDataForm(api, callback: (res) => any) {
-        let res = {
-            col_6_1: [],
-            col_6_2: []
-        };
-        // tslint:disable-next-line: forin
-        for (const key in api) {
-            console.log("getDataForm : ", "key : ", key);
-            this.getCol_6_1(key, (status, res_) => {
-                if (status) {
-                    console.log("getDataForm : ", "getCol_6_1 : status : ", status);
-                    console.log("getDataForm : ", "getCol_6_1 : res_ : ", res_);
-                    res_.forEach(item => {
-                        item.input = api[key];
-                        res.col_6_1.push(item);
-                    });
-                }
+    getData(data) {
+        console.log(data);
+        this.arrobjRow = data.response_data[0];
+        if (this.arrobjRow.user_image_url !== undefined && this.arrobjRow.user_image_url !== "-" && this.arrobjRow.user_image_url !== "")
+            this.uploadAPIService.uploadImage().getUrl(this.arrobjRow.user_image_url, red_image => {
+                this.image.main_image.get.push(red_image);
             });
-            this.getCol_6_2(key, (status, res_) => {
-                if (status) {
-                    console.log("getDataForm : ", "getCol_6_2 : status : ", status);
-                    console.log("getDataForm : ", "getCol_6_2 : res_ : ", res_);
-                    res_.forEach(item => {
-                        item.input = api[key];
-                        res.col_6_2.push(item);
-                    });
-                }
-            });
-        }
-        res.col_6_1.sort(function (a, b) {
-            return a.index - b.index;
-        });
-        res.col_6_2.sort(function (a, b) {
-            return a.index - b.index;
-        });
-        callback(res)
-        this.loading = false;
-    };
 
-    getSalerepAccountDetail(callback: (res) => any) {
-        const params = this.route.snapshot.paramMap;
-        this.RowID = params.get("id");
-        this.sellerService.getSellerDetail(this.RowID).subscribe(res => {
-            console.log("getSalerepAccountDetail : res : ", res);
-            callback(res);
-        })
+
+        /*Value Data Form */
+        this.editForm();
         this.getProductList();
-    };
+    }
+
+    Builder() {
+        this.Form = this.formBuilder.group({
+            user_name: [],
+            user_company: [],
+            user_tag: [],
+            user_first_name: [],
+            user_last_name: [],
+            user_email: [],
+            user_tel: [],
+            user_mobile: [],
+            addressFull: [],
+            addressNo: [],
+            province: [],
+            amphoe: [],
+            tambon: [],
+            zipcode: [],
+            location_lat: [],
+            location_lng: [],
+            location_lat_location_lng: [],
+        });
+    }
+
+    editForm() {
+        this.Form.patchValue({
+            user_name: this.arrobjRow.user_name,
+            user_company: this.arrobjRow.user_company,
+            user_tag: this.arrobjRow.user_tag,
+            user_first_name: this.arrobjRow.user_first_name,
+            user_last_name: this.arrobjRow.user_last_name,
+            user_email: this.arrobjRow.user_email,
+            user_tel: this.arrobjRow.user_tel,
+            user_mobile: this.arrobjRow.user_mobile,
+            addressFull: this.arrobjRow.user_addr_full,
+            addressNo: this.arrobjRow.user_addr_number,
+            province: this.arrobjRow.user_addr_province,
+            amphoe: this.arrobjRow.user_addr_amphoe,
+            tambon: this.arrobjRow.user_addr_tambon,
+            zipcode: this.arrobjRow.user_addr_tambon,
+            location_lat: this.arrobjRow.user_addr_lat,
+            location_lng: this.arrobjRow.user_addr_lng,
+            location_lat_location_lng: this.arrobjRow.user_addr_lat + ',' + this.arrobjRow.user_addr_lng,
+        });
+        this.Form.disable();
+        console.log(this.Form);
+        this.loading = false;
+    }
 
     getProductList() {
         this.sellerService.getSellerProduct(this.RowID).subscribe(res => {
@@ -250,14 +154,10 @@ export class SellerDetailComponent implements OnInit {
         })
     }
 
-    dataProduct(data) {
-        this.arrSaleProduct = data;
-    }
-
     btnEditClick() {
         this.router.navigate([
             this.createPage,
-            this.arrSale.user_id
+            this.arrobjRow.user_id
         ]);
     }
 

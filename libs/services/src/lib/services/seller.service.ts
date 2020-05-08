@@ -4,8 +4,9 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { retry, catchError } from 'rxjs/operators';
-import { throwError, Subject } from 'rxjs';
+import { retry, catchError, map, tap } from 'rxjs/operators';
+import { throwError, Subject, BehaviorSubject } from 'rxjs';
+import { ISellerResponse } from '@project/interfaces';
 
 @Injectable({
     providedIn: 'root'
@@ -15,12 +16,35 @@ import { throwError, Subject } from 'rxjs';
 export class SellerService {
     protected serverApiUrl = "https://api.gee-supply.com/v1-dealer/";
 
+    //Seller
+    private dataSeller = new BehaviorSubject<any>(null);
+    dataSeller$ = this.dataSeller.asObservable();
+
+     //Seller Products
+     private dataSellerProducts = new BehaviorSubject<any>(null);
+     dataSellerProducts$ = this.dataSellerProducts.asObservable();
+
     constructor(private http: HttpClient) { }
 
-    httpOptions = {
-        headers: new HttpHeaders({
-            'Content-Type': 'application/json'
-        })
+
+    // Seller List
+    paramSellerList = "cur_page=" + 1 + "&per_page=" + 100 + "&dealer_id=" + localStorage.getItem('id');
+    sellerList$ = this.http.get<ISellerResponse>(`${this.serverApiUrl}${'seller/lists?'}${this.paramSellerList}`)
+        .pipe(
+            map(sellers => sellers.response_data),
+            tap(data => console.log('sellers', data)),
+            // shareReplay(1),
+            catchError(this.handleError)
+        );
+
+    // Seller Detail
+    dataSellerDetail(data: any): void {
+        this.dataSeller.next(data);
+    }
+
+    // Seller Product Detail
+    dataSellerProductDetail(data: any): void {
+        this.dataSellerProducts.next(data);
     }
 
     getApi() {
