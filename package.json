@@ -114,7 +114,7 @@
     "typeface-exo": "0.0.22",
     "uppy-store-ngrx": "^0.1.4",
     "web-animations-js": "github:angular/web-animations-js#release_pr208",
-    "xlsx": "^0.14.4",
+    "xlsx": "^0.17.0",
     "zone.js": "^0.9.1"
   },
   "devDependencies": {
